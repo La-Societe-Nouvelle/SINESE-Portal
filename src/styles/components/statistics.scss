@@ -1,0 +1,23 @@
+.bloc-statistics{
+
+
+    font-family: 'Raleway';
+
+
+    p {
+        font-weight: 600;
+        color : $primary;
+    }
+    p:last-of-type{
+        text-transform: uppercase;
+    }
+    p.source {
+        text-transform: none;
+        font-family: 'Roboto';
+        font-weight: normal;
+    }
+}
+p.source {
+    font-size: 0.7rem;
+
+}
