@@ -107,79 +107,13 @@ function Footer() {
         </Container>
       </div>
       <div className="footer">
-        <Container>
-          <Row>
-            <Col xs={12} lg={3}>
-              <h6>La société nouvelle</h6>
-              <Nav defaultActiveKey="/" className="flex-column">
-                <Nav.Link href="/a-propos">Qui sommes-nous ?</Nav.Link>
-                <Nav.Link href="/mesurer-empreinte-societale">
-                  Notre approche
-                </Nav.Link>
-                <Nav.Link href="/indicateurs">Liste des indicateurs</Nav.Link>
-                <Nav.Link href="/recrutement">Recrutement</Nav.Link>
-              </Nav>
-            </Col>
-            <Col xs={12} lg={3}>
-              <h6>Ressources</h6>
-              <Nav defaultActiveKey="/" className="flex-column">
-                <Nav.Link href="/ressources/application-mesure-impact">
-                  Metriz - Application Web de mesure d'impact
-                </Nav.Link>
-                <Nav.Link href="/ressources/api-publique-lsn">
-                  API publique
-                </Nav.Link>
-                <Nav.Link href="/ressources/consulter-impacts-entreprises">
-                  Portail d'accès aux données des entreprises
-                </Nav.Link>
-
-                <Nav.Link
-                  href="https://docs.lasocietenouvelle.org/"
-                  target="_blank"
-                >
-                  Documentation
-                </Nav.Link>
-              </Nav>
-            </Col>
-            <Col xs={12} lg={3}>
-              <h6>Services</h6>
-              <Nav defaultActiveKey="/" className="flex-column">
-                <Nav.Link href="/devenir-partenaire">
-                  Devenir partenaire
-                </Nav.Link>
-                <Nav.Link href="/devenir-partenaire/expert-comptable">
-                  Experts comptables
-                </Nav.Link>
-                <Nav.Link href="/devenir-partenaire/entreprises">
-                  Entreprises
-                </Nav.Link>
-                <Nav.Link href="/devenir-partenaire/se-former">
-                  Se former
-                </Nav.Link>
-              </Nav>
-            </Col>
-            <Col xs={12} lg={3}>
-              <h6>Articles</h6>
-              <Nav defaultActiveKey="/" className="flex-column">
-                <Nav.Link href="/categorie/notes-analyse">
-                  Notes d'analyse
-                </Nav.Link>
-                <Nav.Link href="/categorie/fiches-methodologiques">
-                  Fiches méthodologiques
-                </Nav.Link>
-                <Nav.Link href="/infographies">Infographies</Nav.Link>
-                <Nav.Link href="/categorie/actualites">Actualités </Nav.Link>
-              </Nav>
-            </Col>
-          </Row>
-        </Container>
-        <div className="text-center mt-4">
+        {/* <div className="text-center mt-4">
           <Image
             src="/celeste-blanc.svg"
             height={30}
             alt="Celeste personnage du logo de La Société Nouvelle"
           ></Image>
-        </div>
+        </div> */}
         <div className="bottom-footer">
           <Container>
             <div className="d-flex justify-content-between align-items-center">
@@ -193,16 +127,6 @@ function Footer() {
                 <li className="nav-item">
                   <a className="nav-link" href="/politique-confidentialite">
                     Politique de confidentialité
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/portail/company/889182770">
-                    Empreinte Sociétale
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/newsletter">
-                    Newsletter
                   </a>
                 </li>
                 <li className="nav-item">

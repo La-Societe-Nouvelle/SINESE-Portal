@@ -12,8 +12,8 @@ import { Helmet } from "react-helmet";
 import { useRouter } from "next/router";
 
 import axios from "axios";
-import ErrorAlert from "../../../components/Error";
-import { ContentSocialFootprint } from "../../../components/portal/ContentSocialFootprint";
+import ErrorAlert from "../../components/Error";
+import { ContentSocialFootprint } from "../../components/portal/ContentSocialFootprint";
 
 const CompanyData = () => {
   const router = useRouter();
