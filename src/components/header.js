@@ -195,29 +195,29 @@ const Header = () => {
             />
           </Navbar.Brand> */}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               {/* <Nav.Link href="/" className="border-end border-3">
                 <i className="bi bi-search"></i> Rechercher une entreprise
               </Nav.Link> */}
-              <Nav.Link href="/publier-empreinte" target="_blank">
+              {/* <Nav.Link href="/publier-empreinte" target="_blank">
                 Publier mes données
-              </Nav.Link>
-              <Nav.Link
+              </Nav.Link> */}
+              {/* <Nav.Link
                 href="https://api.lasocietenouvelle.org"
                 target="_blank"
                 rel="noreferrer"
               >
                 API publique
-              </Nav.Link>
-              <Nav.Link
+              </Nav.Link> */}
+              {/* <Nav.Link
                 href="https://docs.lasocietenouvelle.org/public-api"
                 target="_blank"
               >
                 Documentation
-              </Nav.Link>
+              </Nav.Link> */}
             </Nav>
-          </Navbar.Collapse>
+          </Navbar.Collapse> 
         </Container>
       </Navbar>
   );

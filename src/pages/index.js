@@ -98,11 +98,9 @@ const portail = () => {
         <Col md={3} lg={2} className="navbar-menu d-none d-md-block">
           <CustomNav
             li={[
-              ["Title 1", "subtitle 1", "/"],
-              ["Title 2", "subtitle 2", "/"],
-              ["Title 3", "subtitle 3", "/"],
-              ["Title 4", "subtitle 4", "/"],
-              ["Title 5", "subtitle 5", "/"]
+              ["Entreprises", "Empreintes des entreprises françaises", "/"],
+              ["Macroéconomie", "Empreintes des activités économiques", "/macro"],
+              ["Collectivités", "Empreintes des collectivités territoriales", "/macro"]
             ]}
           />
         </Col>

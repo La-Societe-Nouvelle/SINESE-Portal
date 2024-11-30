@@ -31,7 +31,7 @@ const CustomNav = ({ li }) => {
                 <p className="m-0 fw-bold">{item[0]}</p>
                 <p className="small text-gray700 m-0 fw-light">{item[1]}</p>
             </li>
-            <i class="bi bi-chevron-right"></i>
+            <i className="bi bi-chevron-right"></i>
           </Nav.Link>
         ))}
       </ul>
