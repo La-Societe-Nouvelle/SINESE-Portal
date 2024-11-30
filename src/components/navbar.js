@@ -22,6 +22,14 @@ const CustomNav = ({ li }) => {
   };
   return (
     <nav>
+      <Navbar.Brand className="p-3" href="/">
+        <Image
+          src="/logo-La-Societe-Nouvelle.svg"
+          height="80"
+          className="d-inline-block align-center"
+          alt="logo"
+        />
+      </Navbar.Brand>
       <ul className="navbar__list">
         {li.map((item, i) => (
           <Nav.Link className="navbar__li-box d-flex justify-content-between align-items-center gap-2" href={item[2]} key={i}>
