@@ -10,8 +10,8 @@ export const LineChart = ({data}) =>
         .map((year) => parseInt(year));
 
     const labels = Array.from(
-        { length: unique_years[unique_years.length-1] - unique_years[0] + 1 },
-        (_, i) => unique_years[0] + i
+        { length: 15},
+        (_, i) => 2010 + i
     )
 
     const values = labels.map((year) => data.find((item) => (parseInt(item.year) == year) && item.flag != 'f') || null).map(item => item?.value ?? null);
@@ -20,43 +20,44 @@ export const LineChart = ({data}) =>
     const valueMin = Math.min(Math.min(...values)*1.25, 0.0);
 
     const chartData = {
-    labels: labels,
-    datasets: [
-        {
-        label: 'Nouvelles données',
-        data: values,
-        fill: false,
-        borderColor: "#191558",
-        tension: 0.1,
-        //pointStyle: false
-        },
-    ]
+        labels: labels,
+        datasets: [{
+            label: 'Historique',
+            data: values,
+            fill: false,
+            borderColor: "#191558",
+            tension: 0.1,
+            //pointStyle: false
+        }]
     };
 
     const options = {
-    responsive: true,
-    scales: {
-        x: {
-        title: {
-            display: true,
-            text: 'Année',
+        responsive: true,
+        scales: {
+            x: {
+            title: {
+                display: true,
+                text: 'Année',
+            },
+            },
+            y: {
+                min: valueMin,
+                max: valueMax,
+                title: {
+                    display: true,
+                    text: 'Valeur',
+                },
+            },
         },
-        },
-        y: {
-        min: valueMin,
-        max: valueMax,
-        title: {
-            display: true,
-            text: 'Valeur',
-        },
-        },
-    },
     };
 
     return (
     <div>
         {chartData && (
-        <Line data={chartData} options={options} />
+            <Line 
+                data={chartData} 
+                options={options}
+            />
         )}
     </div>
     );
