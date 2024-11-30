@@ -51,19 +51,6 @@ function Footer() {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <a
-                    href="https://twitter.com/LSN_FR?s=20"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="Twitter"
-                  >
-                    <i
-                      className="bi bi-twitter mx-2 mx-lg-0 me-lg-3"
-                      role="img"
-                    ></i>
-                  </a>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <a
                     href="https://www.linkedin.com/company/la-societe-nouvelle/"
                     target="_blank"
                     rel="noreferrer"
