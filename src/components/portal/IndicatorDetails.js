@@ -1,10 +1,10 @@
 import { Badge, Button, Col, Image, Modal } from "react-bootstrap";
 import FootprintDataChart from "../charts/FootprintDataChart";
-import Description from "../../pages/indicateurs/parts/Description";
 import { useState } from "react";
 import { getFlagLabel } from "../../utils/utils";
 import FlagBadge from "./FlagBadges";
 import HistoricalDataChart from "../charts/HistoricalDatachart";
+import Description from "../indic/Description";
 
 /* Basic indicator view */
 export const IndicatorDetails = ({

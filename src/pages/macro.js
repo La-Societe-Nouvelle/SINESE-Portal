@@ -23,7 +23,7 @@ const portail = () =>
   const dataset = "macro_fpt";
   const [selectedValues, setSelectedValues] = useState({
     industry: "TOTAL",
-    country: "FR",
+    country: "FRA",
     aggregate: "PRD"
   });
 
@@ -99,8 +99,10 @@ const portail = () =>
       
       const response = await fetch(baseUrl);
       const results = await response.json();
+      console.log(results);
+      console.log(baseUrl);
       setData(results.data);
-      setColumns(Object.keys(results.data[0]));
+      setColumns(results.data.length>0 ? Object.keys(results.data[0]) : []);
     };
     fetchData()
   }, [selectedValues]);
@@ -179,7 +181,7 @@ const portail = () =>
             li={[
               ["Entreprises", "Empreintes des entreprises françaises", "/"],
               ["Macroéconomie", "Empreintes des activités économiques", "/macro"],
-              ["Collectivités", "Empreintes des collectivités territoriales", "/macro"]
+              // ["Collectivités", "Empreintes des collectivités territoriales", "/macro"]
             ]}
           />
         </Col>
@@ -249,45 +251,57 @@ const portail = () =>
                 <>
                   <Row>
                     <Col>
+                      <h3>Contribution à l'économie nationale</h3>
                       <LineChart data={data.filter((item) => item.indic == "ECO")} />
                     </Col>
                     <Col>
+                      <h3>Contribution aux métiers d'art et aux savoir-faire</h3>
                       <LineChart data={data.filter((item) => item.indic == "ART")} />
                     </Col>
                     <Col>
+                      <h3>Contribution aux acteurs d'intérêt social</h3>
                       <LineChart data={data.filter((item) => item.indic == "SOC")} />
                     </Col>
                   </Row>
                   <Row>
                     <Col>
+                      <h3>Ecart de rémunération femmes/hommes</h3>
                       <LineChart data={data.filter((item) => item.indic == "GEQ")} />
                     </Col>
                     <Col>
+                      <h3>Ecart des rémunérations</h3>
                       <LineChart data={data.filter((item) => item.indic == "IDR")} />
                     </Col>
                     <Col>
+                      <h3>Contribution à l'évolution des compétences et des connaissances</h3>
                       <LineChart data={data.filter((item) => item.indic == "KNW")} />
                     </Col>
                   </Row>
                   <Row>
                     <Col>
+                      <h3>Intensité d'émission de gaz à effet de serre</h3>
                       <LineChart data={data.filter((item) => item.indic == "GHG")} />
                     </Col>
                     <Col>
+                      <h3>Intensité de consommation d'énergie</h3>
                       <LineChart data={data.filter((item) => item.indic == "NRG")} />
                     </Col>
                     <Col>
+                      <h3>Intensité d'eau</h3>
                       <LineChart data={data.filter((item) => item.indic == "WAT")} />
                     </Col>
                   </Row>
                   <Row>
                     <Col>
+                      <h3>Intensité d'extraction de matières premières</h3>
                       <LineChart data={data.filter((item) => item.indic == "MAT")} />
                     </Col>
                     <Col>
+                      <h3>Intensité de production de déchets</h3>
                       <LineChart data={data.filter((item) => item.indic == "WAS")} />
                     </Col>
                     <Col>
+                      <h3>Intensité d'utilisation de produits dangereux</h3>
                       <LineChart data={data.filter((item) => item.indic == "HAZ")} />
                     </Col>
                   </Row>

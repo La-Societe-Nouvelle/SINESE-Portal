@@ -100,13 +100,13 @@ const portail = () => {
             li={[
               ["Entreprises", "Empreintes des entreprises françaises", "/"],
               ["Macroéconomie", "Empreintes des activités économiques", "/macro"],
-              ["Collectivités", "Empreintes des collectivités territoriales", "/macro"]
+              // ["Collectivités", "Empreintes des collectivités territoriales", "/macro"]
             ]}
           />
         </Col>
         <Col md={9} lg={10}>
-          <section className="open-data-portal">
-            <Container>
+          <section className="open-data-portal justify-content-center d-flex flex-column">
+            <Container className="">
               <div className="text-center">
                 <h1>
                   Toute l'information sur <br /> <b>l'empreinte sociétale</b> des
