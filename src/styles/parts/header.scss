@@ -1,16 +1,23 @@
 .top-bar {
   border-bottom: 1px solid $light;
   .nav-link {
+      color : $primary !important;
       font-weight: 600;
       padding:  0.5rem 0;
       margin: 0 1rem;
       border-bottom: 4px solid transparent;
 
+      &:hover {
+        color : $primary !important;
+        border-bottom: 4px solid $primary;
+      }
+
   }
   .active {
-    color : $primary !important;
-    border-bottom: 4px solid $primary;
+    //color : $primary !important;
+    //border-bottom: 4px solid $primary;
   }
+  
   .btn {
     color: $white;
     margin: 0 1rem 0 0;

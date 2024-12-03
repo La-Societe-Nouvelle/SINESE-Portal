@@ -129,8 +129,8 @@ export default function PublishStatement() {
         <title> Publication - Empreinte Sociétale | La Société Nouvelle </title>
       </Helmet>
 
-      <Container fluid className="bg-light">
-        <div className="px-5">{buildView()}</div>
+      <Container fluid className="min-vh-100 bg-light d-flex align-items-center">
+        <div className="p-5 m-auto">{buildView()}</div>
       </Container>
     </>
   );
