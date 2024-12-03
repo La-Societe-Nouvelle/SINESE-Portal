@@ -101,7 +101,7 @@ function Footer() {
             alt="Celeste personnage du logo de La Société Nouvelle"
           ></Image>
         </div> */}
-        <div className="bottom-footer">
+   
           <Container>
             <div className="d-flex justify-content-between align-items-center">
               <p className="mx-2 mb-0">&copy;{year} La Société Nouvelle</p>
@@ -124,7 +124,7 @@ function Footer() {
               </ul>
             </div>
           </Container>
-        </div>
+  
       </div>
     </footer>
   );

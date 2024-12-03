@@ -28,7 +28,7 @@
   border-bottom-right-radius: 8px;
     padding: 4px 8px;
 }
-.navbar__li-box:hover {
+.navbar__li-box:hover, .navbar__li-box--active {
   border-left: 7px solid $primary;
   background-color: $light;
   cursor: pointer;

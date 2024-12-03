@@ -277,3 +277,20 @@ p {
 }
 
 
+.main-titles {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  font-weight: bold;
+}
+
+.main-titles::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  right: -5px;
+  bottom: 0;
+  background-color: #cdd5fe;
+  z-index: -1;
+}

@@ -19,7 +19,6 @@ function MyApp({ Component, pageProps }) {
         ></meta>
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <Header />
       <Analytics />
       <Component {...pageProps} />
       <Footer />

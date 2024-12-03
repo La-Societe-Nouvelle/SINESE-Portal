@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import ErrorAlert from "../../components/Error";
 import { ContentSocialFootprint } from "../../components/portal/ContentSocialFootprint";
+import Header from "../../components/header";
 
 const CompanyData = () => {
   const router = useRouter();
@@ -96,9 +97,9 @@ const CompanyData = () => {
           response.data.data.forEach(element => {
             const indic = element.indic;
             if (!divisionFootprints[indic]) {
-              divisionFootprints[indic] = []; 
+              divisionFootprints[indic] = [];
             }
-            
+
             divisionFootprints[indic].push(element);
           });
           setHistoricalDivisionFootprints(divisionFootprints);
@@ -119,8 +120,11 @@ const CompanyData = () => {
             siren}
         </title>
       </Helmet>
+      <Header />
+
       <section className="open-data-portal bg-light">
         <Container>
+
           {!error && !dataFetched && (
             <div className="bg-white p-5 rounded-3">
               <h2 className="text-center">
@@ -207,86 +211,81 @@ const CompanyData = () => {
               </div>
             </>
           )}
-          <p className="text-end mt-3">
-            <Button
-              title="Retour au portail"
-              href="/portail"
-              variant="secondary"
-              size="sm"
-            >
-              « Retour
-            </Button>
-          </p>
         </Container>
-      </section>
-      <section className="bg-white">
-        <Container>
-          <Row>
-            <Col>
-              <div className="border border-3 p-5 rounded-3 mt-3">
-                <Image
-                  src="/illustrations/default-data-illu.png"
-                  alt="Illustration calcul données par défaut"
-                  className="mx-auto d-block"
-                />
-                <h4 className="my-3 text-center">
-                  A quoi correspondent les valeurs par défaut ?
-                </h4>
-                <p className="my-4">
-                  Les données par défaut correspondent aux valeurs utilisées
-                  lorsque l'empreinte sociétale d'une entreprise n'est pas
-                  publiée. Elles visent à permettre une estimation des impacts
-                  indirects d'une dépense auprès de cette entreprise, en
-                  s'appuyant sur ses caractéristiques (activité principale,
-                  effectifs, etc.).
-                </p>
-                <div className="text-center">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    href="https://docs.lasocietenouvelle.org/donnees"
-                    target="_blank"
-                    title="Accéder à la documentation complète"
-                  >
-                    Voir la documentation
-                  </Button>
+        <section className="bg-white">
+          <Container>
+            <Row>
+              <Col>
+                <div className="border border-3 p-5 rounded-3">
+                  <Image
+                    src="/illustrations/default-data-illu.png"
+                    alt="Illustration calcul données par défaut"
+                    className="mx-auto d-block"
+                  />
+                  <h4 className="my-3 text-center">
+                    A quoi correspondent les valeurs par défaut ?
+                  </h4>
+                  <p className="my-4">
+                    Les données par défaut correspondent aux valeurs utilisées
+                    lorsque l'empreinte sociétale d'une entreprise n'est pas
+                    publiée. Elles visent à permettre une estimation des impacts
+                    indirects d'une dépense auprès de cette entreprise, en
+                    s'appuyant sur ses caractéristiques (activité principale,
+                    effectifs, etc.).
+                  </p>
+                  <div className="text-center">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      href="https://docs.lasocietenouvelle.org/donnees"
+                      target="_blank"
+                      title="Accéder à la documentation complète"
+                    >
+                      Voir la documentation
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Col>
-            <Col>
-              <div className="border border-3 p-5 rounded-3 mt-3">
-                <Image
-                  src="/illustrations/publish-footprint-illu.png"
-                  alt="Illustration publication de données"
-                  className="mx-auto d-block"
-                />
-                <h4 className="my-3 text-center">
-                  Comment publier mon empreinte sociétale ?
-                </h4>
-                <p className="my-4">
-                  Une demande de publication doit être envoyée via le formulaire
-                  de publication, accessible ci-dessous. Un outil libre et open
-                  source est à votre disposition pour faciliter la mesure des
-                  indicateurs. Vous pouvez également solliciter votre expert
-                  comptable sur ce sujet.
-                </p>
-                <div className="text-center">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    href="/publier-empreinte"
-                    target="_blank"
-                    title="Publier directement vos résultats"
-                    className="me-2"
-                  >
-                    Publier mon empreinte
-                  </Button>
+              </Col>
+              <Col>
+                <div className="border border-3 p-5 rounded-3">
+                  <Image
+                    src="/illustrations/publish-footprint-illu.png"
+                    alt="Illustration publication de données"
+                    className="mx-auto d-block"
+                  />
+                  <h4 className="my-3 text-center">
+                    Comment publier mon empreinte sociétale ?
+                  </h4>
+                  <p className="my-4">
+                    Une demande de publication doit être envoyée via le formulaire
+                    de publication, accessible ci-dessous. Un outil libre et open
+                    source est à votre disposition pour faciliter la mesure des
+                    indicateurs. Vous pouvez également solliciter votre expert
+                    comptable sur ce sujet.
+                  </p>
+                  <div className="text-center">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      href="/publier-empreinte"
+                      target="_blank"
+                      title="Publier directement vos résultats"
+                      className="me-2"
+                    >
+                      Publier mon empreinte
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+              </Col>
+            </Row>
+          </Container>
+
+        </section>
+
+
       </section>
+
+
     </>
   );
 };

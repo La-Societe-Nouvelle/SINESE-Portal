@@ -85,7 +85,7 @@ const Items = ({ currentItems }) => {
                   <div className="text-end">
                     <a
                       className="btn btn-primary btn-sm"
-                      href={"portail/company/" + legalUnit.siren}
+                      href={"/company/" + legalUnit.siren}
                     > Voir l'empreinte  
                     </a>
                   </div>

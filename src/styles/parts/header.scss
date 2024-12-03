@@ -1,20 +1,22 @@
 .top-bar {
   border-bottom: 1px solid $light;
   .nav-link {
-    padding: 0.325rem;
-    color: $primary;
-    .top-bar-link {
-      font-size: 0.75rem;
       font-weight: 600;
-      border-left: 1px solid $primary;
-      padding-left: 0.5rem;
-    }
+      padding:  0.5rem 0;
+      margin: 0 1rem;
+      border-bottom: 4px solid transparent;
+
   }
-  small {
-    font-size: 0.675em;
-    font-weight: 600;
-    letter-spacing: 1px;
+  .active {
+    color : $primary !important;
+    border-bottom: 4px solid $primary;
   }
+  .btn {
+    color: $white;
+    margin: 0 1rem 0 0;
+    padding: 0.4rem 1rem;
+  }
+
 }
 
 .header h1 {
@@ -38,19 +40,6 @@
   }
 }
 
-header {
-  h2 {
-    font-size: 1.8rem;
-  }
-  a {
-    font-size: 0.8rem;
-    color: $body-color;
-  }
-}
-
-.nav-link {
-  text-transform: uppercase;
-}
 .dropdown-item .nav-link {
   font-size: 0.85rem;
   text-transform: inherit;
