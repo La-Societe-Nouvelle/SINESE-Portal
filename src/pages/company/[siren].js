@@ -141,9 +141,9 @@ const CompanyData = () => {
             <>
               <div className="legalUnit bg-white mb-4 p-5 rounded-3 ">
                 <Row>
-                  <h1 className=" h2 mb-4 border-bottom border-3 pb-2">
+                  <h2 className="mb-4 border-bottom border-3 pb-2">
                     Empreinte Sociétale de l'entreprise
-                  </h1>
+                  </h2>
                   <Col lg={4}>
                     <h2 className="text-wrap mb-2">
                       {legalUnit.statutdiffusion
