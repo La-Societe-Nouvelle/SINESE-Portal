@@ -187,8 +187,8 @@ const portail = () =>
             <h1 className="text-white">Panorama de l'empreinte des activités économiques</h1>
           </section>
           <section className="open-data-portal">
-            <Container>
-            <Form className={"filter-form"}>
+            <Container className="mb-3">
+              <Form className="filter-form">
                 <Row>
                   <Col key={"industry"} md={4}>
                     <Form.Group controlId={"industry"} className="mb-2">
@@ -206,7 +206,7 @@ const portail = () =>
                       </Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col key={"country"} md={4}>
+                  <Col key={"country"} md={3}>
                     <Form.Group controlId={"country"} className="mb-2">
                       <Form.Label>{"Pays"}</Form.Label>
                       <Form.Control
@@ -222,7 +222,7 @@ const portail = () =>
                       </Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col key={"aggregate"} md={4}>
+                  <Col key={"aggregate"} md={3}>
                     <Form.Group controlId={"aggregate"} className="mb-2">
                       <Form.Label>{"Agrégat"}</Form.Label>
                       <Form.Control
@@ -238,8 +238,8 @@ const portail = () =>
                       </Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col>
-                    <div className=" my-3">
+                  <Col md={2}>
+                    <div className=" my-3 mt-4">
                       <Button variant="info" size="sm" onClick={handleCancel}>
                         Effacer les filtres
                       </Button>
@@ -300,7 +300,7 @@ const portail = () =>
                       <LineChart data={data.filter((item) => item.indic == "NRG")} />
                     </Col>
                     <Col className="data-visual">
-                      <h3 className="mb-1">Intensité d'eau</h3>
+                      <h3 className="mb-1">Intensité de consommation d'eau</h3>
                       <p>en L/€</p>
                       <LineChart data={data.filter((item) => item.indic == "WAT")} />
                     </Col>

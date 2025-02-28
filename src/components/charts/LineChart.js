@@ -42,7 +42,7 @@ export const LineChart = ({ data }) => {
 			},
 			y: {
 				min: valueMin,
-				max: valueMax,
+				suggestedMax: valueMax,
 				title: {
 					display: false,
 					text: 'Valeur',
