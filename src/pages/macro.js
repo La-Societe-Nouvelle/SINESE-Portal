@@ -99,8 +99,6 @@ const portail = () =>
       
       const response = await fetch(baseUrl);
       const results = await response.json();
-      console.log(results);
-      console.log(baseUrl);
       setData(results.data);
       setColumns(results.data.length>0 ? Object.keys(results.data[0]) : []);
     };
@@ -148,7 +146,6 @@ const portail = () =>
     ));
   };
 
-  console.log(data);
   return (
     <>
       <Helmet>
@@ -186,6 +183,9 @@ const portail = () =>
           />
         </Col>
         <Col md={9} lg={10}>
+          <section className="bg-primary py-3 px-4">
+            <h1 className="text-white">Panorama de l'empreinte des activités économiques</h1>
+          </section>
           <section className="open-data-portal">
             <Container>
             <Form className={"filter-form"}>
@@ -238,70 +238,87 @@ const portail = () =>
                       </Form.Control>
                     </Form.Group>
                   </Col>
+                  <Col>
+                    <div className=" my-3">
+                      <Button variant="info" size="sm" onClick={handleCancel}>
+                        Effacer les filtres
+                      </Button>
+                    </div>
+                  </Col>
                 </Row>
-                <div className=" my-3">
-                  <Button variant="info" size="sm" onClick={handleCancel}>
-                    Effacer les filtres
-                  </Button>
-                </div>
               </Form>              
             </Container>
-            <Container>
+            <Container className="pe-5">
               {data && 
                 <>
-                  <Row>
-                    <Col>
-                      <h3>Contribution à l'économie nationale</h3>
+                  <h2>Indicateurs - Création de la valeur</h2>
+                  <Row className="px-2 mb-4">
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Contribution à l'économie nationale</h3>
+                      <p>en %</p>
                       <LineChart data={data.filter((item) => item.indic == "ECO")} />
                     </Col>
-                    <Col>
-                      <h3>Contribution aux métiers d'art et aux savoir-faire</h3>
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Contribution aux métiers d'art et aux savoir-faire</h3>
+                      <p>en %</p>
                       <LineChart data={data.filter((item) => item.indic == "ART")} />
                     </Col>
-                    <Col>
-                      <h3>Contribution aux acteurs d'intérêt social</h3>
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Contribution aux acteurs d'intérêt social</h3>
+                      <p>en %</p>
                       <LineChart data={data.filter((item) => item.indic == "SOC")} />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col>
-                      <h3>Ecart de rémunération femmes/hommes</h3>
+                  <h2>Indicateurs - Empreinte sociale</h2>
+                  <Row className="px-2 mb-4">
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Ecart de rémunération femmes/hommes</h3>
+                      <p>en % du taux horaire moyen</p>
                       <LineChart data={data.filter((item) => item.indic == "GEQ")} />
                     </Col>
-                    <Col>
-                      <h3>Ecart des rémunérations</h3>
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Ecart des rémunérations</h3>
+                      <p>Ratio sans unité</p>
                       <LineChart data={data.filter((item) => item.indic == "IDR")} />
                     </Col>
-                    <Col>
-                      <h3>Contribution à l'évolution des compétences et des connaissances</h3>
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Contribution à l'évolution des compétences et des connaissances</h3>
+                      <p>en %</p>
                       <LineChart data={data.filter((item) => item.indic == "KNW")} />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col>
-                      <h3>Intensité d'émission de gaz à effet de serre</h3>
+                  <h2>Indicateurs - Empreinte environnementale</h2>
+                  <Row className="px-2">
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Intensité d'émission de gaz à effet de serre</h3>
+                      <p>en gCO2e/€</p>
                       <LineChart data={data.filter((item) => item.indic == "GHG")} />
                     </Col>
-                    <Col>
-                      <h3>Intensité de consommation d'énergie</h3>
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Intensité de consommation d'énergie</h3>
+                      <p>en kJ/€</p>
                       <LineChart data={data.filter((item) => item.indic == "NRG")} />
                     </Col>
-                    <Col>
-                      <h3>Intensité d'eau</h3>
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Intensité d'eau</h3>
+                      <p>en L/€</p>
                       <LineChart data={data.filter((item) => item.indic == "WAT")} />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col>
-                      <h3>Intensité d'extraction de matières premières</h3>
+                  <Row className="px-2 mb-4">
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Intensité d'extraction de matières premières</h3>
+                      <p>en g/€</p>
                       <LineChart data={data.filter((item) => item.indic == "MAT")} />
                     </Col>
-                    <Col>
-                      <h3>Intensité de production de déchets</h3>
+                    <Col className="data-visual">
+                      <h3 className="mb-1">Intensité de production de déchets</h3>
+                      <p>en g/€</p>
                       <LineChart data={data.filter((item) => item.indic == "WAS")} />
                     </Col>
-                    <Col>
-                      <h3>Intensité d'utilisation de produits dangereux</h3>
+                    <Col className="data-visual bg-white">
+                      <h3 className="mb-1">Intensité d'utilisation de produits dangereux</h3>
+                      <p>en g/€</p>
                       <LineChart data={data.filter((item) => item.indic == "HAZ")} />
                     </Col>
                   </Row>
