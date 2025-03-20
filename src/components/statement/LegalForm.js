@@ -16,7 +16,7 @@ export const LegalForm = (props) => {
     const validateForm = () => {
       const isValidSiren = /^[0-9]{9}$/.test(siren);
       const isValidDenomination = denomination.length > 0;
-      const isValidYear = /20[0-1][0-9]|202[0-3]/.test(year);
+      const isValidYear = /20[0-1][0-9]|202[0-4]/.test(year);
 
       setNextStepAvailable(
         !(isValidSiren && isValidDenomination && isValidYear)
