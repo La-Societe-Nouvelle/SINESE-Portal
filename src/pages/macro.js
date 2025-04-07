@@ -1,25 +1,18 @@
+// La Société Nouvelle
+
+// Reatc
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/router';
-import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 
-import axios from "axios";
-
+// Components
 import CustomNav from "../components/navbar";
-import ErrorAlert from "../components/Error";
-import PaginatedLegalunit from "../components/PaginatedLegalunit";
 import { LineChart } from "../components/charts/LineChart";
 
 const portail = () => 
 {
-  const [search, setSearch] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const [legalUnits, setLegalUnits] = useState([]);
-  const [error, setError] = useState();
-  const router = useRouter();
   const [metadata, setMetadata] = useState({});
   const [data, setData] = useState(null);
-  const [columns, setColumns] = useState([]);
   const dataset = "macro_fpt";
   const [selectedValues, setSelectedValues] = useState({
     industry: "TOTAL",
@@ -27,83 +20,35 @@ const portail = () =>
     aggregate: "PRD"
   });
 
-  const inputChange = (e) => {
-    setSearch(e.target.value);
+  // --------------------------------------------------
+  // fetching data
+
+  const fetchMetadata = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/macrodata/metadata/macro_fpt`);
+    const results = await response.json();
+    setMetadata(results.metadata);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.keyCode == 13) {
-      handleClick();
-      return true;
-    } else {
-      return false;
-    }
+  const fetchData = async () => {
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/macrodata/${dataset}?`
+      + Object.entries(selectedValues).map(([param,value]) => param+"="+value).join("&");
+    const response = await fetch(baseUrl);
+    const results = await response.json();
+    setData(results.data);
   };
 
-  const handleClick = async () => {
-    setLegalUnits([]);
-    setError();
-    setIsLoading(true);
-    await searchLegalUnits(search);
-  };
-
-  const searchLegalUnits = async (search) => {
-    // replace accents
-    let string = search
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toUpperCase();
-
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/legalunit/${string}`, {
-        timeout: 15000,
-      })
-      .then((response) => {
-        if (response.data.header.code == 200) {
-          const legalUnits = response.data.legalUnits;
-          if (legalUnits.length === 1) {
-            const siren = legalUnits[0].siren;
-            // Redirect to the specific company page 
-            router.push(`/company/${siren}`);
-          } else {
-            setLegalUnits(legalUnits);
-          }
-        } else {
-          setError(response.data.header.code);
-        }
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setError(504);
-        setIsLoading(false);
-      });
-  };
+  // --------------------------------------------------
+  // effect
 
   useEffect(() => {
-    const fetchDataMeta = async () => {
-      if (dataset) {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/macrodata/metadata/${dataset}`
-        );
-        const results = await response.json();
-        setMetadata(results.metadata);
-      }
-    };
-    fetchDataMeta();
+    fetchMetadata();
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/macrodata/${dataset}?`
-        + Object.entries(selectedValues).map(([param,value]) => param+"="+value).join("&");
-      
-      const response = await fetch(baseUrl);
-      const results = await response.json();
-      setData(results.data);
-      setColumns(results.data.length>0 ? Object.keys(results.data[0]) : []);
-    };
     fetchData()
   }, [selectedValues]);
+
+  // --------------------------------------------------
 
   const handleSelectChange = (event) => {
     const { name, value } = event.target;
@@ -114,37 +59,14 @@ const portail = () =>
   };
 
   const handleCancel = () => {
-    setSelectedValues({});
-    setFilteredData([]);
+    setSelectedValues({
+      industry: 'TOTAL',
+      country: 'FRA',
+      aggregate: 'PRD'
+    });
   };
 
-  const generateOptions = (key) => {
-    console.log(key);
-    console.log(metadata);
-    console.log(metadata[key]);
-    console.log([...metadata[key]]);
-    const values = [...metadata[key]];
-
-    if(key == "branch" || key == "indic" || key == "division") {
-      values.sort((a, b) => {
-        return a.code.localeCompare(b.code);
-      }); 
-    }
-    else {
-      values.sort((a, b) => {
-        if (a.label === null || b.label === null) {
-          return 0; // Ignore the sorting if label is null
-        }
-        return a.label.localeCompare(b.label);
-      }); 
-    }
-   
-    return values.map(({ code, label }) => (
-      <option key={code} value={code}>
-        {code !== label ? `${code} - ${label}` : label}
-      </option>
-    ));
-  };
+  // --------------------------------------------------
 
   return (
     <>
@@ -182,12 +104,12 @@ const portail = () =>
             ]}
           />
         </Col>
-        <Col md={9} lg={10}>
+        <Col md={9} lg={10} className="p-0">
           <section className="bg-primary py-3 px-4">
             <h1 className="text-white">Panorama de l'empreinte des activités économiques</h1>
           </section>
           <section className="open-data-portal">
-            <Container className="mb-3">
+            <Container className="mb-3 px-5">
               <Form className="filter-form">
                 <Row>
                   <Col key={"industry"} md={4}>
@@ -248,7 +170,7 @@ const portail = () =>
                 </Row>
               </Form>              
             </Container>
-            <Container className="pe-5">
+            <Container className="px-5">
               {data && 
                 <>
                   <h2>Indicateurs - Création de la valeur</h2>
