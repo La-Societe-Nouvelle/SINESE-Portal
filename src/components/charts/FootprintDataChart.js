@@ -91,7 +91,6 @@ const FootprintDataChart = ({
       datalabels: {
         anchor: "end",
         align: "top",
-
         formatter: function (value, context) {
           if (value) {
             return value + " " + unit;
@@ -144,7 +143,10 @@ const FootprintDataChart = ({
 
   return (
     <div className="mb-3">
-      <Bar data={data} options={options} />
+      <Bar 
+        data={data} 
+        options={options} 
+      />
     </div>
   );
 };

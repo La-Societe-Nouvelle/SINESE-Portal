@@ -6,6 +6,9 @@ import FlagBadge from "./FlagBadges";
 import HistoricalDataChart from "../charts/HistoricalDatachart";
 import Description from "../indic/Description";
 
+import metaIndics from "../../lib/indics.json";
+import { IndicatorChart } from "../charts/IndicatorChart";
+
 /* Basic indicator view */
 export const IndicatorDetails = ({
   code,
@@ -23,13 +26,27 @@ export const IndicatorDetails = ({
   historicalData,
   historicalDivisionFootprint
 }) => {
+
   const [modalOpen, setModalOpen] = useState(null);
   const [showHistoricalChart, setShowHistoricalChart] = useState(false);
   const legalUnitValue = Math.round(10 * value) / 10;
 
+  const metaIndic = metaIndics[code];
+
   return (
     <Col key={code} className="my-4" lg={4}>
       <div className="p-3 border border-3 rounded-3">
+        <div className="odds d-flex gap-1 w-100 mb-3">
+          {metaIndic.odds.map((odd) => (
+            <img
+              key={odd}
+              src={`/images/odd/F-WEB-Goal-${odd}.png`}
+              width={25}
+              height={25}
+              alt={`Odd ${odd}`}
+            />
+          ))}
+        </div>
         <div className="indic-title">
           <div className="indic-icon">
             <Image
@@ -42,7 +59,7 @@ export const IndicatorDetails = ({
             <h3 className="h6">{indicatorLabel} </h3>
             <p className="source mt-1">
               <a
-                href={"/indicateurs/" + code.toLowerCase()}
+                href={"https://lasocietenouvelle.org/indicateurs/" + code.toLowerCase()}
                 target="_blank"
                 className="text-primary"
                 title="Plus d'informations sur l'indicateur"
@@ -52,46 +69,7 @@ export const IndicatorDetails = ({
             </p>
           </div>
         </div>
-        <div
-          className={
-            historicalData && historicalData.length > 0
-              ? "d-flex justify-content-between"
-              : "text-end"
-          }
-        >
-          {historicalData &&
-            historicalData.length > 0 &&
-            (showHistoricalChart ? (
-              <Badge
-                pill
-                bg="light-secondary"
-                className="ms-2 text-primary"
-                title="Afficher les données actuelles"
-              >
-                <i className="bi bi-bar-chart-line"></i>
-                <button
-                  className="btn-badge ms-2"
-                  onClick={() => setShowHistoricalChart(false)}
-                >
-                  Données actuelles
-                </button>
-              </Badge>
-            ) : (
-              <Badge
-                pill
-                bg="light-secondary"
-                className="ms-2 text-primary"
-                title="Afficher les données historiques"
-              >
-                <i className="bi bi-bar-chart-line"></i>
-                <button
-                  className="btn-badge ms-2"
-                  onClick={() => setShowHistoricalChart(true)}
-                >
-                  Données historiques
-                </button>
-              </Badge>
-            ))}
+        <div className={"text-end"}>
           <Badge
             pill
             bg="light"
@@ -104,27 +82,26 @@ export const IndicatorDetails = ({
             </button>
           </Badge>
         </div>
-        <p className="source mt-3 mb-0 fw-bold">{unitSymbol}</p>
-      
-        {showHistoricalChart ? (
-          <HistoricalDataChart
-            historical={historicalData}
-            latestValue={legalUnitValue}
-            divisionFootprint={divisionFootprint[code]}
-            historicalDivisionFootprint={historicalDivisionFootprint[code]}
-            year={year}
-            flag={getFlagLabel(flag)}
-            unit={unitSymbol}
-          />
-        ) : (
-          <FootprintDataChart
+        <div>
+          <p className="source mt-3 mb-0 fw-bold">{unitSymbol}</p>
+          <div className="chart-wrapper">
+            <IndicatorChart
+              indic={code}
+              value={legalUnitValue}
+              comparativeValue={divisionFootprint[code].value}
+              unit={unitSymbol}
+              flag={flag}
+              year={year}
+            />
+          </div>
+          {/* <FootprintDataChart
             latestValue={legalUnitValue}
             divisionFootprint={divisionFootprint[code]}
             unit={unitSymbol}
             flag={flag}
             year={year}
-          />
-        )}
+          /> */}
+        </div>
 
         <div className="mb-3 d-flex justify-content-evenly">
           <FlagBadge flag={flag} />

@@ -115,6 +115,16 @@
   }
 }
 
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+
+  canvas {
+    height: 200px;
+    margin-bottom: 1rem;
+  }
+}
+
 
 /**
  * ==============================================
