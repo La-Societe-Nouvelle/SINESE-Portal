@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 export const MetrizButton = () => {
   return (
     <Button
-      href="https://metriz.lasocietenouvelle.org"
+      href="https://partners.metriz.lasocietenouvelle.org"
       variant="outline-secondary"
       target="_blank"
       rel="noreferrer"

@@ -4,7 +4,7 @@
 import { jsPDF } from 'jspdf';
 
 // Libraries
-import metaData from '../lib/metaData.json';
+import metaIndics from '../lib/indics.json';
 
 export function exportStatementPDF(data) 
 {
@@ -72,10 +72,10 @@ const writeStatementPDF = (data) =>
   {
     y+=6;
     doc.setFont("Calibri","bold");
-    doc.text(metaData[indic].libelle,10,y);
+    doc.text(metaIndics[indic].libelle,10,y);
     doc.setFont("Calibri","normal");
     doc.text(indicator.value+" ",xValue+7,y,{align: "right"});
-    doc.text(metaData[indic].unitCode,xValue+7,y,{align: "left"});
+    doc.text(metaIndics[indic].unitSymbol,xValue+7,y,{align: "left"});
     doc.setFontSize(8);
     doc.text(indicator.uncertainty+" %",xUncertainty+12,y,{align: "right"});
     doc.setFontSize(10);

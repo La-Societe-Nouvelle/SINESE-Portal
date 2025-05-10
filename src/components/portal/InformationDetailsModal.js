@@ -1,7 +1,7 @@
 // La Société Nouvelle
 
 //-- Bootstrap
-import { Modal } from "react-bootstrap"
+import { Image, Modal } from "react-bootstrap"
 
 //-- Packages
 import _ from "lodash";
@@ -22,7 +22,9 @@ export const InformationDetailsModal = ({
 
   const {
     unitSymbol,
-    nbDecimals
+    nbDecimals,
+    description,
+    odds
   } = metaIndics[indic];
 
   const {
@@ -40,7 +42,7 @@ export const InformationDetailsModal = ({
       <h4>Informations</h4>
       <ul className="list-unstyled">
         <li className="mb-1">
-          Valeur : <b>{_.round(value, nbDecimals).toFixed(nbDecimals) + unitSymbol}</b>
+          Valeur : <b>{_.round(value, nbDecimals).toFixed(nbDecimals) +" " + unitSymbol}</b>
         </li>
         <li className="mb-1">
           Type de donnée : <b>{getFlagLabel(flag)}</b>
@@ -54,7 +56,7 @@ export const InformationDetailsModal = ({
           Incertitude : <b> {uncertainty}%</b>
         </li>
         <li className="mb-1">
-          Dernière mise à jour :{" "}
+          Dernière mise à jour (Répertoire SINESE) :{" "}
           <b>{new Date(lastupdate).toLocaleDateString("fr-FR")}</b>
         </li>
       </ul>
@@ -67,9 +69,32 @@ export const InformationDetailsModal = ({
       )}
       {source && <p>Source : {source} </p>}
       <h5>Précisions sur l'indicateur</h5>
-      <Description 
-        indic={indic}
-      />
+      <p>
+        {description}
+      </p>
+      {/* <p>
+        <a
+          href={"/indicateurs/"+indic.toLowerCase()}
+          target="_blank"
+          className="text-decoration-underline"
+          title="En savoir plus sur l'indicateur"
+        >
+          En savoir plus &raquo;
+        </a>
+      </p> */}
+      {odds.length>0 &&
+        <>
+          <h5>Objectifs de développement durable associés</h5>
+          {odds.map((odd) =>
+            <Image
+              id="logo-odd"
+              src={"/images/odd/F-WEB-Goal-"+odd+".png"}
+              alt="logo odd"
+              className="mb-3 me-2"
+              height={60}
+            />
+          )}
+        </>}
     </div>
   )
 }

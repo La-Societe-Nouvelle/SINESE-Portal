@@ -330,8 +330,4 @@ const CompanyData = () =>
   );
 };
 
-
-
-
-
 export default CompanyData;

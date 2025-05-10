@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image, Form, Col, Row, Button, InputGroup } from "react-bootstrap";
 
-import metaData from "../../lib/metaData.json";
+import metaIndics from "../../lib/indics.json";
 
 const IndicatorForm = (props) => {
 
@@ -33,13 +33,13 @@ const IndicatorForm = (props) => {
               className="img-fluid"
             />
           </div>
-          <h5 className="mb-0">{metaData[indic].libelle}</h5>
+          <h5 className="mb-0">{metaIndics[indic].libelle}</h5>
         </div>
 
         <Button
           variant="light"
           size="sm"
-          href={`https://lasocietenouvelle.org/indicateurs/${indic}`}
+          href={`https://lasocietenouvelle.org/indicateurs/${indic.toLowerCase()}`}
           target="_blank"
           rel="noopener noreferrer"
           className=""
@@ -54,8 +54,8 @@ const IndicatorForm = (props) => {
         <Col>
           <InputGroup size="sm">
             <Form.Control type="text" value={formData.value} onChange={(e) => handleChange(e, "value")} />
-            {metaData[indic].unitCode && (
-              <InputGroup.Text>{metaData[indic].unitCode}</InputGroup.Text>
+            {metaIndics[indic].unitSymbol && (
+              <InputGroup.Text>{metaIndics[indic].unitSymbol}</InputGroup.Text>
             )}
           </InputGroup>
         </Col>

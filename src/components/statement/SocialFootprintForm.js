@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import metaData from "../../lib/metaData.json";
+import metaIndics from "../../lib/indics.json";
 
 import IndicatorForm from "./IndicatorForm";
 import { Button, Col, Row } from "react-bootstrap";
@@ -47,7 +47,7 @@ export const SocialFootprintForm = ({
       </h4>
 
       <Row>
-        {metaData.indics.map((indic) => (
+        {Object.keys(metaIndics).map((indic) => (
           <Col lg={6} key={indic}>
             <div className="border rounded border-2 mb-4 p-3">
               <IndicatorForm

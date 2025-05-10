@@ -25,20 +25,20 @@ import { InformationDetailsModal } from "./InformationDetailsModal";
 
 export const IndicatorChartContainer = ({
   indic,
-  footprint,
-  divisionFootprint,
+  legalUnitData,
+  divisionData,
   historicalData,
   historicalDivisionFootprint
 }) => {
   // --------------------------------------------------
   // Metadonnées
 
-  const metaIndic = metaIndics[indic];
   const {
+    inEmpreinteSocietale,
     libelle,
     odds,
-    unitSymbol,
-    nbDecimals
+    unitLabel,
+    logoPath
   } = metaIndics[indic];
 
   // --------------------------------------------------
@@ -50,14 +50,12 @@ export const IndicatorChartContainer = ({
   // --------------------------------------------------
 
   const {
-    value,
-    year,
     flag
-  } = footprint[indic]
+  } = legalUnitData[indic]
   
   return (
     <Col key={indic} className="my-4" lg={4}>
-      <div className="p-3 border border-3 rounded-3">
+      <div className="p-3 border border-1 rounded-1 shadow-sm">
         {/* ----- Liste des ODDs ----- */}
         <div className="odds d-flex gap-1 w-100 mb-3">
           {odds.map((odd) => (
@@ -75,13 +73,14 @@ export const IndicatorChartContainer = ({
           <div className="indic-icon">
             <Image
               height="20px"
-              src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
+              src={inEmpreinteSocietale ? "/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg" : logoPath}
               alt={indic}
             />
           </div>
           <div>
             <h3 className="h6">{libelle}</h3>
-            <p className="source mt-1">
+            <p className="source mt-1">{unitLabel}</p>
+            {/* <p className="source mt-1">
               <a
                 href={"https://lasocietenouvelle.org/indicateurs/" + indic.toLowerCase()}
                 target="_blank"
@@ -90,7 +89,7 @@ export const IndicatorChartContainer = ({
               >
                 Informations sur l'indicateur &raquo;
               </a>
-            </p>
+            </p> */}
           </div>
         </div>
         {/* ----- Affichage modale avec le détail ----- */}
@@ -108,31 +107,27 @@ export const IndicatorChartContainer = ({
           </Badge>
         </div>
         {/* ----- Affichage graphique ----- */}
-        <div>
-          <p className="source mt-3 mb-0 fw-bold">{unitSymbol}</p>
-          <div className="chart-wrapper">
-            <IndicatorChart
-              indic={indic}
-              value={value}
-              comparativeValue={divisionFootprint[indic].value}
-              unit={unitSymbol}
-              flag={flag}
-              year={year}
-            />
-          </div>
+        <div className="chart-wrapper my-4">
+          {/* <p className="source ms-3 mb-2">en {unitSymbol}</p> */}
+          <IndicatorChart
+            indic={indic}
+            legalUnitData={legalUnitData}
+            divisionData={divisionData}
+          />
         </div>
         {/* ----- Badge ----- */}
-        <div className="mb-3 d-flex justify-content-evenly">
+        {/* <div className="mb-3 d-flex justify-content-evenly">
           <FlagBadge 
             flag={flag} 
           />
-        </div>
+        </div> */}
         {/* ----- Sources ----- */}
-        <div className="mt-2">
-          <p className="source mb-0">
-            Source (Valeur de la branche) : {divisionFootprint[indic].source}
-          </p>
-        </div>
+        {divisionData[indic] &&
+          <div className="mt-2">
+            <p className="source mb-0">
+              Source (Valeur de la branche) : {divisionData[indic].source}
+            </p>
+          </div>}
       </div>
 
       {/* ----- Modal - Détails ----- */}
@@ -141,21 +136,12 @@ export const IndicatorChartContainer = ({
           <Modal.Header closeButton>
             <Modal.Title className="text-center">{libelle} </Modal.Title>
           </Modal.Header>
-          <Modal.Body className="bg-white rounded-3 mx-3">
+          <Modal.Body className="bg-white rounded-2 mx-3 mb-3">
             <InformationDetailsModal
               indic={indic}
-              footprint={footprint}
+              footprint={legalUnitData}
             />
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setModalOpen(null)}
-            >
-              Fermer
-            </Button>
-          </Modal.Footer>
         </Modal>
       )}
     </Col>

@@ -1,21 +1,10 @@
 {
-  "indics": ["eco","art","soc","knw","idr","geq","ghg","mat","was","nrg","wat","haz"],
-  "odds": ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17"],
-  "indics-es": {
-    "libelle": "Indicateurs socio-économiques",
-    "indics": ["eco","art","knw","soc","idr","geq"]
-  },
-  "indics-env": {
-    "libelle": "Indicateurs environnementaux",
-    "indics": ["ghg","nrg","wat","was","mat","haz"]
-  },
   "ART": {
+    "inEmpreinteSocietale": true,
     "libelle": "Contribution aux Métiers d'art & aux Savoir-faire",
     "description": "Part de la valeur produite par des entreprises artisanales, créatives ou dont le savoir-faire est reconnu",
     "unitLabel": "En % de la valeur",
-    "unitCode": "%",
     "unitSymbol": "%",
-    "unitCodeGrossImpact": "€",
     "nbDecimals": 1,
     "defaultUncertainty": 0,
     "descriptionImpactDirect": "Valeur ajoutée correspondante à des activites artisanales",
@@ -23,18 +12,35 @@
     "odds": ["08","09","12"],
     "chartType": "pie-chart",
     "color": {
+      "main": "rgba(250,104,4,1)",
+      "branch": "rgba(166,54,111,1)",
+      "target": "rgba(166,54,111,0.7)"
+    }
+  },
+  "BEGES": {
+    "inEmpreinteSocietale": false,
+    "libelle": "Bilan d'Emission de Gaz à Effet de Serre",
+    "description": "Bilan d'Emission de Gaz à Effet de Serre",
+    "unitLabel": "tCO2e",
+    "unitSymbol": "tCO2e",
+    "nbDecimals": 0,
+    "defaultUncertainty": null,
+    "finalite": "",
+    "odds": [],
+    "chartType": "bar-chart",
+    "color": {
       "main": "rgba(27,44,132,1)",
       "branch": "rgba(235,151,75,1)",
       "target": "rgba(235,151,75,0.6)"
-    }
+    },
+    "logoPath": "/images/indicateurs/logo-bilans-ges.png"
   },
   "IDR": {
+    "inEmpreinteSocietale": true,
     "libelle": "Indice d'Ecart des Rémunérations",
     "description": "Rapport interdécile D9/D1",
     "unitLabel": "Sans unité",
-    "unitCode": "",
     "unitSymbol": "",
-    "unitCodeGrossImpact": "",
     "nbDecimals": 1,
     "defaultUncertainty": 0,
     "descriptionImpactDirect": "Rapport interdécile D9/D1 relatif aux taux horaires bruts des effectifs",
@@ -42,18 +48,35 @@
     "odds": ["08","10"],
     "chartType": "bar-chart",
     "color": {
+      "main": "rgba(240,60,114,1)",
+      "branch": "rgba(89,106,190,1)",
+      "target": "rgba(89,106,190,0.6)"
+    }
+  },
+  "IEP": {
+    "inEmpreinteSocietale": false,
+    "libelle": "Index de l'égalité professionnelle femmes-hommes",
+    "description": "Index de l'égalité professionnelle femmes-hommes",
+    "unitLabel": "Score sur 100",
+    "unitSymbol": "/100",
+    "nbDecimals": 0,
+    "defaultUncertainty": null,
+    "finalite": "L'index de l'égalité professionnelle a été conçu pour faire progresser au sein des entreprises l’égalité salariale entre les femmes et les hommes.",
+    "odds": [],
+    "chartType": "bar-chart",
+    "color": {
       "main": "rgba(27,44,132,1)",
       "branch": "rgba(235,151,75,1)",
       "target": "rgba(235,151,75,0.6)"
-    }
+    },
+    "logoPath": "/images/indicateurs/logo-index-egapro.png"
   },
   "ECO": {
+    "inEmpreinteSocietale": true,
     "libelle": "Contribution à l'Economie Nationale",
     "description": "Part de la valeur produite en France",
     "unitLabel": "En % de la valeur",
-    "unitCode": "%",
     "unitSymbol": "%",
-    "unitCodeGrossImpact": "€",
     "nbDecimals": 1,
     "defaultUncertainty": 0,
     "descriptionImpactDirect": "Valeur nette créée sur le territoire français (en euros)",
@@ -67,12 +90,11 @@
     }
   },
   "GEQ": {
+    "inEmpreinteSocietale": true,
     "libelle": "Indice d'Ecart des Rémunérations Femmes/Hommes",
     "description": "Ecart de la rémunération moyenne Femmes/Hommes",
     "unitLabel": "En % de la rémunération moyenne",
-    "unitCode": "%",
     "unitSymbol": "%",
-    "unitCodeGrossImpact": "%",
     "nbDecimals": 1,
     "defaultUncertainty": 0,
     "descriptionImpactDirect": "Ecart absolu entre le taux horaire brut moyen des femmes et celui des hommes, en pourcentage du taux horaire brut moyen",
@@ -80,18 +102,17 @@
     "odds": ["05","10"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(151,37,127,1)",
+      "branch": "rgba(240,178,122,1)",
+      "target": "rgba(240,178,122,0.6)"
     }
   },
   "GHG": {
+    "inEmpreinteSocietale": true,
     "libelle": "Intensité d'Emission de Gaz à Effet de Serre",
     "description": "Quantité émise de gaz à effet de serre par unité de valeur",
     "unitLabel": "En gramme de CO2 équivalent par euro (gCO2e/€)",
-    "unitCode": "gCO2e/€",
     "unitSymbol": "gCO2e/€",
-    "unitCodeGrossImpact": "kgCO2e",
     "nbDecimals": 0,
     "defaultUncertainty": 50,
     "descriptionImpactDirect": "Emissions directes de gaz à effet de serre",
@@ -99,18 +120,17 @@
     "odds": ["12","13","14","15"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(63,126,68,1)",
+      "branch": "rgba(151,88,15,1)",
+      "target": "rgba(151,88,15,0.6)"
     }
   },
   "HAZ": {
+    "inEmpreinteSocietale": true,
     "libelle": "Intensité d'Utilisation de produits dangereux",
     "description": "Quantité utilisée de produits dangereux pour la santé et/ou l'environnement par unité de valeur",
     "unitLabel": "En gramme par euro (g/€)",
-    "unitCode": "g/€",
     "unitSymbol": "g/€",
-    "unitCodeGrossImpact": "lg",
     "nbDecimals": 1,
     "defaultUncertainty": 50,
     "descriptionImpactDirect": "Quantité utilisée de produits dangereux",
@@ -118,18 +138,17 @@
     "odds": ["02","03","12","14","15"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(234,6,0,1)",
+      "branch": "rgba(162,95,95,1)",
+      "target": "rgba(162,95,95,0.6)"
     }
   },
   "KNW": {
+    "inEmpreinteSocietale": true,
     "libelle": "Contribution à l'Evolution des Compétences et des Connaissances",
     "description": "Part de la valeur produite dédiée à la formation, la recherche ou l'enseignement",
     "unitLabel": "En % de la valeur",
-    "unitCode": "%",
     "unitSymbol": "%",
-    "unitCodeGrossImpact": "€",
     "nbDecimals": 1,
     "defaultUncertainty": 0,
     "descriptionImpactDirect": "Rémunérations liées à des activités de recherche ou de formation",
@@ -137,18 +156,17 @@
     "odds": ["08","09","12"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(157,13,34,1)",
+      "branch": "rgba(166,54,111,1)",
+      "target": "rgba(166,54,111,0.6)"
     }
   },
   "MAT": {
+    "inEmpreinteSocietale": true,
     "libelle": "Intensité d'Extraction de Matières Premières",
     "description": "Quantité extraite de matières premières (matières biologiques, biomasse, matières fossiles et minerais) par unité de valeur",
     "unitLabel": "En gramme par euro (g/€)",
-    "unitCode": "g/€",
     "unitSymbol": "g/€",
-    "unitCodeGrossImpact": "kg",
     "nbDecimals": 0,
     "defaultUncertainty": 50,
     "descriptionImpactDirect": "Quantité extraite de matières premières",
@@ -156,18 +174,35 @@
     "odds": ["12","14","15"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(129,77,13,1",
+      "branch": "rgba(70,110,137,1)",
+      "target": "rgba(70,110,137,0.6)"
     }
   },
+  "MIF": {
+    "inEmpreinteSocietale": false,
+    "libelle": "Impact Score",
+    "description": "Indicateur du Mouvement Impact France",
+    "unitLabel": "Score sur 100",
+    "unitSymbol": "/100",
+    "nbDecimals": 0,
+    "defaultUncertainty": null,
+    "finalite": "Il permet à toute entreprise de s'évaluer, en 2h, sur son impact social et écologique à 360° et de rendre visible son niveau de progression.",
+    "odds": [],
+    "chartType": "bar-chart",
+    "color": {
+      "main": "rgba(94, 250, 120, 1)",
+      "branch": "rgba(235,151,75,1)",
+      "target": "rgba(235,151,75,0.6)"
+    },
+    "logoPath": "/images/indicateurs/logo-impact-score.png"
+  },
   "NRG": {
+    "inEmpreinteSocietale": true,
     "libelle": "Intensité de Consommation d'Energie",
     "description": "Quantité consommée d'énergie par unité de valeur",
     "unitLabel": "En kilojoule par euro (kJ/€)",
-    "unitCode": "kJ/€",
     "unitSymbol": "kJ/€",
-    "unitCodeGrossImpact": "MJ",
     "nbDecimals": 0,
     "defaultUncertainty": 50,
     "descriptionImpactDirect": "Quantité consommée d'énergie",
@@ -175,18 +210,17 @@
     "odds": ["07","12","13"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(252,195,1,1)",
+      "branch": "rgba(104,159,149,1)",
+      "target": "rgba(104,159,149,0.6)"
     }
   },
   "SOC": {
+    "inEmpreinteSocietale": true,
     "libelle": "Contribution aux Acteurs d'Intérêt social",
     "description": "Part de la valeur produite par des structures de l'ESS ou des entreprises à mission",
     "unitLabel": "En % de la valeur",
-    "unitCode": "%",
     "unitSymbol": "%",
-    "unitCodeGrossImpact": "€",
     "nbDecimals": 1,
     "defaultUncertainty": 0,
     "descriptionImpactDirect": "Valeur ajoutée si entreprise de l'ESS ou ayant une raison d'être définie dans les statuts, zéro sinon",
@@ -194,18 +228,17 @@
     "odds": ["08","12"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(83,183,169,1)",
+      "branch": "rgba(161,113,173,1)",
+      "target": "rgba(161,113,173,0.6)"
     }
   },
   "WAS": {
+    "inEmpreinteSocietale": true,
     "libelle": "Intensité de Production de Déchets",
     "description": "Quantité produite de déchets par unité de valeur",
     "unitLabel": "En gramme par euro (g/€)",
-    "unitCode": "g/€",
     "unitSymbol": "g/€",
-    "unitCodeGrossImpact": "kg",
     "nbDecimals": 1,
     "defaultUncertainty": 50,
     "descriptionImpactDirect": "Quantité produite de déchets",
@@ -213,18 +246,17 @@
     "odds": ["03","11","12","14","15"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(188,190,90,1)",
+      "branch": "rgba(115,115,115,1)",
+      "target": "rgba(115,115,115,0.6)"
     }
   },
   "WAT": {
+    "inEmpreinteSocietale": true,
     "libelle": "Intensité de Consommation d'Eau",
     "description": "Quantité consommée d'eau par unité de valeur",
     "unitLabel": "En litre par euro (L/€)",
-    "unitCode": "L/€",
     "unitSymbol": "L/€",
-    "unitCodeGrossImpact": "m3",
     "nbDecimals": 1,
     "defaultUncertainty": 25,
     "descriptionImpactDirect": "Quantité consommée d'eau",
@@ -232,9 +264,9 @@
     "odds": ["06","12","14","15"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(27,44,132,1)",
-      "branch": "rgba(235,151,75,1)",
-      "target": "rgba(235,151,75,0.6)"
+      "main": "rgba(59,159,184,1)",
+      "branch": "rgba(85,56,108,1)",
+      "target": "rgba(85,56,108,0.6)"
     }
   }
 }

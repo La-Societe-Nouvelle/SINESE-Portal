@@ -21,7 +21,8 @@ const flagConfig = {
   },
 };
 
-const FlagBadge = ({ flag }) => {
+const FlagBadge = ({ flag }) => 
+{
   const flagProps = flagConfig[flag];
 
   if (!flagProps) {

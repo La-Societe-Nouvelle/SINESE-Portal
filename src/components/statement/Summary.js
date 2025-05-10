@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { exportStatementPDF } from "../../utils/statementWriter";
 
-import metaData from "../../lib/metaData.json";
+import metaIndics from "../../lib/indics.json";
 
 const Summary = ({
   siren,
@@ -46,7 +46,7 @@ const Summary = ({
           </p>
           <ul className="small">
             {Object.entries(socialfootprint).map(([indic, _]) => (
-              <li key={indic}>&emsp;{metaData[indic].libelle}</li>
+              <li key={indic}>&emsp;{metaIndics[indic].libelle}</li>
             ))}
           </ul>
 

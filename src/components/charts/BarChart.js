@@ -27,20 +27,39 @@ const changeOpacity = (rgbaColor, newOpacity) => {
 	return rgbaArray.join(",");
 };
 
+// ---------------------------------------------------------------------------------------------------- //
+
+const defaultColor = 'rgba(225,225,225,1)';
+
 export const BarChart = ({ 
 	indic,
-	value,
-	comparativeValue, 
-	year }) => 
-{
-	// metadata for indicator
-	const metadata = metaIndics[indic];
-	//console.log(metadata);
+	legalUnitData,
+	divisionData
+}) => {
+	// --------------------------------------------------
+	// Métadonnées
 
-	const values = [value, comparativeValue];
+	const {
+		unitSymbol,
+		nbDecimals,
+		color
+	} = metaIndics[indic];
 
-	const formatValue = value => value.toFixed(metadata?.nbDecimals || 0);
-	const formattedValues = values.map(formatValue);
+	const showDivisionData = divisionData[indic] != undefined;
+
+	// --------------------------------------------------
+	// Données
+
+	const {
+		value,
+		flag,
+		year
+	} = legalUnitData[indic];
+
+	const values = showDivisionData ? [value, divisionData[indic]?.value] : [value];
+
+	const isDefaultValue = flag == 'd';
+	const colorChart = isDefaultValue ? defaultColor : color.main;
 
 	const maxValue = Math.max(...values);
 	const yMax = maxValue * 1.1;
@@ -48,13 +67,16 @@ export const BarChart = ({
 	// --------------------------------------------------
 	// Datasets
 
-	const labels = [`Exercice ${year}`, "Branche"];
+	const labels = [
+		isDefaultValue ? 'Empreinte par défaut' : `Exercice ${year}`, 
+		'Branche'
+	];
 
 	const datasets = [
 		{
 			label: 'Empreintes',
-			data: formattedValues.map(value => parseFloat(value)),
-			backgroundColor: [metadata.color.main, changeOpacity(metadata.color.main, 0.3)],
+			data: values,
+			backgroundColor: [colorChart, changeOpacity(colorChart, 0.3)],
 			borderWidth: 0,
 			barPercentage: 0.5,
 			categoryPercentage: 1,
@@ -90,7 +112,7 @@ export const BarChart = ({
 				callbacks: {
 					label: (context) => {
 						const { label, raw } = context;
-						return `${label}: ${raw} ${metadata.unit}`;
+						return `${label}: ${raw.toFixed(nbDecimals)} ${unitSymbol}`;
 					},
 				},
 			},

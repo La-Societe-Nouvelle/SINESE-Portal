@@ -1,10 +1,12 @@
 // La Société Nouvelle
 
+import React from "react";
+
 //-- Bootstrap
 import { Accordion, Row } from "react-bootstrap";
 
 //-- Components
-import { IndicatorChartContainer } from "./IndicatorDetails";
+import { IndicatorChartContainer } from "./IndicatorChartContainer";
 import { AdditionnalIndicatorDetails } from "./AdditionnalIndicatorDetails";
 
 /** Visualisation des indicateurs de l'Empreinte Sociétale
@@ -25,7 +27,7 @@ const sections = [{
   indics: ["GHG", "NRG", "WAT", "MAT", "WAS", "HAZ"]
 },{
   label: "Autres indicateurs disponibles",
-  indics: []
+  indics: ["IEP","BEGES","MIF"]
 }]
 
 export const ContentSocialFootprint = ({
@@ -35,38 +37,35 @@ export const ContentSocialFootprint = ({
   additionnalData,
 }) => {
 
+  console.log(additionnalData);
+  const legalUnitData = {
+    ...footprint,
+    ...additionnalData
+  };
+
   return (
     <Row className="indic-details">
       <Accordion defaultActiveKey={[0,1,2,3]} alwaysOpen>
-        {sections.map((section,index) => {
-            return (
-              <Accordion.Item eventKey={index}>
-                <Accordion.Header as={"h3"}>{section.label}</Accordion.Header>
-                <Accordion.Body>
-                  <Row>
-                  {section.indics.map((indic) =>
-                    <IndicatorChartContainer
-                      key={indic}
-                      indic={indic}
-                      footprint={footprint}
-                      divisionFootprint={divisionFootprint}
-                      historicalDivisionFootprint={historicalDivisionFootprint}
-                    />
-                  )}
-                  </Row>
-                </Accordion.Body>
-              </Accordion.Item>
-            )
-          })}
-        
-        {/* {additionnalIndicatorsComponents.length > 0 && (
-          <Accordion.Item eventKey="3">
-            <Accordion.Header>Autres indicateurs disponibles</Accordion.Header>
+        {sections.map((section,index) => 
+          <Accordion.Item eventKey={index} key={index}>
+            <Accordion.Header as={"h3"}>{section.label}</Accordion.Header>
             <Accordion.Body>
-              <Row>{additionnalIndicatorsComponents}</Row>
+              <Row>
+              {section.indics
+                .filter((indic) => Object.keys(legalUnitData).includes(indic))
+                .map((indic) =>
+                  <IndicatorChartContainer
+                    key={indic}
+                    indic={indic}
+                    legalUnitData={legalUnitData}
+                    divisionData={divisionFootprint}
+                    historicalDivisionFootprint={historicalDivisionFootprint}
+                  />
+                )}
+              </Row>
             </Accordion.Body>
           </Accordion.Item>
-        )} */}
+          )}
       </Accordion>
     </Row>
   );

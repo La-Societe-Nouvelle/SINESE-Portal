@@ -28,7 +28,7 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
             height={60}
           />
           <Image
@@ -64,14 +64,14 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
             height={60}
           />
           <Image
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-09.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
             height={60}
           />
           <Image
@@ -108,14 +108,14 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-05.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
@@ -151,42 +151,42 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-07.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-12.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-13.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-14.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-15.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
         </div>
       );
@@ -217,28 +217,28 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-03.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-12.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-14.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
@@ -274,7 +274,7 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
@@ -309,14 +309,14 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-04.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
@@ -352,21 +352,21 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-12.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-14.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
@@ -403,21 +403,21 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-07.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-12.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
@@ -483,35 +483,35 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-03.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-06.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-11.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-12.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-14.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
@@ -548,28 +548,28 @@ const Description = ({ indic }) => {
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-03.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-06.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-08.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}
             id="logo-odd"
             src="/images/odd/F-WEB-Goal-12.png"
             alt="logo odd"
-            className="mb-3"
+            className="mb-3 me-2"
           />
           <Image
             height={60}

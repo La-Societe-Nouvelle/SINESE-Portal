@@ -1,14 +1,14 @@
 import React from "react";
 import { Accordion, Image } from "react-bootstrap";
 
-import metaData from "../../lib/metaData.json";
+import metaIndics from "../../lib/indics.json";
 
 const IndicatorsPanel = (props) => {
   const [selectedIndic, setSelectedIndic] = React.useState(props.indics[0]); // or "none"
 
   const indics = props.indics;
   const listOdds = props.indics
-    .map((indic) => metaData[indic].odds)
+    .map((indic) => metaIndics[indic].odds)
     .reduce((a, b) => a.concat(b), [])
     .filter(
       (value, index, self) => index === self.findIndex((item) => item === value)
@@ -27,7 +27,7 @@ const IndicatorsPanel = (props) => {
             key={index}
             onClick={() => setSelectedIndic(indic)}
           >
-            <Accordion.Header> {metaData[indic].libelle}</Accordion.Header>
+            <Accordion.Header> {metaIndics[indic].libelle}</Accordion.Header>
             <Accordion.Body>
               <div className="d-flex mb-5 align-items-center">
                 <div className="me-2">
@@ -45,7 +45,7 @@ const IndicatorsPanel = (props) => {
                       className={
                         "F-WEB-Goal" +
                         (selectedIndic != "none" &&
-                        metaData[selectedIndic].odds.includes(odd)
+                        metaIndics[selectedIndic].odds.includes(odd)
                           ? ""
                           : " not-concerned")
                       }
@@ -71,15 +71,15 @@ const IndicatorDetails = ({ indic }) => {
     <div className="indicators-panel-details">
       <p>
         <b>Description : </b>
-        {metaData[indic].description}
+        {metaIndics[indic].description}
       </p>
       <p>
         <b>Finalité : </b>
-        {metaData[indic].finalite}
+        {metaIndics[indic].finalite}
       </p>
       <p>
         <b>Impact direct mesuré : </b>
-        {metaData[indic].descriptionImpactDirect}
+        {metaIndics[indic].descriptionImpactDirect}
       </p>
       <a className="btn btn-primary" href={"/indicateurs/" + indic}> En savoir plus</a>
     </div>
