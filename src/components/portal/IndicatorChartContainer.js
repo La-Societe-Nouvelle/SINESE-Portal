@@ -70,13 +70,22 @@ export const IndicatorChartContainer = ({
         </div>
         {/* ----- Icone + Titre de l'indicateur / Lien vers la documentation ----- */}
         <div className="indic-title">
-          <div className="indic-icon">
-            <Image
-              height="20px"
-              src={inEmpreinteSocietale ? "/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg" : logoPath}
-              alt={indic}
-            />
-          </div>
+          {inEmpreinteSocietale &&
+            <div className="indic-icon-ese">
+              <Image
+                height="20px"
+                src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
+                alt={indic}
+              />
+            </div>}
+          {!inEmpreinteSocietale &&
+            <div className="indic-icon">
+              <Image
+                className=""
+                src={logoPath}
+                alt={indic}
+              />
+            </div>}
           <div>
             <h3 className="h6">{libelle}</h3>
             <p className="source mt-1">{unitLabel}</p>

@@ -46,7 +46,7 @@
       margin-bottom: 0;
     }
 
-    .indic-icon {
+    .indic-icon-ese {
       flex-shrink: 0;
       width: 40px;
       height: 40px;
@@ -55,7 +55,18 @@
       text-align: center;
       line-height: 40px;
       border-radius: 20%;
+    }
 
+    .indic-icon {
+      width: 40px;
+      height: 40px;
+      margin-right: 0.5rem;
+      text-align: start;
+
+      img {
+        max-width: 40px;
+        max-height: 40px;
+      }
     }
   }
 
