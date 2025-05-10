@@ -3,169 +3,28 @@
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
   <url>
-    <loc>https://lasocietenouvelle.org/</loc>
+    <loc>https://sinese.fr/</loc>
     <lastmod>2023-04-26T08:05:00+00:00</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://lasocietenouvelle.org/portail</loc>
+    <loc>https://sinese.fr/portail</loc>
     <lastmod>2023-04-26T08:05:00+00:00</lastmod>
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://lasocietenouvelle.org/devenir-partenaire</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/publier-empreinte</loc>
+    <loc>https://sinese.fr/publier-empreinte</loc>
     <lastmod>2023-04-26T08:05:00+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://lasocietenouvelle.org/a-propos</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/ressources/application-mesure-impact</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/mesurer-empreinte-societale</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/ressources/api-publique-lsn</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/ressources/consulter-impacts-entreprises</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/devenir-partenaire/expert-comptable</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.74</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/devenir-partenaire/se-former</loc>
+    <loc>https://sinese.fr/faq</loc>
     <lastmod>2023-04-26T08:05:00+00:00</lastmod>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://lasocietenouvelle.org/faq</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/ressources</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/eco</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/ghg</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/art</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/soc</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/knw</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/idr</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/geq</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/mat</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/was</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/nrg</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/wat</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/indicateurs/haz</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/infographies</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/blog</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/categorie/notes-analyse</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/categorie/fiches-methodologiques</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/newsletter</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/contact</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/categorie/actualites</loc>
+    <loc>https://sinese.fr/contact</loc>
     <lastmod>2023-04-26T08:05:00+00:00</lastmod>
     <priority>0.50</priority>
   </url>
