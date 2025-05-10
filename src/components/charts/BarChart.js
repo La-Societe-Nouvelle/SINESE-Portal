@@ -35,7 +35,7 @@ export const BarChart = ({
 {
 	// metadata for indicator
 	const metadata = metaIndics[indic];
-	console.log(metadata);
+	//console.log(metadata);
 
 	const values = [value, comparativeValue];
 

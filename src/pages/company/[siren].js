@@ -1,4 +1,11 @@
+// La Société Nouvelle
+
+//-- React & hooks
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { useRouter } from "next/router";
+
+//-- Bootstrap
 import {
   Badge,
   Button,
@@ -8,16 +15,25 @@ import {
   Row,
 } from "react-bootstrap";
 
-import { Helmet } from "react-helmet";
-import { useRouter } from "next/router";
-
+//-- Packages
 import axios from "axios";
-import ErrorAlert from "../../components/Error";
-import { ContentSocialFootprint } from "../../components/portal/ContentSocialFootprint";
-import Header from "../../components/header";
 
-const CompanyData = () => {
+//-- Website Components
+import Header from "../../components/header";
+import ErrorAlert from "../../components/Error";
+
+//-- Page components
+import { ContentSocialFootprint } from "../../components/portal/ContentSocialFootprint";
+
+const CompanyData = () => 
+{
+  // --------------------------------------------------
+  // Context
+
   const router = useRouter();
+
+  // --------------------------------------------------
+  // State
 
   const [siren, setSiren] = useState(router.query.siren);
   const [error, setError] = useState();
@@ -31,9 +47,10 @@ const CompanyData = () => {
 
   const [meta, setMeta] = useState();
 
+  // --------------------------------------------------
+
   useEffect(async () => {
     setSiren(router.query.siren);
-
     if (siren) {
       await getLegalUnitFootprint(siren);
     }
@@ -46,6 +63,8 @@ const CompanyData = () => {
       await getHistoricalDivisionFootprint(code);
     }
   }, [legalUnit]);
+
+  // --------------------------------------------------
 
   async function getLegalUnitFootprint(siren) {
     axios
@@ -65,12 +84,10 @@ const CompanyData = () => {
         return error;
       });
   }
-  async function getDivisionFootprint(code) {
 
+  async function getDivisionFootprint(code) {
     axios
-      .get(
-        `${process.env.NEXT_PUBLIC_API_URL}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`
-      )
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`)
       .then((response) => {
         isDataFetched(true);
         if (response.data.header.code == 200) {
@@ -84,12 +101,10 @@ const CompanyData = () => {
         return error;
       });
   }
-  async function getHistoricalDivisionFootprint(code) {
 
+  async function getHistoricalDivisionFootprint(code) {
     axios
-      .get(
-        `${process.env.NEXT_PUBLIC_API_URL}/macrodata/macro_fpt_a88?division=${code}&aggregate=PRD&area=FRA`
-      )
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/macrodata/macro_fpt_a88?division=${code}&aggregate=PRD&area=FRA`)
       .then((response) => {
         isDataFetched(true);
         if (response.data.header.code == 200) {
@@ -99,7 +114,6 @@ const CompanyData = () => {
             if (!divisionFootprints[indic]) {
               divisionFootprints[indic] = [];
             }
-
             divisionFootprints[indic].push(element);
           });
           setHistoricalDivisionFootprints(divisionFootprints);
@@ -112,6 +126,8 @@ const CompanyData = () => {
         return error;
       });
   }
+  
+  // --------------------------------------------------
 
   let printMessage = dataFetched && ["ECO", "ART", "SOC", "IDR", "GEQ", "KNW","GHG", "NRG", "WAT", "MAT", "WAS", "HAZ"].some(indic => footprint[indic].flag == "d");
 
@@ -140,7 +156,11 @@ const CompanyData = () => {
               </div>
             </div>
           )}
-          {error && <ErrorAlert code={error.code} />}
+
+          {error && 
+            <ErrorAlert code={error.code} />
+          }
+
           {dataFetched && footprint && divisionFootprint && meta && (
             <>
               <div className="legalUnit bg-white mb-4 p-5 rounded-3 ">
@@ -204,6 +224,7 @@ const CompanyData = () => {
                   </Col>
                 </Row>
               </div>
+
               {printMessage &&
                 <div className="alert alert-warning d-flex justify-content-between p-4">
                   <p className="p-0 m-0">
@@ -216,11 +237,12 @@ const CompanyData = () => {
                   >
                     <i className="bi bi-check2-square"></i> Actualiser mon empreinte
                   </a>
-                </div>}
+                </div>
+              }
+
               <div className="footprint">
                 <ContentSocialFootprint
                   footprint={footprint}
-                  meta={meta}
                   historicalDivisionFootprint={historicalDivisionFootprint}
                   divisionFootprint={divisionFootprint}
                   additionnalData={additionnalData}
@@ -228,6 +250,7 @@ const CompanyData = () => {
               </div>
             </>
           )}
+        
         </Container>
         <section className="bg-white">
           <Container>

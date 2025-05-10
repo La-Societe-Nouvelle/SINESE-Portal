@@ -8,7 +8,7 @@ import metaIndics from "../../lib/indics.json";
 
 export const IndicatorChart = (props) => 
 {
-	console.log(props);
+	//console.log(props);
 	const chartType = metaIndics[props.indic];
 
 	switch(chartType) {
