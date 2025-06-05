@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { exportStatementPDF } from "../../../app/_utils/statementWriter";
+import { exportStatementPDF } from "../../utils/statementWriter";
 
 import metaIndics from "@/_libs/indics";
 
