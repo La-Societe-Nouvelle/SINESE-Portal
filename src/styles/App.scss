@@ -1,18 +1,17 @@
-@import "custom";
-@import "responsive.scss";
-@import "parts/header.scss";
-@import "parts/footer.scss";
-@import "parts/forms.scss";
+@use "custom";
+@use "responsive.scss";
+@use "parts/header.scss";
+@use "parts/footer.scss";
+@use "parts/forms.scss";
 
 // import pages
-@import "pages/portail.scss";
-@import "pages/notre-approche.scss";
-@import "pages/blog.scss";
-@import "pages/databrowser.scss";
-@import "components/statistics.scss";
-@import "components/posts.scss";
-@import "components/components.scss";
-@import "components/navbar.scss";
+@use "pages/portail.scss";
+@use "pages/notre-approche.scss";
+@use "pages/databrowser.scss";
+@use "components/statistics.scss";
+@use "components/components.scss";
+@use "components/navbar.scss";
+
 
 // Font
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;900&display=swap");
@@ -31,7 +30,7 @@ ol {
     margin: 1rem 0;
   }
   li::marker {
-    color: $secondary;
+    color: custom.$secondary;
     font-size: 1.2rem;
     font-weight: bold;
   }
@@ -46,12 +45,12 @@ ol {
   font-family: "Raleway", sans-serif;
 }
 .bg-badge-light-secondary {
-  background-color: $light-secondary;
-  border : 1px solid $secondary;
-  color : $secondary;
+  background-color: custom.$light-secondary;
+  border : 1px solid custom.$secondary;
+  color : custom.$secondary;
 }
 .bg-light-secondary {
-  background-color: $light-secondary;
+  background-color: custom.$light-secondary;
 }
 .btn-check:focus + .btn-outline-secondary,
 .btn-outline-secondary:focus {
@@ -59,7 +58,7 @@ ol {
 }
 
 .btn-outline-secondary {
-  background-color: lighten($secondary, 30%);
+  background-color: lighten(custom.$secondary, 30%);
 
   &:hover,
   &:focus {
@@ -68,7 +67,7 @@ ol {
 }
 
 .btn-outline-primary {
-  background-color: lighten($primary, 75%);
+  background-color: lighten(custom.$primary, 75%);
 }
 
 .btn-secondary {
@@ -123,7 +122,7 @@ section {
     h5 {
       font-size: 1rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid $secondary;
+      border-bottom: 1px solid custom.$secondary;
     }
   }
 
@@ -140,7 +139,7 @@ section {
 }
 
 .alert-info {
-  border: 1px solid $light;
+  border: 1px solid custom.$light;
   background-color: #f7f7fb;
   font-size: 0.8rem;
 
@@ -152,7 +151,7 @@ section {
 
 .societal-footprint {
   .nav {
-    background-color: $light;
+    background-color: custom.$light;
     margin: 1rem 0 2rem 0;
     border-radius: 5px;
   }
@@ -162,12 +161,12 @@ section {
     border-radius: 5px;
 
     a {
-      color: $primary;
+      color: custom.$primary;
     }
   }
 
   .inverse {
-    background-color: $primary;
+    background-color: custom.$primary;
 
     a {
       color: #fff;
@@ -182,7 +181,7 @@ section {
 
     .indic-value {
       .value {
-        color: $secondary;
+        color: custom.$secondary;
         font-weight: 600;
         margin-bottom: 0;
       }
@@ -244,7 +243,7 @@ section.indic {
 }
 
 hr {
-  color: $light;
+  color: custom.$light;
   opacity: 1;
 }
 
@@ -254,20 +253,20 @@ p {
 
 
   a {
-    color : $secondary;
+    color : custom.$secondary;
   }
 }
 .faq {
   padding-top: 0;
   .question-box {
-    background-color: lighten( $light, 2%);
+    background-color: lighten( custom.$light, 2%);
 
     p {
       margin-bottom: 0;
       font-weight: 700;
 
       a {
-        color : $secondary;
+        color : custom.$secondary;
       }
     }
   }

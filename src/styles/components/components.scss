@@ -1,3 +1,5 @@
+@use "../custom.scss" as custom;
+
 .breadcrumb {
   font-size: 0.7rem;
 }
@@ -91,7 +93,7 @@
     font-weight: 600;
     margin-bottom: 1rem;
     a:hover {
-      color: $secondary;
+      color: custom.$secondary;
     }
   }
 }

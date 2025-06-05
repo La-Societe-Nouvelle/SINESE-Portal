@@ -1,10 +1,12 @@
+@use "../custom.scss" as custom;
+
 .bloc-statistics{
 
     font-family: 'Raleway';
 
     p {
         font-weight: 600;
-        color : $primary;
+        color : custom.$primary;
     }
     p:last-of-type{
         text-transform: uppercase;

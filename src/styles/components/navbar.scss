@@ -1,7 +1,8 @@
+@use "../custom.scss" as custom;
 @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
 .navbar-menu {
-  border-right: 1px solid $gray-600;
+  border-right: 1px solid custom.$gray-600;
   transition: all 0.5s ease;
   padding-top: 1rem;
 }
@@ -20,7 +21,7 @@
 }
 .navbar__li-box {
   margin-top:15px;
-  border-left: 0px solid $primary;
+  border-left: 0px solid custom.$primary;
   background-color: #fff;
   transition: all 0.15s;
   text-transform: none;
@@ -29,8 +30,8 @@
     padding: 4px 8px;
 }
 .navbar__li-box:hover, .navbar__li-box--active {
-  border-left: 7px solid $primary;
-  background-color: $light;
+  border-left: 7px solid custom.$primary;
+  background-color: custom.$light;
   cursor: pointer;
   transition: all 0.15s;
 }

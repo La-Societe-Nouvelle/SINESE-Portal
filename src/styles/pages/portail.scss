@@ -1,3 +1,4 @@
+@use "../custom.scss" as custom;
 // portail de données
 .info-section {
   font-size: 0.9rem;
@@ -5,7 +6,7 @@
 }
 
 .bg-year {
-  background-color: lighten($secondary, 10%)
+  background-color: lighten(custom.$secondary, 10%)
 }
 
 .open-data-portal {
@@ -20,7 +21,7 @@
 
   .accordion-item {
     margin-bottom: 1rem;
-    border-bottom: 2px solid $light;
+    border-bottom: 2px solid custom.$light;
     border-radius: 1rem;
 
     &:first-of-type {
@@ -51,7 +52,7 @@
       width: 40px;
       height: 40px;
       margin-right: 0.5rem;
-      background-color: $light;
+      background-color: custom.$light;
       text-align: center;
       line-height: 40px;
       border-radius: 20%;
@@ -72,7 +73,7 @@
 
   .accordion-button:not(.collapsed) {
     box-shadow: none;
-    border-bottom: 3px solid $light;
+    border-bottom: 3px solid custom.$light;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 
@@ -94,7 +95,7 @@
   margin-bottom: 2rem;
 
   .form-control:focus {
-    border-color: $light;
+    border-color: custom.$light;
     box-shadow: none;
   }
 
@@ -147,9 +148,9 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: $secondary;
-  color: $secondary;
-  box-shadow: 9999px 0 0 -5px $secondary;
+  background-color: custom.$secondary;
+  color: custom.$secondary;
+  box-shadow: 9999px 0 0 -5px custom.$secondary;
   animation: dotPulse 1.5s infinite linear;
   animation-delay: .25s;
 }
@@ -163,63 +164,63 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: $secondary;
-  color: $secondary;
+  background-color: custom.$secondary;
+  color: custom.$secondary;
 }
 
 .dot-pulse::before {
-  box-shadow: 9984px 0 0 -5px $secondary;
+  box-shadow: 9984px 0 0 -5px custom.$secondary;
   animation: dotPulseBefore 1.5s infinite linear;
   animation-delay: 0s;
 }
 
 .dot-pulse::after {
-  box-shadow: 10014px 0 0 -5px $secondary;
+  box-shadow: 10014px 0 0 -5px custom.$secondary;
   animation: dotPulseAfter 1.5s infinite linear;
   animation-delay: .5s;
 }
 
 @keyframes dotPulseBefore {
   0% {
-    box-shadow: 9984px 0 0 -5px $secondary;
+    box-shadow: 9984px 0 0 -5px custom.$secondary;
   }
 
   30% {
-    box-shadow: 9984px 0 0 2px $secondary;
+    box-shadow: 9984px 0 0 2px custom.$secondary;
   }
 
   60%,
   100% {
-    box-shadow: 9984px 0 0 -5px $secondary;
+    box-shadow: 9984px 0 0 -5px custom.$secondary;
   }
 }
 
 @keyframes dotPulse {
   0% {
-    box-shadow: 9999px 0 0 -5px $secondary;
+    box-shadow: 9999px 0 0 -5px custom.$secondary;
   }
 
   30% {
-    box-shadow: 9999px 0 0 2px $secondary;
+    box-shadow: 9999px 0 0 2px custom.$secondary;
   }
 
   60%,
   100% {
-    box-shadow: 9999px 0 0 -5px $secondary;
+    box-shadow: 9999px 0 0 -5px custom.$secondary;
   }
 }
 
 @keyframes dotPulseAfter {
   0% {
-    box-shadow: 10014px 0 0 -5px $secondary;
+    box-shadow: 10014px 0 0 -5px custom.$secondary;
   }
 
   30% {
-    box-shadow: 10014px 0 0 2px $secondary;
+    box-shadow: 10014px 0 0 2px custom.$secondary;
   }
 
   60%,
   100% {
-    box-shadow: 10014px 0 0 -5px $secondary;
+    box-shadow: 10014px 0 0 -5px custom.$secondary;
   }
 }

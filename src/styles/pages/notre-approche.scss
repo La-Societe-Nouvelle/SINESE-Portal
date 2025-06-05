@@ -1,5 +1,5 @@
 /* ----- Approche ----- */
-
+@use "../custom.scss" as custom;
 #empreinte-societale-illustration
 {
   height: 200px;
@@ -47,19 +47,19 @@ img.F-WEB-Goal.not-concerned {
 }
 
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-  color: $secondary;
+  color: custom.$secondary;
 
 }
 .accordion-header {
-  border-bottom: 2px solid $light;
+  border-bottom: 2px solid custom.$light;
 }
 .tab-content {
-  border :1px solid $light;
+  border :1px solid custom.$light;
 }
 .panel-indicateurs{
 
   .accordion {
-    border: 1px solid $light;
+    border: 1px solid custom.$light;
   }
   .accordion-body {
     padding: 2rem;
@@ -68,8 +68,8 @@ img.F-WEB-Goal.not-concerned {
     font-weight: 600;
   }
   .accordion-button:not(.collapsed) {
-    color: $primary;
-    background-color: $light;
+    color: custom.$primary;
+    background-color: custom.$light;
     box-shadow: inset 0 -1px 0 rgba(25, 21, 88, 0.2);
   }
   
