@@ -231,7 +231,7 @@ const CompanyData = () =>
                     <i className="bi bi-exclamation-circle me-1"></i> Certaines données affichées correspondent à <strong>des valeurs par défaut affectées à l'unité légale</strong>. Elles permettent une estimation des impacts indirects d'une dépense auprès de cette entreprise, en s'appuyant sur ses caractéristiques (activité principale, tranche d'effectifs, etc.).
                   </p>
                   <a
-                    href="/publier-empreinte"
+                    href="https://publication.sinese.fr/"
                     target="_blank"
                     className="btn btn-primary w-50 p-auto m-auto ms-4"
                   >
@@ -307,7 +307,7 @@ const CompanyData = () =>
                     <Button
                       variant="secondary"
                       size="sm"
-                      href="/publier-empreinte"
+                      href="https://publication.sinese.fr/"
                       target="_blank"
                       title="Publier directement vos résultats"
                       className="me-2"

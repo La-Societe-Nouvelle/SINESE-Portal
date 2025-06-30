@@ -28,7 +28,7 @@ const Header = () => {
             <Nav.Link href="/">
               Rechercher une entreprise
             </Nav.Link>
-            <Nav.Link href="/publier-empreinte" target="_blank">
+            <Nav.Link href="https://publication.sinese.fr/" target="_blank">
               Publier mon empreinte
             </Nav.Link>
             <Nav.Link href="https://api.lasocietenouvelle.org/" target="_blank" >
