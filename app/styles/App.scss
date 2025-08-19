@@ -11,6 +11,7 @@
 @use "components/statistics.scss";
 @use "components/components.scss";
 @use "components/sidebar.scss";
+@use "components/modern-layout.scss";
 
 
 // Font
@@ -26,7 +27,63 @@ body {
 body {
   font-family: "Raleway", sans-serif;
   font-size: 1rem;
+  line-height: 1.6;
+  color: custom.$primary;
 }
+
+// Smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Global improvements
+* {
+  box-sizing: border-box;
+}
+
+// Modern micro-interactions
+a {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    text-decoration: none;
+    color: custom.$secondary;
+  }
+}
+
+// Modern focus states
+*:focus {
+  outline: 2px solid rgba(custom.$secondary, 0.5);
+  outline-offset: 2px;
+}
+
+// Subtle animations for all interactive elements
+button, .btn, input, select, textarea {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Loading states
+.loading {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+// Legacy main content (for pages that haven't been updated yet)
 .main-content {
   position: relative;
   background: url("/celeste.svg") no-repeat right bottom;
@@ -70,25 +127,52 @@ ol {
   box-shadow: 0 0 0 0.1rem rgb(250 89 95 / 50%);
 }
 
+// Refined Button Styles
 .btn-outline-secondary {
   background-color: lighten(custom.$secondary, 30%);
+  border: 1px solid custom.$secondary;
+  font-weight: 600;
+  transition: all 0.2s ease;
 
   &:hover,
   &:focus {
     color: #fff;
+    background-color: custom.$secondary;
+    border-color: custom.$secondary;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(custom.$secondary, 0.25);
   }
 }
 
 .btn-outline-primary {
   background-color: lighten(custom.$primary, 75%);
-}
-
-.btn-secondary {
-  color: #fff;
+  border: 1px solid custom.$primary;
+  font-weight: 600;
+  transition: all 0.2s ease;
 
   &:hover,
   &:focus {
     color: #fff;
+    background-color: custom.$primary;
+    border-color: custom.$primary;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(custom.$primary, 0.25);
+  }
+}
+
+.btn-secondary {
+  color: #fff;
+  background: custom.$secondary;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    background: darken(custom.$secondary, 8%);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(custom.$secondary, 0.3);
   }
 }
 
@@ -112,11 +196,33 @@ section {
   padding: 4rem 0;
 }
 
+// Refined Card Styles
 .box {
   background-color: #fff;
   padding: 2.5rem 1.5rem;
   border-radius: 1rem;
   margin-bottom: 2rem;
+  border: 1px solid rgba(custom.$primary, 0.06);
+  box-shadow: 0 2px 12px rgba(custom.$primary, 0.06);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(custom.$primary, 0.1);
+    border-color: rgba(custom.$primary, 0.12);
+  }
+}
+
+.card {
+  border: 1px solid rgba(custom.$primary, 0.06);
+  box-shadow: 0 1px 8px rgba(custom.$primary, 0.04);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(custom.$primary, 0.08);
+    border-color: rgba(custom.$primary, 0.1);
+  }
 }
 
 

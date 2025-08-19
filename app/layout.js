@@ -1,6 +1,6 @@
 import "./styles/App.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Navbar, Nav, NavbarBrand, NavLink } from "react-bootstrap";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -37,56 +37,58 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <body>
-        <Container fluid className="d-flex flex-column min-vh-100 p-0">
-          <Row className="flex-grow-1 m-0">
-            {/* Sidebar */}
-            <Col xs={12} md={2} lg={2} className="sidebar d-flex flex-column align-items-start p-0">
-              {/* Logo et titre */}
-              <div className="sidebar-header w-100 d-flex flex-column align-items-center p-2 border-bottom">
-                <img src="/logo-La-Societe-Nouvelle.svg" alt="SINESE" height={60} className="mb-3" />
+        <div className="app-layout d-flex flex-column min-vh-100">
+          <Navbar expand="lg" className="header-nav" variant="dark">
+            <Container fluid className="px-4">
+              <NavbarBrand href="/" className="d-flex align-items-center">
+                <img src="/logo-La-Societe-Nouvelle.svg" alt="SINESE" height={45} className="me-3" />
+                <div className="brand-text d-none d-md-block">
+                  <div className="brand-title">SINESE</div>
+                  <div className="brand-subtitle">Empreinte Sociétale</div>
+                </div>
+              </NavbarBrand>
+
+              <Nav className="ms-auto">
+                <NavLink href="/" className="nav-item-custom active">
+                  <i className="bi bi-buildings me-2"></i>
+                  <span>Entreprises</span>
+                </NavLink>
+                <NavLink href="/macroeconomie" className="nav-item-custom">
+                  <i className="bi bi-graph-up me-2"></i>
+                  <span>Macroéconomie</span>
+                </NavLink>
+                <NavLink href="/faq" className="nav-item-custom">
+                  <i className="bi bi-question-circle me-2"></i>
+                  <span className="d-none d-lg-inline">FAQ</span>
+                </NavLink>
+              </Nav>
+            </Container>
+          </Navbar>
+
+          <main className="main-content flex-grow-1">
+            {children}
+          </main>
+
+          <footer className="app-footer bg-white border-top">
+            <Container fluid className="px-4">
+              <div className="row align-items-center py-3">
+                <div className="col-md-8">
+                  <small className="text-muted">
+                    © {new Date().getFullYear()} SINESE - Système d'Information National sur l'Empreinte Sociétale des Entreprises
+                  </small>
+                </div>
+                <div className="col-md-4 text-end">
+                  <a href="/mentions-legales" className="text-muted small me-3 text-decoration-none">
+                    Mentions légales
+                  </a>
+                  <a href="/contact" className="text-muted small text-decoration-none">
+                    Contact
+                  </a>
+                </div>
               </div>
-              {/* Navigation */}
-              <div className="sidebar-nav w-100 d-flex flex-column gap-3 p-4">
-                <a href="/" className="sidebar-link active">
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div className="sidebar-link-title">Entreprises</div>
-                    <span className="sidebar-link-arrow">
-                      <i className="bi bi-chevron-right"></i>
-                    </span>
-                  </div>
-                  <div className="sidebar-link-desc">Empreintes des entreprises françaises</div>
-                </a>
-                <a href="/macroeconomie" className="sidebar-link">
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div className="sidebar-link-title">Macroéconomie</div>
-                    <span className="sidebar-link-arrow">
-                      <i className="bi bi-chevron-right"></i>
-                    </span>
-                  </div>
-                  <div className="sidebar-link-desc">Empreintes des activités économiques</div>
-                </a>
-              </div>
-            </Col>
-            {/* Main content */}
-            <Col xs={12} md={9} lg={10} className={`main-content `}>
-              {children}
-            </Col>
-          </Row>
-          {/* Footer */}
-          <footer className="footer d-flex justify-content-between align-items-center px-4 py-3 border-top">
-            <Row>
-              <Col className="text-muted">
-                © {new Date().getFullYear()} SINESE - Système d'Information National sur l'Empreinte Sociétale des
-                Entreprises
-              </Col>
-              <Col className="text-end">
-                <a href="/mentions-legales" className="text-muted">
-                  Mentions légales
-                </a>
-              </Col>
-            </Row>
+            </Container>
           </footer>
-        </Container>
+        </div>
       </body>
     </html>
   );

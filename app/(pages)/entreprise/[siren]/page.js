@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Badge, Button, Col, Container, Image, Row } from "react-bootstrap";
 import ErrorAlert from "../../../src/components/Error";
-import { ContentSocialFootprint } from "../../_components/portal/ContentSocialFootprint";
+import { ContentSocialFootprint } from "../../../_components/portal/ContentSocialFootprint";
 import Header from "@/_components/header";
 
 const CompanyData = () => {

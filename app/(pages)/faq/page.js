@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   Accordion,
@@ -5,26 +7,24 @@ import {
   Tab,
   Tabs,
 } from "react-bootstrap";
-import { Helmet } from "react-helmet";
-import PageHeader from "../components/PageHeader";
-import { useRouter } from "next/router";
+import PageHeader from "../../_components/PageHeader";
+import { useSearchParams } from "next/navigation";
 
 const Faq = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeKey, setActiveKey] = useState("qg");
   const [eventKey, setEventKey] = useState("qg-0");
 
   useEffect(() => {
-    const key = router.asPath.split("#")[1];
-    if (key) {
-      setActiveKey(key.split("-")[0]);
-      setEventKey(key);
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      setActiveKey(hash.split("-")[0]);
+      setEventKey(hash);
     } else {
       setActiveKey("qg");
       setEventKey("qg-0");
     }
-  }, [router.asPath]);
-  
+  }, [searchParams]);
 
   const handleTabSelect = (key) => {
     setActiveKey(key);
@@ -32,9 +32,6 @@ const Faq = () => {
 
   return (
     <>
-      <Helmet>
-        <title>La Société Nouvelle | Foire aux questions </title>
-      </Helmet>
       <PageHeader
         title={"Foire Aux Questions"}
         path={"faq"}
@@ -369,7 +366,7 @@ const Faq = () => {
                     </Accordion.Header>
                     <Accordion.Body>
                       <p>
-                        Le terme “Open Source” désigne un logiciel ou programme
+                        Le terme "Open Source" désigne un logiciel ou programme
                         informatique où le code source est ouvert au public,
                         peut-être modifié et redistribué par n'importe qui.C'est
                         le cas de notre application web METRIZ distribué sous
@@ -693,3 +690,7 @@ const Faq = () => {
 };
 
 export default Faq;
+
+export const metadata = {
+  title: "La Société Nouvelle | Foire aux questions",
+};

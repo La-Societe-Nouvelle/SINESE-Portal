@@ -1,15 +1,10 @@
 import React from "react";
-import { Helmet } from "react-helmet";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../../_components/PageHeader";
 import { Container } from "react-bootstrap";
 
 const page = () => {
   return (
     <>
-      <Helmet>
-        <title>La Société Nouvelle | Politique de confidentialité</title>
-      </Helmet>
-
       <PageHeader
         title={"Politique de confidentialité"}
         path={"confidentialite-des-donnees"}
@@ -122,3 +117,7 @@ const page = () => {
 };
 
 export default page;
+
+export const metadata = {
+  title: "La Société Nouvelle | Politique de confidentialité",
+};
