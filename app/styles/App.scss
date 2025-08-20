@@ -5,6 +5,10 @@
 @import "parts/header.scss";
 @import "parts/footer.scss";  
 @import "pages/homepage.scss";
+@import "pages/recherche.scss";
+
+// import components
+@import "components/react-select.scss";
 // @import "pages/portail.scss";
 // @import "pages/notre-approche.scss";
 // @import "pages/databrowser.scss";

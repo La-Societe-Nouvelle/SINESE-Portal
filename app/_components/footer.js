@@ -1,130 +1,139 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { Col, Container, Image, ListGroup, Nav, Row } from "react-bootstrap";
+import { Col, Container, Image, ListGroup, Nav, Row, Form, Button, InputGroup } from "react-bootstrap";
 
 function Footer() {
-  const router = useRouter();
-  const [page, setPage] = useState(router.pathname);
   const year = new Date().getFullYear();
 
-  useEffect(() => {
-    setPage(router.pathname);
-  });
 
   return (
-    <footer>
-      <div className="top-footer">
+    <footer className="footer">
+      {/* Section Newsletter */}
+      <div className="newsletter-section bg-primary text-white py-5">
         <Container>
-          <Row>
-            <Col xs={12} lg={4} className="text-center text-lg-start">
-              <h6>Abonnez-vous !</h6>
-              <div className="d-flex justify-content-center justify-content-lg-start align-items-center icon-link">
-                <i className="bi bi-envelope-paper" role="img"></i>
-                <a href="/newsletter" title="Inscription à la newsletter">
-                  Newsletter
-                </a>
+          <Row className="align-items-center">
+            <Col lg={6} className="mb-4 mb-lg-0">
+              <h3 className="fw-bold mb-2">Restez informé des actualités SINESE</h3>
+              <p className="mb-0 opacity-90">
+                Recevez les dernières données, analyses et mises à jour sur l'empreinte sociétale des entreprises.
+              </p>
+            </Col>
+            <Col lg={6}>
+            
+            </Col>
+          </Row>
+        </Container>
+      </div>
+
+      {/* Section principale du footer */}
+      <div className="main-footer bg-dark text-white py-5">
+        <Container>
+          <Row className="g-4">
+            {/* À propos */}
+            <Col lg={4} md={6}>
+              <div className="footer-section">
+                <h5 className="fw-bold mb-3">À propos de SINESE</h5>
+                <p className=" mb-3">
+                  Le Système d'Information National sur l'Empreinte Sociétale des Entreprises,
+                  développé par La Société Nouvelle pour rendre transparents les impacts 
+                  sociaux et environnementaux des entreprises françaises.
+                </p>
+                <div className="d-flex gap-3">
+                  <a href="https://github.com/La-Societe-Nouvelle/" target="_blank" rel="noreferrer" className="fs-4">
+                    <i className="bi bi-github"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/company/la-societe-nouvelle/" target="_blank" rel="noreferrer" className="fs-4">
+                    <i className="bi bi-linkedin"></i>
+                  </a>
+                  <a href="https://discord.gg/ANFwWZc3eu" target="_blank" rel="noreferrer" className="fs-4">
+                    <i className="bi bi-discord"></i>
+                  </a>
+                </div>
               </div>
             </Col>
-            <Col
-              xs={12}
-              lg={4}
-              className="text-center text-lg-start mt-3 mt-lg-0"
-            >
-              <h6>Suivez-nous </h6>
 
-              <ListGroup
-                horizontal
-                className="justify-content-center justify-content-lg-start"
-              >
-                <ListGroup.Item>
-                  <a
-                    href="https://github.com/La-Societe-Nouvelle/"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="GitHub"
-                  >
-                    <i
-                      className="bi bi-github mx-2 mx-lg-0 me-lg-3"
-                      role="img"
-                    ></i>
-                  </a>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <a
-                    href="https://www.linkedin.com/company/la-societe-nouvelle/"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="LinkedIn"
-                  >
-                    <i
-                      className="bi bi-linkedin mx-2 mx-lg-0 me-lg-3"
-                      role="img"
-                    ></i>
-                  </a>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <a
-                    href="https://discord.gg/ANFwWZc3eu"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="Discord"
-                  >
-                    <i
-                      className="bi bi-discord mx-2 mx-lg-0 me-lg-3"
-                      role="img"
-                    ></i>
-                  </a>
-                </ListGroup.Item>
-              </ListGroup>
+            {/* Navigation */}
+            <Col lg={2} md={6}>
+              <div className="footer-section">
+                <h6 className="fw-bold mb-3">Explorer</h6>
+                <ul className="list-unstyled">
+                  <li className="mb-2"><a href="/recherche" className=" text-decoration-none">Recherche entreprises</a></li>
+                  <li className="mb-2"><a href="/macroeconomies" className=" text-decoration-none">Données sectorielles</a></li>
+                  <li className="mb-2"><a href="/indicateurs" className=" text-decoration-none">Indicateurs ESE</a></li>
+                  <li className="mb-2"><a href="/methodologie" className=" text-decoration-none">Méthodologie</a></li>
+                </ul>
+              </div>
             </Col>
-            <Col
-              xs={12}
-              lg={4}
-              className="text-center text-lg-start mt-3 mt-lg-0"
-            >
-              <h6> Contactez-nous</h6>
-              <div className="d-flex justify-content-center justify-content-lg-start align-items-center icon-link">
-                <i className="bi bi-envelope-fill" role="img"></i>
-                <a href="/contact" title="Contactez nous">
-                  Formulaire de contact
-                </a>
+
+            {/* Resources */}
+            <Col lg={3} md={6}>
+              <div className="footer-section">
+                <h6 className="fw-bold mb-3">Ressources</h6>
+                <ul className="list-unstyled">
+                  <li className="mb-2"><a href="/api" className=" text-decoration-none">API publique</a></li>
+                  <li className="mb-2"><a href="/faq" className=" text-decoration-none">FAQ</a></li>
+                  <li className="mb-2"><a href="/documentation" className=" text-decoration-none">Documentation</a></li>
+                  <li className="mb-2"><a href="/open-source" className=" text-decoration-none">Open Source</a></li>
+                </ul>
+              </div>
+            </Col>
+
+            {/* Contact */}
+            <Col lg={3} md={6}>
+              <div className="footer-section">
+                <h6 className="fw-bold mb-3">Contact & Support</h6>
+                <ul className="list-unstyled">
+                  <li className="mb-2">
+                    <a href="/contact" className=" text-decoration-none">
+                      <i className="bi bi-envelope me-2"></i>Nous contacter
+                    </a>
+                  </li>
+                  <li className="mb-2">
+                    <a href="/support" className=" text-decoration-none">
+                      <i className="bi bi-question-circle me-2"></i>Support technique
+                    </a>
+                  </li>
+                  <li className="mb-2">
+                    <a href="https://lasocietenouvelle.org" target="_blank" className=" text-decoration-none">
+                      <i className="bi bi-house me-2"></i>La Société Nouvelle
+                    </a>
+                  </li>
+                </ul>
               </div>
             </Col>
           </Row>
         </Container>
       </div>
-      <div className="footer">
-        {/* <div className="text-center mt-4">
-          <Image
-            src="/celeste-blanc.svg"
-            height={30}
-            alt="Celeste personnage du logo de La Société Nouvelle"
-          ></Image>
-        </div> */}
-   
-          <Container>
-            <div className="d-flex justify-content-between align-items-center">
-              <p className="mx-2 mb-0">&copy;{year} La Société Nouvelle</p>
-              <ul className="nav">
-                <li className="nav-item">
-                  <a className="nav-link" href="/mentions-legales">
+      {/* Footer bottom */}
+      <div className="footer-bottom bg-dark border-top border-secondary py-3">
+        <Container>
+          <Row className="align-items-center">
+            <Col md={6}>
+              <p className="mb-0 ">
+                &copy; {year} La Société Nouvelle • SINESE • Tous droits réservés
+              </p>
+            </Col>
+            <Col md={6} className="text-md-end mt-2 mt-md-0">
+              <ul className="list-inline mb-0">
+                <li className="list-inline-item">
+                  <a href="/mentions-legales" className=" text-decoration-none small">
                     Mentions légales
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/politique-confidentialite">
-                    Politique de confidentialité
+                <li className="list-inline-item mx-2 ">•</li>
+                <li className="list-inline-item">
+                  <a href="/politique-confidentialite" className=" text-decoration-none small">
+                    Confidentialité
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="/contact">
-                    Contact
+                <li className="list-inline-item mx-2 ">•</li>
+                <li className="list-inline-item">
+                  <a href="/cgv" className=" text-decoration-none small">
+                    CGU
                   </a>
                 </li>
               </ul>
-            </div>
-          </Container>
-  
+            </Col>
+          </Row>
+        </Container>
       </div>
     </footer>
   );

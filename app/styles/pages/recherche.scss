@@ -1,0 +1,281 @@
+/* ----- Page Recherche avec Sidebar ----- */
+.search-page {
+  min-height: 100vh;
+  background-color: #ffffff;
+
+  // Header with search bar
+  .search-header {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    
+    .input-group {
+      max-width: 500px;
+      
+      .form-control {
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        
+        &:focus {
+          border-color: #758bfd;
+          box-shadow: 0 0 0 3px rgba(117, 139, 253, 0.1);
+        }
+      }
+      
+      .btn {
+        border-radius: 0 0.375rem 0.375rem 0;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // Sidebar filters
+  .filters-sidebar {
+    min-height: calc(100vh - 80px);
+    background-color: #f8fafc;
+    
+    .form-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-select {
+      font-size: 0.875rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      
+      &:focus {
+        border-color: #758bfd;
+        box-shadow: 0 0 0 3px rgba(117, 139, 253, 0.1);
+      }
+      
+      // Styling pour les optgroups
+      optgroup {
+        font-weight: 600;
+        color: #374151;
+        background-color: #f9fafb;
+      }
+      
+      option {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+    }
+    
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+    }
+    
+    // Filtres bonus (cases à cocher)
+    .bonus-filters {
+      .form-check {
+        margin-bottom: 0.75rem;
+        
+        .form-check-input {
+          border-radius: 0.25rem;
+          border: 1px solid #d1d5db;
+          
+          &:checked {
+            background-color: #758bfd;
+            border-color: #758bfd;
+          }
+          
+          &:focus {
+            border-color: #758bfd;
+            box-shadow: 0 0 0 2px rgba(117, 139, 253, 0.15);
+          }
+        }
+        
+        .form-check-label {
+          font-size: 0.875rem;
+          color: #374151;
+          cursor: pointer;
+          padding-left: 0.25rem;
+        }
+      }
+    }
+    
+    // Séparateur
+    hr {
+      border-color: #e5e7eb;
+      opacity: 0.5;
+    }
+  }
+
+  // Results area
+  .results-area {
+    background-color: #ffffff;
+    min-height: calc(100vh - 80px);
+    
+    .dropdown-toggle {
+      font-size: 0.875rem;
+      border: 1px solid #d1d5db;
+    }
+    
+    .btn-group .btn {
+      font-size: 0.875rem;
+      border: 1px solid #d1d5db;
+      
+      &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      
+      &:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 0;
+      }
+    }
+  }
+
+  // Company cards
+  .company-card {
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-color: #758bfd;
+    }
+    
+    .company-info {
+      h5 a {
+        color: #1f2937;
+        transition: color 0.2s ease;
+        
+        &:hover {
+          color: #758bfd;
+        }
+      }
+    }
+    
+    .company-meta {
+      margin-top: 1rem;
+      
+      small {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        color: #6b7280;
+      }
+      
+      .fw-medium {
+        font-size: 0.875rem;
+        color: #374151;
+        display: block;
+        margin-top: 0.25rem;
+      }
+    }
+    
+    .btn-action {
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(117, 139, 253, 0.3);
+      }
+    }
+  }
+
+  // Pagination
+  .pagination {
+    .page-link {
+      border: 1px solid #d1d5db;
+      color: #6b7280;
+      font-weight: 500;
+      margin: 0 0.125rem;
+      border-radius: 0.375rem;
+      
+      &:hover {
+        background-color: #f3f4f6;
+        border-color: #9ca3af;
+        color: #374151;
+      }
+    }
+    
+    .page-item.active .page-link {
+      background-color: #758bfd;
+      border-color: #758bfd;
+      color: white;
+    }
+  }
+
+  // Loading and empty states
+  .spinner-border {
+    color: #758bfd;
+  }
+  
+  .text-center .bi {
+    opacity: 0.4;
+  }
+}
+
+// Responsive
+@media (max-width: 991px) {
+  .search-page {
+    .search-header {
+      .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem;
+      }
+    }
+    
+    .filters-sidebar {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 280px;
+      height: 100vh;
+      z-index: 1050;
+      transition: left 0.3s ease;
+      
+      &.show {
+        left: 0;
+      }
+    }
+    
+    .results-area {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .search-page {
+    .company-card .company-meta {
+      .row > .col {
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
+        
+        &:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+      }
+    }
+    
+    .d-flex.justify-content-between {
+      flex-direction: column;
+      align-items: stretch !important;
+      gap: 1rem;
+      
+      > div:last-child {
+        text-align: left !important;
+      }
+    }
+  }
+}

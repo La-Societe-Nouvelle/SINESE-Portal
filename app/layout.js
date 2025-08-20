@@ -1,6 +1,7 @@
 import "./styles/app.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
+import Footer from "./_components/footer";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -84,25 +85,7 @@ export default function RootLayout({ children }) {
             {children}
           </main>
 
-          <footer className="app-footer bg-white border-top">
-            <Container fluid className="px-4">
-              <div className="row align-items-center py-3">
-                <div className="col-md-8">
-                  <small className="text-muted">
-                    © {new Date().getFullYear()} SINESE - Système d'Information National sur l'Empreinte Sociétale des Entreprises
-                  </small>
-                </div>
-                <div className="col-md-4 text-end">
-                  <a href="/mentions-legales" className="text-muted small me-3 text-decoration-none">
-                    Mentions légales
-                  </a>
-                  <a href="/contact" className="text-muted small text-decoration-none">
-                    Contact
-                  </a>
-                </div>
-              </div>
-            </Container>
-          </footer>
+          <Footer></Footer>
         </div>
       </body>
     </html>

@@ -55,6 +55,8 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero__content">
           <div className="container text-center">
+
+
             <h1 className="hero__title">
               Toute l'information sur
               <span className="highlight">l'Empreinte Sociétale</span>
@@ -62,7 +64,29 @@ export default function HomePage() {
             </h1>
 
             <p className="hero__subtitle">
-              Consultez librement les données publiées sur les impacts de la valeur produite par les entreprises françaises.            </p>
+              Consultez librement les données publiées sur les impacts de la valeur produite par les entreprises françaises.
+            </p>
+
+            {/* Mini stats visibles dans le hero */}
+            <div className="hero__stats mb-4">
+              <div className="row justify-content-center g-3">
+                <div className="col-auto">
+                  <div className="stat-pill">
+                    <strong>5M+</strong> entreprises
+                  </div>
+                </div>
+                <div className="col-auto">
+                  <div className="stat-pill">
+                    <strong>12</strong> indicateurs
+                  </div>
+                </div>
+                <div className="col-auto">
+                  <div className="stat-pill">
+                    <strong>64</strong> secteurs
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="hero__search">
               <div className="search-box">
@@ -92,11 +116,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="overview">
+      <section className="overview shadow-sm">
         <Container fluid className="px-0">
           <Row className="g-0">
             {/* Côté gauche - fond blanc */}
-            <Col lg={6} className="bg-white py-5">
+            <Col lg={6} className=" py-5">
               <Container>
                 <div className="info px-4">
                   <h2 className=" mb-3">Système d'Information national sur l'Empreinte Sociale et Environnementale des Entreprises</h2>
@@ -114,7 +138,7 @@ export default function HomePage() {
                       <div className="stat-label">Données extra-financières</div>
                     </div>
                     <div className="stat-box">
-                      <div className="stat-number">88</div>
+                      <div className="stat-number">64</div>
                       <div className="stat-label">Secteurs modélisés</div>
                     </div>
                     <div className="stat-box">
@@ -123,23 +147,22 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="d-flex flex-wrap gap-3">
-                    <a href="/recherche" className="btn btn-primary">
+                  <div className="d-flex flex-wrap gap-3 justify-content-center justify-lg-start">
+                    <a href="/recherche" className="btn btn-primary shadow-sm">
                       <i className="bi bi-search me-2"></i>Rechercher une entreprise
                     </a>
-                    <a href="/macroeconomies" className="btn btn-outline-secondary">
-                      <i className="bi bi-bar-chart me-2"></i>Données sectorielles
+                    <a href="/macroeconomies" className="btn btn-outline-primary ">
+                      <i className="bi bi-bar-chart me-2"></i>Empreinte des activités économiques
                     </a>
                   </div>
                 </div>
               </Container>
             </Col>
 
-            {/* Côté droit - fond bleu clair */}
-            <Col lg={6} className="bg-light py-5">
+            <Col lg={6} className="py-5 bg-primary text-white" >
               <Container>
                 <div className="data-sources px-4">
-                  <h2>Sources des données</h2>
+                  <h2 className="text-white">Sources des données</h2>
                   <p className="mb-4">
                     L’<strong>Empreinte Sociétale des Entreprises</strong> est calculée par La Société Nouvelle
                     à partir de sa <strong><a href="/" target="_blank" rel="noopener noreferrer">méthodologie publique et accessible à tous</a></strong>.<br />
@@ -162,28 +185,28 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    {/* Sources partenaires en ligne */}
-                    <div className="row g-3">
-                      <div className="col-4">
-                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100">
-                          <img src="/images/indicateurs/logo-impact-score.png" alt="Impact Score" style={{ height: '36px' }} className="mb-2" />
-                          <div className="fw-semibold small">Impact Score</div>
+                    {/* Sources partenaires réorganisées */}
+                    <div className="row g-3 justify-content-center">
+                      <div className="col-lg-4 col-md-6">
+                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100 shadow-sm">
+                          <img src="/images/indicateurs/logo-impact-score.png" alt="Impact Score" style={{ height: '40px' }} className="mb-2" />
+                          <div className="fw-semibold">Impact Score</div>
                           <small className="text-muted">Impact environnemental</small>
                         </div>
                       </div>
 
-                      <div className="col-4">
-                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100">
-                          <img src="/images/indicateurs/logo-index-egapro.png" alt="Index Égalité Pro" style={{ height: '36px' }} className="mb-2" />
-                          <div className="fw-semibold small">Index Égalité Pro</div>
+                      <div className="col-lg-4 col-md-6">
+                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100 shadow-sm">
+                          <img src="/images/indicateurs/logo-index-egapro.png" alt="Index Égalité Pro" style={{ height: '40px' }} className="mb-2" />
+                          <div className="fw-semibold">Index Égalité Pro</div>
                           <small className="text-muted">Égalité salariale</small>
                         </div>
                       </div>
 
-                      <div className="col-4">
-                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100">
-                          <img src="/images/indicateurs/logo-bilans-ges.png" alt="Bilans GES" style={{ height: '36px' }} className="mb-2" />
-                          <div className="fw-semibold small">Bilans GES</div>
+                      <div className="col-lg-4 col-md-6">
+                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100 shadow-sm">
+                          <img src="/images/indicateurs/logo-bilans-ges.png" alt="Bilans GES" style={{ height: '40px' }} className="mb-2" />
+                          <div className="fw-semibold">Bilans GES</div>
                           <small className="text-muted">Données carbone</small>
                         </div>
                       </div>
@@ -196,7 +219,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="community-section py-5">
+      <section className="community-section py-5" style={{ marginTop: '4rem' }}>
         <Container>
           <div className="text-center mb-5">
             <h2 className="fw-bold">Un système collaboratif et ouvert</h2>
@@ -204,19 +227,21 @@ export default function HomePage() {
               SINESE est basé sur une démarche collaborative :
               chaque entreprise récupère l’empreinte sociétale de ses fournisseurs
               pour estimer ses impacts indirects, et met à disposition de ses clients
-              sa propre empreinte.
+              sa propre empreinte pour qu'ils puissent à leur tour estimer leurs impacts indirects.
 
             </p>
           </div>
 
           <Row className="g-4">
             <Col md={4}>
-              <Card className="h-100 shadow-sm border-0">
-                <Card.Body className="text-center">
-                  <div className="display-5 mb-3">📤</div>
-                  <Card.Title className="fw-semibold">Publiez vos données</Card.Title>
-                  <Card.Text>
-                    Partagez l’empreinte de votre entreprise pour enrichir
+              <Card className="h-100 shadow-sm border-0 feature-card">
+                <Card.Body className="text-center p-4">
+                  <div className="feature-icon mb-3">
+                    <i className="bi bi-upload fs-1 text-primary"></i>
+                  </div>
+                  <Card.Title className="fw-bold mb-3">Publiez vos données</Card.Title>
+                  <Card.Text className="text-muted">
+                    Partagez l'empreinte de votre entreprise pour enrichir
                     le système et favoriser la transparence.
                   </Card.Text>
                 </Card.Body>
@@ -224,13 +249,15 @@ export default function HomePage() {
             </Col>
 
             <Col md={4}>
-              <Card className="h-100 shadow-sm border-0">
-                <Card.Body className="text-center">
-                  <div className="display-5 mb-3">🗄️</div>
-                  <Card.Title className="fw-semibold">Une base ouverte et gratuite</Card.Title>
-                  <Card.Text>
+              <Card className="h-100 shadow-sm border-0 feature-card">
+                <Card.Body className="text-center p-4">
+                  <div className="feature-icon mb-3">
+                    <i className="bi bi-database fs-1 text-primary"></i>
+                  </div>
+                  <Card.Title className="fw-bold mb-3">Une base ouverte et gratuite</Card.Title>
+                  <Card.Text className="text-muted">
                     Accédez librement aux données extra-financières via
-                    notre <strong>API publique</strong>, simple d’utilisation
+                    notre <strong>API publique</strong>, simple d'utilisation
                     et conçue pour s'intégrer à vos outils.
                   </Card.Text>
                 </Card.Body>
@@ -238,12 +265,14 @@ export default function HomePage() {
             </Col>
 
             <Col md={4}>
-              <Card className="h-100 shadow-sm border-0">
-                <Card.Body className="text-center">
-                  <div className="display-5 mb-3">📚</div>
-                  <Card.Title className="fw-semibold">Appropriez-vous la méthode</Card.Title>
-                  <Card.Text>
-                    La méthodologie est publique et libre d’exploitation :
+              <Card className="h-100 shadow-sm border-0 feature-card">
+                <Card.Body className="text-center p-4">
+                  <div className="feature-icon mb-3">
+                    <i className="bi bi-book fs-1 text-primary"></i>
+                  </div>
+                  <Card.Title className="fw-bold mb-3">Appropriez-vous la méthode</Card.Title>
+                  <Card.Text className="text-muted">
+                    La méthodologie est publique et libre d'exploitation :
                     utilisez nos indicateurs ou intégrez-les dans vos pratiques.
                   </Card.Text>
                 </Card.Body>
