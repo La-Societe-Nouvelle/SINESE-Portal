@@ -1,122 +1,4 @@
-@use "../custom.scss" as custom;
 
-// Home Page Styles
-
-.home-page {
-  background: #fafafa;
-}
-
-// Hero Section
-.hero {
-  background: linear-gradient(135deg, 
-    rgba(custom.$primary, 0.02) 0%, 
-    rgba(custom.$secondary, 0.01) 100%);
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 300px;
-    background: url("/celeste.svg") no-repeat right bottom;
-    background-size: contain;
-    opacity: 0.25;
-    z-index: 0;
-    
-    @media (max-width: 768px) {
-      width: 200px;
-      opacity: 0.15;
-    }
-  }
-}
-
-.hero-title {
-  font-family: 'Raleway', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: custom.$primary;
-  
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-  
-  @media (max-width: 576px) {
-    font-size: 1.6rem;
-  }
-}
-
-.highlight {
-  background: linear-gradient(135deg, custom.$secondary, lighten(custom.$secondary, 10%));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: relative;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: linear-gradient(90deg, 
-      rgba(custom.$secondary, 0.15) 0%, 
-      rgba(custom.$secondary, 0.25) 50%, 
-      rgba(custom.$secondary, 0.15) 100%);
-    border-radius: 3px;
-    z-index: -1;
-  }
-}
-
-.hero-subtitle {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-}
-
-// Search Form
-.search-form {
-  max-width: 600px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-.search-input-group {
-  box-shadow: 0 4px 20px rgba(custom.$primary, 0.08);
-  border-radius: 3rem;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  
-  &:focus-within {
-    box-shadow: 0 6px 30px rgba(custom.$secondary, 0.15);
-    transform: translateY(-1px);
-  }
-}
-
-.search-icon {
-  border-radius: 3rem 0 0 3rem !important;
-  transition: all 0.2s ease;
-}
-
-.form-control {
-  border-radius: 0 !important;
-  font-size: 0.95rem;
-  
-  &:focus {
-    border-color: rgba(custom.$secondary, 0.3);
-    box-shadow: none;
-  }
-}
 
 .btn-secondary {
   border-radius: 0 3rem 3rem 0 !important;
@@ -133,11 +15,11 @@
 }
 
 .list-group-item {
-  border-color: rgba(custom.$primary, 0.06);
+  border-color: rgba($primary, 0.06);
   transition: all 0.15s ease;
   
   &:hover {
-    background: rgba(custom.$primary, 0.02);
+    background: rgba($primary, 0.02);
     transform: translateX(2px);
   }
   
@@ -152,23 +34,23 @@
 
 // Quick Actions
 .quick-actions {
-  border-top: 1px solid rgba(custom.$primary, 0.06);
+  border-top: 1px solid rgba($primary, 0.06);
 }
 
 .action-item {
   background: #fff;
   border-radius: 0.75rem;
-  border: 1px solid rgba(custom.$primary, 0.06);
+  border: 1px solid rgba($primary, 0.06);
   transition: all 0.2s ease;
   cursor: pointer;
   
   &:hover {
-    border-color: rgba(custom.$secondary, 0.15);
+    border-color: rgba($secondary, 0.15);
     transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(custom.$primary, 0.08);
+    box-shadow: 0 4px 15px rgba($primary, 0.08);
     
     i {
-      color: custom.$secondary !important;
+      color: $secondary !important;
     }
   }
 }
@@ -190,7 +72,7 @@
 
 .result-card {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
-  border : 1px solid custom.$light;
+  border : 1px solid $light;
   border-radius: 0.5rem;  
 }
 .info-section {
@@ -199,12 +81,12 @@
 }
 
 .bg-year {
-  background-color: lighten(custom.$secondary, 10%);
+  background-color: lighten($secondary, 10%);
 }
 
 .open-data-portal {
 
-  background-color: custom.$light;
+  background-color: $light;
   padding: 1rem 1rem;
   .btn-badge {
     background: transparent;
@@ -213,7 +95,7 @@
 
   .accordion-item {
     margin-bottom: 1rem;
-    border-bottom: 2px solid custom.$light;
+    border-bottom: 2px solid $light;
     border-radius: 1rem;
 
     &:first-of-type {
@@ -242,7 +124,7 @@
       width: 40px;
       height: 40px;
       margin-right: 0.5rem;
-      background-color: custom.$light;
+      background-color: $light;
       text-align: center;
       line-height: 40px;
       border-radius: 20%;
@@ -263,7 +145,7 @@
 
   .accordion-button:not(.collapsed) {
     box-shadow: none;
-    border-bottom: 3px solid custom.$light;
+    border-bottom: 3px solid $light;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
@@ -282,7 +164,7 @@
   margin-bottom: 2rem;
 
   .form-control:focus {
-    border-color: custom.$light;
+    border-color: $light;
     box-shadow: none;
   }
 
@@ -333,9 +215,9 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: custom.$secondary;
-  color: custom.$secondary;
-  box-shadow: 9999px 0 0 -5px custom.$secondary;
+  background-color: $secondary;
+  color: $secondary;
+  box-shadow: 9999px 0 0 -5px $secondary;
   animation: dotPulse 1.5s infinite linear;
   animation-delay: 0.25s;
 }
@@ -349,63 +231,63 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: custom.$secondary;
-  color: custom.$secondary;
+  background-color: $secondary;
+  color: $secondary;
 }
 
 .dot-pulse::before {
-  box-shadow: 9984px 0 0 -5px custom.$secondary;
+  box-shadow: 9984px 0 0 -5px $secondary;
   animation: dotPulseBefore 1.5s infinite linear;
   animation-delay: 0s;
 }
 
 .dot-pulse::after {
-  box-shadow: 10014px 0 0 -5px custom.$secondary;
+  box-shadow: 10014px 0 0 -5px $secondary;
   animation: dotPulseAfter 1.5s infinite linear;
   animation-delay: 0.5s;
 }
 
 @keyframes dotPulseBefore {
   0% {
-    box-shadow: 9984px 0 0 -5px custom.$secondary;
+    box-shadow: 9984px 0 0 -5px $secondary;
   }
 
   30% {
-    box-shadow: 9984px 0 0 2px custom.$secondary;
+    box-shadow: 9984px 0 0 2px $secondary;
   }
 
   60%,
   100% {
-    box-shadow: 9984px 0 0 -5px custom.$secondary;
+    box-shadow: 9984px 0 0 -5px $secondary;
   }
 }
 
 @keyframes dotPulse {
   0% {
-    box-shadow: 9999px 0 0 -5px custom.$secondary;
+    box-shadow: 9999px 0 0 -5px $secondary;
   }
 
   30% {
-    box-shadow: 9999px 0 0 2px custom.$secondary;
+    box-shadow: 9999px 0 0 2px $secondary;
   }
 
   60%,
   100% {
-    box-shadow: 9999px 0 0 -5px custom.$secondary;
+    box-shadow: 9999px 0 0 -5px $secondary;
   }
 }
 
 @keyframes dotPulseAfter {
   0% {
-    box-shadow: 10014px 0 0 -5px custom.$secondary;
+    box-shadow: 10014px 0 0 -5px $secondary;
   }
 
   30% {
-    box-shadow: 10014px 0 0 2px custom.$secondary;
+    box-shadow: 10014px 0 0 2px $secondary;
   }
 
   60%,
   100% {
-    box-shadow: 10014px 0 0 -5px custom.$secondary;
+    box-shadow: 10014px 0 0 -5px $secondary;
   }
 }

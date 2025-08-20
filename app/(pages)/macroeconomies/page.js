@@ -1,13 +1,10 @@
 // La Société Nouvelle
-
-// Reatc
+"use client"
+// React
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Helmet } from "react-helmet";
 
 // Components
-import CustomNav from "../components/navbar";
-import { LineChart } from "../components/charts/LineChart";
 
 const portail = () => 
 {
@@ -70,39 +67,10 @@ const portail = () =>
 
   return (
     <>
-      <Helmet>
-        <title>
-          La Société Nouvelle | Portail des empreintes sociétales des
-          entreprises françaises
-        </title>
-
-        <meta
-          property="og:title"
-          content="Portail des empreintes sociétales des
-          entreprises françaises"
-        />
-        <meta
-          property="og:url"
-          content="https://lasocietenouvelle.org/"
-        />
-        <meta
-          property="og:description"
-          content="Consultez librement les données publiées sur les impacts de la valeur produite par les entreprises françaises."
-        />
-        <meta
-          property="og:image"
-          content="/portail.jpg"
-        />
-      </Helmet>
+   
       <Row>
         <Col md={3} lg={2} className="navbar-menu d-none d-md-block">
-          <CustomNav
-            li={[
-              ["Entreprises", "Empreintes des entreprises françaises", "/"],
-              ["Macroéconomie", "Empreintes des activités économiques", "/macro"],
-              // ["Collectivités", "Empreintes des collectivités territoriales", "/macro"]
-            ]}
-          />
+        
         </Col>
         <Col md={9} lg={10} className="p-0">
           <section className="bg-primary py-3 px-4">

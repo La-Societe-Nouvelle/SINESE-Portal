@@ -1,17 +1,17 @@
-@use "../custom.scss" as custom;
+
 
 .top-bar {
-  border-bottom: 1px solid custom.$light;
+  border-bottom: 1px solid $light;
   .nav-link {
-      color : custom.$primary !important;
+      color : $primary !important;
       font-weight: 600;
       padding:  0.5rem 0;
       margin: 0 1rem;
       border-bottom: 4px solid transparent;
 
       &:hover {
-        color : custom.$primary !important;
-        border-bottom: 4px solid custom.$primary;
+        color : $primary !important;
+        border-bottom: 4px solid $primary;
       }
 
   }
@@ -20,7 +20,7 @@
     color: #fff;
     margin: 0 1rem 0 0;
     padding: 0.4rem 1rem;
-    border-bottom: 2px solid darken(custom.$secondary, 20);
+    border-bottom: 2px solid darken($secondary, 20);
   }
 
 }
@@ -60,8 +60,8 @@
 }
 
 .menu {
-  border-top: 1px solid custom.$light;
-  border-bottom: 1px solid custom.$light;
+  border-top: 1px solid $light;
+  border-bottom: 1px solid $light;
 
   .dropdown-toggle::after {
     border: none;
@@ -88,11 +88,115 @@
     border-bottom: 1px solid transparent;
   }
   .nav-link:hover {
-    border-bottom: 1px solid custom.$secondary;
+    border-bottom: 1px solid $secondary;
   }
 
   .navbar-expand-lg .navbar-nav .nav-link {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+// Modern header navigation
+.header-nav {
+  background: $primary !important;
+  box-shadow: 0 2px 12px rgba($primary, 0.15);
+  padding: 0.5rem 0;
+  
+  .navbar-brand {
+    .brand-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 0;
+    }
+    
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(white, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+  
+  .nav-item-custom {
+    color: rgba(white, 0.9) !important;
+    padding: 0.75rem 1rem;
+    margin: 0 0.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+    display: flex;
+    align-items: center;
+    
+    i {
+      opacity: 0.8;
+    }
+    
+    &:hover {
+      background: rgba(white, 0.1);
+      color: white !important;
+      transform: translateY(-1px);
+      
+      i {
+        opacity: 1;
+      }
+    }
+    
+    &.active {
+      background: rgba(white, 0.15);
+      color: white !important;
+      
+      i {
+        opacity: 1;
+      }
+    }
+    
+    // Style spécial pour "Publier"
+    &.nav-publish {
+      background: $secondary;
+      color: white !important;
+      margin-left: 1rem;
+      
+      &:hover {
+        background: darken($secondary, 8%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($secondary, 0.3);
+      }
+    }
+  }
+  
+  .navbar-toggler {
+    border: none;
+    color: rgba(white, 0.9);
+    
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 991.98px) {
+  .header-nav {
+    .nav-item-custom {
+      margin: 0.25rem 0;
+      
+      &.nav-publish {
+        margin: 0.5rem 0;
+      }
+    }
+    
+    .navbar-collapse {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(white, 0.1);
+    }
   }
 }

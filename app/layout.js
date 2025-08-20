@@ -1,6 +1,6 @@
-import "./styles/App.scss";
+import "./styles/app.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Container, Navbar, Nav, NavbarBrand, NavLink } from "react-bootstrap";
+import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -41,27 +41,42 @@ export default function RootLayout({ children }) {
           <Navbar expand="lg" className="header-nav" variant="dark">
             <Container fluid className="px-4">
               <NavbarBrand href="/" className="d-flex align-items-center">
-                <img src="/logo-La-Societe-Nouvelle.svg" alt="SINESE" height={45} className="me-3" />
-                <div className="brand-text d-none d-md-block">
-                  <div className="brand-title">SINESE</div>
-                  <div className="brand-subtitle">Empreinte Sociétale</div>
-                </div>
+                <img src="/logo-LSN-blanc.png" alt="SINESE" height={45} className="me-3" />
+ 
               </NavbarBrand>
 
-              <Nav className="ms-auto">
-                <NavLink href="/" className="nav-item-custom active">
-                  <i className="bi bi-buildings me-2"></i>
-                  <span>Entreprises</span>
-                </NavLink>
-                <NavLink href="/macroeconomie" className="nav-item-custom">
-                  <i className="bi bi-graph-up me-2"></i>
-                  <span>Macroéconomie</span>
-                </NavLink>
-                <NavLink href="/faq" className="nav-item-custom">
-                  <i className="bi bi-question-circle me-2"></i>
-                  <span className="d-none d-lg-inline">FAQ</span>
-                </NavLink>
-              </Nav>
+              <NavbarToggle aria-controls="basic-navbar-nav" />
+              <NavbarCollapse id="basic-navbar-nav">
+                <Nav className="me-auto">
+                  <NavLink href="/" className="nav-item-custom">
+                    <i className="bi bi-buildings me-2"></i>
+                    <span>Entreprises</span>
+                  </NavLink>
+                  <NavLink href="/recherche" className="nav-item-custom">
+                    <i className="bi bi-search me-2"></i>
+                    <span className="d-none d-lg-inline">Recherche</span>
+                  </NavLink>
+                  <NavLink href="/macroeconomies" className="nav-item-custom">
+                    <i className="bi bi-graph-up me-2"></i>
+                    <span>Macroéconomie</span>
+                  </NavLink>
+                </Nav>
+                
+                <Nav className="ms-auto">
+                  <NavLink href="/publier" className="nav-item-custom nav-publish">
+                    <i className="bi bi-plus me-2"></i>
+                    <span>Publier sur SINESE.fr</span>
+                  </NavLink>
+                  <NavLink href="/faq" className="nav-item-custom">
+                    <i className="bi bi-question-circle me-2"></i>
+                    <span className="d-none d-lg-inline">FAQ</span>
+                  </NavLink>
+                  <NavLink href="/contact" className="nav-item-custom">
+                    <i className="bi bi-envelope me-2"></i>
+                    <span className="d-none d-lg-inline">Contact</span>
+                  </NavLink>
+                </Nav>
+              </NavbarCollapse>
             </Container>
           </Navbar>
 

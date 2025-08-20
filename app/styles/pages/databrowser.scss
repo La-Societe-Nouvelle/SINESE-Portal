@@ -1,10 +1,10 @@
-@use "../custom.scss" as custom;
+
 .data-table {
   font-size: 0.8rem;
   border: 1px solid #f0f0f8;
 
   thead {
-    background-color: custom.$primary;
+    background-color: $primary;
     color: #fff;
     text-transform: uppercase;
   }

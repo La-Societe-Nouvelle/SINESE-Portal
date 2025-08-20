@@ -1,7 +1,7 @@
-@use "../custom.scss" as custom;
+
 
 .statement-form {
-    border-bottom: 2px solid custom.$light;
+    border-bottom: 2px solid $light;
 
     &:last-child {
         border: none;
@@ -14,7 +14,7 @@
         width: 50px;
         border-radius: 50%;
         padding: 0.5rem;
-        background-color: custom.$light-secondary;
+        background-color: $light-secondary;
         text-align: center;
         margin-right: 1rem;
     }
@@ -26,7 +26,7 @@
     .indic-libelle {
         font-weight: 600;
         font-size: 0.8rem;
-        color: custom.$secondary;
+        color: $secondary;
     }
 
     .form-label,
@@ -39,16 +39,16 @@
     }
 
     .input-group-text {
-        background-color: custom.$light;
+        background-color: $light;
         font-size: 0.8rem;
     }
 
     .btn:disabled,
     .btn.disabled,
     fieldset:disabled .btn {
-        background-color: custom.$light-secondary;
-        border: custom.$light-secondary;
-        color: custom.$secondary;
+        background-color: $light-secondary;
+        border: $light-secondary;
+        color: $secondary;
         opacity: 1;
     }
 

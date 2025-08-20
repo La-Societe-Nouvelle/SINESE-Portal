@@ -3,7 +3,8 @@
 
 $primary : #191558;
 $secondary : #fa595f;
-$light : #f0f0f8;
+$tertiary : #758bfd;
+$light : #eef;
 $gray-600 : #f3f3f3;
 $info : $light;
 
@@ -15,7 +16,7 @@ $link-color : lighten($primary, 5%);
 $link-decoration: none;
 
 
-$font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-sans-serif: "Poppins", sans-serif;
 $headings-font-family: 'Raleway', 'Roboto', sans-serif;
 $headings-color : $primary;
 $headings-font-weight : 700;

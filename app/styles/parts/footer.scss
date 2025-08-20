@@ -1,4 +1,4 @@
-@use "../custom.scss" as custom;
+
 
 /* ----- footer ----- */
 footer {
@@ -11,9 +11,9 @@ footer {
     }
     .top-footer {
       padding: 2rem 0;
-      background-color: custom.$light;
+      background-color: $light;
       a {
-        color : custom.$primary;
+        color : $primary;
         font-weight: 600;
         text-decoration: none;
       }
@@ -21,7 +21,7 @@ footer {
        i{
         font-size: 1.7rem;
         margin-right: 1rem;
-        color : custom.$primary;
+        color : $primary;
       }
   
       .list-group-item {
@@ -34,7 +34,7 @@ footer {
   }
   .footer {
     color: #ffffff;
-    background-color: custom.$primary;
+    background-color: $primary;
     padding: 2rem 0 1rem 0;
   
     h6, .nav-link{

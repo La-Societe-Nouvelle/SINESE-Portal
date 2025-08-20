@@ -1,22 +1,22 @@
-@use "custom";
-@use "responsive.scss";
-@use "parts/header.scss";
-@use "parts/footer.scss";
-@use "parts/forms.scss";
+
+@import "variables";
 
 // import pages
-@use "pages/portail.scss";
-@use "pages/notre-approche.scss";
-@use "pages/databrowser.scss";
-@use "components/statistics.scss";
-@use "components/components.scss";
-@use "components/sidebar.scss";
-@use "components/modern-layout.scss";
+@import "parts/header.scss";
+@import "parts/footer.scss";  
+@import "pages/homepage.scss";
+// @import "pages/portail.scss";
+// @import "pages/notre-approche.scss";
+// @import "pages/databrowser.scss";
+// @import "components/statistics.scss";
+// @import "components/components.scss";
+// @import "components/sidebar.scss";
+// @import "components/modern-layout.scss";
 
 
 // Font
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Raleway:wght@300;400;600;800&family=Roboto:wght@100;300;400;700&display=swap");
 
 /* Global */
 
@@ -24,12 +24,7 @@ html,
 body {
   cursor: default;
 }
-body {
-  font-family: "Raleway", sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: custom.$primary;
-}
+
 
 // Smooth scrolling
 html {
@@ -44,28 +39,32 @@ html {
 // Modern micro-interactions
 a {
   transition: all 0.2s ease;
-  
+
   &:hover {
     text-decoration: none;
-    color: custom.$secondary;
+    color: $secondary;
   }
 }
 
 // Modern focus states
 *:focus {
-  outline: 2px solid rgba(custom.$secondary, 0.5);
+  outline: 2px solid rgba($secondary, 0.5);
   outline-offset: 2px;
 }
 
 // Subtle animations for all interactive elements
-button, .btn, input, select, textarea {
+button,
+.btn,
+input,
+select,
+textarea {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // Loading states
 .loading {
   position: relative;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -79,32 +78,30 @@ button, .btn, input, select, textarea {
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
+  0% {
+    transform: translateX(-100%);
+  }
 
-// Legacy main content (for pages that haven't been updated yet)
-.main-content {
-  position: relative;
-  background: url("/celeste.svg") no-repeat right bottom;
-  padding-right: 0;
-  padding-left: 0;
-  @media (max-width: 991px) {
-    background-size: 200px auto;
-    background-position: right 0 bottom 0;
-    opacity: 0.5;
+  100% {
+    transform: translateX(100%);
   }
 }
+
+
+
 strong {
-  font-weight: 700;
+  font-weight: 600;
 }
+
 ol {
   margin: 2rem;
+
   li {
     margin: 1rem 0;
   }
+
   li::marker {
-    color: custom.$secondary;
+    color: $secondary;
     font-size: 1.2rem;
     font-weight: bold;
   }
@@ -115,54 +112,56 @@ ol {
 }
 
 .bg-badge-light-secondary {
-  background-color: custom.$light-secondary;
-  border : 1px solid custom.$secondary;
-  color : custom.$secondary;
+  background-color: $light-secondary;
+  border: 1px solid $secondary;
+  color: $secondary;
 }
+
 .bg-light-secondary {
-  background-color: custom.$light-secondary;
+  background-color: $light-secondary;
 }
-.btn-check:focus + .btn-outline-secondary,
+
+.btn-check:focus+.btn-outline-secondary,
 .btn-outline-secondary:focus {
   box-shadow: 0 0 0 0.1rem rgb(250 89 95 / 50%);
 }
 
 // Refined Button Styles
 .btn-outline-secondary {
-  background-color: lighten(custom.$secondary, 30%);
-  border: 1px solid custom.$secondary;
+  background-color: lighten($secondary, 30%);
+  border: 1px solid $secondary;
   font-weight: 600;
   transition: all 0.2s ease;
 
   &:hover,
   &:focus {
     color: #fff;
-    background-color: custom.$secondary;
-    border-color: custom.$secondary;
+    background-color: $secondary;
+    border-color: $secondary;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(custom.$secondary, 0.25);
+    box-shadow: 0 2px 8px rgba($secondary, 0.25);
   }
 }
 
 .btn-outline-primary {
-  background-color: lighten(custom.$primary, 75%);
-  border: 1px solid custom.$primary;
+  background-color: lighten($primary, 75%);
+  border: 1px solid $primary;
   font-weight: 600;
   transition: all 0.2s ease;
 
   &:hover,
   &:focus {
     color: #fff;
-    background-color: custom.$primary;
-    border-color: custom.$primary;
+    background-color: $primary;
+    border-color: $primary;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(custom.$primary, 0.25);
+    box-shadow: 0 2px 8px rgba($primary, 0.25);
   }
 }
 
 .btn-secondary {
   color: #fff;
-  background: custom.$secondary;
+  background: $secondary;
   border: none;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -170,9 +169,9 @@ ol {
   &:hover,
   &:focus {
     color: #fff;
-    background: darken(custom.$secondary, 8%);
+    background: darken($secondary, 8%);
     transform: translateY(-1px);
-    box-shadow: 0 3px 12px rgba(custom.$secondary, 0.3);
+    box-shadow: 0 3px 12px rgba($secondary, 0.3);
   }
 }
 
@@ -202,26 +201,26 @@ section {
   padding: 2.5rem 1.5rem;
   border-radius: 1rem;
   margin-bottom: 2rem;
-  border: 1px solid rgba(custom.$primary, 0.06);
-  box-shadow: 0 2px 12px rgba(custom.$primary, 0.06);
+  border: 1px solid rgba($primary, 0.06);
+  box-shadow: 0 2px 12px rgba($primary, 0.06);
   transition: all 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(custom.$primary, 0.1);
-    border-color: rgba(custom.$primary, 0.12);
+    box-shadow: 0 4px 20px rgba($primary, 0.1);
+    border-color: rgba($primary, 0.12);
   }
 }
 
 .card {
-  border: 1px solid rgba(custom.$primary, 0.06);
-  box-shadow: 0 1px 8px rgba(custom.$primary, 0.04);
+  border: 1px solid rgba($primary, 0.06);
+  box-shadow: 0 1px 8px rgba($primary, 0.04);
   transition: all 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(custom.$primary, 0.08);
-    border-color: rgba(custom.$primary, 0.1);
+    box-shadow: 0 4px 15px rgba($primary, 0.08);
+    border-color: rgba($primary, 0.1);
   }
 }
 
@@ -233,7 +232,7 @@ section {
     h5 {
       font-size: 1rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid custom.$secondary;
+      border-bottom: 1px solid $secondary;
     }
   }
 
@@ -250,7 +249,7 @@ section {
 }
 
 .alert-info {
-  border: 1px solid custom.$light;
+  border: 1px solid $light;
   background-color: #f7f7fb;
   font-size: 0.8rem;
 
@@ -262,7 +261,7 @@ section {
 
 .societal-footprint {
   .nav {
-    background-color: custom.$light;
+    background-color: $light;
     margin: 1rem 0 2rem 0;
     border-radius: 5px;
   }
@@ -272,12 +271,12 @@ section {
     border-radius: 5px;
 
     a {
-      color: custom.$primary;
+      color: $primary;
     }
   }
 
   .inverse {
-    background-color: custom.$primary;
+    background-color: $primary;
 
     a {
       color: #fff;
@@ -292,7 +291,7 @@ section {
 
     .indic-value {
       .value {
-        color: custom.$secondary;
+        color: $secondary;
         font-weight: 600;
         margin-bottom: 0;
       }
@@ -354,7 +353,7 @@ section.indic {
 }
 
 hr {
-  color: custom.$light;
+  color: $light;
   opacity: 1;
 }
 
@@ -364,24 +363,27 @@ p {
 
 
   a {
-    color : custom.$secondary;
+    color: $secondary;
   }
 }
+
 .faq {
   padding-top: 0;
+
   .question-box {
-    background-color: lighten( custom.$light, 2%);
+    background-color: lighten($light, 2%);
 
     p {
       margin-bottom: 0;
       font-weight: 700;
 
       a {
-        color : custom.$secondary;
+        color: $secondary;
       }
     }
   }
 }
+
 .btn-sm {
   padding: 0.5rem 1rem;
 }
@@ -404,3 +406,215 @@ p {
   background-color: #cdd5fe;
   z-index: -1;
 }
+
+// Homepage specific styles
+.home-page {
+
+
+
+  .explore-data {
+    border-top: 1px solid rgba($primary, 0.06);
+    border-bottom: 1px solid rgba($primary, 0.06);
+
+    h2 {
+      font-weight: 800;
+      color: $primary;
+      font-size: 2rem;
+    }
+
+    .explore-section {
+      .explore-header {
+        .explore-icon {
+          i {
+            opacity: 0.9;
+          }
+        }
+
+        h3 {
+          font-weight: 700;
+          color: $primary;
+          margin-bottom: 0.75rem;
+        }
+      }
+
+      .option-card {
+        border: 1px solid rgba($primary, 0.08);
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        &.hover-lift:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 20px rgba($primary, 0.12);
+          border-color: rgba($primary, 0.2);
+        }
+
+        &.bg-light:hover {
+          background: darken($light, 3%) !important;
+        }
+
+        &.bg-secondary:hover {
+          background: darken($secondary, 5%) !important;
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 8px 25px rgba($secondary, 0.25);
+        }
+
+        // Style pour la sectorial card avec vos vraies couleurs
+        &.sectorial-card {
+          border: none;
+          box-shadow: 0 4px 15px rgba(250, 89, 95, 0.2);
+
+          &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(250, 89, 95, 0.3);
+            background-color: #e54f55 !important; // Version plus foncée de votre #fa595f
+          }
+
+          .sectorial-filters {
+            .badge {
+              transition: all 0.3s ease;
+
+              &:hover {
+                background: rgba(white, 0.4) !important;
+                transform: translateY(-1px);
+              }
+            }
+          }
+
+          .btn-light {
+            background: rgba(white, 0.9);
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+
+            &:hover {
+              background: white;
+              transform: translateY(-1px);
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            }
+          }
+        }
+
+        i {
+          transition: all 0.3s ease;
+        }
+
+        &:hover i {
+          transform: scale(1.1);
+        }
+
+        .badge {
+          transition: all 0.3s ease;
+        }
+
+        &:hover .badge {
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    // Styles spécifiques pour la section sectorielle
+    .sectorial-section {
+      .sectorial-info {
+        strong {
+          color: $secondary;
+        }
+      }
+    }
+
+    // Amélioration de la hiérarchie visuelle avec vos vraies couleurs
+    .explore-section {
+      .explore-icon {
+        i {
+          display: inline-block;
+          width: 80px;
+          height: 80px;
+          line-height: 80px;
+          text-align: center;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+        }
+      }
+
+      &:first-child {
+        .explore-header h3 {
+          color: #191558; // Votre primary exact
+        }
+
+        .explore-icon i {
+          color: white;
+          background: #191558; // Votre primary exact
+          box-shadow: 0 4px 15px rgba(25, 21, 88, 0.2);
+
+          &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(25, 21, 88, 0.3);
+          }
+        }
+      }
+
+      &:last-child {
+        .explore-header h3 {
+          color: #fa595f; // Votre secondary exact
+        }
+
+        .explore-icon i {
+          color: white;
+          background: #fa595f; // Votre secondary exact
+          box-shadow: 0 4px 15px rgba(250, 89, 95, 0.2);
+
+          &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(250, 89, 95, 0.3);
+          }
+        }
+      }
+    }
+
+    // Distinction visuelle entre les deux sections
+    .explore-section:first-child {
+      border-right: 1px solid rgba($primary, 0.06);
+      padding-right: 2rem;
+
+      @media (max-width: 991.98px) {
+        border-right: none;
+        border-bottom: 1px solid rgba($primary, 0.06);
+        padding-right: 0;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .explore-section:last-child {
+      padding-left: 2rem;
+
+      @media (max-width: 991.98px) {
+        padding-left: 0;
+        padding-top: 2rem;
+      }
+    }
+  }
+
+  .use-cases {
+    .use-case-card {
+      transition: all 0.3s ease;
+      border: 1px solid rgba($primary, 0.06);
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba($primary, 0.1);
+        border-color: rgba($primary, 0.12);
+      }
+
+      h4 {
+        color: $primary;
+        font-weight: 700;
+      }
+
+      .list-unstyled li {
+        padding: 0.25rem 0;
+      }
+    }
+  }
+}
+
+

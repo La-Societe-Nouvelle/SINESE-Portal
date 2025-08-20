@@ -1,4 +1,4 @@
-@use "../custom.scss" as custom;
+
 
 .bloc-statistics{
 
@@ -6,7 +6,7 @@
 
     p {
         font-weight: 600;
-        color : custom.$primary;
+        color : $primary;
     }
     p:last-of-type{
         text-transform: uppercase;
