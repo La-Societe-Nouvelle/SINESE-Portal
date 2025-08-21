@@ -117,24 +117,28 @@ $select-background-selected: #758bfd;
   // Multi-select specifique
   &.react-select-multi {
     .react-select__multi-value {
-      background-color: $select-background-selected;
-      border-radius: 0.25rem;
+      background-color: #e0e7ff;
+      border: 1px solid #6366f1;
+      border-radius: 0.375rem;
       margin: 1px 2px;
       
       &__label {
-        color: white;
+        color: #3730a3;
         font-size: 0.75rem;
-        font-weight: 600;
-        padding: 3px 6px;
+        font-weight: 500;
+        padding: 2px 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       &__remove {
-        color: white;
-        border-radius: 0 0.25rem 0.25rem 0;
+        color: #4f46e5;
+        border-radius: 0 0.375rem 0.375rem 0;
         padding: 0 4px;
         
         &:hover {
-          background-color: rgba(255, 255, 255, 0.2);
+          background-color: #6366f1;
           color: white;
         }
       }
@@ -142,6 +146,11 @@ $select-background-selected: #758bfd;
 
     .react-select__value-container {
       padding: 2px 4px;
+    }
+
+    // Masquer le bouton clear global par défaut sur les multi-select
+    .react-select__clear-indicator {
+      display: none;
     }
   }
 
@@ -184,48 +193,3 @@ $select-background-selected: #758bfd;
   }
 }
 
-// Classes utilitaires pour les variantes
-.react-select-success {
-  .react-select__control {
-    border-color: #10b981;
-
-    &--is-focused {
-      border-color: #10b981;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
-  }
-
-  .react-select__multi-value {
-    background-color: #10b981;
-  }
-}
-
-.react-select-warning {
-  .react-select__control {
-    border-color: #f59e0b;
-
-    &--is-focused {
-      border-color: #f59e0b;
-      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
-    }
-  }
-
-  .react-select__multi-value {
-    background-color: #f59e0b;
-  }
-}
-
-.react-select-error {
-  .react-select__control {
-    border-color: #ef4444;
-
-    &--is-focused {
-      border-color: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-    }
-  }
-
-  .react-select__multi-value {
-    background-color: #ef4444;
-  }
-}

@@ -1,7 +1,18 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Container, Row, Col, Form, InputGroup, Button, ListGroup, Spinner, Card } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import { 
+  Search, 
+  SlidersHorizontal, 
+  Users, 
+  Calculator, 
+  Share2, 
+  Info, 
+  CheckCircle, 
+  Code2, 
+  PlayCircle 
+} from "lucide-react";
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
@@ -58,13 +69,12 @@ export default function HomePage() {
 
 
             <h1 className="hero__title">
-              Toute l'information sur
-              <span className="highlight">l'Empreinte Sociétale</span>
-              des entreprises
+              Consultez l'<span className="highlight">Empreinte Sociétale</span>
+              de toutes les entreprises françaises
             </h1>
 
             <p className="hero__subtitle">
-              Consultez librement les données publiées sur les impacts de la valeur produite par les entreprises françaises.
+              <strong>Données ouvertes</strong> sur les impacts sociaux et environnementaux : explorez, comparez, et visualisez
             </p>
 
             {/* Mini stats visibles dans le hero */}
@@ -91,7 +101,7 @@ export default function HomePage() {
             <div className="hero__search">
               <div className="search-box">
                 <div className="search-input">
-                  <i className="bi bi-search search-icon"></i>
+                  <Search className="search-icon" size={20} />
                   <input
                     type="text"
                     placeholder="Recherchez une entreprise par son nom ou son numéro SIREN..."
@@ -100,13 +110,13 @@ export default function HomePage() {
                     onFocus={() => query.length > 2 && setShowSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                   />
-                  <button type="submit" onClick={handleSearch}>
+                  <button type="submit" className="btn btn-secondary" onClick={handleSearch}>
                     Rechercher
                   </button>
                 </div>
                 <div className="advanced-search">
-                  <a href="/recherche-avancee">
-                    <i className="bi bi-sliders"></i>
+                  <a href="/recherche">
+                    <SlidersHorizontal size={16} />
                     <span>Recherche avancée</span>
                   </a>
                 </div>
@@ -120,39 +130,50 @@ export default function HomePage() {
         <Container fluid className="px-0">
           <Row className="g-0">
             {/* Côté gauche - fond blanc */}
-            <Col lg={6} className=" py-5">
+            <Col lg={6} className="py-5">
               <Container>
                 <div className="info px-4">
-                  <h2 className=" mb-3">Système d'Information national sur l'Empreinte Sociale et Environnementale des Entreprises</h2>
-                  <p>
-                    Découvrez sur SINESE les données d'empreinte sociétale des entreprises, produites par La Société Nouvelle.
-                  </p>
-
-                  <div className="stats-grid mb-4">
-                    <div className="stat-box">
-                      <div className="stat-number">5M+</div>
-                      <div className="stat-label">Entreprises modélisées</div>
+                          
+                  <h2 className="mb-4">Un système <span className="text-primary">collaboratif</span> de <span className="text-secondary">comptabilité extra-financière</span></h2>
+                  
+                  <div className="mission-content mb-4">
+                    <div className="mission-item mb-3">
+                      <div className="mission-icon">
+                        <Users className="text-primary" size={24} />
+                      </div>
+                      <div>
+                        <h5 className="mb-2">Approche collaborative</h5>
+                        <p className="text-muted mb-0">Chaque entreprise récupère l'empreinte de ses fournisseurs et partage la sienne avec ses clients.</p>
+                      </div>
                     </div>
-                    <div className="stat-box">
-                      <div className="stat-number">84,150+</div>
-                      <div className="stat-label">Données extra-financières</div>
+                    
+                    <div className="mission-item mb-3">
+                      <div className="mission-icon">
+                        <Calculator className="text-secondary" size={24} />
+                      </div>
+                      <div>
+                        <h5 className="mb-2">Mesure et transparence</h5>
+                        <p className="text-muted mb-0">Permettre aux entreprises de mesurer et rendre compte de leurs externalités sociales et environnementales.</p>
+                      </div>
                     </div>
-                    <div className="stat-box">
-                      <div className="stat-number">64</div>
-                      <div className="stat-label">Secteurs modélisés</div>
-                    </div>
-                    <div className="stat-box">
-                      <div className="stat-number">12</div>
-                      <div className="stat-label">Indicateurs mesurés</div>
+                    
+                    <div className="mission-item">
+                      <div className="mission-icon">
+                        <Share2 className="text-tertiary" size={24} />
+                      </div>
+                      <div>
+                        <h5 className="mb-2">Données accessibles</h5>
+                        <p className="text-muted mb-0">Généraliser l'accès aux données extra-financières pour améliorer la traçabilité des impacts économiques.</p>
+                      </div>
                     </div>
                   </div>
 
                   <div className="d-flex flex-wrap gap-3 justify-content-center justify-lg-start">
                     <a href="/recherche" className="btn btn-primary shadow-sm">
-                      <i className="bi bi-search me-2"></i>Rechercher une entreprise
+                      <Search size={16} className="me-2" />Explorer les données
                     </a>
-                    <a href="/macroeconomies" className="btn btn-outline-primary ">
-                      <i className="bi bi-bar-chart me-2"></i>Empreinte des activités économiques
+                    <a href="https://lasocietenouvelle.org/projet-sinese" className="btn btn-outline-primary" target="_blank" rel="noopener">
+                      <Info size={16} className="me-2" />En savoir plus
                     </a>
                   </div>
                 </div>
@@ -179,7 +200,7 @@ export default function HomePage() {
                         <div className="fw-bold h5 mb-1">La Société Nouvelle</div>
                         <div className="text-muted mb-2">Empreinte Sociétale des Entreprises</div>
                         <small className="text-muted">
-                          <i className="bi bi-check-circle text-success me-1"></i>
+                          <CheckCircle size={14} className="text-success me-1" />
                           Méthodologie publique et Open Source
                         </small>
                       </div>
@@ -219,67 +240,34 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="community-section py-5" style={{ marginTop: '4rem' }}>
+      {/* Section de transition CTA */}
+      <section className="cta-section py-5">
         <Container>
-          <div className="text-center mb-5">
-            <h2 className="fw-bold">Un système collaboratif et ouvert</h2>
-            <p className="text-muted mx-auto" style={{ maxWidth: "720px" }}>
-              SINESE est basé sur une démarche collaborative :
-              chaque entreprise récupère l’empreinte sociétale de ses fournisseurs
-              pour estimer ses impacts indirects, et met à disposition de ses clients
-              sa propre empreinte pour qu'ils puissent à leur tour estimer leurs impacts indirects.
+          <Row className="justify-content-center text-center">
+            <Col lg={10}>
+              <h3 className="mb-4">Accédez aux données via notre API publique</h3>
+              
+              <div className="cta-content mb-4">
+                <p className="mb-3">
+                  <strong>L'API SINESE</strong> met à disposition l'ensemble des données d'empreinte sociétale des entreprises françaises. 
+                  Intégrez ces informations dans vos applications, logiciels ou analyses.
+                </p>
+                <p className="text-muted mb-4">
+                  <strong>Données ouvertes</strong> • <strong>Accès gratuit</strong> • <strong>Documentation complète</strong> 
+                </p>
+              </div>
+              
+              <div className="d-flex flex-wrap gap-3 justify-content-center">
+                <a href="/api" className="btn btn-secondary">
+                  <Code2 size={16} className="me-2" />Documentation API
+                </a>
+                <a href="/api/playground" className="btn btn-outline-primary">
+                  <PlayCircle size={16} className="me-2" />Tester l'API
+                </a>
 
-            </p>
-          </div>
-
-          <Row className="g-4">
-            <Col md={4}>
-              <Card className="h-100 shadow-sm border-0 feature-card">
-                <Card.Body className="text-center p-4">
-                  <div className="feature-icon mb-3">
-                    <i className="bi bi-upload fs-1 text-primary"></i>
-                  </div>
-                  <Card.Title className="fw-bold mb-3">Publiez vos données</Card.Title>
-                  <Card.Text className="text-muted">
-                    Partagez l'empreinte de votre entreprise pour enrichir
-                    le système et favoriser la transparence.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col md={4}>
-              <Card className="h-100 shadow-sm border-0 feature-card">
-                <Card.Body className="text-center p-4">
-                  <div className="feature-icon mb-3">
-                    <i className="bi bi-database fs-1 text-primary"></i>
-                  </div>
-                  <Card.Title className="fw-bold mb-3">Une base ouverte et gratuite</Card.Title>
-                  <Card.Text className="text-muted">
-                    Accédez librement aux données extra-financières via
-                    notre <strong>API publique</strong>, simple d'utilisation
-                    et conçue pour s'intégrer à vos outils.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col md={4}>
-              <Card className="h-100 shadow-sm border-0 feature-card">
-                <Card.Body className="text-center p-4">
-                  <div className="feature-icon mb-3">
-                    <i className="bi bi-book fs-1 text-primary"></i>
-                  </div>
-                  <Card.Title className="fw-bold mb-3">Appropriez-vous la méthode</Card.Title>
-                  <Card.Text className="text-muted">
-                    La méthodologie est publique et libre d'exploitation :
-                    utilisez nos indicateurs ou intégrez-les dans vos pratiques.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
+              </div>
             </Col>
           </Row>
-
         </Container>
       </section>
 

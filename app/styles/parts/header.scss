@@ -99,45 +99,19 @@
 
 // Modern header navigation
 .header-nav {
-  background: $primary !important;
   box-shadow: 0 2px 12px rgba($primary, 0.15);
   padding: 0.5rem 0;
-  
-  .navbar-brand {
-    .brand-title {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: white;
-      margin-bottom: 0;
-    }
-    
-    .brand-subtitle {
-      font-size: 0.75rem;
-      color: rgba(white, 0.8);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-  }
+
   
   .nav-item-custom {
-    color: rgba(white, 0.9) !important;
-    padding: 0.75rem 1rem;
     margin: 0 0.25rem;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    text-decoration: none !important;
-    display: flex;
-    align-items: center;
-    
+
     i {
       opacity: 0.8;
     }
     
     &:hover {
       background: rgba(white, 0.1);
-      color: white !important;
       transform: translateY(-1px);
       
       i {
@@ -146,26 +120,13 @@
     }
     
     &.active {
-      background: rgba(white, 0.15);
-      color: white !important;
       
       i {
         opacity: 1;
       }
     }
     
-    // Style spécial pour "Publier"
-    &.nav-publish {
-      background: $secondary;
-      color: white !important;
-      margin-left: 1rem;
-      
-      &:hover {
-        background: darken($secondary, 8%);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba($secondary, 0.3);
-      }
-    }
+
   }
   
   .navbar-toggler {

@@ -1,67 +1,140 @@
+/* ==========================================================================
+   SINESE Portal - Variables SCSS
+   Système de design optimisé pour l'accessibilité et l'expérience utilisateur
+   ========================================================================== */
 
-/* make the customizations */
+// =============================================================================
+// 1. COULEURS - Palette d'identité
+// =============================================================================
 
-$primary : #191558;
-$secondary : #fa595f;
-$tertiary : #758bfd;
-$light : #eef;
-$gray-600 : #f3f3f3;
-$info : $light;
+// Couleurs primaires
+$primary: #3b4d8f;         // Bleu professionnel principal
+$secondary: #e74c5a;       // Rouge corail pour les actions
+$tertiary: #6c7fdd;        // Bleu pervenche pour les accents
 
-$light-secondary : #FEEBEC;
+// Couleurs dérivées
+$primary-light: #4a6ba3;
+$primary-dark: #1e3464;
+$secondary-light: #ed6b77;
+$tertiary-light: #8d9de8;
+$success: #d1e7dd;   
 
-$body-color: $primary;
-$font-size-base: 0.9rem;
-$link-color : lighten($primary, 5%);
+// Couleurs fonctionnelles
+$neutral: #64748b;         // Gris neutre pour textes secondaires
+$light: #f7f8fc;          // Bleu très clair pour les fonds
+$background: #fdfdfe;      // Fond principal
+$light-secondary: #FEEBEC; // Fond très clair pour secondary
+
+// Variables de compatibilité
+$info: #e0e7ff;
+
+// =============================================================================
+// 2. TYPOGRAPHIE - Hiérarchie et lisibilité
+// =============================================================================
+
+// Polices
+$font-family-sans-serif: "Poppins", system-ui, -apple-system, sans-serif;
+$headings-font-family: "Raleway", "Roboto", system-ui, sans-serif;
+
+// Tailles de police - Corps de texte
+$font-size-base: 1rem;              // 16px - Standard web optimal
+$line-height-base: 1.6;             // Lisibilité optimale
+$small-font-size: 0.875rem;         // 14px - Métadonnées, légendes
+$lead-font-size: 1.125rem;          // 18px - Introduction, mise en avant
+
+// Hiérarchie des titres
+$h1-font-size: 2.5rem;              // 40px - Titre principal
+$h2-font-size: 2rem;                // 32px - Sections importantes  
+$h3-font-size: 1.5rem;              // 24px - Sous-sections
+$h4-font-size: 1.25rem;             // 20px - Sous-titres
+$h5-font-size: 1.125rem;            // 18px - Détails
+$h6-font-size: 1rem;                // 16px - Minimum lisible
+$headings-margin-bottom: 1rem;
+$headings-font-weight: 700;
+
+// Couleurs de texte optimisées pour le contraste
+$body-color: $primary;               // #3b4d8f - Lecture principale
+$headings-color: $primary-dark;      // #1e3464 - Titres plus marqués
+$text-muted: $neutral;               // #64748b - Métadonnées
+$text-light: lighten($neutral, 15%); // Texte très discret
+$link-color: $secondary;             // #e74c5a - Liens et CTA
+$link-hover-color: darken($secondary, 10%);
 $link-decoration: none;
 
+// =============================================================================
+// 3. ARRIÈRE-PLANS ET SURFACES
+// =============================================================================
 
-$font-family-sans-serif: "Poppins", sans-serif;
-$headings-font-family: 'Raleway', 'Roboto', sans-serif;
-$headings-color : $primary;
-$headings-font-weight : 700;
+$body-bg: $background;               // #fdfdfe - Fond principal
+$card-bg: #ffffff;                   // Cartes et contenus
+$section-bg: $light;                 // #f7f8fc - Sections alternées
 
-$h2-font-size:1.4rem;
-$h3-font-size:1.3rem;
-$h4-font-size:1.2rem;
-$h5-font-size:1rem;
-$h6-font-size:1rem;
-$headings-margin-bottom: 1rem;
+// =============================================================================
+// 4. ESPACEMENT ET FORMES
+// =============================================================================
 
+// Border-radius système
+$border-radius: 0.75rem;             // Radius standard moderne
+$border-radius-sm: 0.5rem;           // Petit radius
+$border-radius-lg: 1rem;             // Grand radius
+$border-color: $light;               // Bordures discrètes
 
-$border-radius : 1rem;
+// =============================================================================
+// 5. BOUTONS - Système d'interaction
+// =============================================================================
 
-/* Navbar */
- 
-$navbar-light-color :  $primary ;
-$navbar-light-hover-color : $secondary;
-$nav-link-padding-y : 0.85rem;
-$nav-link-font-weight : 600;
-$nav-link-font-size : 0.85rem;
+$btn-border-radius: 0.5rem;         // Radius moderne
+$btn-border-radius-sm: 0.375rem;    // Small buttons
+$btn-font-weight: 600;               // Lisibilité optimale
+$btn-font-size: 0.875rem;           // Taille cohérente
+
+// Padding optimisé pour l'accessibilité (zone tactile 44px minimum)
+$btn-padding-y: 0.625rem;           // 10px - Équilibré
+$btn-padding-x: 1.25rem;            // 20px - Confortable pour le clic
+$btn-padding-y-sm: 0.375rem;        // 6px - Compact
+$btn-padding-x-sm: 1rem;            // 16px
+$btn-padding-y-lg: 0.75rem;         // 12px - Imposant
+$btn-padding-x-lg: 1.5rem;          // 24px
+
+// =============================================================================
+// 6. NAVIGATION
+// =============================================================================
+
+$navbar-light-color: $primary;
+$navbar-light-hover-color: $secondary;
+$nav-link-padding-y: 0.85rem;
+$nav-link-font-weight: 600;
+$nav-link-font-size: 0.85rem;
+
+// =============================================================================
+// 7. COMPOSANTS - Cards, Dropdowns, etc.
+// =============================================================================
+
+// Cards
+$card-cap-bg: #fbfbff;
+$card-border-width: 0;
+$card-cap-padding-y: 1rem;
+
+// Accordeons
+$accordion-button-active-bg: #fff;
+$accordion-border-radius: 1rem;
+$accordion-border-width: 0;
+$accordion-border-color: $light;
+
+// Dropdowns
 $dropdown-min-width: 18rem;
-
-$card-cap-bg : #fbfbff;
-$card-border-width : 0;
-$card-cap-padding-y : 1rem;
-
-$border-radius-lg : 1rem;
-$border-color : $light;
-$accordion-button-active-bg : #fff;
-$accordion-border-radius : 1rem;
-$accordion-border-width : 0;
-$accordion-border-color : $light;
-$btn-border-radius : 1.5rem;
-$btn-border-radius-sm : 2rem;
-$badge-font-weight : 500;
-$modal-content-bg : $light;
-
-$dropdown-link-active-bg : transparent;
-$dropdown-font-size : 0.85rem;
-$dropdown-border-color : $light;
-$dropdown-border-width : 2px;
+$dropdown-link-active-bg: transparent;
+$dropdown-font-size: 0.85rem;
+$dropdown-border-color: $light;
+$dropdown-border-width: 2px;
 $dropdown-link-hover-bg: $light;
-$pagination-font-size : 0.8rem;
 
+// Autres composants
+$badge-font-weight: 600;
+$modal-content-bg: $light;
+$pagination-font-size: 0.8rem;
+$form-check-input-border:                 1px solid rgba($primary-light, .7);
+$input-border-color:    rgba($primary-light, .7);
 
-/* import bootstrap to set changes */
+ 
 @import "~bootstrap/scss/bootstrap";

@@ -2,6 +2,7 @@
 @import "variables";
 
 // import pages
+@import "parts/buttons.scss";
 @import "parts/header.scss";
 @import "parts/footer.scss";  
 @import "pages/homepage.scss";
@@ -115,6 +116,10 @@ ol {
   border-color: #f0f0f8 !important;
 }
 
+.bg-light , .bg-info{
+ color : $primary;
+}
+
 .bg-badge-light-secondary {
   background-color: $light-secondary;
   border: 1px solid $secondary;
@@ -125,59 +130,6 @@ ol {
   background-color: $light-secondary;
 }
 
-.btn-check:focus+.btn-outline-secondary,
-.btn-outline-secondary:focus {
-  box-shadow: 0 0 0 0.1rem rgb(250 89 95 / 50%);
-}
-
-// Refined Button Styles
-.btn-outline-secondary {
-  background-color: lighten($secondary, 30%);
-  border: 1px solid $secondary;
-  font-weight: 600;
-  transition: all 0.2s ease;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-    background-color: $secondary;
-    border-color: $secondary;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba($secondary, 0.25);
-  }
-}
-
-.btn-outline-primary {
-  background-color: lighten($primary, 75%);
-  border: 1px solid $primary;
-  font-weight: 600;
-  transition: all 0.2s ease;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-    background-color: $primary;
-    border-color: $primary;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba($primary, 0.25);
-  }
-}
-
-.btn-secondary {
-  color: #fff;
-  background: $secondary;
-  border: none;
-  font-weight: 600;
-  transition: all 0.2s ease;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-    background: darken($secondary, 8%);
-    transform: translateY(-1px);
-    box-shadow: 0 3px 12px rgba($secondary, 0.3);
-  }
-}
 
 .underline {
   position: relative;

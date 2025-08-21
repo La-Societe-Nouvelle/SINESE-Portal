@@ -1,4 +1,5 @@
 import { Col, Container, Image, ListGroup, Nav, Row, Form, Button, InputGroup } from "react-bootstrap";
+import { Github, Linkedin, MessageCircle, Mail, HelpCircle, Home } from "lucide-react";
 
 function Footer() {
   const year = new Date().getFullYear();
@@ -7,7 +8,7 @@ function Footer() {
   return (
     <footer className="footer">
       {/* Section Newsletter */}
-      <div className="newsletter-section bg-primary text-white py-5">
+      <div className="newsletter-section py-5">
         <Container>
           <Row className="align-items-center">
             <Col lg={6} className="mb-4 mb-lg-0">
@@ -24,7 +25,7 @@ function Footer() {
       </div>
 
       {/* Section principale du footer */}
-      <div className="main-footer bg-dark text-white py-5">
+      <div className="main-footer py-5">
         <Container>
           <Row className="g-4">
             {/* À propos */}
@@ -38,13 +39,13 @@ function Footer() {
                 </p>
                 <div className="d-flex gap-3">
                   <a href="https://github.com/La-Societe-Nouvelle/" target="_blank" rel="noreferrer" className="fs-4">
-                    <i className="bi bi-github"></i>
+                    <Github size={24} />
                   </a>
                   <a href="https://www.linkedin.com/company/la-societe-nouvelle/" target="_blank" rel="noreferrer" className="fs-4">
-                    <i className="bi bi-linkedin"></i>
+                    <Linkedin size={24} />
                   </a>
                   <a href="https://discord.gg/ANFwWZc3eu" target="_blank" rel="noreferrer" className="fs-4">
-                    <i className="bi bi-discord"></i>
+                    <MessageCircle size={24} />
                   </a>
                 </div>
               </div>
@@ -83,17 +84,17 @@ function Footer() {
                 <ul className="list-unstyled">
                   <li className="mb-2">
                     <a href="/contact" className=" text-decoration-none">
-                      <i className="bi bi-envelope me-2"></i>Nous contacter
+                      <Mail size={16} className="me-2" />Nous contacter
                     </a>
                   </li>
                   <li className="mb-2">
                     <a href="/support" className=" text-decoration-none">
-                      <i className="bi bi-question-circle me-2"></i>Support technique
+                      <HelpCircle size={16} className="me-2" />Support technique
                     </a>
                   </li>
                   <li className="mb-2">
                     <a href="https://lasocietenouvelle.org" target="_blank" className=" text-decoration-none">
-                      <i className="bi bi-house me-2"></i>La Société Nouvelle
+                      <Home size={16} className="me-2" />La Société Nouvelle
                     </a>
                   </li>
                 </ul>

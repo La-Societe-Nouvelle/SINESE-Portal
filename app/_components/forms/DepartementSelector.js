@@ -67,16 +67,12 @@ export default function DepartementSelector({
   // Formater les options pour l'affichage
   const formatOptionLabel = (option) => (
     <div className="d-flex align-items-center">
-      <span className="badge bg-secondary me-2" style={{ fontSize: '0.7rem', minWidth: '30px' }}>
-        {option.code}
-      </span>
+
       <div className="flex-grow-1">
         <div style={{ fontSize: '0.875rem' }}>
           {option.name}
         </div>
-        <small className="text-muted" style={{ fontSize: '0.75rem' }}>
-          {option.region}
-        </small>
+
       </div>
     </div>
   );
@@ -87,12 +83,12 @@ export default function DepartementSelector({
     return option.data.searchText.includes(inputValue.toLowerCase());
   };
 
-  // Styles personnalisés
+  // Styles minimalistes pour les groupes et options personnalisées uniquement
   const customStyles = {
     groupHeading: (provided) => ({
       ...provided,
       backgroundColor: '#f8f9fa',
-      color: '#0d6efd',
+      color: '#6366f1',
       fontWeight: 'bold',
       fontSize: '0.85rem',
       padding: '8px 12px',
@@ -104,39 +100,21 @@ export default function DepartementSelector({
       paddingTop: 0,
       paddingBottom: 4
     }),
-    option: (provided, state) => ({
-      ...provided,
-      padding: '8px 12px',
-      backgroundColor: state.isSelected 
-        ? '#0d6efd'
-        : state.isFocused 
-          ? '#f8f9fa'
-          : 'white',
-      color: state.isSelected ? 'white' : '#333',
-      borderBottom: '1px solid #f5f5f5'
-    }),
-    multiValue: (provided) => ({
-      ...provided,
-      backgroundColor: '#0d6efd',
-      borderRadius: '0.25rem',
-      fontSize: '0.75rem'
-    }),
-    multiValueLabel: (provided) => ({
-      ...provided,
-      color: 'white',
-      fontWeight: '600'
-    }),
-    multiValueRemove: (provided) => ({
-      ...provided,
-      color: 'white',
-      ':hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        color: 'white'
-      }
-    }),
     menuList: (provided) => ({
       ...provided,
       maxHeight: '350px'
+    }),
+    // Support des textes longs dans les multi-values
+    multiValueLabel: (provided) => ({
+      ...provided,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      maxWidth: "160px"
+    }),
+    multiValue: (provided) => ({
+      ...provided,
+      maxWidth: "200px"
     })
   };
 
@@ -154,7 +132,7 @@ export default function DepartementSelector({
         closeMenuOnSelect={!isMulti}
         hideSelectedOptions={false}
         size="small"
-        variant="primary"
+        variant="default"
         formatOptionLabel={formatOptionLabel}
         filterOption={filterOption}
         styles={customStyles}

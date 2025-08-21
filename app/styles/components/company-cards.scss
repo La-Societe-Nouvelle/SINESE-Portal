@@ -1,0 +1,176 @@
+/* Company Cards - Search Results */
+.company-card {
+  transition: all 0.2s ease-in-out;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .company-name {
+    a.hover-underline:hover {
+      text-decoration: underline !important;
+    }
+  }
+  
+  .company-badges {
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      
+      i {
+        font-size: 0.6rem;
+      }
+    }
+  }
+  
+  .company-details {
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      
+      i {
+        margin-top: 0.125rem;
+        font-size: 0.875rem;
+        width: 16px;
+        text-align: center;
+      }
+    }
+  }
+  
+  .company-actions {
+    .btn {
+      transition: all 0.2s ease-in-out;
+      font-weight: 600;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 123, 255, 0.3);
+      }
+    }
+  }
+  
+  .progress-circle {
+    transition: transform 0.2s ease-in-out;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  
+  .data-quality-info {
+    small {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+
+/* Badge personnalisé pour société à mission */
+.badge.bg-purple {
+  background: linear-gradient(135deg, #6f42c1, #8e44ad) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .company-card {
+    .company-badges {
+      margin-top: 0.5rem;
+      
+      .badge {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+    
+    .company-details {
+      .detail-item {
+        margin-bottom: 0.75rem;
+        
+        i {
+          margin-right: 0.5rem !important;
+        }
+      }
+    }
+    
+    .company-actions {
+      margin-top: 1rem;
+      text-align: center !important;
+      
+      .btn {
+        width: 100%;
+      }
+    }
+    
+    .data-quality-info {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+/* Hover effects */
+.hover-shadow {
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+/* Animation pour les badges */
+@keyframes badge-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.badge:hover {
+  animation: badge-pulse 0.3s ease-in-out;
+}
+
+/* Progress circle animation */
+@keyframes progress-fill {
+  from { 
+    background: conic-gradient(#198754 0deg, #e9ecef 0deg);
+  }
+}
+
+.progress-circle {
+  animation: progress-fill 0.8s ease-out;
+}
+
+/* Amélioration de l'espacement */
+.results-list .company-card:last-child {
+  margin-bottom: 2rem;
+}
+
+
+
+/* Focus states pour l'accessibilité */
+.company-card a:focus,
+.company-card .btn:focus {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+/* Loading state */
+.company-card.loading {
+  opacity: 0.7;
+  pointer-events: none;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

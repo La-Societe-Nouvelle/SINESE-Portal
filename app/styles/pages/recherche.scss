@@ -221,6 +221,15 @@
   }
 }
 
+
+
+.naf-sidebar-selector{
+   .form-check-label   {
+      font-size: 0.7rem;
+      color : $text-muted;
+    }
+}
+
 // Responsive
 @media (max-width: 991px) {
   .search-page {

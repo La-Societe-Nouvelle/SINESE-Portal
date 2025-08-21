@@ -1,7 +1,7 @@
 import "./styles/app.scss";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
 import Footer from "./_components/footer";
+import { Upload, Building2, Search, TrendingUp, HelpCircle, Mail } from "lucide-react";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -34,59 +34,57 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
- 
+
   return (
     <html lang="fr">
       <body>
-        <div className="app-layout d-flex flex-column min-vh-100">
-          <Navbar expand="lg" className="header-nav" variant="dark">
-            <Container fluid className="px-4">
-              <NavbarBrand href="/" className="d-flex align-items-center">
-                <img src="/logo-LSN-blanc.png" alt="SINESE" height={45} className="me-3" />
- 
-              </NavbarBrand>
+        <Navbar expand="lg" className="header-nav" variant="light">
+          <Container fluid className="px-4">
+            <NavbarBrand href="/" className="d-flex align-items-center">
+              <img src="/logo-La-Societe-Nouvelle.svg" alt="SINESE" height={40} className="me-3" />
 
-              <NavbarToggle aria-controls="basic-navbar-nav" />
-              <NavbarCollapse id="basic-navbar-nav">
-                <Nav className="me-auto">
-                  <NavLink href="/" className="nav-item-custom">
-                    <i className="bi bi-buildings me-2"></i>
-                    <span>Entreprises</span>
-                  </NavLink>
-                  <NavLink href="/recherche" className="nav-item-custom">
-                    <i className="bi bi-search me-2"></i>
-                    <span className="d-none d-lg-inline">Recherche</span>
-                  </NavLink>
-                  <NavLink href="/macroeconomies" className="nav-item-custom">
-                    <i className="bi bi-graph-up me-2"></i>
-                    <span>Macroéconomie</span>
-                  </NavLink>
-                </Nav>
-                
-                <Nav className="ms-auto">
-                  <NavLink href="/publier" className="nav-item-custom nav-publish">
-                    <i className="bi bi-plus me-2"></i>
-                    <span>Publier sur SINESE.fr</span>
-                  </NavLink>
-                  <NavLink href="/faq" className="nav-item-custom">
-                    <i className="bi bi-question-circle me-2"></i>
-                    <span className="d-none d-lg-inline">FAQ</span>
-                  </NavLink>
-                  <NavLink href="/contact" className="nav-item-custom">
-                    <i className="bi bi-envelope me-2"></i>
-                    <span className="d-none d-lg-inline">Contact</span>
-                  </NavLink>
-                </Nav>
-              </NavbarCollapse>
-            </Container>
-          </Navbar>
+            </NavbarBrand>
 
-          <main className="main-content flex-grow-1">
-            {children}
-          </main>
+            <NavbarToggle aria-controls="basic-navbar-nav" />
+            <NavbarCollapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <NavLink href="/" className="nav-item-custom">
+                  <Building2 size={16} className="me-2" />
+                  <span>Entreprises</span>
+                </NavLink>
+                <NavLink href="/recherche" className="nav-item-custom">
+                  <Search size={16} className="me-2" />
+                  <span className="d-none d-lg-inline">Recherche</span>
+                </NavLink>
+                <NavLink href="/macroeconomies" className="nav-item-custom">
+                  <TrendingUp size={16} className="me-2" />
+                  <span>Macroéconomie</span>
+                </NavLink>
+              </Nav>
 
-          <Footer></Footer>
-        </div>
+              <Nav className="ms-auto">
+                <NavLink href="/publier" className="btn btn-secondary">
+                  <Upload size={16} className="me-2" />
+                  Publier sur SINESE
+                </NavLink>
+                <NavLink href="/faq" className="nav-item-custom">
+                  <HelpCircle size={16} className="me-2" />
+                  <span className="d-none d-lg-inline">FAQ</span>
+                </NavLink>
+                <NavLink href="/contact" className="nav-item-custom">
+                  <Mail size={16} className="me-2" />
+                  <span className="d-none d-lg-inline">Contact</span>
+                </NavLink>
+              </Nav>
+            </NavbarCollapse>
+          </Container>
+        </Navbar>
+
+        <main className="main-content flex-grow-1">
+          {children}
+        </main>
+
+        <Footer></Footer>
       </body>
     </html>
   );
