@@ -2,15 +2,17 @@
 @import "variables";
 
 // import pages
-@import "parts/buttons.scss";
-@import "parts/header.scss";
-@import "parts/footer.scss";  
-@import "pages/homepage.scss";
-@import "pages/recherche.scss";
+@import "parts/buttons";
+@import "parts/header";
+@import "parts/footer";  
+@import "pages/homepage";
+@import "pages/recherche";
+@import "pages/macroeconomies";
 
 // import components
-@import "components/react-select.scss";
-@import "components/company-cards.scss";
+@import "components/react-select";
+@import "components/company-cards";
+@import "components/macro-sidebar";
 // @import "pages/portail.scss";
 // @import "pages/notre-approche.scss";
 // @import "pages/databrowser.scss";

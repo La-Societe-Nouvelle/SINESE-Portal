@@ -143,6 +143,67 @@
   }
 }
 
+// Page Header styles
+.page-header {
+  background: linear-gradient(135deg, $primary 0%, $primary-light 100%);
+  border-bottom: 1px solid #e9ecf3;
+  color: #fff;
+  padding: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba($primary, 0.1);
+  transition: all 0.3s ease;
+  
+  // Amélioration des liens dans les breadcrumbs
+  .hover-underline {
+    position: relative;
+    
+    &:hover {
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: currentColor;
+        opacity: 0.7;
+      }
+    }
+  }
+  
+  // Breadcrumbs styling
+  nav {
+    font-size: 0.85rem;
+  }
+
+  // Animation et styling de l'icône
+  .page-icon {
+    width: 44px;
+    height: 44px;
+    background-color: rgba($light, 0.1);
+    color: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+  }
+  
+  // Titre styling
+  h2 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    color : #fff;
+  }
+  
+  // Sous-titre styling
+  p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+  }
+}
+
+
 // Responsive adjustments
 @media (max-width: 991.98px) {
   .header-nav {
@@ -158,6 +219,18 @@
       margin-top: 1rem;
       padding-top: 1rem;
       border-top: 1px solid rgba(white, 0.1);
+    }
+  }
+  
+  // PageHeader mobile optimizations
+  .page-header {
+    h1 {
+      font-size: 1.5rem !important;
+    }
+    
+    .page-icon {
+      width: 36px !important;
+      height: 36px !important;
     }
   }
 }

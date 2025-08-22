@@ -9,6 +9,7 @@ export default function MentionsLegales() {
     <div className="open-data-portal">
       <PageHeader 
         title="Mentions légales" 
+        variant='compact'
         subtitle="Informations légales concernant La Société Nouvelle et le portail SINESE."
         path="mentions-legales" 
         icon={

@@ -1,7 +1,7 @@
-import "./styles/app.scss";
+import "./styles/main.scss";
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
 import Footer from "./_components/footer";
-import { Upload, Building2, Search, TrendingUp, HelpCircle, Mail } from "lucide-react";
+import { Upload, Building2, Search, TrendingUp, Mail } from "lucide-react";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),

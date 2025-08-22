@@ -111,9 +111,10 @@ export default function Contact() {
       <PageHeader 
         title="Contactez-nous" 
         subtitle="Notre équipe est à votre disposition pour vous accompagner dans vos projets liés à l'empreinte sociétale et aux données ouvertes."
-        path="contact" 
+        path="contact"
+        variant="minimal"
         icon={
-          <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
           </svg>
         }
