@@ -117,7 +117,3 @@ const page = () => {
 };
 
 export default page;
-
-export const metadata = {
-  title: "La Société Nouvelle | Politique de confidentialité",
-};

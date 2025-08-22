@@ -2,6 +2,7 @@
 
 //-- Charts
 import { BarChart } from "./BarChart";
+import { PieChart } from "./PieChart";
 
 //-- Libs
 import metaIndics from "@/_libs/indics";
@@ -9,11 +10,10 @@ import metaIndics from "@/_libs/indics";
 
 export const IndicatorChart = (props) => 
 {
-	//console.log(props);
-	const chartType = metaIndics[props.indic];
+	const { chartType } = metaIndics[props.indic];
 
 	switch(chartType) {
-		case "pie-chart": return <BarChart {...props}/>
+		case "pie-chart": return <PieChart {...props}/>
 		default:					return <BarChart {...props}/>
 	}
 };

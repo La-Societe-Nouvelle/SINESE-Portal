@@ -72,7 +72,10 @@ export default function RecherchePage() {
             categorieJuridiqueLibelle: "Société à responsabilité limitée",
             economieSocialeSolidaire: false,
             societeMission: true,
-            donneesPubliees: ["ECO", "GHG", "WAT", "SOC", "KNW"]
+            donneesPubliees: ["ECO", "GHG", "WAT", "SOC", "KNW"],
+            donneesEstimees: 3,
+            donneesDefaut: 4,
+            indicateursHorsESE: 2
           },
           {
             siren: "987654321", 
@@ -84,7 +87,10 @@ export default function RecherchePage() {
             categorieJuridiqueLibelle: "Société coopérative agricole",
             economieSocialeSolidaire: true,
             societeMission: false,
-            donneesPubliees: ["ECO", "GHG", "MAT"]
+            donneesPubliees: ["ECO", "GHG", "MAT"],
+            donneesEstimees: 5,
+            donneesDefaut: 4,
+            indicateursHorsESE: 0
           },
           {
             siren: "456789123",
@@ -96,7 +102,10 @@ export default function RecherchePage() {
             categorieJuridiqueLibelle: "Société à responsabilité limitée",
             economieSocialeSolidaire: false,
             societeMission: true,
-            donneesPubliees: ["WAS", "GHG", "ECO", "SOC", "MAT", "NRG", "WAT", "KNW"]
+            donneesPubliees: ["WAS", "GHG", "ECO", "SOC", "MAT", "NRG", "WAT", "KNW"],
+            donneesEstimees: 2,
+            donneesDefaut: 2,
+            indicateursHorsESE: 5
           },
           {
             siren: "321654987",
@@ -108,7 +117,10 @@ export default function RecherchePage() {
             categorieJuridiqueLibelle: "Association déclarée",
             economieSocialeSolidaire: true,
             societeMission: false,
-            donneesPubliees: ["KNW", "SOC", "ECO"]
+            donneesPubliees: ["KNW", "SOC", "ECO"],
+            donneesEstimees: 0,
+            donneesDefaut: 9,
+            indicateursHorsESE: 1
           },
           {
             siren: "789123456",
@@ -120,7 +132,85 @@ export default function RecherchePage() {
             categorieJuridiqueLibelle: "Société par actions simplifiée", 
             economieSocialeSolidaire: false,
             societeMission: true,
-            donneesPubliees: ["NRG", "GHG", "ECO", "WAT", "MAT", "SOC"]
+            donneesPubliees: ["NRG", "GHG", "ECO", "WAT", "MAT", "SOC"],
+            donneesEstimees: 4,
+            donneesDefaut: 2,
+            indicateursHorsESE: 3
+          },
+          {
+            siren: "654321987",
+            denomination: "Micro-Entreprise Artisan Local",
+            activitePrincipaleCode: "43.32A",
+            activitePrincipaleLibelle: "Travaux de menuiserie bois et PVC",
+            communeSiege: "Bordeaux",
+            trancheEffectifs: "1-2 salariés",
+            categorieJuridiqueLibelle: "Entreprise individuelle",
+            economieSocialeSolidaire: false,
+            societeMission: false,
+            donneesPubliees: [],
+            donneesEstimees: 8,
+            donneesDefaut: 4,
+            indicateursHorsESE: 0
+          },
+          {
+            siren: "147258369",
+            denomination: "Grande Distribution Responsable SA",
+            activitePrincipaleCode: "47.11D",
+            activitePrincipaleLibelle: "Supermarchés",
+            communeSiege: "Lille",
+            trancheEffectifs: "500-999 salariés",
+            categorieJuridiqueLibelle: "Société anonyme",
+            economieSocialeSolidaire: false,
+            societeMission: true,
+            donneesPubliees: ["ECO", "GHG", "WAT", "SOC", "KNW", "MAT", "WAS", "NRG", "HAZ", "ART", "EQU", "GEQ"],
+            donneesEstimees: 0,
+            donneesDefaut: 0,
+            indicateursHorsESE: 8
+          },
+          {
+            siren: "963852741",
+            denomination: "Startup GreenTech Solutions",
+            activitePrincipaleCode: "72.19Z",
+            activitePrincipaleLibelle: "Autres activités de recherche-développement en sciences physiques et naturelles",
+            communeSiege: "Montpellier",
+            trancheEffectifs: "20-49 salariés",
+            categorieJuridiqueLibelle: "Société par actions simplifiée",
+            economieSocialeSolidaire: false,
+            societeMission: true,
+            donneesPubliees: ["ECO", "GHG", "KNW"],
+            donneesEstimees: 7,
+            donneesDefaut: 2,
+            indicateursHorsESE: 1
+          },
+          {
+            siren: "852741963",
+            denomination: "Fondation Environnement & Société",
+            activitePrincipaleCode: "94.99Z",
+            activitePrincipaleLibelle: "Autres organisations fonctionnant par adhésion volontaire",
+            communeSiege: "Strasbourg",
+            trancheEffectifs: "10-19 salariés",
+            categorieJuridiqueLibelle: "Fondation",
+            economieSocialeSolidaire: true,
+            societeMission: false,
+            donneesPubliees: ["SOC", "ECO", "KNW", "WAT", "GHG"],
+            donneesEstimees: 1,
+            donneesDefaut: 6,
+            indicateursHorsESE: 0
+          },
+          {
+            siren: "741852963",
+            denomination: "Industriel Traditionnel SARL",
+            activitePrincipaleCode: "25.11Z",
+            activitePrincipaleLibelle: "Fabrication de structures métalliques et de parties de structures",
+            communeSiege: "Saint-Étienne",
+            trancheEffectifs: "100-199 salariés",
+            categorieJuridiqueLibelle: "Société à responsabilité limitée",
+            economieSocialeSolidaire: false,
+            societeMission: false,
+            donneesPubliees: ["ECO"],
+            donneesEstimees: 6,
+            donneesDefaut: 5,
+            indicateursHorsESE: 0
           }
         ];
 

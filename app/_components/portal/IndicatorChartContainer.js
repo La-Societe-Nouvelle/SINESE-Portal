@@ -4,15 +4,11 @@
 import { useState } from "react";
 
 //-- Bootstrap
-import { Badge, Button, Col, Image, Modal } from "react-bootstrap";
-
-//-- Packages
-import _ from "lodash";
+import { Badge, Button, Col, Image, Modal, Card } from "react-bootstrap";
+import { Info, ExternalLink, Eye } from "lucide-react";
 
 //-- Charts
 import { IndicatorChart } from "../charts/IndicatorChart";
-import FootprintDataChart from "../charts/FootprintDataChart";
-import HistoricalDataChart from "../charts/HistoricalDatachart";
 
 //-- Utils
 import FlagBadge from "./FlagBadges";
@@ -54,90 +50,94 @@ export const IndicatorChartContainer = ({
   } = legalUnitData[indic]
   
   return (
-    <Col key={indic} className="my-4" lg={4}>
-      <div className="p-3 border border-1 rounded-1 shadow-sm">
-        {/* ----- Liste des ODDs ----- */}
-        <div className="odds d-flex gap-1 w-100 mb-3">
-          {odds.map((odd) => (
-            <img
-              key={odd}
-              src={`/images/odd/F-WEB-Goal-${odd}.png`}
-              width={25}
-              height={25}
-              alt={`Odd ${odd}`}
-            />
-          ))}
-        </div>
-        {/* ----- Icone + Titre de l'indicateur / Lien vers la documentation ----- */}
-        <div className="indic-title">
-          {inEmpreinteSocietale &&
-            <div className="indic-icon-ese">
-              <Image
-                height="20px"
-                src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
-                alt={indic}
+    <Col key={indic} className="mb-4" lg={4}>
+      <Card className="h-100 shadow-sm border-0" style={{ transition: 'transform 0.2s ease' }}>
+        <Card.Header className="bg-light border-bottom py-3">
+          {/* ODDs en haut */}
+          <div className="d-flex flex-wrap gap-2 mb-3">
+            {odds.map((odd) => (
+              <img
+                key={odd}
+                src={`/images/odd/F-WEB-Goal-${odd}.png`}
+                width={24}
+                height={24}
+                alt={`ODD ${odd}`}
               />
-            </div>}
-          {!inEmpreinteSocietale &&
-            <div className="indic-icon">
-              <Image
-                className=""
-                src={logoPath}
-                alt={indic}
-              />
-            </div>}
-          <div>
-            <h3 className="h6">{libelle}</h3>
-            <p className="source mt-1">{unitLabel}</p>
-            {/* <p className="source mt-1">
-              <a
-                href={"https://lasocietenouvelle.org/indicateurs/" + indic.toLowerCase()}
-                target="_blank"
-                className="text-primary"
-                title="Plus d'informations sur l'indicateur"
-              >
-                Informations sur l'indicateur &raquo;
-              </a>
-            </p> */}
+            ))}
           </div>
-        </div>
-        {/* ----- Affichage modale avec le détail ----- */}
-        <div className={"text-end"}>
-          <Badge
-            pill
-            bg="light"
-            className="ms-2 text-primary"
-            title="Plus de détails"
-          >
-            <i className="bi bi-plus-circle-fill"></i>{" "}
-            <button className="btn-badge" onClick={() => setModalOpen(indic)}>
-              Détails &raquo;
+          
+          {/* Indicateur et flag */}
+          <div className="d-flex align-items-center justify-content-center">
+            <div className="indicator-icon me-3">
+              {inEmpreinteSocietale ? (
+                <Image
+                  width="28"
+                  height="28"
+                  src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
+                  alt={indic}
+                />
+              ) : (
+                <Image
+                  width="28"
+                  height="28"
+                  src={logoPath}
+                  alt={indic}
+                />
+              )}
+            </div>
+            <div className="text-center">
+              <h4 className="h6 mb-1 fw-semibold text-primary">{libelle}</h4>
+              <FlagBadge flag={flag} />
+            </div>
+          </div>
+        </Card.Header>
+
+        <Card.Body className="p-3">
+          {/* Titre et unité */}
+          <p className="indicator-info mb-3">
+            <small className="text-muted small">{unitLabel}</small>
+          </p>
+
+          {/* Graphique */}
+          <div className="chart-container mb-3">
+            <IndicatorChart
+              indic={indic}
+              legalUnitData={legalUnitData}
+              divisionData={divisionData}
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <button
+              onClick={() => setModalOpen(indic)}
+              className="btn btn-link btn-sm d-flex align-items-center"
+            >
+              <Eye size={12} className="me-1" />
+              Voir détails
             </button>
-          </Badge>
-        </div>
-        {/* ----- Affichage graphique ----- */}
-        <div className="chart-wrapper my-4">
-          {/* <p className="source ms-3 mb-2">en {unitSymbol}</p> */}
-          <IndicatorChart
-            indic={indic}
-            legalUnitData={legalUnitData}
-            divisionData={divisionData}
-          />
-        </div>
-        {/* ----- Badge ----- */}
-        {/* <div className="mb-3 d-flex justify-content-evenly">
-          <FlagBadge 
-            flag={flag} 
-          />
-        </div> */}
-        {/* ----- Sources ----- */}
-        {divisionData[indic] &&
-          <div className="mt-2">
-            <p className="source mb-0">
-              Source (Valeur de la branche) : {divisionData[indic].source}
-            </p>
-          </div>}
-      </div>
+            
+            <a
+              href={`https://lasocietenouvelle.org/indicateurs/${indic.toLowerCase()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-link btn-link-muted d-flex align-items-center"
+            >
+              <ExternalLink size={10} className="me-1" />
+              En savoir plus
+            </a>
+          </div>
+
+          {/* Source */}
+          {divisionData[indic] && (
+            <div className="text-center">
+              <span className="text-muted" style={{ fontSize: '9px', opacity: 0.7 }}>
+                Source : {divisionData[indic].source}
+              </span>
+            </div>
+          )}
+        </Card.Body>
+      </Card>
 
       {/* ----- Modal - Détails ----- */}
       {modalOpen == indic && (

@@ -690,7 +690,3 @@ const Faq = () => {
 };
 
 export default Faq;
-
-export const metadata = {
-  title: "La Société Nouvelle | Foire aux questions",
-};

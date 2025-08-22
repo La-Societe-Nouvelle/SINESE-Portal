@@ -18,8 +18,9 @@ import {
 	Tooltip,
 	Legend
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 const changeOpacity = (rgbaColor, newOpacity) => {
 	const rgbaArray = rgbaColor.split(",");
@@ -29,7 +30,7 @@ const changeOpacity = (rgbaColor, newOpacity) => {
 
 // ---------------------------------------------------------------------------------------------------- //
 
-const defaultColor = 'rgba(225,225,225,1)';
+const defaultColor = 'rgba(173, 181, 189, 1)'; // Couleur neutre de la charte graphique
 
 export const BarChart = ({ 
 	indic,
@@ -56,31 +57,42 @@ export const BarChart = ({
 		year
 	} = legalUnitData[indic];
 
-	const values = showDivisionData ? [value, divisionData[indic]?.value] : [value];
-
 	const isDefaultValue = flag == 'd';
 	const colorChart = isDefaultValue ? defaultColor : color.main;
 
-	const maxValue = Math.max(...values);
-	const yMax = maxValue * 1.1;
+	// Préparer les données pour la comparaison
+	const companyValue = value || 0;
+	const branchValue = showDivisionData ? (divisionData[indic]?.value || 0) : null;
+	
+	const values = showDivisionData ? [companyValue, branchValue] : [companyValue];
+	const maxValue = Math.max(...values.filter(v => v !== null));
+	const yMax = maxValue * 1.2; // Plus d'espace pour les étiquettes
 
 	// --------------------------------------------------
 	// Datasets
 
-	const labels = [
-		isDefaultValue ? 'Empreinte par défaut' : `Exercice ${year}`, 
-		'Branche'
-	];
+	const labels = showDivisionData 
+		? [
+			isDefaultValue ? 'Valeur par défaut' : `Exercice ${year}`, 
+			'Branche'
+		  ]
+		: [
+			isDefaultValue ? 'Valeur par défaut' : `Exercice ${year}`
+		  ];
 
 	const datasets = [
 		{
-			label: 'Empreintes',
+			label: 'Valeurs',
 			data: values,
-			backgroundColor: [colorChart, changeOpacity(colorChart, 0.3)],
+			backgroundColor: showDivisionData 
+				? [colorChart, changeOpacity(color.main, 0.4)]
+				: [colorChart],
 			borderWidth: 0,
-			barPercentage: 0.5,
-			categoryPercentage: 1,
-			minBarLength: 2,
+			borderRadius: 6,
+			borderSkipped: false,
+			barPercentage: 0.6,
+			categoryPercentage: 0.8,
+			minBarLength: 3,
 		}
 	];
 
@@ -94,44 +106,72 @@ export const BarChart = ({
 
 	const options = {
 		responsive: true,
-		// maintainAspectRatio: false,
+		maintainAspectRatio: false,
 		layout: {
 			padding: {
-				left: 40,
-				right: 40
+				left: 20,
+				right: 20,
+				top: 30,
+				bottom: 10
 			}
 		},
 		plugins: {
 			legend: {
 				display: false,
 			},
-			datalabels: {
-				display: false,
-			},
 			tooltip: {
-				callbacks: {
-					label: (context) => {
-						const { label, raw } = context;
-						return `${label}: ${raw.toFixed(nbDecimals)} ${unitSymbol}`;
-					},
+				enabled: false, // Désactiver les tooltips comme pour DoughnutChart
+			},
+			datalabels: {
+				display: true,
+				anchor: 'end',
+				align: 'top',
+				offset: 4,
+				formatter: (value, context) => {
+					if (value === 0 || value === null) return '';
+					return `${value.toFixed(nbDecimals)} ${unitSymbol}`;
 				},
+				color: '#333333',
+				font: {
+					size: 11,
+					weight: 'bold'
+				},
+				backgroundColor: 'rgba(255, 255, 255, 0.95)',
+				borderColor: function(context) {
+					const { dataIndex } = context;
+					if (showDivisionData && dataIndex === 1) {
+						return changeOpacity(color.main, 0.4);
+					}
+					return colorChart;
+				},
+				borderWidth: 2,
+				borderRadius: 4,
+				padding: {
+					top: 4,
+					bottom: 4,
+					left: 6,
+					right: 6
+				}
 			},
 		},
 		scales: {
 			x: {
 				title: {
 					display: false,
-					text: 'Categories',
 				},
-				beginAtZero: true,
 				ticks: {
-					color: '#737393',
+					color: '#8e9aaf',
 					font: {
-						size: 10,
-					}
+						size: 11,
+						weight: 500
+					},
+					maxRotation: 0
 				},
 				grid: {
 					display: false,
+				},
+				border: {
+					display: false
 				}
 			},
 			y: {
@@ -140,16 +180,24 @@ export const BarChart = ({
 				},
 				beginAtZero: true,
 				ticks: {
-					color: '#737393',
+					color: '#8e9aaf',
 					font: {
 						size: 10,
+					},
+					// Masquer les ticks pour un look plus clean
+					callback: function() {
+						return '';
 					}
 				},
 				suggestedMax: yMax,
 				grid: {
 					display: true,
-					color: 'rgba(238, 238, 255, 0.4)'
+					color: 'rgba(238, 238, 255, 0.3)',
+					drawTicks: false
 				},
+				border: {
+					display: false
+				}
 			},
 		},
 	};
@@ -157,10 +205,12 @@ export const BarChart = ({
 	// --------------------------------------------------
 
 	return (
-		<Bar
-			id={`socialfootprintvisual_${indic}`}
-			data={chartData} 
-			options={options} 
-		/>
+		<div style={{ height: '180px', position: 'relative' }}>
+			<Bar
+				id={`socialfootprintvisual_${indic}`}
+				data={chartData} 
+				options={options} 
+			/>
+		</div>
 	);
 };

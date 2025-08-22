@@ -51,3 +51,49 @@
     box-shadow: 0 3px 12px rgba($secondary, 0.3);
   }
 }
+
+// Boutons liens discrets
+.btn-link {
+  color: $neutral;
+  font-size: 0.8125rem; // 13px - Légèrement plus petit que le standard
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border: none;
+  background: transparent;
+  transition: all 0.15s ease;
+  border-radius: $btn-border-radius-sm;
+
+  &:hover,
+  &:focus {
+    color: $primary;
+    text-decoration: none;
+    background-color: rgba($light, 0.8);
+    transform: none; // Pas de mouvement vertical pour rester discret
+  }
+
+  &:active {
+    color: $primary-dark;
+    background-color: $light;
+  }
+
+  // Version encore plus discrète pour les actions secondaires
+  &.btn-link-muted {
+    color: $text-light;
+    font-size: 0.75rem; // 12px
+    
+    &:hover {
+      color: $neutral;
+      background-color: rgba($light, 0.6);
+    }
+  }
+
+  // Pour les icônes
+  svg {
+    transition: all 0.15s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.05);
+  }
+}

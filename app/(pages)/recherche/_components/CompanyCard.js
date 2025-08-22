@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, Row, Col, Button, Badge } from "react-bootstrap";
-import { MapPin, Users, Building, BarChart3, Heart, Star, TrendingUp } from "lucide-react";
+import { MapPin, Users, Building, BarChart3, Heart, Star, TrendingUp, Info } from "lucide-react";
 
 export default function CompanyCard({ company }) {
   return (
@@ -24,37 +24,41 @@ export default function CompanyCard({ company }) {
                   
                   {/* Secteur d'activité avec code NAF */}
                   <div className="d-flex align-items-center mb-2">
-                    <span className="text-muted me-2">{company.activitePrincipaleLibelle}</span>
+                    <span className="text-muted small me-2">{company.activitePrincipaleLibelle}</span>
                     {company.activitePrincipaleCode && (
                       <span className="badge bg-light text-muted border" style={{ fontSize: '0.7rem' }}>
                         NAF {company.activitePrincipaleCode}
                       </span>
                     )}
                   </div>
+                  
+                  {/* Zone d'information consolidée */}
+                  <div className="company-meta d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <Badge bg="light" text="dark" className="border">
+                      SIREN {company.siren}
+                    </Badge>
+                    
+                    {company.donneesPubliees && company.donneesPubliees.length > 0 && (
+                      <Badge className="d-flex align-items-center" style={{ backgroundColor: '#198754', color: 'white' }}>
+                        <TrendingUp size={12} className="me-1" />
+                          Données publiées
+                      </Badge>
+                    )}
+                    
+              
+                  </div>
                 </div>
                 
                 {/* Badges de statut */}
                 <div className="company-badges flex-shrink-0">
                   {company.economieSocialeSolidaire && (
-                    <span className="badge bg-success me-1 mb-1" title="Économie Sociale et Solidaire">
-                      <Heart size={12} className="me-1" />ESS
+                    <span className="badge me-1 mb-1" title="Économie Sociale et Solidaire" style={{ backgroundColor: '#198754', color: 'white' }}>
+                     ESS
                     </span>
                   )}
                   {company.societeMission && (
                     <span className="badge bg-purple me-1 mb-1" title="Société à mission" style={{ backgroundColor: '#6f42c1', color: 'white' }}>
-                      <Star size={12} className="me-1" />Mission
-                    </span>
-                  )}
-                  {company.donneesPubliees && company.donneesPubliees.length > 0 && (
-                    <span 
-                      className={`badge me-1 mb-1 ${
-                        company.donneesPubliees.length >= 5 ? 'bg-success' : 
-                        company.donneesPubliees.length >= 3 ? 'bg-warning text-dark' : 'bg-info'
-                      }`}
-                      title={`${company.donneesPubliees.length} indicateur${company.donneesPubliees.length > 1 ? 's' : ''} publié${company.donneesPubliees.length > 1 ? 's' : ''}`}
-                    >
-                      <TrendingUp size={12} className="me-1" />
-                      {company.donneesPubliees.length} indicateur{company.donneesPubliees.length > 1 ? 's' : ''}
+                      Société à mission  
                     </span>
                   )}
                 </div>
@@ -94,12 +98,6 @@ export default function CompanyCard({ company }) {
                   </Col>
                 </Row>
                 
-                {/* SIREN en bas à droite */}
-                <div className="mt-3 text-end">
-                  <small className="text-muted">
-                    SIREN: <span className="fw-bold">{company.siren}</span>
-                  </small>
-                </div>
               </div>
             </div>
           </Col>
@@ -110,57 +108,70 @@ export default function CompanyCard({ company }) {
               <div className="company-actions mb-3">
                 <Button 
                   href={`/entreprise/${company.siren}`}
-                  variant="primary"
-                  className="btn-lg px-4"
-                  style={{ borderRadius: '0.5rem' }}
+                  variant="secondary"
+                  style={{ borderRadius: '0.5rem', minWidth: '180px' }}
                 >
-                  <BarChart3 size={16} className="me-2" />
-                  Voir l'empreinte
+                    <BarChart3 size={16} className="me-2" />
+                    Voir l'empreinte
+
                 </Button>
               </div>
               
-              {/* Indicateurs de qualité des données */}
-              {company.donneesPubliees && company.donneesPubliees.length > 0 && (
-                <div className="data-quality-info">
-                  <div className="text-center">
-                    <div className="d-flex justify-content-center align-items-center mb-2">
-                      <div 
-                        className="progress-circle" 
-                        style={{
-                          width: '40px',
-                          height: '40px',
-                          borderRadius: '50%',
-                          background: `conic-gradient(#198754 ${(company.donneesPubliees.length / 12) * 360}deg, #e9ecef 0deg)`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          position: 'relative'
-                        }}
-                      >
-                        <div 
-                          style={{
-                            width: '30px',
-                            height: '30px',
-                            borderRadius: '50%',
-                            backgroundColor: 'white',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '0.7rem',
-                            fontWeight: 'bold',
-                            color: '#198754'
-                          }}
-                        >
-                          {Math.round((company.donneesPubliees.length / 12) * 100)}%
-                        </div>
+              {/* Indicateurs visuels */}
+              <div className="indicators-visual p-2">
+                <div className="d-flex justify-content-center gap-2 flex-wrap"
+                     style={{ maxWidth: '200px', margin: '0 auto' }}>
+                  
+                  {/* Données publiées */}
+                  {(company.donneesPubliees?.length || 0) > 0 && (
+                    <div className="indicator-circle text-center">
+                      <div className="indicator-base indicator-published">
+                        {company.donneesPubliees.length}
                       </div>
+                      <small className="text-muted indicator-label">
+                        Publiés
+                      </small>
                     </div>
-                    <small className="text-muted">
-                      Transparence des données
-                    </small>
-                  </div>
+                  )}
+
+                  {/* Données estimées */}
+                  {(company.donneesEstimees || 0) > 0 && (
+                    <div className="indicator-circle text-center">
+                      <div className="indicator-base indicator-light">
+                        {company.donneesEstimees}
+                      </div>
+                      <small className="text-muted indicator-label">
+                        Estimés
+                      </small>
+                    </div>
+                  )}
+
+                  {/* Données par défaut */}
+                  {(company.donneesDefaut || 0) > 0 && (
+                    <div className="indicator-circle text-center">
+                      <div className="indicator-base indicator-light">
+                        {company.donneesDefaut}
+                      </div>
+                      <small className="text-muted indicator-label">
+                        Par défaut
+                      </small>
+                    </div>
+                  )}
+
+                  {/* Indicateurs hors panel ESE */}
+                  {(company.indicateursHorsESE || 0) > 0 && (
+                    <div className="indicator-circle text-center">
+                      <div className="indicator-base indicator-light">
+                        {company.indicateursHorsESE}
+                      </div>
+                      <small className="text-muted indicator-label">
+                        Autres
+                      </small>
+                    </div>
+                  )}
+
                 </div>
-              )}
+              </div>
             </div>
           </Col>
         </Row>

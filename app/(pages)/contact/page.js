@@ -186,6 +186,3 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
-export const metadata = {
-  title: "La Société Nouvelle | Nous contacter",
-};

@@ -29,7 +29,3 @@ export default function Newsletter() {
     </>
   );
 }
-
-export const metadata = {
-  title: "La Société Nouvelle | Newsletter",
-};
