@@ -1,4 +1,4 @@
-// Sidebar macroéconomies - Styles externalisés
+// Sidebar styles - Partagé entre macroéconomies et recherche
 
  .sidebar-container {
     background: #fff;
@@ -30,7 +30,8 @@
     }
   }
   
-.macro-sidebar {
+.macro-sidebar,
+.search-sidebar {
   
   // Container principal de la sidebar
  
@@ -260,7 +261,8 @@
 }
 
 // Version mobile avec Offcanvas
-.macro-sidebar-mobile {
+.macro-sidebar-mobile,
+.search-sidebar-mobile {
   
   .mobile-trigger {
     width: 100%;
@@ -311,11 +313,61 @@
       }
     }
   }
+  
+  // Styles spécifiques pour la recherche
+  .active-filters {
+    .active-filter-badges {
+      max-height: 120px;
+      overflow-y: auto;
+      
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background: rgba($primary, 0.3);
+        border-radius: 3px;
+        
+        &:hover {
+          background: rgba($primary, 0.5);
+        }
+      }
+    }
+  }
+  
+  .filter-checkbox {
+    font-size: 0.85rem;
+    
+    .form-check-input {
+      border-color: rgba($primary, 0.15);
+      
+      &:checked {
+        background-color: $secondary;
+        border-color: $secondary;
+      }
+      
+      &:focus {
+        box-shadow: 0 0 0 0.15rem rgba($secondary, 0.15);
+      }
+    }
+    
+    .form-check-label {
+      color: $primary;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+  }
 }
 
 // Responsive adjustments
 @media (max-width: 991.98px) {
-  .macro-sidebar {
+  .macro-sidebar,
+  .search-sidebar {
     .sidebar-container {
       position: static;
       max-height: none;

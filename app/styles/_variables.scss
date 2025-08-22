@@ -3,6 +3,8 @@
    Système de design optimisé pour l'accessibilité et l'expérience utilisateur
    ========================================================================== */
 
+@use "sass:color";
+
 // =============================================================================
 // 1. COULEURS - Palette d'identité
 // =============================================================================
@@ -52,13 +54,29 @@ $h6-font-size: 1rem;                // 16px - Minimum lisible
 $headings-margin-bottom: 1rem;
 $headings-font-weight: 700;
 
+// Variables calculées pour éviter les répétitions - À définir avant leur utilisation
+$secondary-lighter-30: color.adjust($secondary, $lightness: 30%);
+$secondary-lighter-10: color.adjust($secondary, $lightness: 10%);
+$secondary-darker-5: color.adjust($secondary, $lightness: -5%);
+$secondary-darker-8: color.adjust($secondary, $lightness: -8%);
+$secondary-darker-10: color.adjust($secondary, $lightness: -10%);
+$secondary-darker-20: color.adjust($secondary, $lightness: -20%);
+
+$primary-lighter-75: color.adjust($primary, $lightness: 75%);
+$primary-light-lighter-10: color.adjust($primary-light, $lightness: 10%);
+
+$light-lighter-2: color.adjust($light, $lightness: 2%);
+$light-darker-3: color.adjust($light, $lightness: -3%);
+
+$neutral-lighter-15: color.adjust($neutral, $lightness: 15%);
+
 // Couleurs de texte optimisées pour le contraste
 $body-color: $primary;               // #3b4d8f - Lecture principale
 $headings-color: $primary-dark;      // #1e3464 - Titres plus marqués
 $text-muted: $neutral;               // #64748b - Métadonnées
-$text-light: lighten($neutral, 15%); // Texte très discret
+$text-light: $neutral-lighter-15;    // Texte très discret
 $link-color: $secondary;             // #e74c5a - Liens et CTA
-$link-hover-color: darken($secondary, 10%);
+$link-hover-color: $secondary-darker-10;
 $link-decoration: none;
 
 // =============================================================================

@@ -330,7 +330,7 @@ p {
   padding-top: 0;
 
   .question-box {
-    background-color: lighten($light, 2%);
+    background-color: $light-lighter-2;
 
     p {
       margin-bottom: 0;
@@ -408,11 +408,11 @@ p {
         }
 
         &.bg-light:hover {
-          background: darken($light, 3%) !important;
+          background: $light-darker-3 !important;
         }
 
         &.bg-secondary:hover {
-          background: darken($secondary, 5%) !important;
+          background: $secondary-darker-5 !important;
           transform: translateY(-3px) scale(1.02);
           box-shadow: 0 8px 25px rgba($secondary, 0.25);
         }

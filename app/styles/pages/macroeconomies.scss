@@ -410,7 +410,7 @@
     
     &.alert-danger {
       background: linear-gradient(135deg, rgba($secondary, 0.1) 0%, rgba($secondary, 0.05) 100%);
-      color: darken($secondary, 10%);
+      color: $secondary-darker-10;
     }
   }
   

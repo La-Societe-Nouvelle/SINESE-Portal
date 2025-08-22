@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 // Components
 import SearchHeader from "./_components/SearchHeader";
-import SearchFilters from "./_components/SearchFilters";
+import SearchSidebar from "./_components/SearchSidebar";
 import SearchControls from "./_components/SearchControls";
 import SearchResults from "./_components/SearchResults";
 import { NoResultsState, InitialState } from "./_components/EmptyStates";
 
-export default function RecherchePage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("s") || "";
   
@@ -297,18 +297,20 @@ export default function RecherchePage() {
       />
 
       {/* Main content with sidebar */}
-      <div className="container-fluid">
-        <Row className="g-0">
-          {/* Sidebar Filters */}
-          <SearchFilters 
-            query={query}
-            filters={filters}
-            setFilters={setFilters}
-          />
+      <Container fluid className="py-4">
+        <Row>
+          {/* Sidebar avec filtres */}
+          <Col lg={3}>
+            <SearchSidebar
+              query={query}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </Col>
 
-          {/* Main Results */}
-          <div className="col-lg-9">
-            <div className="results-area p-4">
+          {/* Contenu principal */}
+          <Col lg={9}>
+            <div className="main-content">
               {/* Controls Bar */}
               <SearchControls
                 loading={loading}
@@ -338,9 +340,26 @@ export default function RecherchePage() {
                 <InitialState />
               )}
             </div>
-          </div>
+          </Col>
         </Row>
-      </div>
+      </Container>
     </div>
+  );
+}
+
+export default function RecherchePage() {
+  return (
+    <Suspense fallback={
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '50vh' }}>
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Chargement...</span>
+          </div>
+          <div className="mt-2 text-muted">Chargement de la page de recherche...</div>
+        </div>
+      </div>
+    }>
+      <SearchContent />
+    </Suspense>
   );
 }

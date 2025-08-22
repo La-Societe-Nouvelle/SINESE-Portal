@@ -134,6 +134,7 @@ export default function MacroSidebar({
               </Form.Label>
               
               <Select
+                instanceId={`macro-filter-${filter.key}`}
                 value={getOptionsForFilter(filter.key).find(option => 
                   option.value === selectedValues[filter.key]
                 ) || null}

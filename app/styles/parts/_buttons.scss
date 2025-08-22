@@ -6,7 +6,7 @@
 
 // Refined Button Styles
 .btn-outline-secondary {
-  background-color: lighten($secondary, 30%);
+  background-color: $secondary-lighter-30;
   border: 1px solid $secondary;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -22,7 +22,7 @@
 }
 
 .btn-outline-primary {
-  background-color: lighten($primary, 75%);
+  background-color: $primary-lighter-75;
   border: 1px solid $primary;
   font-weight: 600;
 
@@ -46,7 +46,7 @@
   &:hover,
   &:focus {
     color: #fff;
-    background: darken($secondary, 8%);
+    background: $secondary-darker-8;
     transform: translateY(-1px);
     box-shadow: 0 3px 12px rgba($secondary, 0.3);
   }
