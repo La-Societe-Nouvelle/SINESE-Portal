@@ -67,10 +67,7 @@ export default function RootLayout({ children }) {
                   <Upload size={16} className="me-2" />
                   Publier sur SINESE
                 </NavLink>
-                <NavLink href="/faq" className="nav-item-custom">
-                  <HelpCircle size={16} className="me-2" />
-                  <span className="d-none d-lg-inline">FAQ</span>
-                </NavLink>
+        
                 <NavLink href="/contact" className="nav-item-custom">
                   <Mail size={16} className="me-2" />
                   <span className="d-none d-lg-inline">Contact</span>
