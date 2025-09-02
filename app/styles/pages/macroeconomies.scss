@@ -239,15 +239,15 @@
    // .indicator-icon {}
 
     .indicator-header {
-      height: 65px; // Hauteur légèrement réduite
-      margin: 0.5rem 0 0.75rem 0; // Marge optimisée
+      height: 40px; 
+      margin: 0.5rem 0 0.75rem 0;  
     }
 
     .indicator-title {
       color: $primary !important;
       font-weight: 600 !important;
       font-size: 0.95rem !important;
-      margin-bottom: 0.25rem !important;
+      margin-bottom: 0;
     }
 
     .indicator-unit {
@@ -259,6 +259,7 @@
     // Container de graphique
     .chart-container {
       position: relative;
+      margin: 1rem 0;
       width: 100%;
       height: 280px; // Hauteur fixe plus importante pour de meilleurs graphiques
       min-height: 280px;

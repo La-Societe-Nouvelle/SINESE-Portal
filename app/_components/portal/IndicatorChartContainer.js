@@ -87,7 +87,6 @@ export const IndicatorChartContainer = ({
 
           <div className="indicator-header">
             <h5 className="indicator-title">{libelle}</h5>
-            <p className="indicator-unit">{unitLabel}</p>
           </div>
         </Card.Header>
 
@@ -104,12 +103,12 @@ export const IndicatorChartContainer = ({
           </div>
 
           {/* Actions */}
-          <div className="d-flex justify-content-between align-items-center mb-2">
+          <div className="d-flex justify-content-center gap-5 align-items-center mb-3 ">
             <button
               onClick={() => setModalOpen(indic)}
-              className="btn btn-link btn-sm d-flex align-items-center"
+              className="small btn btn-primary btn-sm d-flex align-items-center "
             >
-              <Eye size={12} className="me-1" />
+              <Eye size={14} className="me-1" />
               Voir détails
             </button>
 
@@ -117,7 +116,7 @@ export const IndicatorChartContainer = ({
               href={`https://lasocietenouvelle.org/indicateurs/${indic.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-link btn-link-muted d-flex align-items-center"
+              className="btn small btn-light btn-sm d-flex align-items-center"
             >
               <ExternalLink size={10} className="me-1" />
               En savoir plus
@@ -128,7 +127,7 @@ export const IndicatorChartContainer = ({
           {divisionData[indic] && (
             <div className="text-center">
               <span className="text-muted" style={{ fontSize: '9px', opacity: 0.7 }}>
-                Source : {divisionData[indic].source}
+                Source (Valeur de la branche) : {divisionData[indic].source}
               </span>
             </div>
           )}

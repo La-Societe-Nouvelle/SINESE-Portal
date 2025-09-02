@@ -7,7 +7,6 @@ import ErrorAlert from "@/_components/Error";
 
 // Composants modulaires
 import PageHeader from "../_components/PageHeader";
-import CompanyHeader from "../_components/CompanyHeader";
 import FootprintSection from "../_components/FootprintSection";
 import LoadingState from "../_components/LoadingState";
 import DefaultDataExplanation from "../_components/DefaultDataExplanation";
@@ -33,11 +32,9 @@ export default function EntreprisePage() {
 
   return (
     <div className="open-data-portal">
-      {/* Header de page uniforme */}
       {legalUnit && (
         <PageHeader
-          companyName={legalUnit.statutdiffusion ? legalUnit.denomination : null}
-          siren={legalUnit.siren}
+          legalUnit={legalUnit}
         />
       )}
 
@@ -51,8 +48,6 @@ export default function EntreprisePage() {
         {/* Contenu principal */}
         {isDataReady && (
           <>
-            <CompanyHeader legalUnit={legalUnit} />
-            
             {/* Explication des données par défaut */}
             <DefaultDataExplanation hasDefaultData={hasDefaultData} />
 

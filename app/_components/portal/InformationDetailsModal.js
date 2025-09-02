@@ -7,6 +7,8 @@ import { Image,Badge, Card, Row, Col } from "react-bootstrap"
 import _ from "lodash";
 import { Calendar, Info, RefreshCw, AlertTriangle, ExternalLink, Check, EqualApproximately, CircleQuestionMark } from "lucide-react";
 
+//-- Components
+import Description from "../indic/Description";
 
 //-- Utils
 import { getFlagLabel } from "@/_utils/utils";
@@ -21,9 +23,7 @@ export const InformationDetailsModal = ({
 
   const {
     unitSymbol,
-    nbDecimals,
-    description,
-    odds
+    nbDecimals
   } = metaIndics[indic];
 
   const {
@@ -132,46 +132,14 @@ export const InformationDetailsModal = ({
           </Card>
         </Col>
       </Row>
-
-      {/* Description de l'indicateur */}
-      <Card className="mb-4 border-0 shadow-sm">
-        <Card.Body>
+{console.log('indic', indic)}
+      {/* Description de l'indicateur avec ODDs intégrés */}
+      <Card className="border-0 shadow-sm">
+        <Card.Body className="small">
           <h6 className="text-primary mb-3">À propos de cet indicateur</h6>
-          <p className="text-muted mb-0">{description}</p>
-          <div className="mt-3">
-            <a
-              href={`https://lasocietenouvelle.org/indicateurs/${indic.toLowerCase()}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-link btn-sm p-0 d-inline-flex align-items-center text-decoration-none"
-            >
-              <ExternalLink size={14} className="me-1" />
-              En savoir plus sur cet indicateur
-            </a>
-          </div>
+            <Description indic={indic} />
         </Card.Body>
       </Card>
-
-      {/* ODDs */}
-      {odds.length > 0 && (
-        <Card className="border-0 shadow-sm">
-          <Card.Body>
-            <h6 className="text-primary mb-3">Objectifs de développement durable associés</h6>
-            <div className="d-flex flex-wrap gap-2">
-              {odds.map((odd) => (
-                <div key={odd} className="odd-badge">
-                  <Image
-                    src={`/images/odd/F-WEB-Goal-${odd}.png`}
-                    alt={`ODD ${odd}`}
-                    height={50}
-                    className="rounded"
-                  />
-                </div>
-              ))}
-            </div>
-          </Card.Body>
-        </Card>
-      )}
     </div>
   )
 }

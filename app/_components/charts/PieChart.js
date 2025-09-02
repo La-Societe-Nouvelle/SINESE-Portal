@@ -150,25 +150,26 @@ export const PieChart = ({
 					return context.dataIndex === 0;
 				},
 				formatter: function(value, context) {
-					return `${value?.toFixed(nbDecimals)}${unitSymbol}`;
+					if (value === 0 || value === null) return '';
+					return `${parseFloat(value).toFixed(nbDecimals)} ${unitSymbol}`;
 				},
 				color: CHART_COLORS.primary,
 				font: {
-					size: CHART_CONFIG.font.size.large,
+					size: CHART_CONFIG.font.size.medium,
 					weight: CHART_CONFIG.font.weight.medium,
 					family: CHART_CONFIG.font.family
 				},
 				anchor: 'center',
 				align: 'center',
 				offset: 0,
-				padding: 4,
-				backgroundColor: CHART_COLORS.backgroundWhite,
+				padding: CHART_CONFIG.padding,
+				backgroundColor: CHART_COLORS.backgroundWhiteTransparent,
 				borderColor: function(context) {
 					const { datasetIndex } = context;
 					return datasetIndex === 0 ? pieColors.company : pieColors.branch;
 				},
 				borderRadius: CHART_CONFIG.borderRadius,
-				borderWidth: 2,
+				borderWidth: CHART_CONFIG.borderWidth,
 			},
 		},
 	};
