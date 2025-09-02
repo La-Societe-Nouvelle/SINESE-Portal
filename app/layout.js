@@ -1,7 +1,7 @@
 import "./styles/main.scss";
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
 import Footer from "./_components/footer";
-import { Upload, Building2, Search, TrendingUp, Mail, DatabaseIcon } from "lucide-react";
+import { Upload, Building2, Search, TrendingUp, Mail, DatabaseIcon, Link, ChevronDown, Code } from "lucide-react";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -57,9 +57,13 @@ export default function RootLayout({ children }) {
                   <TrendingUp size={16} className="me-2" />
                   <span>Macroéconomie</span>
                 </NavLink>
-                <NavLink href="/opendata" className="nav-item-custom">
+                <NavLink href="/datasets" className="nav-item-custom">
                   <DatabaseIcon size={16} className="me-2" />
                   <span>Open Data</span>
+                </NavLink>
+                <NavLink href="/api" className="nav-item-custom">
+                  <Code size={16} className="me-2" />
+                  <span>API</span>
                 </NavLink>
               </Nav>
 
