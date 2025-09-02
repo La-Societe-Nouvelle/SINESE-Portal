@@ -38,8 +38,7 @@ export default function SearchFilters({ query, filters, setFilters }) {
       sortBy: "pertinence",
       economieSocialeSolidaire: false, 
       societeMission: false, 
-      activitePrincipaleArtisanale: false, 
-      activitePrincipaleExtractive: false,
+      activitePrincipaleArtisanale: false,
       activitePrincipaleFormationRecherche: false, 
       donneesPubliees: []
     });

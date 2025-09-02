@@ -1,7 +1,7 @@
 import "./styles/main.scss";
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
 import Footer from "./_components/footer";
-import { Upload, Building2, Search, TrendingUp, Mail } from "lucide-react";
+import { Upload, Building2, Search, TrendingUp, Mail, DatabaseIcon } from "lucide-react";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -48,17 +48,18 @@ export default function RootLayout({ children }) {
             <NavbarToggle aria-controls="basic-navbar-nav" />
             <NavbarCollapse id="basic-navbar-nav">
               <Nav className="me-auto">
-                <NavLink href="/" className="nav-item-custom">
+                <NavLink href="/recherche" className="nav-item-custom">
                   <Building2 size={16} className="me-2" />
                   <span>Entreprises</span>
                 </NavLink>
-                <NavLink href="/recherche" className="nav-item-custom">
-                  <Search size={16} className="me-2" />
-                  <span className="d-none d-lg-inline">Recherche</span>
-                </NavLink>
+
                 <NavLink href="/macroeconomies" className="nav-item-custom">
                   <TrendingUp size={16} className="me-2" />
                   <span>Macroéconomie</span>
+                </NavLink>
+                <NavLink href="/opendata" className="nav-item-custom">
+                  <DatabaseIcon size={16} className="me-2" />
+                  <span>Open Data</span>
                 </NavLink>
               </Nav>
 
@@ -67,7 +68,7 @@ export default function RootLayout({ children }) {
                   <Upload size={16} className="me-2" />
                   Publier sur SINESE
                 </NavLink>
-        
+
                 <NavLink href="/contact" className="nav-item-custom">
                   <Mail size={16} className="me-2" />
                   <span className="d-none d-lg-inline">Contact</span>

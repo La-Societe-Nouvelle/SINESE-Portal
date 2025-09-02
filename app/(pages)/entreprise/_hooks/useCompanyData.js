@@ -20,7 +20,7 @@ export function useCompanyData(siren) {
       setLoading(true);
       setError(null);
       
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       
       const res = await fetch(`${apiUrl}/legalunitFootprint/${siren}`);
       const response = await res.json();
@@ -50,7 +50,7 @@ export function useCompanyData(siren) {
   const fetchDivisionFootprint = useCallback(async (code) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org'}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`
+        `${process.env.NEXT_PUBLIC_API_URL}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`
       );
       const response = await res.json();
       
@@ -73,7 +73,7 @@ export function useCompanyData(siren) {
         `${process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org'}/macrodata/macro_fpt_a88?division=${code}&aggregate=PRD&area=FRA`
       );
       const response = await res.json();
-      
+        console.log(response);
       if (response.header?.code === 200) {
         let divisionFootprints = {};
         response.data.forEach((element) => {
@@ -96,7 +96,6 @@ export function useCompanyData(siren) {
     }
   }, []);
 
-  // Effet principal pour charger les données de l'entreprise
   useEffect(() => {
     if (siren) {
       fetchLegalUnitFootprint(siren).then((legalUnit) => {
@@ -104,12 +103,12 @@ export function useCompanyData(siren) {
           const code = legalUnit.activitePrincipaleCode?.slice(0, 2);
           if (code) {
             fetchDivisionFootprint(code);
-            fetchHistoricalDivisionFootprint(code);
+            //fetchHistoricalDivisionFootprint(code);
           }
         }
       });
     }
-  }, [siren, fetchLegalUnitFootprint, fetchDivisionFootprint, fetchHistoricalDivisionFootprint]);
+  }, [siren, fetchLegalUnitFootprint, fetchDivisionFootprint]);
 
   // Calcul des données par défaut
   const hasDefaultData = data.footprint && 

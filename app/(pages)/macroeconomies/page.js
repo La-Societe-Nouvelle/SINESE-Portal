@@ -5,7 +5,6 @@ import { Container, Row, Col, Alert, Spinner } from "react-bootstrap";
 import PageHeader from "../../_components/PageHeader";
 import MacroSidebar from "./_components/MacroSidebar";
 import IndicatorSection from "./_components/IndicatorSection";
-import SelectionInfo from "./_components/SelectionInfo";
 import { indicatorSections } from "./_config/indicators";
 
 export default function MacroeconomiesPage() {

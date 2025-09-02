@@ -2,16 +2,17 @@
 
 import { useRef, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { 
-  Search, 
-  SlidersHorizontal, 
-  Users, 
-  Calculator, 
-  Share2, 
-  Info, 
-  CheckCircle, 
-  Code2, 
-  PlayCircle 
+import {
+  Search,
+  SlidersHorizontal,
+  Users,
+  Calculator,
+  Share2,
+  Info,
+  CheckCircle,
+  Code2,
+  PlayCircle,
+  ChevronRight
 } from "lucide-react";
 
 export default function HomePage() {
@@ -67,10 +68,8 @@ export default function HomePage() {
         <div className="hero__content">
           <div className="container text-center">
 
-
             <h1 className="hero__title">
-              Consultez l'<span className="highlight">Empreinte Sociétale</span>
-              de toutes les entreprises françaises
+              Consultez l'<span className="highlight">Empreinte Sociétale</span>  des entreprises françaises
             </h1>
 
             <p className="hero__subtitle">
@@ -114,6 +113,48 @@ export default function HomePage() {
                     Rechercher
                   </button>
                 </div>
+
+                {/* Suggestions de recherche */}
+                {suggestions.length > 0 && (
+                  <div className="search-suggestions">
+           
+                    <div className="suggestions-list">
+                      {suggestions.slice(0, 5).map((company, index) => (
+                        <div 
+                          key={index}
+                          className="suggestion-item"
+                          onClick={() => handleSelect(company.siren)}
+                        >
+                          <div className="suggestion-content">
+                            <div className="company-name">{company.denomination}</div>
+                            <div className="company-details">
+                              <small className="text-muted">
+                                SIREN: {company.siren} • {company.categorieEntreprise || 'N/C'}
+                                {company.libelleActivitePrincipale && (
+                                  <> • {company.libelleActivitePrincipale}</>
+                                )}
+                              </small>
+                            </div>
+                          </div>
+                          <div className="suggestion-arrow">
+                            <ChevronRight size={16} className="text-muted" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {suggestions.length > 5 && (
+                      <div className="suggestions-footer">
+                        <button 
+                          className="btn btn-link btn-sm p-0 text-primary fw-semibold"
+                          onClick={handleSearch}
+                        >
+                          Voir tous les résultats ({suggestions.length})
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="advanced-search">
                   <a href="/recherche">
                     <SlidersHorizontal size={16} />
@@ -126,148 +167,190 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="overview shadow-sm">
+      <section className="overview">
+        <Container fluid className="px-0">
+          {/* Section système collaboratif - Pleine largeur */}
+          <div className="collaborative-system-section ">
+            <Container>
+              <div className="text-center mb-5">
+                <h2 className="mb-4"><span className="highlight">Un système collaboratif</span> <br />de comptabilité extra-financière</h2>
+              </div>
+
+              <Row className="g-4 justify-content-center">
+                <Col lg={4} md={6}>
+                  <div className="mission-item text-center">
+                    <div className="mission-icon mb-3 mx-auto">
+                      <Users className="text-primary" size={32} />
+                    </div>
+                    <h5 className="mb-3">Approche collaborative</h5>
+                    <p className="text-muted">Chaque entreprise récupère l'empreinte de ses fournisseurs et partage la sienne avec ses clients.</p>
+                  </div>
+                </Col>
+
+                <Col lg={4} md={6}>
+                  <div className="mission-item text-center">
+                    <div className="mission-icon mb-3 mx-auto">
+                      <Calculator className="text-secondary" size={32} />
+                    </div>
+                    <h5 className="mb-3">Mesure et transparence</h5>
+                    <p className="text-muted">Permettre aux entreprises de mesurer et rendre compte de leurs externalités sociales et environnementales.</p>
+                  </div>
+                </Col>
+
+                <Col lg={4} md={6}>
+                  <div className="mission-item text-center">
+                    <div className="mission-icon mb-3 mx-auto">
+                      <Share2 className="text-tertiary" size={32} />
+                    </div>
+                    <h5 className="mb-3">Données accessibles</h5>
+                    <p className="text-muted">Généraliser l'accès aux données extra-financières pour améliorer la traçabilité des impacts économiques.</p>
+                  </div>
+                </Col>
+              </Row>
+
+              <div className="text-center mt-5">
+                <div className="d-flex flex-wrap gap-3 justify-content-center">
+         
+                  <a href="https://lasocietenouvelle.org/projet-sinese" className="btn btn-primary btn-lg" target="_blank" rel="noopener">
+                    <Info size={18} className="me-2" />En savoir plus
+                  </a>
+                </div>
+              </div>
+            </Container>
+          </div>
+        </Container>
+      </section>
+
+      {/* Section CTA modernisée en 2 blocs */}
+      <section className="cta-section">
         <Container fluid className="px-0">
           <Row className="g-0">
-            {/* Côté gauche - fond blanc */}
-            <Col lg={6} className="py-5">
-              <Container>
-                <div className="info px-4">
-                          
-                  <h2 className="mb-4">Un système <span className="text-primary">collaboratif</span> de <span className="text-secondary">comptabilité extra-financière</span></h2>
-                  
-                  <div className="mission-content mb-4">
-                    <div className="mission-item mb-3">
-                      <div className="mission-icon">
-                        <Users className="text-primary" size={24} />
-                      </div>
-                      <div>
-                        <h5 className="mb-2">Approche collaborative</h5>
-                        <p className="text-muted mb-0">Chaque entreprise récupère l'empreinte de ses fournisseurs et partage la sienne avec ses clients.</p>
-                      </div>
-                    </div>
-                    
-                    <div className="mission-item mb-3">
-                      <div className="mission-icon">
-                        <Calculator className="text-secondary" size={24} />
-                      </div>
-                      <div>
-                        <h5 className="mb-2">Mesure et transparence</h5>
-                        <p className="text-muted mb-0">Permettre aux entreprises de mesurer et rendre compte de leurs externalités sociales et environnementales.</p>
-                      </div>
-                    </div>
-                    
-                    <div className="mission-item">
-                      <div className="mission-icon">
-                        <Share2 className="text-tertiary" size={24} />
-                      </div>
-                      <div>
-                        <h5 className="mb-2">Données accessibles</h5>
-                        <p className="text-muted mb-0">Généraliser l'accès aux données extra-financières pour améliorer la traçabilité des impacts économiques.</p>
-                      </div>
-                    </div>
-                  </div>
+            {/* Bloc API - Gauche */}
+            <Col lg={6} className="cta-api-block">
+              <div className="cta-block-content h-100 d-flex flex-column justify-content-center">
+                <div className="cta-icon">
+                  <Code2 size={48} />
+                </div>
 
-                  <div className="d-flex flex-wrap gap-3 justify-content-center justify-lg-start">
-                    <a href="/recherche" className="btn btn-primary shadow-sm">
-                      <Search size={16} className="me-2" />Explorer les données
-                    </a>
-                    <a href="https://lasocietenouvelle.org/projet-sinese" className="btn btn-outline-primary" target="_blank" rel="noopener">
-                      <Info size={16} className="me-2" />En savoir plus
-                    </a>
+                <h3 className="cta-title text-white">API Publique SINESE</h3>
+
+                <p className="cta-description">
+                  Accédez en temps réel aux données d’empreinte sociétale et intégrez-les facilement dans vos outils.
+                </p>
+
+                <div className="cta-features mb-4">
+                  <div className="feature-item">
+                    <CheckCircle size={16} className="feature-icon" />
+                    <span>Accès gratuit</span>
+                  </div>
+                  <div className="feature-item">
+                    <CheckCircle size={16} className="feature-icon" />
+                    <span>Documentation complète</span>
+                  </div>
+                  <div className="feature-item">
+                    <CheckCircle size={16} className="feature-icon" />
+                    <span>Réponse JSON standardisée</span>
                   </div>
                 </div>
-              </Container>
+
+                <div className="cta-actions">
+                  <a href="/api" className="btn btn-primary ">
+                    <Code2 size={18} className="me-2" />
+                    Documentation API
+                  </a>
+                  <a href="/api/playground" className="btn btn-outline-light  ms-3">
+                    <PlayCircle size={18} className="me-2" />
+                    Playground
+                  </a>
+                </div>
+              </div>
             </Col>
 
-            <Col lg={6} className="py-5 bg-primary text-white" >
-              <Container>
-                <div className="data-sources px-4">
-                  <h2 className="text-white">Sources des données</h2>
-                  <p className="mb-4">
-                    L’<strong>Empreinte Sociétale des Entreprises</strong> est calculée par La Société Nouvelle
-                    à partir de sa <strong><a href="/" target="_blank" rel="noopener noreferrer">méthodologie publique et accessible à tous</a></strong>.<br />
-                    En complément, SINESE met à disposition d’autres données extra-financières provenant de sources publiques.
-                  </p>
+            {/* Bloc Données - Droite */}
+            <Col lg={6} className="cta-data-block">
+              <div className="cta-block-content h-100 d-flex flex-column justify-content-center">
+                <div className="cta-icon">
+                  <Share2 size={48} />
+                </div>
 
-                  <div className="sources-list">
-                    {/* Source principale - La Société Nouvelle */}
-                    <div className="source-item d-flex align-items-center p-4 mb-4 bg-white rounded shadow-sm border-start" style={{ borderLeftColor: '#fa595f', borderLeftWidth: '4px' }}>
-                      <div className="source-logo me-4">
-                        <img src="/logo-La-Societe-Nouvelle.svg" alt="La Société Nouvelle" style={{ height: '50px' }} />
-                      </div>
-                      <div className="flex-grow-1">
-                        <div className="fw-bold h5 mb-1">La Société Nouvelle</div>
-                        <div className="text-muted mb-2">Empreinte Sociétale des Entreprises</div>
-                        <small className="text-muted">
-                          <CheckCircle size={14} className="text-success me-1" />
-                          Méthodologie publique et Open Source
-                        </small>
-                      </div>
-                    </div>
+                <h3 className="cta-title">Données Ouvertes</h3>
 
-                    {/* Sources partenaires réorganisées */}
-                    <div className="row g-3 justify-content-center">
-                      <div className="col-lg-4 col-md-6">
-                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100 shadow-sm">
-                          <img src="/images/indicateurs/logo-impact-score.png" alt="Impact Score" style={{ height: '40px' }} className="mb-2" />
-                          <div className="fw-semibold">Impact Score</div>
-                          <small className="text-muted">Impact environnemental</small>
-                        </div>
-                      </div>
+                <p className="cta-description">
+                  Accédez à l'ensemble des fichiers stocks des empreintes sociétales des entreprises, mis à jour chaque mois.
+                </p>
 
-                      <div className="col-lg-4 col-md-6">
-                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100 shadow-sm">
-                          <img src="/images/indicateurs/logo-index-egapro.png" alt="Index Égalité Pro" style={{ height: '40px' }} className="mb-2" />
-                          <div className="fw-semibold">Index Égalité Pro</div>
-                          <small className="text-muted">Égalité salariale</small>
-                        </div>
-                      </div>
-
-                      <div className="col-lg-4 col-md-6">
-                        <div className="source-item d-flex flex-column align-items-center p-3 bg-white rounded text-center h-100 shadow-sm">
-                          <img src="/images/indicateurs/logo-bilans-ges.png" alt="Bilans GES" style={{ height: '40px' }} className="mb-2" />
-                          <div className="fw-semibold">Bilans GES</div>
-                          <small className="text-muted">Données carbone</small>
-                        </div>
-                      </div>
-                    </div>
+                <div className="cta-features mb-4">
+                  <div className="feature-item">
+                    <CheckCircle size={16} className="feature-icon text-success" />
+                    <span>Mise à jour mensuelle</span>
+                  </div>
+                  <div className="feature-item">
+                    <CheckCircle size={16} className="feature-icon text-success" />
+                    <span>Formats multiples</span>
+                  </div>
+                  <div className="feature-item">
+                    <CheckCircle size={16} className="feature-icon text-success" />
+                    <span>Téléchargement libre</span>
                   </div>
                 </div>
-              </Container>
+
+                <div className="cta-actions">
+                  <a href="/datasets" className="btn btn-secondary ">
+                    <Share2 size={18} className="me-2" />
+                    Télécharger les données
+                  </a>
+                  <a href="/recherche" className="btn btn-outline-primary  ms-3">
+                    <Search size={18} className="me-2" />
+                    Explorer les données
+                  </a>
+                </div>
+              </div>
             </Col>
           </Row>
         </Container>
       </section>
 
-      {/* Section de transition CTA */}
-      <section className="cta-section py-5">
+      {/* Section Sources des données */}
+      <section className="data-sources-section">
         <Container>
-          <Row className="justify-content-center text-center">
-            <Col lg={10}>
-              <h3 className="mb-4">Accédez aux données via notre API publique</h3>
-              
-              <div className="cta-content mb-4">
-                <p className="mb-3">
-                  <strong>L'API SINESE</strong> met à disposition l'ensemble des données d'empreinte sociétale des entreprises françaises. 
-                  Intégrez ces informations dans vos applications, logiciels ou analyses.
-                </p>
-                <p className="text-muted mb-4">
-                  <strong>Données ouvertes</strong> • <strong>Accès gratuit</strong> • <strong>Documentation complète</strong> 
-                </p>
-              </div>
-              
-              <div className="d-flex flex-wrap gap-3 justify-content-center">
-                <a href="/api" className="btn btn-secondary">
-                  <Code2 size={16} className="me-2" />Documentation API
-                </a>
-                <a href="/api/playground" className="btn btn-outline-primary">
-                  <PlayCircle size={16} className="me-2" />Tester l'API
-                </a>
+          <div className="text-center mb-5">
+            <h2 className="mb-3">Sources des données</h2>
+            <p className="lead mb-0 opacity-90">
+              L'<strong>Empreinte Sociétale des Entreprises</strong> est calculée par La Société Nouvelle
+              à partir de sa <strong><a href="/" className="text-decoration-underline" target="_blank" rel="noopener noreferrer">méthodologie publique et accessible à tous</a></strong>.<br />
+              En complément, SINESE met à disposition d'autres données extra-financières provenant de sources publiques.
+            </p>
+          </div>
 
+          {/* Source principale */}
+          <div className="main-source text-center mb-5">
+            <div className="d-inline-flex align-items-center p-4 bg-white rounded-3 shadow-sm">
+              <img src="/logo-La-Societe-Nouvelle.svg" alt="La Société Nouvelle" style={{ height: '50px' }} className="me-3" />
+              <div>
+                <div className="fw-bold h5 mb-1">La Société Nouvelle</div>
+                <small className="text-muted">Empreinte Sociétale des Entreprises</small>
               </div>
-            </Col>
-          </Row>
+            </div>
+          </div>
+
+          {/* Sources partenaires */}
+          <div className="d-flex flex-wrap justify-content-center gap-4">
+            <div className="source-partner text-center">
+              <img src="/images/indicateurs/logo-impact-score.png" alt="Impact Score" style={{ height: '60px' }} className="mb-2" />
+              <div className="fw-bold small">Impact Score</div>
+              <small className="text-muted">Impact environnemental</small>
+            </div>
+            <div className="source-partner text-center">
+              <img src="/images/indicateurs/logo-index-egapro.png" alt="Index Égalité Pro" style={{ height: '60px' }} className="mb-2" />
+              <div className="fw-bold small">Index Égalité Pro</div>
+              <small className="text-muted">Égalité salariale</small>
+            </div>
+            <div className="source-partner text-center">
+              <img src="/images/indicateurs/logo-bilans-ges.png" alt="Bilans GES" style={{ height: '60px' }} className="mb-2" />
+              <div className="fw-bold small">Bilans GES</div>
+              <small className="text-muted">Données carbone</small>
+            </div>
+          </div>
         </Container>
       </section>
 

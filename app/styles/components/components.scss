@@ -77,23 +77,9 @@
   }
 }
 .bg-light-blue {
-  background-color: rgba(228, 251, 247, 0.8);
+  background-color: rgba(228, 246, 251, 0.8);
   &:hover {
     cursor: pointer;
-    background-color: rgba(228, 251, 247, 1);
-  }
-}
-
-.open-data-brower {
-    padding: 1rem 0;
-}
-.datasets-list {
-  font-size: 0.8rem;
-  li {
-    font-weight: 600;
-    margin-bottom: 1rem;
-    a:hover {
-      color: $secondary;
-    }
+    background-color: rgb(228, 246, 251);
   }
 }

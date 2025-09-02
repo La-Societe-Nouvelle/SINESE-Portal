@@ -9,6 +9,15 @@ import { Doughnut } from 'react-chartjs-2';
 //-- Lib
 import metaIndics from "@/_libs/indics";
 
+//-- Utils
+import { 
+	CHART_COLORS, 
+	CHART_CONFIG, 
+	getPieChartColors,
+	getCommonChartOptions,
+	changeOpacity
+} from "@/_utils/chartConfig";
+
 import {
 	Chart as ChartJS,
 	ArcElement,
@@ -18,17 +27,7 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-ChartJS.register(ArcElement, Title, Tooltip, Legend, ChartDataLabels);
-
-const changeOpacity = (rgbaColor, newOpacity) => {
-	const rgbaArray = rgbaColor.split(",");
-	rgbaArray[3] = newOpacity <= 0 ? 0.3 : newOpacity > 1 ? 1 : newOpacity;
-	return rgbaArray.join(",");
-};
-
-// ---------------------------------------------------------------------------------------------------- //
-
-const defaultColor = 'rgba(173, 181, 189, 1)'; // Couleur neutre de la charte graphique
+ChartJS.register(ArcElement, Title, Tooltip, Legend, ChartDataLabels); 
 
 export const PieChart = ({ 
 	indic,
@@ -56,7 +55,9 @@ export const PieChart = ({
 	} = legalUnitData[indic];
 
 	const isDefaultValue = flag == 'd';
-	const colorChart = isDefaultValue ? defaultColor : color.main;
+
+	// Utiliser les couleurs centralisées
+	const pieColors = getPieChartColors(isDefaultValue, color);
 
 	// Valeurs pour comparaison
 	const companyValue = Math.min(Math.max(value || 0, 0), 100);
@@ -75,12 +76,12 @@ export const PieChart = ({
 		{
 			data: [companyValue, 100 - companyValue],
 			backgroundColor: [
-				colorChart,
-				'rgba(238, 238, 255, 0.2)'
+				pieColors.company,
+				isDefaultValue ? pieColors.completionDefault : pieColors.completionLight
 			],
 			borderWidth: 2,
 			borderColor: '#fff',
-			weight: showDivisionData ? 0.6 : 1,
+			weight: showDivisionData ? 0.5 : 1, // Même largeur pour les deux datasets
 		}
 	];
 
@@ -89,12 +90,12 @@ export const PieChart = ({
 		datasets.push({
 			data: [branchValue, 100 - branchValue],
 			backgroundColor: [
-				changeOpacity(color.main, 0.4),
-				'rgba(238, 238, 255, 0.1)'
+				pieColors.branch,
+				pieColors.completionLight // Couleur cohérente pour complétion
 			],
 			borderWidth: 2,
 			borderColor: '#fff',
-			weight: 0.4,
+			weight: 0.5, // Même largeur que le dataset principal
 		});
 	}
 
@@ -107,10 +108,10 @@ export const PieChart = ({
 	// Options
 
 	const options = {
-		responsive: true,
-		maintainAspectRatio: false,
+		...getCommonChartOptions(),
 		cutout: '50%',
 		plugins: {
+			...getCommonChartOptions().plugins,
 			legend: {
 				display: showDivisionData,
 				position: 'bottom',
@@ -119,23 +120,23 @@ export const PieChart = ({
 					pointStyle: 'circle',
 					padding: 15,
 					font: {
-						size: 11,
-						weight: 500
+						size: CHART_CONFIG.font.size.medium,
+						weight: CHART_CONFIG.font.weight.normal
 					},
 					color: '#666',
 					generateLabels: function(chart) {
 						return [
 							{
 								text: isDefaultValue ? 'Valeur par défaut' : `Exercice ${year}`,
-								fillStyle: colorChart,
-								strokeStyle: colorChart,
+								fillStyle: pieColors.company,
+								strokeStyle: pieColors.company,
 								lineWidth: 0,
 								pointStyle: 'circle'
 							},
 							{
 								text: 'Branche',
-								fillStyle: changeOpacity(color.main, 0.4),
-								strokeStyle: changeOpacity(color.main, 0.4),
+								fillStyle: pieColors.branch,
+								strokeStyle: pieColors.branch,
 								lineWidth: 0,
 								pointStyle: 'circle'
 							}
@@ -143,33 +144,30 @@ export const PieChart = ({
 					}
 				}
 			},
-			tooltip: {
-				enabled: false,
-			},
 			datalabels: {
 				display: function(context) {
 					// Afficher les étiquettes seulement pour les valeurs principales (pas le "reste")
 					return context.dataIndex === 0;
 				},
 				formatter: function(value, context) {
-					const { datasetIndex } = context;
-					return `${value.toFixed(nbDecimals)}${unitSymbol}`;
+					return `${value?.toFixed(nbDecimals)}${unitSymbol}`;
 				},
-				color: '#333333',
+				color: CHART_COLORS.primary,
 				font: {
-					size: 12,
-					weight: 'bold'
+					size: CHART_CONFIG.font.size.large,
+					weight: CHART_CONFIG.font.weight.medium,
+					family: CHART_CONFIG.font.family
 				},
 				anchor: 'center',
 				align: 'center',
 				offset: 0,
 				padding: 4,
-				backgroundColor: 'rgba(255, 255, 255, 0.95)',
+				backgroundColor: CHART_COLORS.backgroundWhite,
 				borderColor: function(context) {
 					const { datasetIndex } = context;
-					return datasetIndex === 0 ? colorChart : changeOpacity(color.main, 0.4);
+					return datasetIndex === 0 ? pieColors.company : pieColors.branch;
 				},
-				borderRadius: 4,
+				borderRadius: CHART_CONFIG.borderRadius,
 				borderWidth: 2,
 			},
 		},
@@ -178,12 +176,10 @@ export const PieChart = ({
 	// --------------------------------------------------
 
 	return (
-		<div style={{ height: '200px', position: 'relative' }}>
 			<Doughnut
 				id={`socialfootprintvisual_${indic}`}
 				data={chartData} 
 				options={options} 
 			/>
-		</div>
 	);
 };

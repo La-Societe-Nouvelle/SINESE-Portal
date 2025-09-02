@@ -10,16 +10,18 @@
 // =============================================================================
 
 // Couleurs primaires
-$primary: #3b4d8f;         // Bleu professionnel principal
+$primary: #1e3a8a;         // Bleu professionnel principal
 $secondary: #e74c5a;       // Rouge corail pour les actions
 $tertiary: #6c7fdd;        // Bleu pervenche pour les accents
 
 // Couleurs dérivées
-$primary-light: #4a6ba3;
-$primary-dark: #1e3464;
+$primary-light: #3b82f6;        // Bleu plus clair pour survols
+$primary-dark: #1e40af;         // Bleu marine foncé pour états actifs
+$primary-lighter: #60a5fa;      // Bleu clair pour éléments interactifs
+$primary-lightest: #dbeafe;     // Bleu très clair pour arrière-plans
 $secondary-light: #ed6b77;
 $tertiary-light: #8d9de8;
-$success: #d1e7dd;   
+$success: #059669;         // Vert émeraude qui s'harmonise avec la palette bleue SINESE   
 
 // Couleurs fonctionnelles
 $neutral: #64748b;         // Gris neutre pour textes secondaires

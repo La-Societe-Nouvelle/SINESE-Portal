@@ -4,8 +4,7 @@ export async function GET(req) {
   if (!q) {
     return Response.json({ legalUnits: [] }, { status: 400 });
   }
-  console.log("Fetching legal units for query:", q);
-  const apiRes = await fetch(`https://api.lasocietenouvelle.org/legalUnit/${encodeURIComponent(q)}`);
+  const apiRes = await fetch(`${process.env.API_BASE_URL}/legalUnit/${encodeURIComponent(q)}`);
   if (!apiRes.ok) {
     return Response.json({ legalUnits: [] }, { status: 502 });
   }

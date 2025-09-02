@@ -30,12 +30,15 @@ export default function SearchSidebar({
   query, 
   filters, 
   setFilters,
+  setQuery,
+  setResults,
   className = "" 
 }) {
   const [showMobile, setShowMobile] = useState(false);
   const [nafSidebarOpen, setNafSidebarOpen] = useState(false);
 
   const resetFilters = () => {
+    // Réinitialiser tous les filtres
     setFilters({
       secteur: "", 
       codesNaf: [], 
@@ -45,11 +48,16 @@ export default function SearchSidebar({
       sortBy: "pertinence",
       economieSocialeSolidaire: false, 
       societeMission: false, 
-      activitePrincipaleArtisanale: false, 
-      activitePrincipaleExtractive: false,
+      activitePrincipaleArtisanale: false,
       activitePrincipaleFormationRecherche: false, 
       donneesPubliees: []
     });
+    
+    // Vider la barre de recherche
+    setQuery("");
+    
+    // Vider les résultats
+    setResults([]);
   };
 
   const hasActiveFilters = Object.values(filters).some(f => f && f !== "pertinence") || query;

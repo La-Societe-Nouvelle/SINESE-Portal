@@ -4,13 +4,13 @@ import { Card, Row, Col, Button, Badge } from "react-bootstrap";
 import { MapPin, Users, Building, BarChart3, Heart, Star, TrendingUp, Info } from "lucide-react";
 
 export default function CompanyCard({ company }) {
+  console.log(company)
   return (
     <Card className="company-card mb-4 border-0 shadow-sm hover-shadow">
       <Card.Body className="p-4">
         <Row className="align-items-start">
           <Col md={8}>
             <div className="company-info">
-              {/* Header principal avec nom et badges */}
               <div className="d-flex align-items-start justify-content-between mb-3">
                 <div className="flex-grow-1 me-3">
                   <h4 className="mb-1 fw-bold company-name">

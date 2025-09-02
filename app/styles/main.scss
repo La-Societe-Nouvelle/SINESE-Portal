@@ -8,6 +8,7 @@
 @import "pages/homepage";
 @import "pages/recherche";
 @import "pages/macroeconomies";
+@import "pages/companyFootprint";
 
 // import components
 @import "components/react-select";
@@ -17,7 +18,7 @@
 // @import "pages/notre-approche.scss";
 // @import "pages/databrowser.scss";
 // @import "components/statistics.scss";
-// @import "components/components.scss";
+ @import "components/components.scss";
 // @import "components/sidebar.scss";
 // @import "components/modern-layout.scss";
 
@@ -150,9 +151,6 @@ ol {
   }
 }
 
-section {
-  padding: 4rem 0;
-}
 
 // Refined Card Styles
 .box {
