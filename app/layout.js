@@ -41,8 +41,7 @@ export default function RootLayout({ children }) {
         <Navbar expand="lg" className="header-nav" variant="light">
           <Container fluid className="px-4">
             <NavbarBrand href="/" className="d-flex align-items-center">
-              <img src="/logo-La-Societe-Nouvelle.svg" alt="SINESE" height={40} className="me-3" />
-
+              <img src="/logo-sinese.svg" alt="SINESE" height={50} className="me-3" />
             </NavbarBrand>
 
             <NavbarToggle aria-controls="basic-navbar-nav" />

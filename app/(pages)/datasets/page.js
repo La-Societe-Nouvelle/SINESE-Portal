@@ -3,6 +3,7 @@
 import { Container, Row, Col, Card, Badge, Button, Alert } from "react-bootstrap";
 import { Download, FileSpreadsheet, Archive, Calendar, Users, Database, Info, ExternalLink } from "lucide-react";
 import { useState } from "react";
+import PageHeader from "@/_components/PageHeader";
 
 export default function DatasetsPage() {
   const [downloadLoading, setDownloadLoading] = useState(null);
@@ -46,24 +47,45 @@ export default function DatasetsPage() {
   return (
     <div className="datasets-page">
       {/* Header */}
-      <div className="page-header compact py-4 mb-4">
-        <Container>
-          <div className="d-flex align-items-center mb-3">
-            <Database size={32} className="me-3" />
-            <h2 className="text-white mb-0">Jeux de données SINESE</h2>
-          </div>
-          <p className="lead">
-            Accédez aux données ouvertes d'empreinte sociétale et environnementale des entreprises françaises
-          </p>
+      <PageHeader
+        title="Jeux de données SINESE"
+        subtitle="Accédez aux données ouvertes d'empreinte sociétale et environnementale des entreprises françaises"
+        path="datasets"
+        icon={
+          <svg width="20" height="20"
+            fill="currentColor" viewBox="0 0     
+  24 24">
+            <rect x="3" y="4" width="18"
+              height="16" rx="2" fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5" />
+            <rect x="3" y="4" width="18"
+              height="4" rx="2"
+              fill="currentColor"
+              opacity="0.2" />
+            <line x1="3" y1="12" x2="21"
+              y2="12" stroke="currentColor"
+              strokeWidth="0.5" />
+            <line x1="3" y1="16" x2="21"
+              y2="16" stroke="currentColor"
+              strokeWidth="0.5" />
+            <line x1="9" y1="8" x2="21"
+              y2="8" stroke="currentColor"
+              strokeWidth="0.5" />
+            <circle cx="6" cy="14" r="1"
+              fill="currentColor" />
+            <circle cx="6" cy="18" r="1"
+              fill="currentColor" />
+          </svg>
+        }
 
-        </Container>
-      </div>
+      />
 
-      <Container className="py-5">
+      <Container>
         {/* Informations générales */}
-        <Alert variant="info" className="mb-5">
-          <Info size={20} className="me-2" />
+        <Alert variant="info" className="mb-4">
           <div>
+            <Info size={20} className="me-2 text-primary" />
             <strong>À propos des données SINESE</strong>
             <p className="mb-0 mt-2">
               Les données d'empreinte sociétale sont calculées selon la méthodologie de La Société Nouvelle
@@ -78,7 +100,7 @@ export default function DatasetsPage() {
         <Row>
           {datasets.map((dataset) => (
             <Col key={dataset.id} lg={12} className="mb-4">
-              <Card className="h-100 shadow-sm border-0">
+              <Card className="h-100 shadow-sm ">
                 <Card.Header className="bg-light border-0">
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
@@ -149,12 +171,10 @@ export default function DatasetsPage() {
             </Col>
           ))}
         </Row>
-
-
         {/* Informations complémentaires */}
-        <Row className="mt-5">
+        <Row className="my-5">
           <Col md={6}>
-            <Card className="h-100 border-0 bg-light">
+            <Card className="h-100 bg-light">
               <Card.Body>
                 <h5 className="text-primary">Utilisation des données</h5>
                 <p className="small">
@@ -172,7 +192,7 @@ export default function DatasetsPage() {
             </Card>
           </Col>
           <Col md={6}>
-            <Card className="h-100 border-0 bg-light">
+            <Card className="h-100 bg-light">
               <Card.Body>
                 <h5 className="text-primary">Support technique</h5>
                 <p className="small">

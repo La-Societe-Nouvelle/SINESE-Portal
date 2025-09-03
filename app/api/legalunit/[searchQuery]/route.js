@@ -1,11 +1,14 @@
 import { buildLegalUnitSearchUrl, convertFiltersToApiFormat } from '@/_utils/apiUrlBuilder';
 
-export async function GET(req) {
+export async function GET(req, { params }) {
   try {
     const { searchParams } = new URL(req.url);
     
-    // This route handles filters-only search (no search term in path)
-    // Search term queries are handled by [searchQuery]/route.js
+    // Await params in Next.js 15
+    const resolvedParams = await params;
+    
+    // Get search query from URL path parameter
+    const searchQuery = resolvedParams.searchQuery ? decodeURIComponent(resolvedParams.searchQuery) : "";
     
     // Parse filters from search params
     const frontendFilters = {};
@@ -27,7 +30,7 @@ export async function GET(req) {
     if (donneesPubliees) {
       frontendFilters.donneesPubliees = donneesPubliees.split(',').map(s => s.trim()).filter(s => s);
     }
-    console.log(donneesPubliees)
+    
     // Parse single filters
     if (searchParams.get("effectif")) {
       frontendFilters.effectif = searchParams.get("effectif");
@@ -42,19 +45,17 @@ export async function GET(req) {
     }
     
     // Convert frontend filters to API format
-    console.log('ApiFilters:', frontendFilters);
-    // Must have at least one filter for filters-only search
-    if (Object.keys(frontendFilters).length === 0) {
-      return Response.json({ 
-        legalUnits: [], 
-        message: "Au moins un filtre est requis pour la recherche" 
-      }, { status: 400 });
+    const apiFilters = convertFiltersToApiFormat(frontendFilters);
+    
+    // Handle empty query and no filters case
+    if (!searchQuery && Object.keys(apiFilters).length === 0) {
+      return Response.json({ legalUnits: [] }, { status: 400 });
     }
     
-    // Build the API URL (empty query, filters only)
-    const apiUrl = buildLegalUnitSearchUrl(process.env.API_BASE_URL, "", frontendFilters);
+    // Build the API URL using the new patterns
+    const apiUrl = buildLegalUnitSearchUrl(process.env.API_BASE_URL, searchQuery, apiFilters);
     
-    console.log('Calling API (filters only):', apiUrl);
+    console.log('Calling API:', apiUrl);
     
     // Make the API call
     const apiRes = await fetch(apiUrl);

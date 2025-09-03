@@ -148,10 +148,10 @@
   background-color :$primary ;
   border-bottom: 1px solid #e9ecf3;
   color: #fff;
-  padding: 1.5rem 0;
+  padding: 2.5rem 0;
   box-shadow: 0 1px 3px rgba($primary, 0.1);
   transition: all 0.3s ease;
-  
+  margin-bottom: 2rem;
   // Amélioration des liens dans les breadcrumbs
   .hover-underline {
     position: relative;
@@ -170,10 +170,7 @@
     }
   }
   
-  // Breadcrumbs styling
-  nav {
-    font-size: 0.85rem;
-  }
+
 
   // Animation et styling de l'icône
   .page-icon {

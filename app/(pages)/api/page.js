@@ -1,13 +1,13 @@
 "use client";
 
 import { Container, Row, Col, Card, Badge, Button, Alert, Nav, Tab } from "react-bootstrap";
-import { 
-  Database, 
-  Code, 
-  ExternalLink, 
-  Copy, 
-  CheckCircle, 
-  Settings, 
+import {
+  Database,
+  Code,
+  ExternalLink,
+  Copy,
+  CheckCircle,
+  Settings,
   Zap,
   FileText,
   ArrowRight,
@@ -17,6 +17,7 @@ import {
   Info
 } from "lucide-react";
 import { useState } from "react";
+import PageHeader from "@/_components/PageHeader";
 
 export default function ApiPage() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -56,7 +57,7 @@ export default function ApiPage() {
     },
     {
       id: "division",
-      method: "GET", 
+      method: "GET",
       path: "/v2/defaultfootprint/",
       description: "Récupère les données sectorielles par défaut",
       parameters: [
@@ -117,17 +118,23 @@ export default function ApiPage() {
   return (
     <div className="api-page">
       {/* Header */}
-      <div className="page-header compact py-4 mb-4">
-        <Container>
-          <div className="d-flex align-items-center mb-3">
-            <Code size={32} className="me-3" />
-            <h1 className="text-white mb-0">API SINESE</h1>
-          </div>
-          <p className="lead mb-0">
-            Intégrez directement les données d'empreinte sociétale dans vos applications
-          </p>
-        </Container>
-      </div>
+      <PageHeader
+        title="API SINESE"
+        subtitle="Intégrez directement les données d'empreinte sociétale dans vos applications"
+        path="api"
+        icon={
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <rect x="2" y="3" width="20" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="2" y="3" width="20" height="4" fill="currentColor" opacity="0.3" />
+            <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="1.5" />
+            <line x1="8" y1="15" x2="14" y2="15" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="5" cy="5.5" r="0.5" fill="currentColor" />
+            <circle cx="6.5" cy="5.5" r="0.5" fill="currentColor" />
+            <circle cx="8" cy="5.5" r="0.5" fill="currentColor" />
+            <path d="M18 9v6l2-2-2-2v-2z" fill="currentColor" />
+          </svg>
+        }
+      />
 
       <Container className="py-5">
         {/* Navigation */}
@@ -156,19 +163,19 @@ export default function ApiPage() {
                     <Card.Body >
                       <h2 className="h4 mb-3">À propos de l'API SINESE</h2>
                       <p>
-                        L'API SINESE vous donne accès aux données d'empreinte sociétale et 
-                        environnementale de plus de 2,3 millions d'entreprises françaises. 
+                        L'API SINESE vous donne accès aux données d'empreinte sociétale et
+                        environnementale de plus de 2,3 millions d'entreprises françaises.
                         Développée par La Société Nouvelle, cette API vous permet d'intégrer facilement
                         les 12 indicateurs clés de performance extra-financière dans vos projets.
                       </p>
 
                       <Alert variant="info" className="mb-4">
-                        <Info size={20} className="me-2" />
                         <div>
+                          <Info size={20} className="me-2 text-primary" />
                           <strong>API publique et gratuite</strong>
                           <p className="mb-0 mt-2">
-                            L'API SINESE est accessible librement sans authentification. 
-                            Les données sont à jour en temps réel et couvrent l'ensemble 
+                            L'API SINESE est accessible librement sans authentification.
+                            Les données sont à jour en temps réel et couvrent l'ensemble
                             des entreprises françaises actives.
                           </p>
                         </div>
@@ -177,7 +184,7 @@ export default function ApiPage() {
                       {/* Caractéristiques techniques */}
                       <Row className="mb-4">
                         <Col md={6}>
-                          <Card className="h-100 border-0 bg-light">
+                          <Card className="h-100 bg-light">
                             <Card.Body className="d-flex align-items-center">
                               <Zap size={24} className="text-primary me-3" />
                               <div>
@@ -188,7 +195,7 @@ export default function ApiPage() {
                           </Card>
                         </Col>
                         <Col md={6}>
-                          <Card className="h-100 border-0 bg-light">
+                          <Card className="h-100 bg-light">
                             <Card.Body className="d-flex align-items-center">
                               <Shield size={24} className="text-primary me-3" />
                               <div>
@@ -202,7 +209,7 @@ export default function ApiPage() {
 
                       <Row>
                         <Col md={6}>
-                          <Card className="h-100 border-0 bg-light">
+                          <Card className="h-100 bg-light">
                             <Card.Body className="d-flex align-items-center">
                               <Globe size={24} className="text-primary me-3" />
                               <div>
@@ -213,7 +220,7 @@ export default function ApiPage() {
                           </Card>
                         </Col>
                         <Col md={6}>
-                          <Card className="h-100 border-0 bg-light">
+                          <Card className="h-100 bg-light">
                             <Card.Body className="d-flex align-items-center">
                               <Clock size={24} className="text-primary me-3" />
                               <div>
@@ -250,7 +257,7 @@ export default function ApiPage() {
                     </Card.Body>
                   </Card>
 
-                  <Card className="mt-3 border-0 bg-light">
+                  <Card className="mt-3 ">
                     <Card.Body>
                       <h6 className="text-primary">Support & Contact</h6>
                       <p className="small mb-3">
@@ -268,13 +275,13 @@ export default function ApiPage() {
             {/* Points de terminaison */}
             <Tab.Pane eventKey="endpoints">
               <h2 className="h4 mb-4">Points de terminaison disponibles</h2>
-              
+
               {endpoints.map((endpoint) => (
-                <Card key={endpoint.id} className="mb-4 border-0 shadow-sm">
+                <Card key={endpoint.id} className="mb-4 shadow-sm">
                   <Card.Header className="bg-light border-0">
                     <div className="d-flex align-items-center">
-                      <Badge 
-                        bg={endpoint.method === "GET" ? "success" : "primary"} 
+                      <Badge
+                        bg={endpoint.method === "GET" ? "success" : "primary"}
                         className="me-3"
                       >
                         {endpoint.method}
@@ -284,7 +291,7 @@ export default function ApiPage() {
                   </Card.Header>
                   <Card.Body>
                     <p className="mb-3">{endpoint.description}</p>
-                    
+
                     {/* Paramètres */}
                     {endpoint.parameters.length > 0 && (
                       <div className="mb-3">
@@ -372,14 +379,14 @@ export default function ApiPage() {
             <Tab.Pane eventKey="indicators">
               <h2 className="h4 mb-4">Indicateurs disponibles</h2>
               <p className="mb-4">
-                L'API SINESE fournit des données sur 12 indicateurs d'empreinte sociétale, 
+                L'API SINESE fournit des données sur 12 indicateurs d'empreinte sociétale,
                 couvrant les dimensions sociale, environnementale et économique.
               </p>
 
               <Row>
                 {indicators.map((indicator) => (
                   <Col key={indicator.code} md={6} lg={4} className="mb-3">
-                    <Card className="h-100 border-0 shadow-sm">
+                    <Card className="h-100 shadow-sm">
                       <Card.Body>
                         <div className="d-flex align-items-center mb-2">
                           <Badge bg="primary" className="me-2">{indicator.code}</Badge>
@@ -393,13 +400,14 @@ export default function ApiPage() {
               </Row>
 
               <Alert variant="info" className="mt-4">
-                <Info size={20} className="me-2" />
                 <div>
+                  <Info size={20} className="me-2 text-primary" />
                   <strong>Interprétation des données</strong>
                   <p className="mb-0 mt-2">
                     Chaque indicateur est accompagné d'un flag indiquant la source des données :
                     <code className="ms-2">p</code> = données publiées par l'entreprise,
                     <code className="ms-2">d</code> = données par défaut (sectorielles)
+                    <code className="ms-2">e</code> = données estimées.
                   </p>
                 </div>
               </Alert>
@@ -408,8 +416,8 @@ export default function ApiPage() {
             {/* Exemples */}
             <Tab.Pane eventKey="examples">
               <h2 className="h4 mb-4">Exemples d'utilisation</h2>
-              
-              <Card className="mb-4 border-0 shadow-sm">
+
+              <Card className="mb-4 shadow-sm">
                 <Card.Header className="bg-light">
                   <h5 className="mb-0">JavaScript / Node.js</h5>
                 </Card.Header>
@@ -437,7 +445,7 @@ if (data.header.code === 200) {
                       )}
                     </Button>
                     <code className="small">
-{`// Récupérer l'empreinte d'une entreprise
+                      {`// Récupérer l'empreinte d'une entreprise
 const response = await fetch('https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint');
 const data = await response.json();
 
@@ -452,7 +460,7 @@ if (data.header.code === 200) {
                 </Card.Body>
               </Card>
 
-              <Card className="mb-4 border-0 shadow-sm">
+              <Card className="mb-4 shadow-sm">
                 <Card.Header className="bg-light">
                   <h5 className="mb-0">Python</h5>
                 </Card.Header>
@@ -482,7 +490,7 @@ else:
                       )}
                     </Button>
                     <code className="small">
-{`import requests
+                      {`import requests
 
 # Récupérer l'empreinte d'une entreprise
 url = "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint"
@@ -499,7 +507,7 @@ else:
                 </Card.Body>
               </Card>
 
-              <Card className="border-0 shadow-sm">
+              <Card className="shadow-sm">
                 <Card.Header className="bg-light">
                   <h5 className="mb-0">cURL</h5>
                 </Card.Header>
@@ -519,7 +527,7 @@ else:
                       )}
                     </Button>
                     <code className="small">
-{`curl -X GET "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint" \\
+                      {`curl -X GET "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint" \\
      -H "Accept: application/json"`}
                     </code>
                   </div>
@@ -532,7 +540,7 @@ else:
         {/* Section ressources complémentaires */}
         <Row className="mt-5">
           <Col md={4}>
-            <Card className="h-100 border-0 bg-light">
+            <Card className="h-100">
               <Card.Body className="text-center">
                 <FileText size={32} className="text-primary mb-3" />
                 <h5 className="text-primary">Documentation complète</h5>
@@ -546,7 +554,7 @@ else:
             </Card>
           </Col>
           <Col md={4}>
-            <Card className="h-100 border-0 bg-light">
+            <Card className="h-100 ">
               <Card.Body className="text-center">
                 <Database size={32} className="text-primary mb-3" />
                 <h5 className="text-primary">Jeux de données</h5>
@@ -560,7 +568,7 @@ else:
             </Card>
           </Col>
           <Col md={4}>
-            <Card className="h-100 border-0 bg-light">
+            <Card className="h-100 ">
               <Card.Body className="text-center">
                 <Globe size={32} className="text-primary mb-3" />
                 <h5 className="text-primary">Interface web</h5>

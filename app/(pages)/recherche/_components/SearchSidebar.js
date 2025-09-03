@@ -8,14 +8,9 @@ import NafTrigger from "@/_components/forms/NafTrigger";
 import NafSidebarSelector from "@/_components/forms/NafSidebarSelector";
 import DepartementSelector from "@/_components/forms/DepartementSelector";
 import indicsData from "@/_libs/indics.json";
+import { EFFECTIF_OPTIONS } from "@/_utils/effectifMapping";
 
-const effectifOptions = [
-  { value: "0-9", label: "0-9 salariés" },
-  { value: "10-49", label: "10-49 salariés" },
-  { value: "50-249", label: "50-249 salariés" },
-  { value: "250-499", label: "250-499 salariés" },
-  { value: "500+", label: "500+ salariés" }
-];
+const effectifOptions = EFFECTIF_OPTIONS;
 
 // Générer les options d'indicateurs à partir du fichier JSON
 const indicateursOptions = Object.entries(indicsData)
@@ -279,10 +274,10 @@ export default function SearchSidebar({
       {/* Footer avec bouton reset */}
       <div className="sidebar-footer">
         <Button 
-          variant="outline-secondary" 
+          variant="light" 
           size="sm" 
           onClick={resetFilters}
-          className="reset-button"
+          className="reset-button text-primary fw-medium "
         >
           <RotateCcw size={14} className="reset-icon" />
           Réinitialiser

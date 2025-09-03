@@ -231,7 +231,7 @@
       align-items: center;
       justify-content: center;
       transition: all 0.2s ease;
-      
+      border: 1px solid rgba($primary, 0.5);
       .reset-icon {
         margin-right: 0.5rem;
         transition: transform 0.2s ease;
