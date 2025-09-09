@@ -2,6 +2,7 @@
 
 import { Pagination } from "react-bootstrap";
 import CompanyCard from "./CompanyCard";
+import { SearchResultsSkeleton } from "./LoadingSkeleton";
 
 export default function SearchResults({ 
   results, 
@@ -10,7 +11,13 @@ export default function SearchResults({
   setCurrentPage, 
   resultsPerPage 
 }) {
-  if (loading || results.length === 0) return null;
+  // Show loading skeleton while searching
+  if (loading) {
+    return <SearchResultsSkeleton count={resultsPerPage} />;
+  }
+
+  // Don't show anything if no results
+  if (results.length === 0) return null;
 
   // Pagination logic
   const totalPages = Math.ceil(results.length / resultsPerPage);

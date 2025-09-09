@@ -28,7 +28,7 @@ export default function MacroeconomiesPage() {
     try {
       setIsLoadingMetadata(true);
       setError(null);
-      
+        console.log(process.env.NEXT_PUBLIC_API_URL);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/macrodata/metadata/macro_fpt`
       );
@@ -158,7 +158,6 @@ export default function MacroeconomiesPage() {
                     <Spinner animation="border" style={{ width: '2rem', height: '2rem' }} />
                   </div>
                   <h5 className="loading-title">Chargement en cours...</h5>
-                  <div className="loading-subtitle">Récupération des métadonnées</div>
                 </div>
               )}
 

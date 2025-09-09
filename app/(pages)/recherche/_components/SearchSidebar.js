@@ -1,16 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button, Badge, Form, Offcanvas } from "react-bootstrap";
-import { SlidersHorizontal, Search, MapPin, Users, Building2, CheckCircle, RotateCcw, Info } from "lucide-react";
-import CustomSelect from "@/_components/forms/CustomSelect";
+import { SlidersHorizontal, Search, MapPin, Users, Building2, CheckCircle, RotateCcw, Info, ChevronRight } from "lucide-react";
 import NafTrigger from "@/_components/forms/NafTrigger";
 import NafSidebarSelector from "@/_components/forms/NafSidebarSelector";
-import DepartementSelector from "@/_components/forms/DepartementSelector";
+import DepartementSidebarSelector from "@/_components/forms/DepartementSidebarSelector";
+import EffectifSidebarSelector from "@/_components/forms/EffectifSidebarSelector";
+import IndicateurSidebarSelector from "@/_components/forms/IndicateurSidebarSelector";
 import indicsData from "@/_libs/indics.json";
-import { EFFECTIF_OPTIONS } from "@/_utils/effectifMapping";
+import { EFFECTIF_MAPPING } from "@/_utils/effectifMapping";
 
-const effectifOptions = EFFECTIF_OPTIONS;
+// Créer un trigger personnalisé pour les départements
+const DepartementTrigger = ({ selectedDepartements, onToggle }) => {
+  const hasSelection = selectedDepartements.length > 0;
+  const displayText = selectedDepartements.length === 0 
+    ? "Sélectionner des départements..."
+    : selectedDepartements.length === 1
+    ? `${selectedDepartements[0]} département sélectionné`
+    : `${selectedDepartements.length} départements sélectionnés`;
+
+  return (
+    <button 
+      className={`btn-trigger ${hasSelection ? 'has-selection' : ''}`}
+      onClick={onToggle}
+    >
+      <span className={hasSelection ? '' : 'placeholder-text'}>{displayText}</span>
+      <ChevronRight size={14} className="trigger-icon" />
+    </button>
+  );
+};
+
+// Créer un trigger personnalisé pour les effectifs
+const EffectifTrigger = ({ selectedEffectif, onToggle }) => {
+  const hasSelection = !!selectedEffectif;
+  const displayText = !selectedEffectif 
+    ? "Sélectionner une tranche d'effectif..."
+    : EFFECTIF_MAPPING[selectedEffectif] || selectedEffectif;
+
+  return (
+    <button 
+      className={`btn-trigger ${hasSelection ? 'has-selection' : ''}`}
+      onClick={onToggle}
+    >
+      <span className={hasSelection ? '' : 'placeholder-text'}>{displayText}</span>
+      <ChevronRight size={14} className="trigger-icon" />
+    </button>
+  );
+};
+
+// Créer un trigger personnalisé pour les indicateurs
+const IndicateurTrigger = ({ selectedIndicateurs, onToggle }) => {
+  const hasSelection = selectedIndicateurs.length > 0;
+  const displayText = selectedIndicateurs.length === 0 
+    ? "Sélectionner des indicateurs..."
+    : selectedIndicateurs.length === 1
+    ? `${selectedIndicateurs[0]} sélectionné`
+    : `${selectedIndicateurs.length} indicateurs sélectionnés`;
+
+  return (
+    <button 
+      className={`btn-trigger ${hasSelection ? 'has-selection' : ''}`}
+      onClick={onToggle}
+    >
+      <span className={hasSelection ? '' : 'placeholder-text'}>{displayText}</span>
+      <ChevronRight size={14} className="trigger-icon" />
+    </button>
+  );
+};
 
 // Générer les options d'indicateurs à partir du fichier JSON
 const indicateursOptions = Object.entries(indicsData)
@@ -31,14 +88,80 @@ export default function SearchSidebar({
 }) {
   const [showMobile, setShowMobile] = useState(false);
   const [nafSidebarOpen, setNafSidebarOpen] = useState(false);
+  const [departementSidebarOpen, setDepartementSidebarOpen] = useState(false);
+  const [effectifSidebarOpen, setEffectifSidebarOpen] = useState(false);
+  const [indicateurSidebarOpen, setIndicateurSidebarOpen] = useState(false);
+  
+  // Ref pour détecter les clics à l'extérieur
+  const sidebarRef = useRef(null);
+
+  // Fonction pour fermer toutes les sidebars
+  const closeAllSidebars = () => {
+    setNafSidebarOpen(false);
+    setDepartementSidebarOpen(false);
+    setEffectifSidebarOpen(false);
+    setIndicateurSidebarOpen(false);
+  };
+
+  // Fonctions pour ouvrir une sidebar spécifique (ferme les autres)
+  const openNafSidebar = () => {
+    closeAllSidebars();
+    setNafSidebarOpen(true);
+  };
+
+  const openDepartementSidebar = () => {
+    closeAllSidebars();
+    setDepartementSidebarOpen(true);
+  };
+
+  const openEffectifSidebar = () => {
+    closeAllSidebars();
+    setEffectifSidebarOpen(true);
+  };
+
+  const openIndicateurSidebar = () => {
+    closeAllSidebars();
+    setIndicateurSidebarOpen(true);
+  };
+
+  // Détecter les clics à l'extérieur pour fermer les sidebars
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Vérifier si au moins une sidebar est ouverte
+      const anySidebarOpen = nafSidebarOpen || departementSidebarOpen || effectifSidebarOpen || indicateurSidebarOpen;
+      
+      if (anySidebarOpen && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        // Vérifier si le clic n'est pas sur un trigger button
+        const isClickOnTrigger = event.target.closest('.btn-trigger');
+        if (!isClickOnTrigger) {
+          closeAllSidebars();
+        }
+      }
+    };
+
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape') {
+        closeAllSidebars();
+      }
+    };
+
+    // Ajouter les écouteurs d'événements
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscapeKey);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [nafSidebarOpen, departementSidebarOpen, effectifSidebarOpen, indicateurSidebarOpen]);
 
   const resetFilters = () => {
     // Réinitialiser tous les filtres
     setFilters({
       secteur: "", 
-      codesNaf: [], 
+      sectors: [], 
       departements: [], 
-      effectif: "", 
+      trancheEffectifs: "", 
       formeJuridique: "", 
       sortBy: "pertinence",
       economieSocialeSolidaire: false, 
@@ -104,9 +227,9 @@ export default function SearchSidebar({
                   {filters.secteur}
                 </Badge>
               )}
-              {filters.codesNaf.length > 0 && (
+              {filters.sectors.length > 0 && (
                 <Badge bg="primary" className="me-1 mb-1">
-                  Activité{filters.codesNaf.length > 1 ? 's' : ''} 
+                  Activité{filters.sectors.length > 1 ? 's' : ''} 
                 </Badge>
               )}
               {filters.departements.length > 0 && (
@@ -114,9 +237,9 @@ export default function SearchSidebar({
                   {filters.departements.length} département{filters.departements.length > 1 ? 's' : ''}
                 </Badge>
               )}
-              {filters.effectif && (
+              {filters.trancheEffectifs && (
                 <Badge bg="secondary" className="me-1 mb-1">
-                  {filters.effectif} salariés
+                  {filters.trancheEffectifs} salariés
                 </Badge>
               )}
               {filters.formeJuridique && (
@@ -157,8 +280,8 @@ export default function SearchSidebar({
             Activité
           </Form.Label>
           <NafTrigger
-            selectedCodes={filters.codesNaf}
-            onToggle={() => setNafSidebarOpen(true)}
+            selectedCodes={filters.sectors}
+            onToggle={openNafSidebar}
           />
         </div>
 
@@ -168,11 +291,9 @@ export default function SearchSidebar({
             <span className="filter-icon"><MapPin size={16} /></span>
             Départements
           </Form.Label>
-          <DepartementSelector
+          <DepartementTrigger
             selectedDepartements={filters.departements}
-            onChange={(selectedDepartements) => setFilters({...filters, departements: selectedDepartements})}
-            placeholder="Sélectionnez des départements..."
-            instanceId="select-departements-sidebar"
+            onToggle={openDepartementSidebar}
           />
         </div>
 
@@ -182,14 +303,9 @@ export default function SearchSidebar({
             <span className="filter-icon"><Users size={16} /></span>
             Effectif
           </Form.Label>
-          <CustomSelect
-            instanceId="select-effectif-sidebar"
-            size="small"
-            options={effectifOptions}
-            value={effectifOptions.find(option => option.value === filters.effectif) || null}
-            onChange={(selectedOption) => setFilters({...filters, effectif: selectedOption ? selectedOption.value : ""})}
-            placeholder="Tous les effectifs"
-            isClearable={true}
+          <EffectifTrigger
+            selectedEffectif={filters.trancheEffectifs}
+            onToggle={openEffectifSidebar}
           />
         </div>
 
@@ -199,19 +315,9 @@ export default function SearchSidebar({
             <span className="filter-icon"><CheckCircle size={16} /></span>
             Données publiées
           </Form.Label>
-          <CustomSelect
-            instanceId="select-donnees-publiees-sidebar"
-            isMulti={true}
-            size="small"
-            variant="warning"
-            options={indicateursOptions}
-            value={indicateursOptions.filter(option => filters.donneesPubliees.includes(option.value))}
-            onChange={(selectedOptions) => {
-              const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
-              setFilters({...filters, donneesPubliees: selectedValues});
-            }}
-            placeholder="Sélectionnez des indicateurs..."
-            isClearable={true}
+          <IndicateurTrigger
+            selectedIndicateurs={filters.donneesPubliees}
+            onToggle={openIndicateurSidebar}
           />
         </div>
 
@@ -333,13 +439,36 @@ export default function SearchSidebar({
         </Offcanvas.Body>
       </Offcanvas>
 
-      {/* Sidebar NAF */}
-      <NafSidebarSelector
-        selectedCodes={filters.codesNaf}
-        onChange={(selectedCodes) => setFilters({...filters, codesNaf: selectedCodes})}
-        isOpen={nafSidebarOpen}
-        onToggle={() => setNafSidebarOpen(false)}
-      />
+      {/* Sidebars - Wrapper avec ref pour détecter les clics extérieurs */}
+      <div ref={sidebarRef}>
+        <NafSidebarSelector
+          selectedCodes={filters.sectors}
+          onChange={(selectedCodes) => setFilters({...filters, sectors: selectedCodes})}
+          isOpen={nafSidebarOpen}
+          onToggle={closeAllSidebars}
+        />
+        
+        <DepartementSidebarSelector
+          selectedDepartements={filters.departements}
+          onChange={(selectedDepartements) => setFilters({...filters, departements: selectedDepartements})}
+          isOpen={departementSidebarOpen}
+          onToggle={closeAllSidebars}
+        />
+        
+        <EffectifSidebarSelector
+          selectedEffectif={filters.trancheEffectifs}
+          onChange={(selectedEffectif) => setFilters({...filters, trancheEffectifs: selectedEffectif})}
+          isOpen={effectifSidebarOpen}
+          onToggle={closeAllSidebars}
+        />
+        
+        <IndicateurSidebarSelector
+          selectedIndicateurs={filters.donneesPubliees}
+          onChange={(selectedIndicateurs) => setFilters({...filters, donneesPubliees: selectedIndicateurs})}
+          isOpen={indicateurSidebarOpen}
+          onToggle={closeAllSidebars}
+        />
+      </div>
     </div>
   );
 }

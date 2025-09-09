@@ -43,7 +43,7 @@ export const indicatorSections = [
     id: 'social',
     title: 'Empreinte sociale',
     description: 'Indicateurs d\'équité, de rémunération et de développement des compétences',
-    color: '#6c7fdd',
+    color: '#3b4d8f',
     indicators: [
       {
         code: 'GEQ',
@@ -81,7 +81,7 @@ export const indicatorSections = [
     id: 'environmental',
     title: 'Empreinte environnementale',
     description: 'Indicateurs d\'impact climatique et de consommation des ressources',
-    color: '#e74c5a',
+    color: '#3b4d8f',
     indicators: [
       {
         code: 'GHG',

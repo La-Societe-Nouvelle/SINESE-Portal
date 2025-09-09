@@ -45,8 +45,12 @@ export function buildLegalUnitSearchUrl(baseUrl = null, query = "", filters = {}
     url.searchParams.set('sectors', filters.sectors.join(','));
   }
   
-  if (filters.trancheEffectifs && filters.trancheEffectifs.length > 0) {
-    url.searchParams.set('trancheEffectifs', filters.trancheEffectifs.join(','));
+  if (filters.trancheEffectifs) {
+    // Handle both array and string formats
+    const trancheValue = Array.isArray(filters.trancheEffectifs) 
+      ? filters.trancheEffectifs.join(',')
+      : filters.trancheEffectifs;
+    url.searchParams.set('trancheEffectifs', trancheValue);
   }
   
   if (filters.economieSocialeSolidaire === true) {
@@ -80,14 +84,14 @@ export function convertFiltersToApiFormat(frontendFilters) {
     apiFilters.departements = frontendFilters.departements;
   }
   
-  // Convert codesNaf to sectors
-  if (frontendFilters.codesNaf && frontendFilters.codesNaf.length > 0) {
-    apiFilters.sectors = frontendFilters.codesNaf;
+  // Convert sectors to sectors
+  if (frontendFilters.sectors && frontendFilters.sectors.length > 0) {
+    apiFilters.sectors = frontendFilters.sectors;
   }
   
-  // Convert effectif to trancheEffectifs (single value to array)
-  if (frontendFilters.effectif) {
-    apiFilters.trancheEffectifs = [frontendFilters.effectif];
+  // Convert trancheEffectifs to trancheEffectifs (keep as single value for comma-separated format)
+  if (frontendFilters.trancheEffectifs) {
+    apiFilters.trancheEffectifs = frontendFilters.trancheEffectifs;
   }
   
   // Boolean filters

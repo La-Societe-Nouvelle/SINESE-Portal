@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Form, Button, Badge, Collapse, InputGroup } from "react-bootstrap";
-import { Search, ChevronDown, ChevronRight, Check, X } from "lucide-react";
-import nafData from "@/_libs/naf_rev_2.json";
+import { Search, ChevronDown, ChevronRight,  X } from "lucide-react";
+import nafData from "@/_libs/naf_rev_2_by_divisions.json";
 
 export default function NafSidebarSelector({
   selectedCodes = [],
@@ -17,17 +17,38 @@ export default function NafSidebarSelector({
 
   // Préparer les données NAF avec recherche
   const processedData = useMemo(() => {
-    const sections = Object.entries(nafData).map(([sectionName, codes]) => ({
-      name: sectionName,
-      codes: codes.filter(item => {
-        if (!searchQuery) return true;
-        const searchText = `${item.code} ${item.libelle} ${sectionName}`.toLowerCase();
-        return searchText.includes(searchQuery.toLowerCase());
-      })
-    })).filter(section => section.codes.length > 0);
+    const sections = Object.entries(nafData).map(([sectionName, codes]) => {
+      // Extraire le code de division à partir du premier code de la section
+      const divisionCode = codes.length > 0 ? codes[0].code.substring(0, 2) : '';
+      
+      return {
+        name: sectionName,
+        divisionCode: divisionCode,
+        displayName: `${divisionCode} - ${sectionName}`, // Format: "01 - Culture et production animale..."
+        codes: codes.filter(item => {
+          if (!searchQuery) return true;
+          const searchText = `${item.code} ${item.libelle} ${sectionName}`.toLowerCase();
+          return searchText.includes(searchQuery.toLowerCase());
+        })
+      };
+    }).filter(section => section.codes.length > 0);
 
     return sections;
   }, [searchQuery]);
+
+  // Auto-déplier les divisions qui ont des résultats de recherche
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      // Si on a une recherche, déplier automatiquement toutes les divisions qui ont des résultats
+      const sectionsWithResults = new Set(
+        processedData.map(section => section.name)
+      );
+      setExpandedSections(sectionsWithResults);
+    } else {
+      // Si pas de recherche, fermer toutes les sections
+      setExpandedSections(new Set());
+    }
+  }, [searchQuery, processedData]);
 
   // Gérer l'expansion/contraction des sections
   const toggleSection = (sectionName) => {
@@ -155,7 +176,7 @@ export default function NafSidebarSelector({
 
                   <div className="flex-grow-1">
                     <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>
-                      {section.name}
+                      {section.displayName}
                     </div>
 
                   </div>

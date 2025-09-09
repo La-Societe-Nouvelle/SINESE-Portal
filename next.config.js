@@ -12,6 +12,15 @@ module.exports = {
     cpus: 1
   },
 
+  async rewrites() {
+    return [
+      {
+        source: '/open-data/:path*',
+        destination: '/api/serve-file/:path*',
+      },
+    ];
+  },
+
   async redirects() {
     return [
       {

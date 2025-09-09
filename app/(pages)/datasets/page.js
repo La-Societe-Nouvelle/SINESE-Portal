@@ -1,48 +1,55 @@
 "use client";
 
-import { Container, Row, Col, Card, Badge, Button, Alert } from "react-bootstrap";
-import { Download, FileSpreadsheet, Archive, Calendar, Users, Database, Info, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { Container, Row, Col, Card, Button, Alert } from "react-bootstrap";
+import { FileSpreadsheet, Archive, Info } from "lucide-react";
 import PageHeader from "@/_components/PageHeader";
 
 export default function DatasetsPage() {
-  const [downloadLoading, setDownloadLoading] = useState(null);
-
-  const handleDownload = async (format, dataset) => {
-    setDownloadLoading(`${dataset}-${format}`);
-    // Simulation d'un téléchargement
-    setTimeout(() => {
-      setDownloadLoading(null);
-      // Ici vous pouvez implémenter la logique de téléchargement réelle
-    }, 2000);
-  };
-
+  // Données en dur 
   const datasets = [
     {
-      id: "legal-units-footprint",
+      id: "sinese-stock-unitelegal-2025-09-01",
       title: "SINESE - Fichier stock UniteLegale du 01 Septembre 2025",
       description: "Base de données complète des empreintes sociales et environnementales des entreprises françaises selon les indicateurs SINESE.",
       lastUpdate: "2025-09-01",
-      records: "2,347,891",
-      formats: ["CSV", "ZIP"],
-      size: "156 MB",
+      records: "10,485,761", 
+      formats: ["CSV"],
+      size: "17,9 Mo",
       indicators: ["ART", "ECO", "GEQ", "GHG", "HAZ", "IDR", "KNW", "MAT", "NRG", "SOC", "WAS", "WAT"],
       license: "Licence Ouverte / Open Licence",
       frequency: "Mensuelle"
     },
     {
-      id: "indicators-metadata",
+      id: "sinese-indicateurs-metadata",
       title: "Métadonnées des indicateurs SINESE",
-      description: "Documentation technique et métadonnées complètes des 12 indicateurs d'empreinte sociétale utilisés dans SINESE.",
+      description: "Métadonnées complètes des 12 indicateurs d'empreinte sociétale utilisés dans SINESE.",
       lastUpdate: "2024-11-20",
-      records: "12",
-      formats: ["CSV", "JSON"],
-      size: "64 KB",
+      records: "17",
+      formats: ["CSV"],
+      size: "4 Ko",
       license: "Licence Ouverte / Open Licence",
-      frequency: "Trimestrielle"
-    },
-
+      frequency: "-"
+    }
   ];
+
+
+
+  const handleDownload = (format, dataset) => {
+    // Le nom du fichier sera: nom-du-dataset.format
+    const fileName = `${dataset}.${format.toLowerCase()}`;
+    
+    // Téléchargement direct depuis le dossier open-data
+    const downloadUrl = `/open-data/${fileName}`;
+    
+    // Créer un lien temporaire pour déclencher le téléchargement
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   return (
     <div className="datasets-page">
@@ -82,6 +89,8 @@ export default function DatasetsPage() {
       />
 
       <Container>
+
+
         {/* Informations générales */}
         <Alert variant="info" className="mb-4">
           <div>
@@ -148,7 +157,7 @@ export default function DatasetsPage() {
                         variant="secondary"
                         size="sm"
                         onClick={() => handleDownload(format.toLowerCase(), dataset.id)}
-                        disabled={downloadLoading === `${dataset.id}-${format.toLowerCase()}`}
+                        disabled={false}
                         className="d-flex align-items-center"
                       >
                         {format === "ZIP" ? (
@@ -156,7 +165,7 @@ export default function DatasetsPage() {
                         ) : (
                           <FileSpreadsheet size={14} className="me-1" />
                         )}
-                        {downloadLoading === `${dataset.id}-${format.toLowerCase()}` ? "..." : format}
+                        {format}
                       </Button>
                     ))}
                   </div>
@@ -199,7 +208,7 @@ export default function DatasetsPage() {
                   Besoin d'aide pour utiliser les données ? Consultez notre
                   documentation ou contactez notre équipe technique.
                 </p>
-                <Button variant="link" size="sm" className="p-0">
+                <Button variant="link" size="sm" className="p-0" href="mailto:support@lasocietenouvelle.org">
                   Contacter le support →
                 </Button>
               </Card.Body>

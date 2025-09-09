@@ -23,8 +23,8 @@ export const EFFECTIF_MAPPING = {
 };
 
 /**
- * Convertit un code tranche d'effectif INSEE en libellé lisible
- * @param {string} code - Code INSEE de la tranche d'effectif
+ * Convertit un code tranche d'trancheEffectifs INSEE en libellé lisible
+ * @param {string} code - Code INSEE de la tranche d'trancheEffectifs
  * @returns {string} Libellé lisible ou le code si non trouvé
  */
 export function getEffectifLabel(code) {
@@ -38,7 +38,7 @@ export function getEffectifLabel(code) {
 
 /**
  * Version courte pour l'affichage compact
- * @param {string} code - Code INSEE de la tranche d'effectif
+ * @param {string} code - Code INSEE de la tranche d'trancheEffectifs
  * @returns {string} Libellé court
  */
 export function getEffectifShortLabel(code) {
@@ -69,7 +69,7 @@ export function getEffectifShortLabel(code) {
 
 /**
  * Obtient une catégorie de taille pour styling/couleurs
- * @param {string} code - Code INSEE de la tranche d'effectif
+ * @param {string} code - Code INSEE de la tranche d'trancheEffectifs
  * @returns {string} Catégorie: 'micro', 'petite', 'moyenne', 'grande', 'tres-grande'
  */
 export function getEffectifCategory(code) {
@@ -107,7 +107,7 @@ export function getEffectifCategory(code) {
 
 /**
  * Obtient une couleur Bootstrap basée sur la taille de l'entreprise
- * @param {string} code - Code INSEE de la tranche d'effectif
+ * @param {string} code - Code INSEE de la tranche d'trancheEffectifs
  * @returns {string} Classe Bootstrap pour Badge
  */
 export function getEffectifBadgeColor(code) {

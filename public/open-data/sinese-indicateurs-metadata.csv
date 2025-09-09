@@ -1,0 +1,17 @@
+code,label,labeldeclaredvalue,labelgrandeur,unit,defaultprecision,includedinfootprint
+BEGES,Bilan des Emissions de Gaz à Effet de Serre,,Emissions de gaz à effet de serre,TCO2E,0,f
+ART,Contribution aux Métiers d'Art et aux Savoir-Faire,,Métiers d'Art et aux Savoir-Faire,P100,1,t
+ECO,Contribution à l'économie nationale,Valeur ajoutée nette produite en France,Économie nationale,P100,1,t
+GEQ,Indice d'écart de rémunérations F/H,,Écart de rémunérations F/H,P100,1,t
+KNW,Contribution à l'Evolution des compétences et des connaissances,,Compétences et connaissances,P100,1,t
+SOC,Contribution aux Acteurs d'Intérêt social,,Acteurs d'Intérêt social,P100,1,t
+GHG,Intensité d'Émissions de Gaz à effet de serre,,Émissions de Gaz à effet de serre,GCO2E_CPEUR,0,t
+HAZ,Intensité d'Utilisation de produits dangereux,Quantité utilisée de produits dangereux pour la santé et/ou l'environnement,Utilisation de produits dangereux,G_CPEUR,1,t
+MAT,Intensité d'Extraction de Matières premières,,Extraction de matières premières,G_CPEUR,0,t
+WAS,Intensité de Production de Déchets,,Production de déchets,G_CPEUR,0,t
+NRG,Intensité de Consommation d'Energie,,Consommation d'énergie,KJ_CPEUR,0,t
+WAT,Intensité de Consommation d'Eau,,Consommation d'eau,L_CPEUR,1,t
+IDR,Rapport interdécile d9/d1  ,,Rapport interdécile d9/d1  ,IND,2,t
+DIS,Indice de répartition des rémunérations,,Répartition des rémunérations,P100,1,f
+IEP,Index de l'Egalité Professionnelle,,Index de l'Egalité Professionnelle,I100,0,f
+MIF,Impact Score,,Impact Score,I100,2,f

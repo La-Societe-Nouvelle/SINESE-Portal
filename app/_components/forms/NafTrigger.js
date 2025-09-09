@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Badge } from "react-bootstrap";
-import { ArrowBigRight, CheckSquare, CheckSquare2, ChevronRight } from "lucide-react";
+import { CheckSquare2, ChevronRight } from "lucide-react";
 
 export default function NafTrigger({
   selectedCodes = [],
@@ -11,7 +11,7 @@ export default function NafTrigger({
 
   return (
     <Button
-      className="naf-trigger"
+      className="btn-trigger"
       onClick={onToggle}
     >
       <div className="d-flex align-items-center flex-grow-1">

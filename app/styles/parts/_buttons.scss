@@ -2,6 +2,79 @@
   .btn-outline-secondary:focus {
     box-shadow: 0 0 0 0.2rem rgba($secondary, 0.25); // Plus visible
   }
+
+// =============================================================================
+// BOUTONS TRIGGER - Sidebar selectors
+// =============================================================================
+
+.btn-trigger {
+  background-color: $background;
+  border: 1px solid #e2e8f0; // Gris très clair
+  color: $neutral; // Couleur de texte principale
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.65rem 0.875rem;
+  min-height: 38px;
+  width: 100%;
+  text-align: start;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  border-radius: 0.375rem; // Légèrement arrondi
+
+  &:hover {
+    background-color: $light; // Bleu très clair pour survol
+    border-color: #cbd5e1; // Gris moyen
+    color: $primary-dark; // Texte plus foncé au survol
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  &:focus {
+    background-color: $light;
+    border-color: $primary-lighter;
+    color: $primary-dark;
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.1);
+    outline: none;
+  }
+
+  &:active {
+    background-color: #f1f5f9;
+    border-color: $primary;
+    transform: translateY(0);
+  }
+
+  // État avec sélection active
+  &.has-selection {
+    background-color: $primary-lightest;
+    border-color: $primary-lighter;
+    color: $primary-dark;
+    font-weight: 600;
+
+    &:hover {
+      background-color: rgba($primary-lighter, 0.15);
+      border-color: $primary;
+    }
+  }
+
+  // Texte placeholder (quand rien n'est sélectionné)
+  .placeholder-text {
+    color: #94a3b8; // Gris moyen pour le placeholder
+    font-weight: 400;
+  }
+
+  // Icône à droite
+  .trigger-icon {
+    color: #94a3b8;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover .trigger-icon {
+    color: $primary;
+    transform: translateX(2px);
+  }
+}
  
 
 // Refined Button Styles

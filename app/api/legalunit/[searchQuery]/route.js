@@ -13,16 +13,16 @@ export async function GET(req, { params }) {
     // Parse filters from search params
     const frontendFilters = {};
     
-    // Parse departements array
-    const departements = searchParams.getAll("departements[]");
-    if (departements.length > 0) {
-      frontendFilters.departements = departements;
+    // Parse departements as comma-separated string
+    const departements = searchParams.get("departements");
+    if (departements) {
+      frontendFilters.departements = departements.split(',').map(s => s.trim()).filter(s => s);
     }
     
-    // Parse codesNaf array  
-    const codesNaf = searchParams.getAll("codesNaf[]");
-    if (codesNaf.length > 0) {
-      frontendFilters.codesNaf = codesNaf;
+    // Parse sectors as comma-separated string  
+    const sectors = searchParams.get("sectors");
+    if (sectors) {
+      frontendFilters.sectors = sectors.split(',').map(s => s.trim()).filter(s => s);
     }
     
     // Parse donneesPubliees as comma-separated string
@@ -32,11 +32,11 @@ export async function GET(req, { params }) {
     }
     
     // Parse single filters
-    if (searchParams.get("effectif")) {
-      frontendFilters.effectif = searchParams.get("effectif");
+    if (searchParams.get("trancheEffectifs")) {
+      frontendFilters.trancheEffectifs = searchParams.get("trancheEffectifs");
     }
     
-    if (searchParams.get("ess") === "true") {
+    if (searchParams.get("economieSocialeSolidaire") === "true") {
       frontendFilters.economieSocialeSolidaire = true;
     }
     

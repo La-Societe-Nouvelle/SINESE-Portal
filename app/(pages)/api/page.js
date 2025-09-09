@@ -33,32 +33,46 @@ export default function ApiPage() {
     {
       id: "footprint",
       method: "GET",
-      path: "/v2/legalunit/{siren}/footprint",
+      path: "/legalunitfootprint/{siren}",
       description: "Récupère l'empreinte sociétale complète d'une entreprise",
       parameters: [
         { name: "siren", type: "string", required: true, description: "Numéro SIREN de l'entreprise (9 chiffres)" }
       ],
       example: {
-        request: "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint",
+        request: "https://api.lasocietenouvelle.org/legalunitfootprint/889182770",
         response: {
-          header: { code: 200, message: "success" },
-          legalUnit: {
-            siren: "552032534",
-            denomination: "LA SOCIETE NOUVELLE",
-            activitePrincipaleCode: "7022Z"
+          "header": {"code": 200, "message": "OK"},
+          "legalUnit": {
+            "siren": "889182770",
+            "denomination": "LA SOCIETE NOUVELLE",
+            "activitePrincipaleCode": "70.22Z",
+            "communeSiege": "LILLE",
+            "trancheEffectifs": "02"
           },
-          footprint: {
-            ECO: { value: 85.4, flag: "p" },
-            ART: { value: 12.3, flag: "d" },
-            SOC: { value: 91.2, flag: "p" }
-          }
+          "footprint": {
+            "ECO": {
+              "value": "95.700000",
+              "year": "2024",
+              "uncertainty": 7,
+              "flag": "p",
+              "description": "Donnée publiée",
+              "lastupdate": "2025-02-03T23:00:00.000Z"
+            }
+          },
+          "metaData": {
+            "ECO": {
+              "indicatorLabel": "Contribution à l'économie nationale",
+              "unitSymbol": "%"
+            }
+          },
+          "additionnalData": {}
         }
       }
     },
     {
       id: "division",
       method: "GET",
-      path: "/v2/defaultfootprint/",
+      path: "/defaultfootprint/",
       description: "Récupère les données sectorielles par défaut",
       parameters: [
         { name: "code", type: "string", required: true, description: "Code division A88 (2 chiffres)" },
@@ -66,13 +80,33 @@ export default function ApiPage() {
         { name: "area", type: "string", required: false, description: "Zone géographique (défaut: FRA)" }
       ],
       example: {
-        request: "https://api.lasocietenouvelle.org/v2/defaultfootprint/?code=70&aggregate=PRD&area=FRA",
+        request: "https://api.lasocietenouvelle.org/defaultfootprint/?code=70&aggregate=PRD&area=FRA",
         response: {
-          header: { code: 200, message: "success" },
-          footprint: {
-            ECO: { value: 78.2 },
-            ART: { value: 15.6 },
-            SOC: { value: 88.9 }
+          "header": {"code": 200, "message": "OK"},
+          "footprint": {
+            "ECO": {
+              "value": 64.1,
+              "uncertainty": 50,
+              "source": "La Société Nouvelle",
+              "description": "Empreinte par défaut pour la division 70 pour l'année 2024",
+              "lastupdate": "2025-07-15T22:00:00.000Z",
+              "year": "2024"
+            }
+          },
+          "metadata": {
+            "indicators": {
+              "ECO": {
+                "indicatorLabel": "Contribution à l'économie nationale",
+                "unitSymbol": "%"
+              }
+            },
+            "parameters": {
+              "areacode": "FRA",
+              "arealabel": "France",
+              "aggregatecode": "PRD",
+              "activitycode": "70",
+              "activitylabel": "Activités des sièges sociaux, conseil de gestion"
+            }
           }
         }
       }
@@ -80,7 +114,7 @@ export default function ApiPage() {
     {
       id: "macro",
       method: "GET",
-      path: "/v2/macrodata/macro_fpt_a88",
+      path: "/macrodata/macro_fpt_a88",
       description: "Récupère les données macroéconomiques historiques par division",
       parameters: [
         { name: "division", type: "string", required: true, description: "Code division A88" },
@@ -88,13 +122,34 @@ export default function ApiPage() {
         { name: "area", type: "string", required: false, description: "Zone géographique" }
       ],
       example: {
-        request: "https://api.lasocietenouvelle.org/v2/macrodata/macro_fpt_a88?division=70&aggregate=PRD&area=FRA",
+        request: "https://api.lasocietenouvelle.org/macrodata/macro_fpt_a88?division=70&aggregate=PRD&area=FRA",
         response: {
-          header: { code: 200, message: "success" },
-          data: [
-            { indic: "ECO", year: 2023, value: 78.2 },
-            { indic: "ECO", year: 2022, value: 76.8 }
-          ]
+          "header": {"code": 200, "message": "OK"},
+          "data": [
+            {
+              "division": "70",
+              "aggregate": "PRD",
+              "area": "FRA",
+              "year": "2010",
+              "currency": "CPEUR",
+              "indic": "ART",
+              "value": 1.5,
+              "flag": " ",
+              "lastupdate": "2025-07-15T22:00:00.000Z",
+              "lastupload": null,
+              "unit": null
+            }
+          ],
+          "meta": {
+            "dataset": "macro_fpt_a88",
+            "label": "Empreintes des divisions économiques",
+            "doc": "https://docs.lasocietenouvelle.org/series-donnees/macro_fpt_a88",
+            "params": {
+              "division": "70",
+              "aggregate": "PRD",
+              "area": "FRA"
+            }
+          }
         }
       }
     }
@@ -148,9 +203,7 @@ export default function ApiPage() {
           <Nav.Item>
             <Nav.Link eventKey="indicators">Indicateurs</Nav.Link>
           </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="examples">Exemples</Nav.Link>
-          </Nav.Item>
+
         </Nav>
 
         <Tab.Container activeKey={activeTab}>
@@ -247,10 +300,12 @@ export default function ApiPage() {
                       <h6>Obtenir l'empreinte d'une entreprise :</h6>
                       <div className="bg-light p-3 rounded mb-3">
                         <code className="small">
-                          GET /v2/legalunit/552032534/footprint
+                          GET /legalunitfootprint/889182770
                         </code>
                       </div>
-                      <Button variant="outline-primary" size="sm" className="w-100">
+                      <Button variant="outline-primary" size="sm" className="w-100"
+                      href="https://api.lasocietenouvelle.org/legalunitfootprint/889182770" target="_blank" rel="noopener noreferrer"
+                      >
                         <ExternalLink size={14} className="me-1" />
                         Essayer maintenant
                       </Button>
@@ -263,7 +318,7 @@ export default function ApiPage() {
                       <p className="small mb-3">
                         Questions techniques ou suggestions d'amélioration ?
                       </p>
-                      <Button variant="link" size="sm" className="p-0">
+                      <Button variant="link" size="sm" className="p-0" href="mailto:support@lasocietenouvelle.org">
                         Contacter l'équipe →
                       </Button>
                     </Card.Body>
@@ -413,127 +468,7 @@ export default function ApiPage() {
               </Alert>
             </Tab.Pane>
 
-            {/* Exemples */}
-            <Tab.Pane eventKey="examples">
-              <h2 className="h4 mb-4">Exemples d'utilisation</h2>
-
-              <Card className="mb-4 shadow-sm">
-                <Card.Header className="bg-light">
-                  <h5 className="mb-0">JavaScript / Node.js</h5>
-                </Card.Header>
-                <Card.Body>
-                  <div className="bg-dark text-light p-3 rounded position-relative">
-                    <Button
-                      variant="outline-light"
-                      size="sm"
-                      className="position-absolute top-0 end-0 mt-2 me-2"
-                      onClick={() => copyToClipboard(`// Récupérer l'empreinte d'une entreprise
-const response = await fetch('https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint');
-const data = await response.json();
-
-if (data.header.code === 200) {
-  console.log('Entreprise:', data.legalUnit.denomination);
-  console.log('Empreinte:', data.footprint);
-} else {
-  console.error('Erreur:', data.header.message);
-}`, 'js-example')}
-                    >
-                      {copiedExample === 'js-example' ? (
-                        <CheckCircle size={14} />
-                      ) : (
-                        <Copy size={14} />
-                      )}
-                    </Button>
-                    <code className="small">
-                      {`// Récupérer l'empreinte d'une entreprise
-const response = await fetch('https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint');
-const data = await response.json();
-
-if (data.header.code === 200) {
-  console.log('Entreprise:', data.legalUnit.denomination);
-  console.log('Empreinte:', data.footprint);
-} else {
-  console.error('Erreur:', data.header.message);
-}`}
-                    </code>
-                  </div>
-                </Card.Body>
-              </Card>
-
-              <Card className="mb-4 shadow-sm">
-                <Card.Header className="bg-light">
-                  <h5 className="mb-0">Python</h5>
-                </Card.Header>
-                <Card.Body>
-                  <div className="bg-dark text-light p-3 rounded position-relative">
-                    <Button
-                      variant="outline-light"
-                      size="sm"
-                      className="position-absolute top-0 end-0 mt-2 me-2"
-                      onClick={() => copyToClipboard(`import requests
-
-# Récupérer l'empreinte d'une entreprise
-url = "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint"
-response = requests.get(url)
-data = response.json()
-
-if data['header']['code'] == 200:
-    print(f"Entreprise: {data['legalUnit']['denomination']}")
-    print(f"Empreinte: {data['footprint']}")
-else:
-    print(f"Erreur: {data['header']['message']}")`, 'python-example')}
-                    >
-                      {copiedExample === 'python-example' ? (
-                        <CheckCircle size={14} />
-                      ) : (
-                        <Copy size={14} />
-                      )}
-                    </Button>
-                    <code className="small">
-                      {`import requests
-
-# Récupérer l'empreinte d'une entreprise
-url = "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint"
-response = requests.get(url)
-data = response.json()
-
-if data['header']['code'] == 200:
-    print(f"Entreprise: {data['legalUnit']['denomination']}")
-    print(f"Empreinte: {data['footprint']}")
-else:
-    print(f"Erreur: {data['header']['message']}")`}
-                    </code>
-                  </div>
-                </Card.Body>
-              </Card>
-
-              <Card className="shadow-sm">
-                <Card.Header className="bg-light">
-                  <h5 className="mb-0">cURL</h5>
-                </Card.Header>
-                <Card.Body>
-                  <div className="bg-dark text-light p-3 rounded position-relative">
-                    <Button
-                      variant="outline-light"
-                      size="sm"
-                      className="position-absolute top-0 end-0 mt-2 me-2"
-                      onClick={() => copyToClipboard(`curl -X GET "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint" \\
-     -H "Accept: application/json"`, 'curl-example')}
-                    >
-                      {copiedExample === 'curl-example' ? (
-                        <CheckCircle size={14} />
-                      ) : (
-                        <Copy size={14} />
-                      )}
-                    </Button>
-                    <code className="small">
-                      {`curl -X GET "https://api.lasocietenouvelle.org/v2/legalunit/552032534/footprint" \\
-     -H "Accept: application/json"`}
-                    </code>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Tab.Pane>
+  
           </Tab.Content>
         </Tab.Container>
 

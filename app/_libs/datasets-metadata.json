@@ -1,0 +1,183 @@
+{
+  "version": "1.0",
+  "lastUpdate": "2025-01-20",
+  "datasets": {
+    "sinese-unitelegale-complete": {
+      "title": "SINESE - Base complète des unités légales",
+      "description": "Base de données complète des empreintes sociales et environnementales des entreprises françaises selon les indicateurs SINESE. Données officielles extraites du répertoire SIRENE et enrichies avec les calculs d'empreinte sociétale.",
+      "category": "complete",
+      "indicators": ["ART", "ECO", "GEQ", "GHG", "HAZ", "IDR", "KNW", "MAT", "NRG", "SOC", "WAS", "WAT"],
+      "license": "Licence Ouverte / Open Licence",
+      "frequency": "Mensuelle",
+      "methodology": "Méthodologie La Société Nouvelle",
+      "coverage": "France métropolitaine et DOM-TOM",
+      "dataSource": "INSEE SIRENE + calculs LSN",
+      "tags": ["entreprises", "empreinte", "social", "environnemental", "sirene"],
+      "filePatterns": [
+        "sinese-unitelegale-*.csv",
+        "sinese-unitelegale-*.zip", 
+        "sinese-complete-*.csv"
+      ]
+    },
+    
+    "indicators-metadata": {
+      "title": "Métadonnées des indicateurs SINESE",
+      "description": "Documentation technique et métadonnées complètes des 12 indicateurs d'empreinte sociétale utilisés dans SINESE. Inclut les définitions, unités, méthodes de calcul et sources de données.",
+      "category": "metadata",
+      "license": "Licence Ouverte / Open Licence", 
+      "frequency": "Trimestrielle",
+      "coverage": "Documentation technique",
+      "tags": ["documentation", "métadonnées", "indicateurs", "méthodologie"],
+      "filePatterns": [
+        "indicators-metadata.*",
+        "sinese-indicators.*",
+        "metadata.*"
+      ]
+    },
+    
+    "branches-empreintes": {
+      "title": "Empreintes par branche d'activité",
+      "description": "Données d'empreinte sociétale et environnementale agrégées par branche d'activité économique selon la nomenclature NAF. Permet l'analyse sectorielle et la comparaison entre industries.",
+      "category": "branches",
+      "license": "Licence Ouverte / Open Licence",
+      "frequency": "Annuelle avec actualisations",
+      "methodology": "Agrégation par code NAF",
+      "coverage": "732 branches d'activité NAF",
+      "dataSource": "Calculs LSN basés sur données SIRENE",
+      "tags": ["branches", "secteurs", "naf", "activité économique"],
+      "filePatterns": [
+        "*-empreintes-branches-*.xlsx",
+        "*-branches-*.csv",
+        "*-actualisation-*.xlsx"
+      ]
+    },
+    
+    "regions-empreintes": {
+      "title": "Empreintes par région",
+      "description": "Données d'empreinte sociétale et environnementale agrégées par région française. Analyse territoriale des impacts des entreprises.",
+      "category": "territorial",
+      "license": "Licence Ouverte / Open Licence",
+      "frequency": "Annuelle",
+      "coverage": "13 régions françaises + DOM-TOM",
+      "tags": ["régions", "territorial", "géographie"],
+      "filePatterns": [
+        "*-regions-*.csv",
+        "*-territorial-*.xlsx"
+      ]
+    }
+  },
+  
+  "indicators": {
+    "ART": {
+      "name": "Artisanat et Commerce équitable",
+      "description": "Part de la valeur produite par des entreprises artisanales ou du commerce équitable",
+      "unit": "% de la valeur ajoutée",
+      "type": "social",
+      "color": "#8B4513"
+    },
+    "ECO": {
+      "name": "Contribution à l'économie locale", 
+      "description": "Part de la valeur produite localement",
+      "unit": "% de la valeur ajoutée",
+      "type": "économique",
+      "color": "#228B22"
+    },
+    "GEQ": {
+      "name": "Égalité professionnelle",
+      "description": "Écart de rémunération entre hommes et femmes",
+      "unit": "% d'écart salarial",
+      "type": "social", 
+      "color": "#FF1493"
+    },
+    "GHG": {
+      "name": "Gaz à effet de serre",
+      "description": "Intensité d'émission de gaz à effet de serre",
+      "unit": "gCO2e/€",
+      "type": "environnemental",
+      "color": "#FF4500"
+    },
+    "HAZ": {
+      "name": "Produits dangereux",
+      "description": "Utilisation de produits chimiques dangereux",
+      "unit": "g/€",
+      "type": "environnemental",
+      "color": "#DC143C"
+    },
+    "IDR": {
+      "name": "Intensité de recherche",
+      "description": "Dépenses de recherche et développement", 
+      "unit": "€/€ de valeur ajoutée",
+      "type": "économique",
+      "color": "#4169E1"
+    },
+    "KNW": {
+      "name": "Évolution des compétences",
+      "description": "Formation et développement des compétences",
+      "unit": "€/€ de valeur ajoutée", 
+      "type": "social",
+      "color": "#9932CC"
+    },
+    "MAT": {
+      "name": "Matières premières",
+      "description": "Extraction de matières premières",
+      "unit": "g/€",
+      "type": "environnemental",
+      "color": "#8B4513"
+    },
+    "NRG": {
+      "name": "Énergie",
+      "description": "Consommation d'énergie",
+      "unit": "kJ/€",
+      "type": "environnemental", 
+      "color": "#FF8C00"
+    },
+    "SOC": {
+      "name": "Contribution aux acteurs sociaux",
+      "description": "Contribution au financement d'acteurs à vocation sociale",
+      "unit": "€/€ de valeur ajoutée",
+      "type": "social",
+      "color": "#20B2AA"
+    },
+    "WAS": {
+      "name": "Production de déchets",
+      "description": "Production de déchets",
+      "unit": "g/€",
+      "type": "environnemental",
+      "color": "#A0522D"
+    },
+    "WAT": {
+      "name": "Consommation d'eau",
+      "description": "Consommation d'eau",
+      "unit": "L/€", 
+      "type": "environnemental",
+      "color": "#1E90FF"
+    }
+  },
+  
+  "categories": {
+    "complete": {
+      "name": "Bases complètes",
+      "description": "Données exhaustives de toutes les entreprises françaises",
+      "icon": "database",
+      "priority": 1
+    },
+    "branches": {
+      "name": "Par branche d'activité",
+      "description": "Données agrégées par secteur économique NAF",
+      "icon": "bar-chart",
+      "priority": 2
+    },
+    "territorial": {
+      "name": "Par territoire",
+      "description": "Données agrégées par région ou département",
+      "icon": "map",
+      "priority": 3
+    },
+    "metadata": {
+      "name": "Documentation",
+      "description": "Métadonnées et documentation technique",
+      "icon": "file-text",
+      "priority": 4
+    }
+  }
+}

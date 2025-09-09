@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState, Suspense, useCallback, useRef } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Row, Col } from "react-bootstrap";
-import { buildLegalUnitSearchUrl, getQueryType } from "@/_utils/apiUrlBuilder";
+import { getQueryType } from "@/_utils/apiUrlBuilder";
 
 // Components
 import SearchHeader from "./_components/SearchHeader";
@@ -15,13 +15,14 @@ import { NoResultsState, InitialState } from "./_components/EmptyStates";
 function SearchContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("s") || "";
-  
+
   // Search and results state
   const [query, setQuery] = useState(initialQuery);
   const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  
+  const [loading, setLoading] = useState(initialQuery.length > 2); // Start loading if we have an initial query
+  const [hasSearched, setHasSearched] = useState(false); // Track if a search has been performed
+
   // Ref pour gérer le timeout de debounce
   const debounceTimeoutRef = useRef(null);
 
@@ -32,9 +33,9 @@ function SearchContent() {
   // Filters state
   const [filters, setFilters] = useState({
     secteur: "",
-    codesNaf: [], // Nouveau filtre pour les codes NAF multiples
+    sectors: [], // Nouveau filtre pour les codes NAF multiples
     departements: [], // Remplace region par departements (multi-sélection)
-    effectif: "",
+    trancheEffectifs: "",
     formeJuridique: "",
     sortBy: "pertinence",
     // Filtres bonus
@@ -44,8 +45,6 @@ function SearchContent() {
     activitePrincipaleFormationRecherche: false,
     donneesPubliees: []
   });
-
-
 
 
   // UI state
@@ -61,23 +60,23 @@ function SearchContent() {
     // Déterminer le délai de debounce selon le type de recherche
     const getDebounceDelay = (searchQuery) => {
       const queryType = getQueryType(searchQuery);
-      
+
       // SIREN exact (9 chiffres) : recherche immédiate
       if (queryType === 'siren_exact') {
         return 0;
       }
-      
+
       // SIREN partiel (3-8 chiffres) : délai court
       if (queryType === 'siren_partial') {
         return 300;
       }
-      
+
       // Recherche textuelle : délai plus long pour laisser l'utilisateur finir de taper
       return 600;
     };
 
     const delay = getDebounceDelay(query);
-    
+
     // Si pas de délai, mettre à jour immédiatement
     if (delay === 0) {
       setDebouncedQuery(query);
@@ -99,7 +98,11 @@ function SearchContent() {
   // Remettre à la première page à chaque nouvelle recherche
   useEffect(() => {
     setCurrentPage(1);
-  }, [debouncedQuery]);
+    // Reset hasSearched when query changes significantly
+    if (debouncedQuery.length <= 2 && !Object.values(filters).some(f => Array.isArray(f) ? f.length > 0 : f && f !== 'pertinence')) {
+      setHasSearched(false);
+    }
+  }, [debouncedQuery, filters]);
 
   // Build API URL using new pattern: /api/legalunit/terme instead of ?q=terme
   const buildApiUrl = (searchQuery, searchFilters) => {
@@ -110,38 +113,39 @@ function SearchContent() {
     } else {
       path += '/';
     }
-    
+
     // Build query parameters for filters
     const params = new URLSearchParams();
-    
-    // Direct filters mapping
+
+    // Format filters according to API documentation
+    if (searchFilters.sectors?.length > 0) {
+      params.set('sectors', searchFilters.sectors.join(','));
+    }
     if (searchFilters.departements?.length > 0) {
-      searchFilters.departements.forEach(dept => params.append('departements[]', dept));
+      params.set('departements', searchFilters.departements.join(','));
     }
-    if (searchFilters.codesNaf?.length > 0) {
-      searchFilters.codesNaf.forEach(code => params.append('codesNaf[]', code));
-    }
-    if (searchFilters.effectif) {
-      params.set('effectif', searchFilters.effectif);
+    if (searchFilters.trancheEffectifs) {
+      params.set('trancheEffectifs', searchFilters.trancheEffectifs);
     }
     if (searchFilters.economieSocialeSolidaire) {
-      params.set('ess', 'true');
+      params.set('economieSocialeSolidaire', 'true');
     }
     if (searchFilters.societeMission) {
       params.set('societeMission', 'true');
     }
-    
-    // Additional filters (not yet supported by API but kept for backward compatibility)
+
+    // Additional filters according to API documentation
     if (searchFilters.donneesPubliees?.length > 0) {
       params.set('donneesPubliees', searchFilters.donneesPubliees.join(','));
     }
+    // Note: These filters are not documented in the API spec but kept for compatibility
     if (searchFilters.activitePrincipaleArtisanale) {
       params.set('artisanale', 'true');
     }
     if (searchFilters.activitePrincipaleFormationRecherche) {
       params.set('formationRecherche', 'true');
     }
-    
+
     // Return final URL
     const queryString = params.toString();
     return queryString ? `${path}?${queryString}` : path;
@@ -151,22 +155,23 @@ function SearchContent() {
   useEffect(() => {
     console.log('FILTERS')
     console.log(filters)
-    const shouldSearch = debouncedQuery.length > 2 || 
-      filters.departements.length > 0 || 
-      filters.codesNaf.length > 0 || 
-      filters.effectif || 
-      filters.economieSocialeSolidaire || 
+    const shouldSearch = debouncedQuery.length > 2 ||
+      filters.departements.length > 0 ||
+      filters.sectors.length > 0 ||
+      filters.trancheEffectifs ||
+      filters.economieSocialeSolidaire ||
       filters.societeMission ||
       filters.donneesPubliees.length > 0;
-      
+
     if (shouldSearch) {
       setLoading(true);
-      
+      setHasSearched(true); // Mark that we've performed a search
+
       // Build the new API URL using the new patterns
       const apiUrl = buildApiUrl(debouncedQuery, filters);
-      
+
       console.log(`🔍 Search type: ${getQueryType(debouncedQuery)}, URL: ${apiUrl}`);
-      
+
       fetch(apiUrl)
         .then((res) => res.json())
         .then((data) => {
@@ -179,9 +184,14 @@ function SearchContent() {
           setLoading(false);
         });
     } else {
-      setResults([]);
+      // Clear results and reset search state when criteria are not met
+      if (hasSearched) {
+        setResults([]);
+        setHasSearched(false);
+      }
+      setLoading(false);
     }
-  }, [debouncedQuery, filters, currentPage]);
+  }, [debouncedQuery, filters, currentPage, hasSearched]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -191,7 +201,7 @@ function SearchContent() {
   return (
     <div className="search-page">
       {/* Header with search bar */}
-      <SearchHeader 
+      <SearchHeader
         query={query}
         setQuery={setQuery}
         onSearch={handleSearch}
@@ -224,9 +234,12 @@ function SearchContent() {
                 setViewMode={setViewMode}
               />
 
-              {/* No Results */}
-              {!loading && results.length === 0 && query.length > 2 && (
-                <NoResultsState onNewSearch={() => setQuery("")} />
+              {/* No Results - only show after a search has been performed */}
+              {!loading && results.length === 0 && hasSearched && (
+                <NoResultsState onNewSearch={() => {
+                  setQuery("");
+                  setHasSearched(false);
+                }} />
               )}
 
               {/* Results */}
@@ -238,8 +251,8 @@ function SearchContent() {
                 resultsPerPage={resultsPerPage}
               />
 
-              {/* Empty State */}
-              {!loading && results.length === 0 && query.length <= 2 && (
+              {/* Empty State - show when no search has been performed */}
+              {!loading && results.length === 0 && !hasSearched && (
                 <InitialState />
               )}
             </div>

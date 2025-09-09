@@ -69,8 +69,8 @@ function Footer() {
                 <ul className="list-unstyled">
                   <li className="mb-2"><a href="/recherche" className=" text-decoration-none">Recherche entreprises</a></li>
                   <li className="mb-2"><a href="/macroeconomies" className=" text-decoration-none">Données sectorielles</a></li>
-                  <li className="mb-2"><a href="/indicateurs" className=" text-decoration-none">Indicateurs ESE</a></li>
-                  <li className="mb-2"><a href="/methodologie" className=" text-decoration-none">Méthodologie</a></li>
+                  <li className="mb-2"><a href="https://lasocietenouvelle.org/indicateurs" className=" text-decoration-none" target="_blank" rel="noreferrer">Indicateurs ESE</a></li>
+                  <li className="mb-2"><a href="https://docs.lasocietenouvelle.org/empreinte-societale/mesure" className=" text-decoration-none" target="_blank" rel="noreferrer">Méthodologie</a></li>
                 </ul>
               </div>
             </Col>

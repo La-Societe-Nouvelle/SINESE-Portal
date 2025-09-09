@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button, Badge, Form } from "react-bootstrap";
-import { Info, CheckCircle } from "lucide-react";
 import CustomSelect from "@/_components/forms/CustomSelect";
 import NafTrigger from "@/_components/forms/NafTrigger";
 import NafSidebarSelector from "@/_components/forms/NafSidebarSelector";
@@ -26,9 +25,9 @@ export default function SearchFilters({ query, filters, setFilters }) {
   const resetFilters = () => {
     setFilters({
       secteur: "", 
-      codesNaf: [], 
+      sectors: [], 
       departements: [], 
-      effectif: "", 
+      trancheEffectifs: "", 
       formeJuridique: "", 
       sortBy: "pertinence",
       economieSocialeSolidaire: false, 
@@ -73,9 +72,9 @@ export default function SearchFilters({ query, filters, setFilters }) {
                   {filters.secteur}
                 </Badge>
               )}
-              {filters.codesNaf.length > 0 && (
+              {filters.sectors.length > 0 && (
                 <Badge bg="primary" className="me-1 mb-1">
-                  Activité{filters.codesNaf.length > 1 ? 's' : ''} 
+                  Activité{filters.sectors.length > 1 ? 's' : ''} 
                 </Badge>
               )}
               {filters.departements.length > 0 && (
@@ -83,9 +82,9 @@ export default function SearchFilters({ query, filters, setFilters }) {
                   {filters.departements.length} département{filters.departements.length > 1 ? 's' : ''}
                 </Badge>
               )}
-              {filters.effectif && (
+              {filters.trancheEffectifs && (
                 <Badge bg="secondary" className="me-1 mb-1">
-                  {filters.effectif} salariés
+                  {filters.trancheEffectifs} salariés
                 </Badge>
               )}
               {filters.formeJuridique && (
@@ -122,7 +121,7 @@ export default function SearchFilters({ query, filters, setFilters }) {
           <div className="mb-4">
             <label className="form-label fw-semibold">Activité</label>
             <NafTrigger
-              selectedCodes={filters.codesNaf}
+              selectedCodes={filters.sectors}
               onToggle={() => setNafSidebarOpen(true)}
             />
 
@@ -144,11 +143,11 @@ export default function SearchFilters({ query, filters, setFilters }) {
           <div className="mb-4">
             <label className="form-label fw-semibold">Effectif</label>
             <CustomSelect
-              instanceId="select-effectif"
+              instanceId="select-trancheEffectifs"
               size="small"
               options={effectifOptions}
-              value={effectifOptions.find(option => option.value === filters.effectif) || null}
-              onChange={(selectedOption) => setFilters({...filters, effectif: selectedOption ? selectedOption.value : ""})}
+              value={effectifOptions.find(option => option.value === filters.trancheEffectifs) || null}
+              onChange={(selectedOption) => setFilters({...filters, trancheEffectifs: selectedOption ? selectedOption.value : ""})}
               placeholder="Tous les effectifs"
               isClearable={true}
             />
@@ -238,8 +237,8 @@ export default function SearchFilters({ query, filters, setFilters }) {
 
       {/* Sidebar NAF */}
       <NafSidebarSelector
-        selectedCodes={filters.codesNaf}
-        onChange={(selectedCodes) => setFilters({...filters, codesNaf: selectedCodes})}
+        selectedCodes={filters.sectors}
+        onChange={(selectedCodes) => setFilters({...filters, sectors: selectedCodes})}
         isOpen={nafSidebarOpen}
         onToggle={() => setNafSidebarOpen(false)}
       />

@@ -2,6 +2,7 @@
 
 import { Button, Dropdown, Spinner } from "react-bootstrap";
 import { SortDesc, List, Grid3X3 } from "lucide-react";
+import { SearchControlsSkeleton } from "./LoadingSkeleton";
 
 export default function SearchControls({ 
   loading, 
@@ -11,21 +12,22 @@ export default function SearchControls({
   viewMode, 
   setViewMode 
 }) {
-  if (resultsCount === 0 && !loading) return null;
+  // Show loading controls while searching
+  if (loading) {
+    return <SearchControlsSkeleton />;
+  }
+
+  // Don't show controls if no results
+  if (resultsCount === 0) return null;
 
   return (
     <div className="d-flex justify-content-between align-items-center mb-4">
       <div>
-        {loading ? (
-          <div className="d-flex align-items-center">
-            <Spinner animation="border" size="sm" className="me-2" />
-            <span>Recherche en cours...</span>
-          </div>
-        ) : (
-          <h5 className="mb-0">
+        <h5 className="mb-0 text-primary">
+          <span className="badge bg-light text-primary fs-6 fw-normal">
             {resultsCount} résultat{resultsCount > 1 ? 's' : ''}
-          </h5>
-        )}
+          </span>
+        </h5>
       </div>
       
       <div className="d-flex align-items-center gap-3">
