@@ -12,7 +12,8 @@ import {
   CheckCircle,
   Code2,
   PlayCircle,
-  ChevronRight
+  ChevronRight,
+  Loader2
 } from "lucide-react";
 
 export default function HomePage() {
@@ -25,29 +26,42 @@ export default function HomePage() {
   const fetchSuggestions = async (q) => {
     setLoading(true);
 
-    let stringQuery = q
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toUpperCase();
+    try {
+      let stringQuery = q
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase();
 
-    const res = await fetch(`/api/legalunit?q=${stringQuery}`);
-    const data = await res.json();
-    setSuggestions(data.legalUnits || []);
-    setLoading(false);
+      const res = await fetch(`/api/legalunit/${stringQuery}`);
+      const data = await res.json();
+      setSuggestions(data.legalUnits || []);
+    } catch (error) {
+      console.error('Erreur lors de la recherche:', error);
+      setSuggestions([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
     setQuery(value);
+    
+    // Annuler la requête précédente si elle existe
     clearTimeout(timeoutRef.current);
+    
     if (value.length > 2) {
+      // Si on tape pendant qu'une requête est en cours, on annule le loading
+      // mais on garde les anciennes suggestions jusqu'à ce que la nouvelle requête aboutisse
+      setShowSuggestions(true);
+      
       timeoutRef.current = setTimeout(() => {
         fetchSuggestions(value);
-        setShowSuggestions(true);
-      }, 250);
+      }, 300);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+      setLoading(false);
     }
   };
 
@@ -100,7 +114,11 @@ export default function HomePage() {
             <div className="hero__search">
               <div className="search-box">
                 <div className="search-input">
-                  <Search className="search-icon" size={20} />
+                  {loading ? (
+                    <Loader2 className="search-icon search-loading" size={20} />
+                  ) : (
+                    <Search className="search-icon" size={20} />
+                  )}
                   <input
                     type="text"
                     placeholder="Recherchez une entreprise par son nom ou son numéro SIREN..."
@@ -109,48 +127,56 @@ export default function HomePage() {
                     onFocus={() => query.length > 2 && setShowSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                   />
-                  <button type="submit" className="btn btn-secondary" onClick={handleSearch}>
+                  <button 
+                    type="submit" 
+                    className="btn btn-secondary" 
+                    onClick={handleSearch}
+                  >
                     Rechercher
                   </button>
                 </div>
 
                 {/* Suggestions de recherche */}
-                {suggestions.length > 0 && (
+                {(showSuggestions && (loading || suggestions.length > 0)) && (
                   <div className="search-suggestions">
-           
-                    <div className="suggestions-list">
-                      {suggestions.slice(0, 5).map((company, index) => (
-                        <div 
-                          key={index}
-                          className="suggestion-item"
-                          onClick={() => handleSelect(company.siren)}
-                        >
-                          <div className="suggestion-content">
-                            <div className="company-name">{company.denomination}</div>
-                            <div className="company-details">
-                              <small className="text-muted">
-                                SIREN: {company.siren} • {company.categorieEntreprise || 'N/C'}
-                                {company.libelleActivitePrincipale && (
-                                  <> • {company.libelleActivitePrincipale}</>
-                                )}
-                              </small>
-                            </div>
-                          </div>
-                          <div className="suggestion-arrow">
-                            <ChevronRight size={16} className="text-muted" />
-                          </div>
+                    {loading ? (
+                      <div className="suggestions-loading">
+                        <div className="d-flex align-items-center justify-content-center py-3">
+                          <Loader2 className="spin me-2 text-primary" size={18} />
+                          <span className="text-muted">Recherche en cours...</span>
                         </div>
-                      ))}
-                    </div>
-                    {suggestions.length > 5 && (
-                      <div className="suggestions-footer">
-                        <button 
-                          className="btn btn-link btn-sm p-0 text-primary fw-semibold"
-                          onClick={handleSearch}
-                        >
-                          Voir tous les résultats ({suggestions.length})
-                        </button>
                       </div>
+                    ) : (
+                      <>
+                        <div className="suggestions-list">
+                          {suggestions.slice(0, 5).map((company, index) => (
+                            <div 
+                              key={index}
+                              className="suggestion-item"
+                              onClick={() => handleSelect(company.siren)}
+                            >
+                              <div className="suggestion-content">
+                                <div className="company-name">{company.denomination}</div>
+                                <div className="company-details">
+                                  <small className="text-muted">
+                                    SIREN: {company.siren}
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        {suggestions.length > 5 && (
+                          <div className="suggestions-footer">
+                            <button 
+                              className="btn btn-link btn-sm p-0 text-primary fw-semibold"
+                              onClick={handleSearch}
+                            >
+                              Voir tous les résultats ({suggestions.length})
+                            </button>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 )}
