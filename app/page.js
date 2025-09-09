@@ -284,10 +284,7 @@ export default function HomePage() {
                     <Code2 size={18} className="me-2" />
                     Documentation API
                   </a>
-                  <a href="/api/playground" className="btn btn-outline-light  ms-3">
-                    <PlayCircle size={18} className="me-2" />
-                    Playground
-                  </a>
+
                 </div>
               </div>
             </Col>
