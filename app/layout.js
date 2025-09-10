@@ -70,13 +70,9 @@ export default function RootLayout({ children }) {
               <Nav className="ms-auto">
                 <NavLink href="/publier" className="btn btn-secondary">
                   <Upload size={16} className="me-2" />
-                  Publier sur SINESE
+                  Publier sur SINESE.fr
                 </NavLink>
 
-                <NavLink href="/contact" className="nav-item-custom">
-                  <Mail size={16} className="me-2" />
-                  <span className="d-none d-lg-inline">Contact</span>
-                </NavLink>
               </Nav>
             </NavbarCollapse>
           </Container>

@@ -81,9 +81,8 @@ function Footer() {
                 <h6 className="fw-bold mb-3">Ressources</h6>
                 <ul className="list-unstyled">
                   <li className="mb-2"><a href="/api" className=" text-decoration-none">API publique</a></li>
-                  <li className="mb-2"><a href="/faq" className=" text-decoration-none">FAQ</a></li>
-                  <li className="mb-2"><a href="/documentation" className=" text-decoration-none">Documentation</a></li>
-                  <li className="mb-2"><a href="/open-source" className=" text-decoration-none">Open Source</a></li>
+                  <li className="mb-2"><a href="https://docs.lasocietenouvelle.org" className=" text-decoration-none" target="_blank">Documentation</a></li>
+                  <li className="mb-2"><a href="https://partners.metriz.lasocietenouvelle.org/" className=" text-decoration-none" target="_blank">Metriz | Mesure de l'empreinte sociétale</a></li>
                 </ul>
               </div>
             </Col>
@@ -98,11 +97,7 @@ function Footer() {
                       <Mail size={16} className="me-2" />Nous contacter
                     </a>
                   </li>
-                  <li className="mb-2">
-                    <a href="/support" className=" text-decoration-none">
-                      <HelpCircle size={16} className="me-2" />Support technique
-                    </a>
-                  </li>
+
                   <li className="mb-2">
                     <a href="https://lasocietenouvelle.org" target="_blank" className=" text-decoration-none">
                       <Home size={16} className="me-2" />La Société Nouvelle
@@ -134,12 +129,6 @@ function Footer() {
                 <li className="list-inline-item">
                   <a href="/politique-confidentialite" className=" text-decoration-none small">
                     Confidentialité
-                  </a>
-                </li>
-                <li className="list-inline-item mx-2 ">•</li>
-                <li className="list-inline-item">
-                  <a href="/cgv" className=" text-decoration-none small">
-                    CGU
                   </a>
                 </li>
               </ul>
