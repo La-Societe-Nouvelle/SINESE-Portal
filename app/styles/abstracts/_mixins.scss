@@ -89,16 +89,18 @@
 // 4. COMPOSANTS - Patterns visuels récurrents
 // =============================================================================
 
-// Mixin pour les cartes avec élévation
+// Mixin pour les cartes avec élévation - utilise les variables harmonisées
 @mixin card-elevation($level: 1) {
-  @if $level == 1 {
-    box-shadow: 0 1px 3px rgba($primary, 0.04);
+  @if $level == 0 {
+    box-shadow: $box-shadow-xs;
+  } @else if $level == 1 {
+    box-shadow: $box-shadow-sm;
   } @else if $level == 2 {
-    box-shadow: 0 4px 12px rgba($primary, 0.08);
+    box-shadow: $box-shadow-md;
   } @else if $level == 3 {
-    box-shadow: 0 8px 25px rgba($primary, 0.12);
+    box-shadow: $box-shadow-lg;
   } @else if $level == 4 {
-    box-shadow: 0 12px 40px rgba($primary, 0.16);
+    box-shadow: $box-shadow-xl;
   }
 }
 
@@ -138,6 +140,7 @@
     border-color: color.adjust($bg-color, $lightness: $hover-darken);
     transform: translateY(-1px);
     @include card-elevation(2);
+    color: $text-color;
   }
   
   &:active {
@@ -153,7 +156,84 @@
 }
 
 // =============================================================================
-// 5. LAYOUTS - Mise en page cohérente
+// 5. MIXINS IDENTIFIÉS DANS L'AUDIT - Nouveaux patterns
+// =============================================================================
+
+// Mixin pour les cartes avec hover interactif (identifié dans l'audit)
+@mixin card-interactive($lift: -2px, $shadow-level: 2, $border-hover: $primary) {
+  @include smooth-transition();
+  border-radius: $border-radius;
+  
+  &:hover {
+    transform: translateY($lift);
+    // Utilise les variables d'ombres harmonisées selon le niveau
+    @if $shadow-level == 1 {
+      box-shadow: $box-shadow-hover-sm;
+    } @else if $shadow-level == 2 {
+      box-shadow: $box-shadow-hover-md;
+    } @else {
+      box-shadow: $box-shadow-hover-lg;
+    }
+    border-color: rgba($border-hover, 0.3);
+  }
+}
+
+// Mixin pour les boutons d'action (pattern répété identifié)
+@mixin btn-action($bg-color: $secondary, $text-color: white, $lift: -1px) {
+  font-weight: 600;
+  border-radius: $btn-border-radius-sm;
+  background-color: $bg-color;
+  color: $text-color;
+  padding: $btn-padding-y $btn-padding-x;
+  @include smooth-transition();
+  
+  &:hover {
+    background-color: color.adjust($bg-color, $lightness: -8%);
+    transform: translateY($lift);
+    @include card-elevation(2);
+  }
+  
+  &:focus {
+    @include focus-ring($bg-color);
+  }
+}
+
+// Mixin pour les containers de chargement (pattern récurrent)
+@mixin loading-container($min-height: 400px, $padding: 2rem) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: $min-height;
+  padding: $padding;
+  
+  .loading-spinner {
+    @include loading-spinner(60px, 3px, $secondary, rgba($primary, 0.1));
+  }
+}
+
+// Mixin pour les barres de défilement personnalisées (identifié dans plusieurs fichiers)
+@mixin custom-scrollbar($width: 4px, $track-color: #f1f1f1, $thumb-color: rgba($primary, 0.3)) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $width;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $width;
+    
+    &:hover {
+      background: color.adjust($thumb-color, $alpha: 0.2);
+    }
+  }
+}
+
+// =============================================================================
+// 6. LAYOUTS - Mise en page cohérente
 // =============================================================================
 
 // Mixin pour les conteneurs avec padding responsive

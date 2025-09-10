@@ -127,26 +127,9 @@
 
   // Sidebar de filtres
   .sidebar-container {
-    max-height: calc(100vh - 180px);
+    max-height: $sidebar-max-height;
     overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: rgba($primary, 0.3);
-      border-radius: 4px;
-
-      &:hover {
-        background: rgba($primary, 0.5);
-      }
-    }
+    @include custom-scrollbar(4px, #f1f1f1, rgba($primary, 0.3));
   }
 
   .sidebar-filters {

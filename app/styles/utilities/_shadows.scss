@@ -1,0 +1,59 @@
+/* =============================================================================
+   SHADOW UTILITIES - Classes utilitaires pour les ombres
+   Système d'ombres harmonisé avec l'identité visuelle SINESE
+   ============================================================================= */
+
+// Classes d'ombres de base - avec couleur primaire pour cohérence
+.shadow-xs { box-shadow: $box-shadow-xs !important; }
+.shadow-sm { box-shadow: $box-shadow-sm !important; }
+.shadow-md { box-shadow: $box-shadow-md !important; }
+.shadow-lg { box-shadow: $box-shadow-lg !important; }
+.shadow-xl { box-shadow: $box-shadow-xl !important; }
+.shadow-none { box-shadow: none !important; }
+
+// Classes d'ombres neutres pour éléments non-corporate
+.shadow-neutral-sm { box-shadow: $box-shadow-neutral-sm !important; }
+.shadow-neutral-md { box-shadow: $box-shadow-neutral-md !important; }
+.shadow-neutral-lg { box-shadow: $box-shadow-neutral-lg !important; }
+
+// Classes d'ombres pour hover states
+.shadow-hover-sm { 
+  transition: box-shadow 0.2s ease;
+  &:hover { box-shadow: $box-shadow-hover-sm !important; }
+}
+
+.shadow-hover-md { 
+  transition: box-shadow 0.2s ease;
+  &:hover { box-shadow: $box-shadow-hover-md !important; }
+}
+
+.shadow-hover-lg { 
+  transition: box-shadow 0.2s ease;
+  &:hover { box-shadow: $box-shadow-hover-lg !important; }
+}
+
+// Classe spéciale pour footprint-sections (comme demandé)
+.footprint-card-shadow {
+  box-shadow: $box-shadow-sm !important;
+  
+  &:hover {
+    box-shadow: $box-shadow-hover-sm !important;
+  }
+}
+
+// Classes responsive pour les ombres
+@include respond-to(mobile) {
+  .shadow-mobile-none { box-shadow: none !important; }
+  .shadow-mobile-sm { box-shadow: $box-shadow-xs !important; }
+}
+
+/* Migration guide pour remplacer les anciennes ombres:
+   
+   AVANT (incohérent):                    APRÈS (cohérent):
+   box-shadow: 0 1px 3px rgba(0,0,0,0.12) → .shadow-sm
+   box-shadow: 0 4px 6px rgba(0,0,0,0.07)  → .shadow-md  
+   box-shadow: 0 2px 8px rgba(0,0,0,0.06)  → .shadow-sm
+   
+   Pour footprint-sections:
+   .shadow-sm (Bootstrap)                  → .footprint-card-shadow
+*/

@@ -5,7 +5,7 @@ import { Building } from "lucide-react";
 export default function PublishDataCTA() {
 
   return (
-    <div className="my-5">
+    <div >
       <div style={{
         background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%)',
         borderRadius: '0.75rem',

@@ -20,11 +20,11 @@
 
   &__badge {
     .badge {
-      font-size: 0.85rem;
+      font-size: $badge-size-lg;
       font-weight: 600;
       border-radius: 20px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      @extend .hover-lift-sm;
     }
   }
 
@@ -114,10 +114,10 @@
       border: none;
       font-size: 1rem;
       padding: 0.75rem 0;
-      color: #2d3748;
+      color: $text-dark;
 
       &::placeholder {
-        color: #a0aec0;
+        color: $placeholder-color;
       }
 
       &:focus {
@@ -127,11 +127,7 @@
 
     .btn {
       padding: 0.75rem 1.5rem;
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba($primary, 0.35);
-      }
+      @extend .btn-hover-lift;
     }
   }
 
@@ -146,6 +142,7 @@
     .suggestions-list {
       max-height: 300px;
       overflow-y: auto;
+      @include custom-scrollbar(3px, #f1f1f1, rgba($primary, 0.2));
     }
 
     .suggestion-item {
@@ -153,7 +150,7 @@
       padding: 0.75rem 1rem;
       border-bottom: 1px solid #f8f9fc;
       cursor: pointer;
-      transition: all 0.2s ease;
+      @extend .transition-all;
 
       &:hover {
         background: #f8f9fc;
@@ -217,27 +214,11 @@
       }
 
       span {
-        position: relative;
-
-        &::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: -2px;
-          height: 1px;
-          background: currentColor;
-          opacity: 0;
-          transition: opacity 0.2s ease;
-        }
+        @extend .link-underline;
       }
 
       &:hover {
         color: #fa595f;
-
-        span::after {
-          opacity: 1;
-        }
       }
     }
   }
@@ -300,14 +281,11 @@
       padding: 2rem 1rem;
       border-radius: 16px;
       background: white;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid rgba($primary, 0.08);
       height: 100%;
+      @include card-interactive(-8px, 0.15, $primary);
 
       &:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 35px rgba($primary, 0.15);
         border-color: rgba($primary, 0.2);
       }
 
@@ -340,12 +318,7 @@
       font-size: 1.1rem;
       font-weight: 600;
       border-radius: 12px;
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      }
+      @extend .btn-hover-lift;
     }
   }
 
@@ -384,15 +357,10 @@
 
   .main-source {
     .d-inline-flex {
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba($primary, 0.15);
-      }
+      @extend .hover-lift;
 
       img {
-        transition: transform 0.3s ease;
+        @extend .transition-slow;
       }
 
       &:hover img {
@@ -405,16 +373,15 @@
     padding: 1rem;
     border-radius: 12px;
     background: rgba($light, 0.5);
-    transition: all 0.3s ease;
+    @extend .hover-lift;
 
     &:hover {
       background: rgba($primary, 0.05);
-      transform: translateY(-2px);
     }
 
     img {
       filter: grayscale(20%) opacity(0.8);
-      transition: all 0.3s ease;
+      @extend .transition-slow;
     }
 
     &:hover img {
@@ -534,16 +501,11 @@
 
     .btn {
     
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      @extend .btn-hover-lift;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       white-space: nowrap;
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      }
 
       &.btn-primary {
         background: white;
@@ -639,7 +601,7 @@
 
 // Loading states for home page search
 .search-loading {
-  animation: spin 1s linear infinite;
+  @extend .spin;
 }
 
 .suggestions-loading {
@@ -652,16 +614,7 @@
   position: relative;
 }
 
-// Spin animation for loading icons
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
+// Spin animation handled by utilities
 .spin {
-  animation: spin 1s linear infinite;
+  @extend .spin;
 }

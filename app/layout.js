@@ -1,5 +1,5 @@
 import "./styles/main.scss";
-import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
+import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Button } from "react-bootstrap";
 import Footer from "./_components/footer";
 import BackToTop from "./_components/BackToTop";
 import { Upload, Building2, Search, TrendingUp, Mail, DatabaseIcon, Link, ChevronDown, Code } from "lucide-react";
@@ -68,10 +68,10 @@ export default function RootLayout({ children }) {
               </Nav>
 
               <Nav className="ms-auto">
-                <NavLink href="/publier" className="btn btn-secondary">
+                <Button href="/publier" variant="secondary" >
                   <Upload size={16} className="me-2" />
                   Publier sur SINESE.fr
-                </NavLink>
+                </Button>
 
               </Nav>
             </NavbarCollapse>

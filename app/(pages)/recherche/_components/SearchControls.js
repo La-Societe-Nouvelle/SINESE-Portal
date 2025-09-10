@@ -20,7 +20,7 @@ export default function SearchControls({
         <h5 className="mb-0 text-primary">
           Résultats Trouvés :{" "}
           <span className="d-block badge bg-light text-primary small fw-normal">
-            {resultsCount >= 1000 ? '+ de 1000' : resultsCount} entreprise{resultsCount > 1 ? 's' : ''} correspondante{resultsCount > 1 ? 's' : ''} à votre recherche
+            {resultsCount >= 1000 ? '+ de 1000' : resultsCount} entreprise{resultsCount > 1 ? 's' : ''} correspondante{resultsCount > 1 ? 's' : ''} 
           </span>
         </h5>
       </div>

@@ -19,13 +19,8 @@
 
   // Cartes de datasets
   .card {
-    transition: all 0.2s ease;
+    @include card-interactive($hover-lift-distance, 0.15, $primary);
     border-radius: 0.75rem;
-    
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba($primary, 0.15) !important;
-    }
     
     .card-header {
       border-radius: 0.75rem 0.75rem 0 0 !important;
@@ -39,19 +34,17 @@
 
   // Badges d'indicateurs
   .badge {
-    font-weight: 500;
+    @include badge-style(rgba($primary, 0.05), $primary, small);
     
     &.border {
       border-color: rgba($primary, 0.3) !important;
-      background-color: rgba($primary, 0.05);
-      color: $primary;
     }
   }
 
   // Boutons de téléchargement
   .btn-primary {
+    @include btn-action($primary, white, -1px);
     font-weight: 500;
-    border-radius: 0.375rem;
     
     &:disabled {
       opacity: 0.6;

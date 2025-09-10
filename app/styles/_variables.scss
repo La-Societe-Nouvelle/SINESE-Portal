@@ -32,6 +32,45 @@ $light-secondary: #FEEBEC; // Fond très clair pour secondary
 // Variables de compatibilité
 $info: #e0e7ff;
 
+// Couleurs hardcodées identifiées dans l'audit
+$text-dark: #1f2937;           // Répété dans recherche.scss
+$border-light-gray: #e5e7eb;   // Répété dans recherche.scss, api.scss
+$bg-code-dark: #1a1a1a;        // Répété dans api.scss
+$placeholder-color: #9ca3af;   // Répété dans react-select.scss, homepage.scss
+
+// Couleurs spécialisées pour React Select
+$select-primary: #758bfd;       // Couleur principale pour les selects
+$select-hover-bg: rgba(117, 139, 253, 0.1);
+
+// Couleurs pour les états
+$success-green: #28a745;        // Répété dans macroeconomies.scss, api.scss
+$danger-red: #dc3545;           // Répété dans api.scss
+$info-blue: #17a2b8;           // Répété dans macroeconomies.scss
+
+// Couleurs fréquemment utilisées en dur
+$white: #ffffff;
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+// Couleurs de background communes
+$bg-light-gray: #f8f9fa;
+$bg-very-light: #fafbfc;
+$bg-border-light: #f1f3f4;
+$bg-subtle: #f0f0f8;
+
+// Couleurs pour warnings
+$warning-text: #664d03;
+$warning-bg: #fff3cd;
+$warning-border: #ffecb5;
+
 // =============================================================================
 // 2. TYPOGRAPHIE - Hiérarchie et lisibilité
 // =============================================================================
@@ -99,6 +138,26 @@ $border-radius-sm: 0.5rem;           // Petit radius
 $border-radius-lg: 1rem;             // Grand radius
 $border-color: $light;               // Bordures discrètes
 
+// Variables d'espacement manquantes
+$container-padding-mobile: 1rem;     // Répété plusieurs fois
+$container-padding-tablet: 2rem;     // Répété plusieurs fois
+$container-padding-desktop: 3rem;    // Répété plusieurs fois
+
+$chart-height-mobile: 240px;         // Dans macroeconomies.scss
+$chart-height-desktop: 280px;        // Dans macroeconomies.scss
+$sidebar-max-height: calc(100vh - 180px); // Répété
+
+// Hauteurs d'icônes standardisées
+$icon-size-sm: 32px;
+$icon-size-md: 40px;
+$icon-size-lg: 80px;
+
+// Tailles de badges
+$badge-size-xs: 0.65rem;
+$badge-size-sm: 0.7rem;
+$badge-size-md: 0.75rem;
+$badge-size-lg: 0.85rem;
+
 // =============================================================================
 // 5. BOUTONS - Système d'interaction
 // =============================================================================
@@ -153,8 +212,39 @@ $dropdown-link-hover-bg: $light;
 $badge-font-weight: 600;
 $modal-content-bg: $light;
 $pagination-font-size: 0.8rem;
-$form-check-input-border:                 1px solid rgba($primary-light, .7);
-$input-border-color:    rgba($primary-light, .7);
+$form-check-input-border: 1px solid rgba($primary-light, .7);
+$input-border-color: rgba($primary-light, .7);
+
+// Variables pour les transitions (centralisées)
+$transition-base: all 0.2s ease;
+$transition-fast: all 0.15s ease;
+$transition-slow: all 0.3s ease;
+$transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Variables pour les ombres - alignées avec l'identité visuelle SINESE
+// Utilisation de la couleur primaire pour une cohérence avec les cartes company-card
+$box-shadow-xs: 0 1px 2px rgba($primary, 0.03);                    // Très subtile
+$box-shadow-sm: 0 1px 3px rgba($primary, 0.04);                    // Cards de base
+$box-shadow-md: 0 4px 12px rgba($primary, 0.08);                   // Cards importantes 
+$box-shadow-lg: 0 8px 25px rgba($primary, 0.12);                   // Cards principales
+$box-shadow-xl: 0 12px 40px rgba($primary, 0.16);                  // Cards hero
+
+// Ombres neutres pour éléments non-corporate (menus, dropdowns, etc.)
+$box-shadow-neutral-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+$box-shadow-neutral-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+$box-shadow-neutral-lg: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+// Ombres pour hover states
+$box-shadow-hover-sm: 0 2px 8px rgba($primary, 0.08);
+$box-shadow-hover-md: 0 6px 16px rgba(0, 0, 0, 0.15);
+$box-shadow-hover-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+// Variables pour les hover effects
+$hover-lift-distance: -2px;
+$hover-lift-sm-distance: -1px;
+$hover-lift-lg-distance: -4px;
+$hover-scale-factor: 1.05;
+$hover-scale-sm-factor: 1.02;
 
  
 @import "bootstrap/scss/bootstrap";

@@ -245,6 +245,13 @@
 .animate-slide-in-bottom { animation: slide-in-bottom 0.3s ease-out; }
 .animate-zoom-in { animation: zoom-in 0.3s ease-out; }
 
+// Alias pour compatibilité
+.fadeIn { animation: fade-in 0.3s ease-out; }
+.slideUp { animation: slide-in-bottom 0.4s ease-out; }
+.slideDown { animation: slide-in-top 0.4s ease-out; }
+.scaleIn { animation: zoom-in 0.3s ease-out; }
+.spin { animation: spin 1s linear infinite; }
+
 // Classes pour les délais d'animation (staggering)
 .animate-delay-100 { animation-delay: 0.1s; }
 .animate-delay-200 { animation-delay: 0.2s; }
@@ -257,8 +264,197 @@
 .animate-slow { animation-duration: 0.5s; }
 .animate-slower { animation-duration: 1s; }
 
+// =============================================================================
+// 7. TRANSITIONS & HOVER EFFECTS - Utilitaires de transition
+// =============================================================================
+
+/* Transitions de base */
+.transition-all { transition: all 0.2s ease; }
+.transition-fast { transition: all 0.15s ease; }
+.transition-slow { transition: all 0.3s ease; }
+.transition-smooth { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Transformations hover */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.hover-lift-sm {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.hover-lift-lg {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.hover-scale {
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.hover-scale-sm {
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* États de chargement */
+.loading-shimmer {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: skeleton-shimmer 1.5s infinite;
+  }
+}
+
+.skeleton-line {
+  height: 1rem;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  
+  &.skeleton-title {
+    height: 1.5rem;
+    width: 60%;
+  }
+  
+  &.skeleton-subtitle {
+    height: 1rem;
+    width: 40%;
+  }
+  
+  &.skeleton-text {
+    height: 0.875rem;
+  }
+}
+
+.loading-dots {
+  display: inline-flex;
+  gap: 0.25rem;
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: loading-dots 1.4s infinite ease-in-out both;
+    
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0s; }
+  }
+}
+
+/* Animations spécifiques aux boutons */
+.btn-hover-grow {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.btn-hover-lift {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Animations pour cartes */
+.card-hover {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Animations pour liens */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+/* États de focus */
+.focus-ring {
+  &:focus {
+    outline: 2px solid rgba($primary, 0.5);
+    outline-offset: 2px;
+  }
+}
+
+/* Classes pour animations conditionnelles */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+  
+  &.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // Classe pour respecter les préférences d'accessibilité
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
   .animate-spin,
   .animate-pulse,
   .animate-bounce,
