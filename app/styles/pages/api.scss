@@ -227,32 +227,6 @@
     }
   }
 
-  // Sections de ressources complémentaires
-  .resources-section {
-    .card {
-      border: none;
-      
-      .card-body {
-        padding: 2rem;
-        text-align: center;
-        
-        svg {
-          margin-bottom: 1rem;
-        }
-        
-        h5 {
-          font-weight: 600;
-          margin-bottom: 0.75rem;
-        }
-        
-        p {
-          color: $secondary;
-          line-height: 1.5;
-        }
-      }
-    }
-  }
-
   // Responsive
   @media (max-width: 768px) {
     .nav-pills {

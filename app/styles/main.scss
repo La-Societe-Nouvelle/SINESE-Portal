@@ -1,10 +1,30 @@
 
-@import "variables";
+// =============================================================================
+// SINESE Portal - Main SCSS Entry Point
+// Architecture optimisée pour la réutilisabilité et la maintenabilité
+// =============================================================================
 
-// import pages
+// 1. ABSTRACTS - Variables d'abord, puis mixins et animations
+@import "variables";
+@import "abstracts/mixins";
+@import "abstracts/animations";
+
+// 2. PARTS & LAYOUT - Structure de base
 @import "parts/buttons";
 @import "parts/header";
-@import "parts/footer";  
+@import "parts/footer";
+
+// 3. COMPONENTS - Composants réutilisables
+@import "components/react-select";
+@import "components/company-cards";
+@import "components/macro-sidebar";
+@import "components/loading-state";
+@import "components/components";
+
+// 4. UTILITIES - Système responsive centralisé
+@import "utilities/responsive";
+
+// 5. PAGES - Styles spécifiques par page
 @import "pages/homepage";
 @import "pages/recherche";
 @import "pages/macroeconomies";
@@ -12,25 +32,18 @@
 @import "pages/datasets";
 @import "pages/api";
 
-// import components
-@import "components/react-select";
-@import "components/company-cards";
-@import "components/macro-sidebar";
-@import "components/loading-state";
-// @import "pages/portail.scss";
-// @import "pages/notre-approche.scss";
-// @import "pages/databrowser.scss";
-// @import "components/statistics.scss";
- @import "components/components.scss";
-// @import "components/sidebar.scss";
-// @import "components/modern-layout.scss";
 
 
-// Font
+
+// =============================================================================
+// 5. BASE STYLES - Styles globaux et polices
+// =============================================================================
+
+// Google Fonts
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Raleway:wght@300;400;600;800&family=Roboto:wght@100;300;400;700&display=swap");
 
-/* Global */
+// Styles de base globaux
 
 html,
 body {
@@ -155,23 +168,6 @@ ol {
 }
 
 
-// Refined Card Styles
-.box {
-  background-color: #fff;
-  padding: 2.5rem 1.5rem;
-  border-radius: 1rem;
-  margin-bottom: 2rem;
-  border: 1px solid rgba($primary, 0.06);
-  box-shadow: 0 2px 12px rgba($primary, 0.06);
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba($primary, 0.1);
-    border-color: rgba($primary, 0.12);
-  }
-}
-
 .card {
   border: 1px solid rgba($primary, 0.06);
   box-shadow: 0 1px 8px rgba($primary, 0.04);
@@ -185,29 +181,6 @@ ol {
 }
 
 
-.portail-view {
-  .card {
-    height: 280px;
-
-    h5 {
-      font-size: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid $secondary;
-    }
-  }
-
-  .card-footer {
-    padding: 0.5rem 1rem;
-    background-color: transparent;
-    border: none;
-  }
-
-  .card-text {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-  }
-}
-
 .alert-info {
   border: 1px solid $light;
   background-color: #f7f7fb;
@@ -219,55 +192,6 @@ ol {
   }
 }
 
-.societal-footprint {
-  .nav {
-    background-color: $light;
-    margin: 1rem 0 2rem 0;
-    border-radius: 5px;
-  }
-
-  .nav-item {
-    padding: 0.5rem 0;
-    border-radius: 5px;
-
-    a {
-      color: $primary;
-    }
-  }
-
-  .inverse {
-    background-color: $primary;
-
-    a {
-      color: #fff;
-    }
-  }
-
-  .card {
-    h4 {
-      font-size: 1rem;
-      text-align: center;
-    }
-
-    .indic-value {
-      .value {
-        color: $secondary;
-        font-weight: 600;
-        margin-bottom: 0;
-      }
-
-      .incertitude {
-        font-size: 0.8rem;
-        color: #adb5bd;
-      }
-    }
-  }
-
-  .card-footer p {
-    font-size: 0.7rem;
-    margin: 0;
-  }
-}
 
 section.indic {
   img {
@@ -291,16 +215,7 @@ section.indic {
   }
 }
 
-.info-supp {
-  li {
-    font-size: 0.8rem;
-  }
 
-  ul {
-    padding-left: 1rem;
-    list-style-type: circle;
-  }
-}
 
 .alert-warning {
   color: #664d03;
@@ -308,9 +223,6 @@ section.indic {
   border-color: #ffecb5;
 }
 
-.symbol {
-  font-size: 1rem;
-}
 
 hr {
   color: $light;
@@ -327,255 +239,12 @@ p {
   }
 }
 
-.faq {
-  padding-top: 0;
-
-  .question-box {
-    background-color: $light-lighter-2;
-
-    p {
-      margin-bottom: 0;
-      font-weight: 700;
-
-      a {
-        color: $secondary;
-      }
-    }
-  }
-}
 
 .btn-sm {
   padding: 0.5rem 1rem;
 }
 
 
-.main-titles {
-  position: relative;
-  display: inline-block;
-  z-index: 1;
-  font-weight: bold;
-}
-
-.main-titles::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  left: 15px;
-  right: -5px;
-  bottom: 0;
-  background-color: #cdd5fe;
-  z-index: -1;
-}
-
-// Homepage specific styles
-.home-page {
-
-
-
-  .explore-data {
-    border-top: 1px solid rgba($primary, 0.06);
-    border-bottom: 1px solid rgba($primary, 0.06);
-
-    h2 {
-      font-weight: 800;
-      color: $primary;
-      font-size: 2rem;
-    }
-
-    .explore-section {
-      .explore-header {
-        .explore-icon {
-          i {
-            opacity: 0.9;
-          }
-        }
-
-        h3 {
-          font-weight: 700;
-          color: $primary;
-          margin-bottom: 0.75rem;
-        }
-      }
-
-      .option-card {
-        border: 1px solid rgba($primary, 0.08);
-        transition: all 0.3s ease;
-        cursor: pointer;
-
-        &.hover-lift:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 6px 20px rgba($primary, 0.12);
-          border-color: rgba($primary, 0.2);
-        }
-
-        &.bg-light:hover {
-          background: $light-darker-3 !important;
-        }
-
-        &.bg-secondary:hover {
-          background: $secondary-darker-5 !important;
-          transform: translateY(-3px) scale(1.02);
-          box-shadow: 0 8px 25px rgba($secondary, 0.25);
-        }
-
-        // Style pour la sectorial card avec vos vraies couleurs
-        &.sectorial-card {
-          border: none;
-          box-shadow: 0 4px 15px rgba(250, 89, 95, 0.2);
-
-          &:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(250, 89, 95, 0.3);
-            background-color: #e54f55 !important; // Version plus foncée de votre #fa595f
-          }
-
-          .sectorial-filters {
-            .badge {
-              transition: all 0.3s ease;
-
-              &:hover {
-                background: rgba(white, 0.4) !important;
-                transform: translateY(-1px);
-              }
-            }
-          }
-
-          .btn-light {
-            background: rgba(white, 0.9);
-            border: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-
-            &:hover {
-              background: white;
-              transform: translateY(-1px);
-              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            }
-          }
-        }
-
-        i {
-          transition: all 0.3s ease;
-        }
-
-        &:hover i {
-          transform: scale(1.1);
-        }
-
-        .badge {
-          transition: all 0.3s ease;
-        }
-
-        &:hover .badge {
-          transform: scale(1.05);
-        }
-      }
-    }
-
-    // Styles spécifiques pour la section sectorielle
-    .sectorial-section {
-      .sectorial-info {
-        strong {
-          color: $secondary;
-        }
-      }
-    }
-
-    // Amélioration de la hiérarchie visuelle avec vos vraies couleurs
-    .explore-section {
-      .explore-icon {
-        i {
-          display: inline-block;
-          width: 80px;
-          height: 80px;
-          line-height: 80px;
-          text-align: center;
-          border-radius: 50%;
-          transition: all 0.3s ease;
-        }
-      }
-
-      &:first-child {
-        .explore-header h3 {
-          color: #191558; // Votre primary exact
-        }
-
-        .explore-icon i {
-          color: white;
-          background: #191558; // Votre primary exact
-          box-shadow: 0 4px 15px rgba(25, 21, 88, 0.2);
-
-          &:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(25, 21, 88, 0.3);
-          }
-        }
-      }
-
-      &:last-child {
-        .explore-header h3 {
-          color: #fa595f; // Votre secondary exact
-        }
-
-        .explore-icon i {
-          color: white;
-          background: #fa595f; // Votre secondary exact
-          box-shadow: 0 4px 15px rgba(250, 89, 95, 0.2);
-
-          &:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(250, 89, 95, 0.3);
-          }
-        }
-      }
-    }
-
-    // Distinction visuelle entre les deux sections
-    .explore-section:first-child {
-      border-right: 1px solid rgba($primary, 0.06);
-      padding-right: 2rem;
-
-      @media (max-width: 991.98px) {
-        border-right: none;
-        border-bottom: 1px solid rgba($primary, 0.06);
-        padding-right: 0;
-        padding-bottom: 2rem;
-        margin-bottom: 2rem;
-      }
-    }
-
-    .explore-section:last-child {
-      padding-left: 2rem;
-
-      @media (max-width: 991.98px) {
-        padding-left: 0;
-        padding-top: 2rem;
-      }
-    }
-  }
-
-  .use-cases {
-    .use-case-card {
-      transition: all 0.3s ease;
-      border: 1px solid rgba($primary, 0.06);
-
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba($primary, 0.1);
-        border-color: rgba($primary, 0.12);
-      }
-
-      h4 {
-        color: $primary;
-        font-weight: 700;
-      }
-
-      .list-unstyled li {
-        padding: 0.25rem 0;
-      }
-    }
-  }
-}
 
 // Back to Top Button
 .back-to-top-btn {

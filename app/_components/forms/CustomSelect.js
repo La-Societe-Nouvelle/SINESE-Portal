@@ -1,5 +1,4 @@
 import Select from 'react-select'
-import { useState, useEffect } from 'react'
 
 const CustomSelect = ({
   options = [],

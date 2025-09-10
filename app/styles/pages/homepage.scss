@@ -143,12 +143,6 @@
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 
-    .suggestions-header {
-      padding: 0.75rem 1rem 0.5rem;
-      background: #f8f9fc;
-      border-bottom: 1px solid #f0f2f5;
-    }
-
     .suggestions-list {
       max-height: 300px;
       overflow-y: auto;
@@ -249,8 +243,9 @@
   }
 }
 
-@media (max-width: 768px) {
-  .hero {
+// Responsive hero avec nouveau système
+.hero {
+  @include mobile-only {
     padding: 3rem 0;
 
     &__title {
@@ -277,7 +272,7 @@
       max-width: 900px;
       margin: 0 auto;
 
-      @media (max-width: 768px) {
+      @include mobile-only {
         font-size: 1.8rem;
       }
 
@@ -363,7 +358,7 @@
 
   h2 {
     
-    @media (max-width: 768px) {
+    @include mobile-only {
       font-size: 1.75rem;
     }
   }
@@ -531,27 +526,6 @@
     }
   }
 
-  // Mini stats
-  .cta-stats {
-    .stat-mini {
-      @extend .text-center, .rounded-3, .border;
-      padding: 1rem 0.5rem;
-      background: rgba($primary, 0.08);
-      border-color: rgba($primary, 0.15) !important;
-      
-      .stat-number {
-        @extend .fw-bold, .lh-1, .mb-1;
-        font-size: 1.5rem;
-        color: $primary;
-      }
-      
-      .stat-label {
-        @extend .small;
-        color: $text-muted;
-        font-weight: 500;
-      }
-    }
-  }
 
   .cta-actions {
     display: flex;
@@ -622,36 +596,8 @@
   }
 }
 
-// Responsive for catalog overview
-@media (max-width: 768px) {
-  .overview {
-    .info {
-      .stats-grid {
-        gap: 1rem;
-
-        .stat-box {
-          padding: 1rem;
-
-          .stat-number {
-            font-size: 1.5rem;
-          }
-        }
-      }
-    }
-
-    .data-sources {
-      .source-item {
-        padding: 1rem !important;
-
-        .source-logo {
-          img {
-            height: 30px !important;
-          }
-        }
-      }
-    }
-  }
-
+@include mobile-only {
+ 
   .cta-section {
     min-height: auto;
 
@@ -688,19 +634,6 @@
       }
     }
 
-    .cta-stats {
-      .stat-mini {
-        padding: 0.75rem 0.5rem;
-        
-        .stat-number {
-          font-size: 1.25rem;
-        }
-        
-        .stat-label {
-          font-size: 0.8rem;
-        }
-      }
-    }
   }
 }
 

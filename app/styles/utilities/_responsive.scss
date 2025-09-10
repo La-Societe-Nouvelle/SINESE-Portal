@@ -1,0 +1,255 @@
+/* ==========================================================================
+   SINESE Portal - Responsive System
+   Système centralisé de breakpoints et media queries
+   ========================================================================== */
+
+// =============================================================================
+// 1. BREAKPOINTS - Single source of truth
+// =============================================================================
+
+$breakpoints: (
+  mobile-xs: 575.98px,    // Extra small devices (phones)
+  mobile: 767.98px,       // Small devices (landscape phones)
+  tablet: 991.98px,       // Medium devices (tablets)
+  desktop: 1199.98px,     // Large devices (desktops)
+  desktop-xl: 1399.98px   // Extra large devices (wide desktops)
+) !default;
+
+// =============================================================================
+// 2. RESPONSIVE MIXINS - Système unifié et étendu
+// =============================================================================
+
+// Mixin principal avec tous les breakpoints
+@mixin respond-to($breakpoint) {
+  // Max-width (mobile-first approach)
+  @if $breakpoint == mobile-xs {
+    @media (max-width: #{map-get($breakpoints, mobile-xs)}) { @content; }
+  }
+  @if $breakpoint == mobile {
+    @media (max-width: #{map-get($breakpoints, mobile)}) { @content; }
+  }
+  @if $breakpoint == tablet {
+    @media (max-width: #{map-get($breakpoints, tablet)}) { @content; }
+  }
+  @if $breakpoint == desktop {
+    @media (max-width: #{map-get($breakpoints, desktop)}) { @content; }
+  }
+  
+  // Min-width (desktop-first approach)  
+  @if $breakpoint == mobile-up {
+    @media (min-width: 576px) { @content; }
+  }
+  @if $breakpoint == tablet-up {
+    @media (min-width: 768px) { @content; }
+  }
+  @if $breakpoint == desktop-up {
+    @media (min-width: 992px) { @content; }
+  }
+  @if $breakpoint == desktop-large {
+    @media (min-width: 1200px) { @content; }
+  }
+  @if $breakpoint == ultra-wide {
+    @media (min-width: 1400px) { @content; }
+  }
+  
+  // Between breakpoints
+  @if $breakpoint == mobile-tablet {
+    @media (min-width: 576px) and (max-width: #{map-get($breakpoints, tablet)}) { @content; }
+  }
+  @if $breakpoint == tablet-desktop {
+    @media (min-width: 768px) and (max-width: #{map-get($breakpoints, desktop)}) { @content; }
+  }
+}
+
+// =============================================================================
+// 3. UTILITY MIXINS - Shortcuts pour usage fréquent
+// =============================================================================
+
+// Max-width shortcuts (most common usage)
+@mixin mobile-only {
+  @include respond-to(mobile) { @content; }
+}
+
+@mixin tablet-only {
+  @include respond-to(tablet) { @content; }
+}
+
+@mixin desktop-only {
+  @include respond-to(desktop) { @content; }
+}
+
+// Min-width shortcuts
+@mixin tablet-and-up {
+  @include respond-to(tablet-up) { @content; }
+}
+
+@mixin desktop-and-up {
+  @include respond-to(desktop-up) { @content; }
+}
+
+// =============================================================================
+// 4. SPECIALIZED MIXINS - Patterns métier spécifiques
+// =============================================================================
+
+// Mixin pour les sidebar qui se cachent sur mobile
+@mixin sidebar-responsive {
+  @include mobile-only {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 280px;
+    height: 100vh;
+    z-index: 1050;
+    transition: left 0.3s ease;
+    
+    &.show {
+      left: 0;
+    }
+  }
+}
+
+// Mixin pour les cartes qui changent de layout
+@mixin card-responsive($mobile-padding: 1rem, $desktop-padding: 2rem) {
+  @include mobile-only {
+    padding: $mobile-padding;
+    margin-bottom: 1rem;
+  }
+  
+  @include desktop-and-up {
+    padding: $desktop-padding;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Mixin pour les boutons qui deviennent full-width sur mobile
+@mixin button-responsive {
+  @include mobile-only {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Mixin pour les formulaires responsives
+@mixin form-responsive {
+  .input-group,
+  .form-group {
+    @include mobile-only {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  .btn-group {
+    @include mobile-only {
+      flex-direction: column;
+      
+      .btn {
+        width: 100%;
+        border-radius: $border-radius !important;
+        margin-bottom: 0.5rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// 5. ORIENTATION & SPECIAL MEDIA QUERIES
+// =============================================================================
+
+// Orientation mixins
+@mixin portrait-only {
+  @media all and (orientation: portrait) { @content; }
+}
+
+@mixin landscape-only {
+  @media all and (orientation: landscape) { @content; }
+}
+
+// High DPI screens
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { @content; }
+}
+
+// Reduced motion accessibility
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) { @content; }
+}
+
+// Dark mode preference
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) { @content; }
+}
+
+// =============================================================================
+// 6. CONTAINER MIXINS - Largeurs responsives
+// =============================================================================
+
+@mixin container-responsive {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  
+  @include tablet-and-up {
+    padding: 0 2rem;
+    max-width: 1200px;
+  }
+  
+  @include desktop-and-up {
+    padding: 0 3rem;
+    max-width: 1400px;
+  }
+}
+
+// =============================================================================
+// 7. GRID MIXINS - Layouts responsives
+// =============================================================================
+
+@mixin grid-responsive($mobile-cols: 1, $tablet-cols: 2, $desktop-cols: 3) {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat($mobile-cols, 1fr);
+  
+  @include tablet-and-up {
+    grid-template-columns: repeat($tablet-cols, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @include desktop-and-up {
+    grid-template-columns: repeat($desktop-cols, 1fr);
+    gap: 2rem;
+  }
+}
+
+// =============================================================================
+// 8. DEBUGGING - Aide au développement (à retirer en production)
+// =============================================================================
+
+@mixin debug-breakpoints {
+  &::before {
+    content: 'mobile';
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: red;
+    color: white;
+    padding: 0.5rem;
+    z-index: 9999;
+    
+    @include tablet-and-up {
+      content: 'tablet+';
+      background: orange;
+    }
+    
+    @include desktop-and-up {
+      content: 'desktop+';
+      background: green;
+    }
+  }
+}

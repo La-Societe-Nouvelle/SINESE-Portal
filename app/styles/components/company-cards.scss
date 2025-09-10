@@ -1,12 +1,10 @@
-/* Company Cards - Search Results */
+/* ==========================================================================
+   Company Cards - Refactorisé avec mixins
+   ========================================================================== */
+
 .company-card {
-  transition: all 0.2s ease-in-out;
-  border: 1px solid rgba(0, 0, 0, 0.05) !important;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
-  }
+  border: 1px solid rgba($primary, 0.05) !important;
+  @include hover-lift(-2px, 0.1);
   
   .company-name {
     a.hover-underline:hover {
@@ -16,10 +14,8 @@
   
   .company-badges {
     .badge {
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
+      @include badge-style($light-secondary, $secondary, small);
+      font-size: 0.7rem; // Override pour taille spécifique aux cartes
     }
   }
   
@@ -32,29 +28,23 @@
   
   .company-actions {
     .btn {
-      transition: all 0.2s ease-in-out;
-      font-weight: 600;
-      
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 0.25rem 0.5rem rgba(0, 123, 255, 0.3);
-      }
+      @include button-interactive($primary, white, -8%);
     }
   }
-  
 }
 
 
-/* Badge personnalisé pour société à mission */
+/* Badges spécialisés */
 .badge.bg-purple {
   background: linear-gradient(135deg, #6f42c1, #8e44ad) !important;
+  @include hover-scale(1.05);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .company-card {
+/* Responsive design avec mixin */
+.company-card {
+  @include respond-to(mobile) {
     .company-badges {
-      margin-top: 0.5rem;
+      @include spacing(margin-top, sm);
       
       .badge {
         font-size: 0.65rem;
@@ -64,47 +54,36 @@
     
     .company-details {
       .detail-item {
-        margin-bottom: 0.75rem;
+        @include spacing(margin-bottom, sm);
       }
     }
     
     .company-actions {
-      margin-top: 1rem;
+      @include spacing(margin-top, md);
       text-align: center !important;
       
       .btn {
         width: 100%;
       }
     }
-    
   }
 }
 
-/* Hover effects */
+/* États et effets standardisés */
 .hover-shadow {
-  transition: box-shadow 0.15s ease-in-out;
+  @include smooth-transition(box-shadow, 0.15s);
 }
 
-/* Animation pour les badges */
-@keyframes badge-pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-
-/* Amélioration de l'espacement */
 .results-list .company-card:last-child {
-  margin-bottom: 2rem;
+  @include spacing(margin-bottom, xl);
 }
 
-
-
-/* Focus states pour l'accessibilité */
-.company-card a:focus,
-.company-card .btn:focus {
-  outline: 2px solid #0d6efd;
-  outline-offset: 2px;
+/* Focus states standardisés */
+.company-card {
+  a:focus,
+  .btn:focus {
+    @include focus-ring($primary);
+  }
 }
 
 
@@ -120,11 +99,7 @@
       margin: 0 auto 4px;
       font-weight: bold;
       font-size: 0.85rem;
-      transition: transform 0.2s ease-in-out;
-      
-      &:hover {
-        transform: scale(1.05);
-      }
+      @include hover-scale(1.05);
     }
     
     .indicator-published {

@@ -32,10 +32,6 @@
       margin-bottom: 0.5rem;
     }
 
-    .loading-subtitle {
-      color: $neutral;
-      font-size: 0.875rem;
-    }
   }
 
   // État vide
@@ -183,9 +179,7 @@
 
   // Sidebar mobile
   .macro-sidebar-mobile {
-    .offcanvas-header {
-      background: $light;
-    }
+ 
 
     .sidebar-filters {
       height: 100%;
@@ -480,10 +474,6 @@
         border-radius: 0.75rem;
       }
 
-      .odd-mini {
-        border-radius: 0.25rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      }
     }
 
     .modal-body {
@@ -496,52 +486,10 @@
           }
         }
 
-        .odd-badge {
-          img {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.2s ease;
-
-            &:hover {
-              opacity: 0.8; // Effet très subtil
-            }
-          }
-        }
       }
     }
   }
 
-  // Section de sélection actuelle
-  .current-selection {
-    background: linear-gradient(135deg, rgba($primary, 0.05) 0%, rgba($tertiary, 0.03) 100%);
-    border-left: 4px solid $secondary;
-
-    svg {
-      opacity: 0.8;
-    }
-  }
-
-  // Footer informatif
-  .info-footer {
-    background: rgba($light, 0.3);
-    border-radius: 1rem;
-    padding: 2rem;
-
-    h5 {
-      position: relative;
-      padding-left: 1.5rem;
-
-      &:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0.2rem;
-        width: 4px;
-        height: 1.2rem;
-        background: $secondary;
-        border-radius: 2px;
-      }
-    }
-  }
 }
 
 // Animations
@@ -562,13 +510,6 @@
   }
 }
 
-// États de chargement avec shimmer
-.loading-shimmer {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200px 100%;
-  animation: shimmer 1.5s infinite;
-}
-
 // Responsive design
 @media (max-width: 768px) {
   .open-data-portal {
@@ -579,9 +520,7 @@
       }
     }
 
-    .current-selection {
-      text-align: center;
-    }
+
   }
 }
 
