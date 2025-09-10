@@ -1,6 +1,6 @@
 "use client";
 
-import { FolderSync, Info, RefreshCcw } from "lucide-react";
+import {  Info, RefreshCcw } from "lucide-react";
 import { Button } from "react-bootstrap";
 
 export default function DefaultDataExplanation({ hasDefaultData }) {
@@ -21,8 +21,11 @@ export default function DefaultDataExplanation({ hasDefaultData }) {
         Les valeurs par défaut sont établies selon l'activité principale (code NAF),
         les effectifs et d'autres caractéristiques de l'entreprise.
       </p>
+      <p className="mt-3 mb-2 fw-medium" style={{ fontSize: '0.9rem', color: '#1e3a8a' }}>
+        <strong>Vous êtes dirigeant de cette entreprise ?</strong> Publiez vos données réelles pour améliorer la précision de votre empreinte sociétale.
+      </p>
       <Button variant="primary" 
-      className="mt-3 "
+      className="mt-2"
       onClick={() => window.open('https://publication.sinese.fr', '_blank')}>
         <RefreshCcw size={16} className="me-2" />
         Actualiser mes empreintes

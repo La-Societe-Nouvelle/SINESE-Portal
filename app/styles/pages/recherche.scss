@@ -6,9 +6,7 @@
   // Header with search bar
   .search-header {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    position: sticky;
     top: 0;
-    z-index: 1020;
 
     .input-group {
       max-width: 500px;
@@ -182,28 +180,6 @@
     }
   }
 
-  // Pagination
-  .pagination {
-    .page-link {
-      border: 1px solid #d1d5db;
-      color: #6b7280;
-      font-weight: 500;
-      margin: 0 0.125rem;
-      border-radius: 0.375rem;
-
-      &:hover {
-        background-color: #f3f4f6;
-        border-color: #9ca3af;
-        color: #374151;
-      }
-    }
-
-    .page-item.active .page-link {
-      background-color: #758bfd;
-      border-color: #758bfd;
-      color: white;
-    }
-  }
 
   // Loading and empty states
   .spinner-border {

@@ -1,6 +1,7 @@
 import "./styles/main.scss";
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle } from "react-bootstrap";
 import Footer from "./_components/footer";
+import BackToTop from "./_components/BackToTop";
 import { Upload, Building2, Search, TrendingUp, Mail, DatabaseIcon, Link, ChevronDown, Code } from "lucide-react";
 
 export const metadata = {
@@ -85,6 +86,7 @@ export default function RootLayout({ children }) {
           {children}
         </main>
 
+        <BackToTop />
         <Footer></Footer>
       </body>
     </html>

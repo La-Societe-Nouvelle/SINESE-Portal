@@ -20,8 +20,8 @@ function SearchContent() {
   const [query, setQuery] = useState(initialQuery);
   const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(initialQuery.length > 2); // Start loading if we have an initial query
-  const [hasSearched, setHasSearched] = useState(false); // Track if a search has been performed
+  const [loading, setLoading] = useState(initialQuery.length > 2); 
+  const [hasSearched, setHasSearched] = useState(false);
 
   // Ref pour gérer le timeout de debounce
   const debounceTimeoutRef = useRef(null);
@@ -33,12 +33,11 @@ function SearchContent() {
   // Filters state
   const [filters, setFilters] = useState({
     secteur: "",
-    sectors: [], // Nouveau filtre pour les codes NAF multiples
-    departements: [], // Remplace region par departements (multi-sélection)
+    sectors: [],  
+    departements: [],  
     trancheEffectifs: "",
     formeJuridique: "",
     sortBy: "pertinence",
-    // Filtres bonus
     economieSocialeSolidaire: false,
     societeMission: false,
     activitePrincipaleArtisanale: false,
@@ -46,9 +45,7 @@ function SearchContent() {
     donneesPubliees: []
   });
 
-
-  // UI state
-  const [viewMode, setViewMode] = useState("list"); // "list" or "grid"
+ 
 
   // Debouncing de la query pour éviter trop de requêtes
   useEffect(() => {
@@ -151,10 +148,9 @@ function SearchContent() {
     return queryString ? `${path}?${queryString}` : path;
   };
 
-  // API call to fetch search results using new URL patterns (avec debounced query)
+  // API call to fetch search results using new URL patterns  
   useEffect(() => {
-    console.log('FILTERS')
-    console.log(filters)
+
     const shouldSearch = debouncedQuery.length > 2 ||
       filters.departements.length > 0 ||
       filters.sectors.length > 0 ||
@@ -191,11 +187,10 @@ function SearchContent() {
       }
       setLoading(false);
     }
-  }, [debouncedQuery, filters, currentPage, hasSearched]);
+  }, [debouncedQuery, filters, hasSearched]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // fetch is already triggered by useEffect
   };
 
   return (
@@ -230,8 +225,6 @@ function SearchContent() {
                 resultsCount={results.length}
                 filters={filters}
                 setFilters={setFilters}
-                viewMode={viewMode}
-                setViewMode={setViewMode}
               />
 
               {/* No Results - only show after a search has been performed */}

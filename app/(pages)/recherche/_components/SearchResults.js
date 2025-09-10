@@ -25,6 +25,16 @@ export default function SearchResults({
   const indexOfFirst = indexOfLast - resultsPerPage;
   const currentResults = results.slice(indexOfFirst, indexOfLast);
 
+  // Function to handle page change with scroll to top
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    // Use setTimeout to ensure DOM is updated before scrolling
+    setTimeout(() => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }, 100);
+  };
+
   // Pagination component
   const renderPagination = () => {
     if (totalPages <= 1) return null;
@@ -34,7 +44,7 @@ export default function SearchResults({
       // Affiche seulement les pages proches de la page courante, la première et la dernière
       if (number === 1 || number === totalPages || (number >= currentPage - 2 && number <= currentPage + 2)) {
         items.push(
-          <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
+          <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
             {number}
           </Pagination.Item>
         );
@@ -45,10 +55,13 @@ export default function SearchResults({
     
     return (
       <Pagination>
-        <Pagination.Prev onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1} />
+        <Pagination.Prev 
+          onClick={() => handlePageChange(Math.max(1, currentPage - 1))} 
+          disabled={currentPage === 1} 
+        />
         {items}
         <Pagination.Next
-          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
         />
       </Pagination>

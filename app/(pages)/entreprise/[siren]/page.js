@@ -60,7 +60,7 @@ export default function EntreprisePage() {
             />
 
             {/* CTA pour publier les données */}
-            <PublishDataCTA hasDefaultData={hasDefaultData} />
+            <PublishDataCTA  />
           </>
         )}
       </Container>

@@ -118,7 +118,7 @@ export default function MacroeconomiesPage() {
         }
       />
       
-      <Container fluid className="py-4">
+      <Container fluid className="pb-4">
         <Row>
           {/* Sidebar avec filtres */}
           <Col lg={3}>

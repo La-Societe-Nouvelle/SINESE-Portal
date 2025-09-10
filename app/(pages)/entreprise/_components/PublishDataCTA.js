@@ -2,8 +2,7 @@
 
 import { Building } from "lucide-react";
 
-export default function PublishDataCTA({ hasDefaultData }) {
-  if (!hasDefaultData) return null;
+export default function PublishDataCTA() {
 
   return (
     <div className="my-5">
@@ -23,25 +22,7 @@ export default function PublishDataCTA({ hasDefaultData }) {
           opacity: 0.1,
           transform: 'rotate(15deg)'
         }}>
-          <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
-            {/* Ruban */}
-            <path d="M30 20 L70 20 L65 50 L50 45 L35 50 Z" fill="#6c7fdd" />
-
-            {/* Médaille */}
-            <circle cx="50" cy="70" r="25" fill="#e74c5a" stroke="#3b4d8f"
-              strokeWidth="3" />
-            <circle cx="50" cy="70" r="18" fill="#3b4d8f" />
-
-            {/* Symbole central */}
-            <rect x="45" y="60" width="10" height="20" fill="white" rx="2" />
-            <rect x="40" y="65" width="20" height="10" fill="white" rx="2" />
-
-            {/* Étoiles */}
-            <path d="M25 50 L27 55 L32 55 L28 58 L30 63 L25 60 L20 63 L22 58 L18 55       
-  L23 55 Z" fill="#e74c5a" />
-            <path d="M75 50 L77 55 L82 55 L78 58 L80 63 L75 60 L70 63 L72 58 L68 55       
-  L73 55 Z" fill="#e74c5a" />
-          </svg>
+        
         </div>
 
         <div className="row align-items-center position-relative">
@@ -63,9 +44,9 @@ export default function PublishDataCTA({ hasDefaultData }) {
               <div>
                 <h5 className="text-primary mb-2 fw-bold">Dirigeant d'entreprise ?</h5>
                 <p className="text-muted mb-0">
-                  <strong>Démarquez-vous avec des données précises !</strong> Publiez votre véritable
-                  empreinte sociétale pour remplacer les estimations sectorielles, renforcer votre
-                  crédibilité et démontrer votre engagement responsable face à la concurrence.
+                  <strong>Valorisez votre performance extra-financière !</strong> Publiez vos données réelles
+                  pour remplacer les estimations sectorielles et gagner en transparence. Vos données seront
+                  visibles sur SINESE, accessibles via l'API publique, et renforceront votre relation clients.
                 </p>
               </div>
             </div>
@@ -73,7 +54,7 @@ export default function PublishDataCTA({ hasDefaultData }) {
           <div className="col-md-3 text-md-end">
             <button
               className="btn btn-secondary d-flex align-items-center justify-content-center px-4 py-3"
-              onClick={() => window.open('https://lasocietenouvelle.org/publier-empreinte', '_blank')}
+              onClick={() => window.open('https://publication.sinese.fr/', '_blank')}
               style={{
                 fontWeight: '600',
                 fontSize: '1rem',
@@ -91,9 +72,7 @@ export default function PublishDataCTA({ hasDefaultData }) {
               }}
             >
               Publier mes données
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" className="ms-2">
-                <path d="M5 12h14m-7-7l7 7-7 7" />
-              </svg>
+     
             </button>
           </div>
         </div>
