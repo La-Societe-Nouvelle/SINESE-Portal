@@ -336,7 +336,6 @@ export default function ApiPage() {
                   <Card.Header className="bg-light border-0">
                     <div className="d-flex align-items-center">
                       <Badge
-                        bg={endpoint.method === "GET" ? "success" : "primary"}
                         className="me-3"
                       >
                         {endpoint.method}
@@ -365,12 +364,12 @@ export default function ApiPage() {
                               {endpoint.parameters.map((param) => (
                                 <tr key={param.name}>
                                   <td><code>{param.name}</code></td>
-                                  <td><Badge bg="secondary">{param.type}</Badge></td>
+                                  <td><Badge>{param.type}</Badge></td>
                                   <td>
                                     {param.required ? (
-                                      <Badge bg="danger">Oui</Badge>
+                                      <Badge >Oui</Badge>
                                     ) : (
-                                      <Badge bg="secondary">Non</Badge>
+                                      <Badge>Non</Badge>
                                     )}
                                   </td>
                                   <td>{param.description}</td>

@@ -42,7 +42,7 @@
       border-radius: 0.75rem 0.75rem 0 0 !important;
 
       .badge {
-        @include badge-style($light-secondary, $secondary, medium);
+        @include badge-style($light, $white, medium);
 
         &.bg-success {
           background-color: $success-green !important;
@@ -86,15 +86,9 @@
       }
 
       .badge {
-        @include badge-style($light-secondary, $secondary, small);
+        @include badge-style($light-secondary, $white, small);
 
-        &.bg-danger {
-          background-color: $danger-red !important;
-        }
-
-        &.bg-secondary {
-          background-color: $neutral !important;
-        }
+      
       }
     }
   }
