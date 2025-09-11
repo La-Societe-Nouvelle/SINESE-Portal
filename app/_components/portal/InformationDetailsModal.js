@@ -60,7 +60,10 @@ export const InformationDetailsModal = ({
       <Card className="mb-4 border-0 bg-light">
         <Card.Body className="text-center py-4">
           <div className="display-6 fw-bold text-primary mb-2">
-            {_.round(value, nbDecimals).toFixed(nbDecimals)}
+            {_.round(value, nbDecimals).toLocaleString('fr-FR', { 
+              minimumFractionDigits: nbDecimals, 
+              maximumFractionDigits: nbDecimals 
+            })}
             <span className="fs-4 text-muted ms-2">{unitSymbol}</span>
           </div>
           <Badge 

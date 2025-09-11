@@ -199,7 +199,7 @@
 
     // Style pour les valeurs par défaut (flag 'd')
     &.indicator-card-default {
-      opacity: 0.8 !important;
+      opacity: 0.5 !important;
       filter: grayscale(0.2) !important; // Léger effet de désaturation
       
       &:hover {

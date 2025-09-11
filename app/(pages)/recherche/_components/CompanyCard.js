@@ -119,7 +119,7 @@ export default function CompanyCard({ company }) {
               )}
 
               {/* Données estimées */}
-              {company.estimatedIndicators.length > 0 && (
+              {company.estimatedIndicators?.length > 0 && (
                 <div className="indicator-circle text-center">
                   <div className="indicator-base indicator-light">
                     {company.estimatedIndicators.length}
