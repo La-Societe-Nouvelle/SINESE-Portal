@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
             <NavbarCollapse id="basic-navbar-nav">
               <Nav className="me-auto">
                 <NavLink href="/recherche" className="nav-item-custom">
-                  <Building2 size={16} className="me-2" />
+                  <Search size={16} className="me-2" />
                   <span>Entreprises</span>
                 </NavLink>
 
