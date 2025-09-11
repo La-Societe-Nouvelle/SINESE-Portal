@@ -121,7 +121,10 @@ export const BarChart = ({
 				offset: CHART_CONFIG.labelOffset,
 				formatter: (value, context) => {
 					if (value === 0 || value === null) return '';
-					return `${parseFloat(value).toFixed(nbDecimals)} ${unitSymbol}`;
+					return `${parseFloat(value).toLocaleString('fr-FR', { 
+						minimumFractionDigits: nbDecimals, 
+						maximumFractionDigits: nbDecimals 
+					})} ${unitSymbol}`;
 				},
 				color: CHART_COLORS.primary,
 				font: {
