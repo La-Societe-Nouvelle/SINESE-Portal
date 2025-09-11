@@ -19,8 +19,7 @@
 
   // Cartes de datasets
   .card {
-    @include card-interactive($hover-lift-distance, 0.15, $primary);
-    border-radius: 0.75rem;
+    @include card-interactive($hover-lift-distance, 0.08, $primary);
     
     .card-header {
       border-radius: 0.75rem 0.75rem 0 0 !important;

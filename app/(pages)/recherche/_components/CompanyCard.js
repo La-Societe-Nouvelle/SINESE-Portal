@@ -5,9 +5,8 @@ import { MapPin, Users, Building, BarChart3, Heart, Star, TrendingUp, Info, Chec
 import { getEffectifLabel, getEffectifBadgeColor } from "@/_utils/effectifMapping";
 
 export default function CompanyCard({ company }) {
-  console.log(company)
   return (
-    <Card className="company-card mb-4 border-0 shadow-sm hover-shadow">
+    <Card className="company-card mb-4  hover-shadow">
       <Card.Body className="p-4">
         <Row className="align-items-start">
           <Col md={8}>

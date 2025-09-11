@@ -37,7 +37,7 @@ export default function FootprintSection({
   return (
     <div className="footprint-sections">
       {/* Section principale - Indicateurs ESE */}
-      <Card className="mb-5 shadow-sm">
+      <Card className="mb-5">
         <Card.Header className="bg-light py-3 border-bottom">
           <h3 className="mb-1">
             Empreinte Sociétale et Environnementale

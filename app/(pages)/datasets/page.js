@@ -109,7 +109,7 @@ export default function DatasetsPage() {
         <Row>
           {datasets.map((dataset) => (
             <Col key={dataset.id} lg={12} className="mb-4">
-              <Card className="h-100 shadow-sm ">
+              <Card className="h-100 ">
                 <Card.Header className="bg-light border-0">
                   <div className="d-flex justify-content-between align-items-start">
                     <div>

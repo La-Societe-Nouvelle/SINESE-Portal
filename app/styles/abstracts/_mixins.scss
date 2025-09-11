@@ -163,7 +163,7 @@
 @mixin card-interactive($lift: -2px, $shadow-level: 2, $border-hover: $primary) {
   @include smooth-transition();
   border-radius: $border-radius;
-  
+  box-shadow: $box-shadow-md;
   &:hover {
     transform: translateY($lift);
     // Utilise les variables d'ombres harmonisées selon le niveau
@@ -174,7 +174,6 @@
     } @else {
       box-shadow: $box-shadow-hover-lg;
     }
-    border-color: rgba($border-hover, 0.3);
   }
 }
 

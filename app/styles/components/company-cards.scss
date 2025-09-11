@@ -5,7 +5,6 @@
 .company-card {
   @include card-interactive($hover-lift-distance, 0.08, $primary);
   border: 1px solid rgba($primary, 0.05);
-  border-radius: 0.5rem; // Standardisé
   
   .company-name {
     a.hover-underline:hover {
