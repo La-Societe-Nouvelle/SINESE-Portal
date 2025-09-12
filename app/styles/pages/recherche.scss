@@ -35,7 +35,6 @@
     .bonus-filters {
       .form-check {
         margin-bottom: 0.75rem;
-
         .form-check-input {
           border-radius: 0.25rem;
           border: 1px solid #d1d5db;
@@ -140,7 +139,7 @@
   margin: 1rem 0;
 }
 
-.naf-sidebar-selector {
+.naf-sidebar-selector, .departement-sidebar-selector, .effectif-sidebar-selector  {
   .form-check-label {
     font-size: 0.7rem;
     color: $text-muted;
