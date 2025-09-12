@@ -3,6 +3,8 @@
 import { Pagination } from "react-bootstrap";
 import CompanyCard from "./CompanyCard";
 import { SearchResultsSkeleton } from "./LoadingSkeleton";
+import SearchResultsDivider from "@/_components/SearchResultsDivider";
+import { separateByDataAvailability } from "@/_utils/utils";
 
 export default function SearchResults({ 
   results, 
@@ -19,11 +21,17 @@ export default function SearchResults({
   // Don't show anything if no results
   if (results.length === 0) return null;
 
+  // Séparer les résultats par disponibilité des données
+  const { withData, withoutData } = separateByDataAvailability(results);
+  
   // Pagination logic
   const totalPages = Math.ceil(results.length / resultsPerPage);
   const indexOfLast = currentPage * resultsPerPage;
   const indexOfFirst = indexOfLast - resultsPerPage;
   const currentResults = results.slice(indexOfFirst, indexOfLast);
+  
+  // Séparer aussi les résultats paginés
+  const { withData: currentWithData, withoutData: currentWithoutData } = separateByDataAvailability(currentResults);
 
   // Function to handle page change with scroll to top
   const handlePageChange = (newPage) => {
@@ -71,7 +79,21 @@ export default function SearchResults({
   return (
     <>
       <div className="results-list">
-        {currentResults.map((company) => (
+        {/* Entreprises avec données */}
+        {currentWithData.map((company) => (
+          <CompanyCard key={company.siren} company={company} />
+        ))}
+
+        {/* Divider si on a les deux types sur cette page */}
+        {currentWithData.length > 0 && currentWithoutData.length > 0 && (
+          <SearchResultsDivider 
+            withDataCount={withData.length} 
+            withoutDataCount={withoutData.length}
+          />
+        )}
+
+        {/* Entreprises sans données */}
+        {currentWithoutData.map((company) => (
           <CompanyCard key={company.siren} company={company} />
         ))}
       </div>

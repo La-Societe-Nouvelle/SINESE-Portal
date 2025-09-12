@@ -1,5 +1,5 @@
 {
-  "Culture et production animale, chasse et services annexes": [
+  "Culture et élevage": [
     {
       "code": "01.11Z",
       "libelle": "Culture de céréales (à l'exception du riz), de légumineuses et de graines oléagineuses"
@@ -70,35 +70,35 @@
     },
     {
       "code": "01.41Z",
-      "libelle": "Élevage de vaches laitières"
+      "libelle": "élevage de vaches laitières"
     },
     {
       "code": "01.42Z",
-      "libelle": "Élevage d'autres bovins et de buffles"
+      "libelle": "élevage d'autres bovins et de buffles"
     },
     {
       "code": "01.43Z",
-      "libelle": "Élevage de chevaux et d'autres équidés"
+      "libelle": "élevage de chevaux et d'autres équidés"
     },
     {
       "code": "01.44Z",
-      "libelle": "Élevage de chameaux et d'autres camélidés"
+      "libelle": "élevage de chameaux et d'autres camélidés"
     },
     {
       "code": "01.45Z",
-      "libelle": "Élevage d'ovins et de caprins"
+      "libelle": "élevage d'ovins et de caprins"
     },
     {
       "code": "01.46Z",
-      "libelle": "Élevage de porcins"
+      "libelle": "élevage de porcins"
     },
     {
       "code": "01.47Z",
-      "libelle": "Élevage de volailles"
+      "libelle": "élevage de volailles"
     },
     {
       "code": "01.49Z",
-      "libelle": "Élevage d'autres animaux"
+      "libelle": "élevage d'autres animaux"
     },
     {
       "code": "01.50Z",
@@ -125,7 +125,7 @@
       "libelle": "Chasse, piégeage et services annexes"
     }
   ],
-  "Sylviculture et exploitation forestière": [
+  "Sylviculture": [
     {
       "code": "02.10Z",
       "libelle": "Sylviculture et autres activités forestières"
@@ -161,7 +161,7 @@
       "libelle": "Aquaculture en eau douce"
     }
   ],
-  "Extraction de houille et de lignite": [
+  "Extraction de charbon et lignite": [
     {
       "code": "05.10Z",
       "libelle": "Extraction de houille"
@@ -202,7 +202,7 @@
     },
     {
       "code": "08.12Z",
-      "libelle": "Exploitation de gravières et sablières, extraction d’argiles et de kaolin"
+      "libelle": "Exploitation de gravières et sablières, extraction d'argiles et de kaolin"
     },
     {
       "code": "08.91Z",
@@ -221,7 +221,7 @@
       "libelle": "Autres activités extractives n.c.a."
     }
   ],
-  "Services de soutien aux industries extractives": [
+  "Services extractifs": [
     {
       "code": "09.10Z",
       "libelle": "Activités de soutien à l'extraction d'hydrocarbures"
@@ -231,7 +231,7 @@
       "libelle": "Activités de soutien aux autres industries extractives"
     }
   ],
-  "Industries alimentaires": [
+  "Industrie alimentaire": [
     {
       "code": "10.11Z",
       "libelle": "Transformation et conservation de la viande de boucherie"
@@ -239,6 +239,14 @@
     {
       "code": "10.12Z",
       "libelle": "Transformation et conservation de la viande de volaille"
+    },
+    {
+      "code": "10.13A",
+      "libelle": "Préparation industrielle de produits à base de viande"
+    },
+    {
+      "code": "10.13B",
+      "libelle": "Charcuterie"
     },
     {
       "code": "10.20Z",
@@ -253,16 +261,72 @@
       "libelle": "Préparation de jus de fruits et légumes"
     },
     {
+      "code": "10.39A",
+      "libelle": "Autre transformation et conservation de légumes"
+    },
+    {
+      "code": "10.39B",
+      "libelle": "Transformation et conservation de fruits"
+    },
+    {
+      "code": "10.41A",
+      "libelle": "Fabrication d'huiles et graisses brutes"
+    },
+    {
+      "code": "10.41B",
+      "libelle": "Fabrication d'huiles et graisses raffinées"
+    },
+    {
       "code": "10.42Z",
       "libelle": "Fabrication de margarine et graisses comestibles similaires"
+    },
+    {
+      "code": "10.51A",
+      "libelle": "Fabrication de lait liquide et de produits frais"
+    },
+    {
+      "code": "10.51B",
+      "libelle": "Fabrication de beurre"
+    },
+    {
+      "code": "10.51C",
+      "libelle": "Fabrication de fromage"
+    },
+    {
+      "code": "10.51D",
+      "libelle": "Fabrication d'autres produits laitiers"
     },
     {
       "code": "10.52Z",
       "libelle": "Fabrication de glaces et sorbets"
     },
     {
+      "code": "10.61A",
+      "libelle": "Meunerie"
+    },
+    {
+      "code": "10.61B",
+      "libelle": "Autres activités du travail des grains"
+    },
+    {
       "code": "10.62Z",
       "libelle": "Fabrication de produits amylacés"
+    },
+    {
+      "code": "10.71A",
+      "libelle": "Fabrication industrielle de pain et de pâtisserie fraîche"
+    },
+    {
+      "code": "10.71B",
+      "libelle": "Cuisson de produits de boulangerie"
+    },
+    {
+      "code": "10.71C",
+      "libelle": "Boulangerie et boulangerie-pâtisserie"
+    },
+    {
+      "code": "10.71D",
+      "libelle": "Pâtisserie"
     },
     {
       "code": "10.72Z",
@@ -315,6 +379,14 @@
       "libelle": "Production de boissons alcooliques distillées"
     },
     {
+      "code": "11.02A",
+      "libelle": "Fabrication de vins effervescents"
+    },
+    {
+      "code": "11.02B",
+      "libelle": "Vinification"
+    },
+    {
       "code": "11.03Z",
       "libelle": "Fabrication de cidre et de vins de fruits"
     },
@@ -324,11 +396,19 @@
     },
     {
       "code": "11.05Z",
-      "libelle": "Fabrication de bière"
+      "libelle": "Fabrication de biére"
     },
     {
       "code": "11.06Z",
       "libelle": "Fabrication de malt"
+    },
+    {
+      "code": "11.07A",
+      "libelle": "Industrie des eaux de table"
+    },
+    {
+      "code": "11.07B",
+      "libelle": "Production de boissons rafraîchissantes"
     }
   ],
   "Fabrication de produits à base de tabac": [
@@ -427,7 +507,15 @@
       "libelle": "Fabrication de chaussures"
     }
   ],
-  "Travail du bois et fabrication d'articles en bois et en liège": [
+  "Travail du bois": [
+    {
+      "code": "16.10A",
+      "libelle": "Sciage et rabotage du bois, hors impràgnation"
+    },
+    {
+      "code": "16.10B",
+      "libelle": "Imprégnation du bois"
+    },
     {
       "code": "16.21Z",
       "libelle": "Fabrication de placage et de panneaux de bois"
@@ -459,6 +547,18 @@
       "libelle": "Fabrication de papier et de carton"
     },
     {
+      "code": "17.21A",
+      "libelle": "Fabrication de carton ondulé"
+    },
+    {
+      "code": "17.21B",
+      "libelle": "Fabrication de cartonnages"
+    },
+    {
+      "code": "17.21C",
+      "libelle": "Fabrication d'emballages en papier"
+    },
+    {
       "code": "17.22Z",
       "libelle": "Fabrication d'articles en papier à usage sanitaire ou domestique"
     },
@@ -475,7 +575,7 @@
       "libelle": "Fabrication d'autres articles en papier ou en carton"
     }
   ],
-  "Imprimerie et reproduction d'enregistrements": [
+  "Imprimerie et reproduction": [
     {
       "code": "18.11Z",
       "libelle": "Imprimerie de journaux"
@@ -517,6 +617,14 @@
       "libelle": "Fabrication de colorants et de pigments"
     },
     {
+      "code": "20.13A",
+      "libelle": "Enrichissement et retraitement de matiéres nucléaires"
+    },
+    {
+      "code": "20.13B",
+      "libelle": "Fabrication d'autres produits chimiques inorganiques de base n.c.a."
+    },
+    {
       "code": "20.14Z",
       "libelle": "Fabrication d'autres produits chimiques organiques de base"
     },
@@ -526,7 +634,7 @@
     },
     {
       "code": "20.16Z",
-      "libelle": "Fabrication de matières plastiques de base"
+      "libelle": "Fabrication de matiéres plastiques de base"
     },
     {
       "code": "20.17Z",
@@ -534,7 +642,7 @@
     },
     {
       "code": "20.20Z",
-      "libelle": "Fabrication de pesticides et d’autres produits agrochimiques"
+      "libelle": "Fabrication de pesticides et d'autres produits agrochimiques"
     },
     {
       "code": "20.30Z",
@@ -579,7 +687,7 @@
       "libelle": "Fabrication de préparations pharmaceutiques"
     }
   ],
-  "Fabrication de produits en caoutchouc et en plastique": [
+  "Fabrication d'articles en caoutchouc et plastique": [
     {
       "code": "22.11Z",
       "libelle": "Fabrication et rechapage de pneumatiques"
@@ -599,6 +707,14 @@
     {
       "code": "22.23Z",
       "libelle": "Fabrication d'éléments en matières plastiques pour la construction"
+    },
+    {
+      "code": "22.29A",
+      "libelle": "Fabrication de pièces techniques à base de matières plastiques"
+    },
+    {
+      "code": "22.29B",
+      "libelle": "Fabrication de produits de consommation courante en matières plastiques"
     }
   ],
   "Fabrication d'autres produits minéraux non métalliques": [
@@ -608,7 +724,7 @@
     },
     {
       "code": "23.12Z",
-      "libelle": "Façonnage et transformation du verre plat"
+      "libelle": "Faéonnage et transformation du verre plat"
     },
     {
       "code": "23.13Z",
@@ -672,11 +788,11 @@
     },
     {
       "code": "23.63Z",
-      "libelle": "Fabrication de béton prêt à l'emploi"
+      "libelle": "Fabrication de bâtons prêts à l'emploi"
     },
     {
       "code": "23.64Z",
-      "libelle": "Fabrication de mortiers et bétons secs"
+      "libelle": "Fabrication de mortiers et bâtons secs"
     },
     {
       "code": "23.65Z",
@@ -684,11 +800,11 @@
     },
     {
       "code": "23.69Z",
-      "libelle": "Fabrication d'autres ouvrages en béton, en ciment ou en plâtre"
+      "libelle": "Fabrication d'autres ouvrages en bàton, en ciment ou en plàtre"
     },
     {
       "code": "23.70Z",
-      "libelle": "Taille, façonnage et finissage de pierres"
+      "libelle": "Taille, faéonnage et finissage de pierres"
     },
     {
       "code": "23.91Z",
@@ -722,7 +838,7 @@
     },
     {
       "code": "24.34Z",
-      "libelle": "Tréfilage à froid"
+      "libelle": "Traçage à froid"
     },
     {
       "code": "24.41Z",
@@ -784,15 +900,31 @@
     },
     {
       "code": "25.30Z",
-      "libelle": "Fabrication de générateurs de vapeur, à l'exception des chaudières pour le chauffage central"
+      "libelle": "Fabrication de gànàrateurs de vapeur, à l'exception des chaudiéres pour le chauffage central"
     },
     {
       "code": "25.40Z",
       "libelle": "Fabrication d'armes et de munitions"
     },
     {
+      "code": "25.50A",
+      "libelle": "Forge, estampage, matriçage ; métallurgie des poudres"
+    },
+    {
+      "code": "25.50B",
+      "libelle": "Découpage, emboutissage"
+    },
+    {
       "code": "25.61Z",
       "libelle": "Traitement et revêtement des métaux"
+    },
+    {
+      "code": "25.62A",
+      "libelle": "Décolletage"
+    },
+    {
+      "code": "25.62B",
+      "libelle": "Mécanique industrielle"
     },
     {
       "code": "25.71Z",
@@ -801,6 +933,14 @@
     {
       "code": "25.72Z",
       "libelle": "Fabrication de serrures et de ferrures"
+    },
+    {
+      "code": "25.73A",
+      "libelle": "Fabrication de moules et modèles"
+    },
+    {
+      "code": "25.73B",
+      "libelle": "Fabrication d'autres outillages"
     },
     {
       "code": "25.91Z",
@@ -817,6 +957,14 @@
     {
       "code": "25.94Z",
       "libelle": "Fabrication de vis et de boulons"
+    },
+    {
+      "code": "25.99A",
+      "libelle": "Fabrication d'articles métalliques ménagers"
+    },
+    {
+      "code": "25.99B",
+      "libelle": "Fabrication d'autres articles métalliques"
     }
   ],
   "Fabrication de produits informatiques, électroniques et optiques": [
@@ -841,12 +989,20 @@
       "libelle": "Fabrication de produits électroniques grand public"
     },
     {
+      "code": "26.51A",
+      "libelle": "Fabrication d'équipements d'aide à la navigation"
+    },
+    {
+      "code": "26.51B",
+      "libelle": "Fabrication d'instrumentation scientifique et technique"
+    },
+    {
       "code": "26.52Z",
       "libelle": "Horlogerie"
     },
     {
       "code": "26.60Z",
-      "libelle": "Fabrication d'équipements d'irradiation médicale, d'équipements électromédicaux et électrothérapeutiques"
+      "libelle": "Fabrication d'équipements d'irradiation médicale, d'équipements àlectromédicaux et àlectrothérapeutiques"
     },
     {
       "code": "26.70Z",
@@ -854,17 +1010,17 @@
     },
     {
       "code": "26.80Z",
-      "libelle": "Fabrication de supports magnétiques et optiques"
+      "libelle": "Fabrication de supports magnàtiques et optiques"
     }
   ],
   "Fabrication d'équipements électriques": [
     {
       "code": "27.11Z",
-      "libelle": "Fabrication de moteurs, génératrices et transformateurs électriques"
+      "libelle": "Fabrication de moteurs, gànàratrices et transformateurs électriques"
     },
     {
       "code": "27.12Z",
-      "libelle": "Fabrication de matériel de distribution et de commande électrique"
+      "libelle": "Fabrication de matériel de distribution et de commande àlectrique"
     },
     {
       "code": "27.20Z",
@@ -872,23 +1028,23 @@
     },
     {
       "code": "27.31Z",
-      "libelle": "Fabrication de câbles de fibres optiques"
+      "libelle": "Fabrication de càbles de fibres optiques"
     },
     {
       "code": "27.32Z",
-      "libelle": "Fabrication d'autres fils et câbles électroniques ou électriques"
+      "libelle": "Fabrication d'autres fils et càbles électroniques ou électriques"
     },
     {
       "code": "27.33Z",
-      "libelle": "Fabrication de matériel d'installation électrique"
+      "libelle": "Fabrication de matériel d'installation àlectrique"
     },
     {
       "code": "27.40Z",
-      "libelle": "Fabrication d'appareils d'éclairage électrique"
+      "libelle": "Fabrication d'appareils d'àclairage àlectrique"
     },
     {
       "code": "27.51Z",
-      "libelle": "Fabrication d'appareils électroménagers"
+      "libelle": "Fabrication d'appareils àlectroménagers"
     },
     {
       "code": "27.52Z",
@@ -899,10 +1055,10 @@
       "libelle": "Fabrication d'autres matériels électriques"
     }
   ],
-  "Fabrication de machines et équipements n.c.a.": [
+  "Fabrication de machines et équipements": [
     {
       "code": "28.11Z",
-      "libelle": "Fabrication de moteurs et turbines, à l'exception des moteurs d’avions et de véhicules"
+      "libelle": "Fabrication de moteurs et turbines, à l'exception des moteurs d'avions et de véhicules"
     },
     {
       "code": "28.12Z",
@@ -922,7 +1078,7 @@
     },
     {
       "code": "28.21Z",
-      "libelle": "Fabrication de fours et brûleurs"
+      "libelle": "Fabrication de fours et bràleurs"
     },
     {
       "code": "28.22Z",
@@ -934,11 +1090,19 @@
     },
     {
       "code": "28.24Z",
-      "libelle": "Fabrication d'outillage portatif à moteur incorporé"
+      "libelle": "Fabrication d'outillage portatif à moteur incorporà"
     },
     {
       "code": "28.25Z",
       "libelle": "Fabrication d'équipements aérauliques et frigorifiques industriels"
+    },
+    {
+      "code": "28.29A",
+      "libelle": "Fabrication d'équipements d'emballage, de conditionnement et de pesage"
+    },
+    {
+      "code": "28.29B",
+      "libelle": "Fabrication d'autres machines d'usage général"
     },
     {
       "code": "28.30Z",
@@ -975,6 +1139,14 @@
     {
       "code": "28.96Z",
       "libelle": "Fabrication de machines pour le travail du caoutchouc ou des plastiques"
+    },
+    {
+      "code": "28.99A",
+      "libelle": "Fabrication de machines d'imprimerie"
+    },
+    {
+      "code": "28.99B",
+      "libelle": "Fabrication d'autres machines spécialisées"
     }
   ],
   "Industrie automobile": [
@@ -1026,7 +1198,7 @@
     },
     {
       "code": "30.99Z",
-      "libelle": "Fabrication d’autres équipements de transport n.c.a."
+      "libelle": "Fabrication d'autres équipements de transport n.c.a."
     }
   ],
   "Fabrication de meubles": [
@@ -1041,6 +1213,14 @@
     {
       "code": "31.03Z",
       "libelle": "Fabrication de matelas"
+    },
+    {
+      "code": "31.09A",
+      "libelle": "Fabrication de sièges d'ameublement d'intérieur"
+    },
+    {
+      "code": "31.09B",
+      "libelle": "Fabrication d'autres meubles et industries connexes de l'ameublement"
     }
   ],
   "Autres industries manufacturières": [
@@ -1050,11 +1230,11 @@
     },
     {
       "code": "32.12Z",
-      "libelle": "Fabrication d’articles de joaillerie et bijouterie"
+      "libelle": "Fabrication d'articles de joaillerie et bijouterie"
     },
     {
       "code": "32.13Z",
-      "libelle": "Fabrication d’articles de bijouterie fantaisie et articles similaires"
+      "libelle": "Fabrication d'articles de bijouterie fantaisie et articles similaires"
     },
     {
       "code": "32.20Z",
@@ -1069,15 +1249,23 @@
       "libelle": "Fabrication de jeux et jouets"
     },
     {
+      "code": "32.50A",
+      "libelle": "Fabrication de matériel médico-chirurgical et dentaire"
+    },
+    {
+      "code": "32.50B",
+      "libelle": "Fabrication de lunettes"
+    },
+    {
       "code": "32.91Z",
-      "libelle": "Fabrication d’articles de brosserie"
+      "libelle": "Fabrication d'articles de brosserie"
     },
     {
       "code": "32.99Z",
       "libelle": "Autres activités manufacturières n.c.a."
     }
   ],
-  "Réparation et installation de machines et d'équipements": [
+  "Réparation et installation de machines": [
     {
       "code": "33.11Z",
       "libelle": "Réparation d'ouvrages en métaux"
@@ -1109,6 +1297,22 @@
     {
       "code": "33.19Z",
       "libelle": "Réparation d'autres équipements"
+    },
+    {
+      "code": "33.20A",
+      "libelle": "Installation de structures métalliques, chaudronnées et de tuyauterie"
+    },
+    {
+      "code": "33.20B",
+      "libelle": "Installation de machines et équipements mécaniques"
+    },
+    {
+      "code": "33.20C",
+      "libelle": "Conception d'ensemble et assemblage sur site industriel d'équipements de contrôle des processus industriels"
+    },
+    {
+      "code": "33.20D",
+      "libelle": "Installation d'équipements électriques, de matériels électroniques et optiques ou d'autres matériels"
     }
   ],
   "Production et distribution d'électricité, de gaz, de vapeur et d'air conditionné": [
@@ -1142,10 +1346,10 @@
     },
     {
       "code": "35.30Z",
-      "libelle": "Production et distribution de vapeur et d'air conditionné"
+      "libelle": "Production et distribution de vapeur et d'air conditionnà"
     }
   ],
-  "Captage, traitement et distribution d'eau": [
+  "Production et distribution d'eau": [
     {
       "code": "36.00Z",
       "libelle": "Captage, traitement et distribution d'eau"
@@ -1176,7 +1380,7 @@
     },
     {
       "code": "38.31Z",
-      "libelle": "Démantèlement d'épaves"
+      "libelle": "Démantèlement d'ouvrages"
     },
     {
       "code": "38.32Z",
@@ -1189,6 +1393,32 @@
       "libelle": "Dépollution et autres services de gestion des déchets"
     }
   ],
+  "Construction de bâtiments": [
+    {
+      "code": "41.10A",
+      "libelle": "Promotion immobilière de logements"
+    },
+    {
+      "code": "41.10B",
+      "libelle": "Promotion immobilière de bureaux"
+    },
+    {
+      "code": "41.10C",
+      "libelle": "Promotion immobilière d'autres bâtiments"
+    },
+    {
+      "code": "41.10D",
+      "libelle": "Supports juridiques de programmes"
+    },
+    {
+      "code": "41.20A",
+      "libelle": "Construction de maisons individuelles"
+    },
+    {
+      "code": "41.20B",
+      "libelle": "Construction d'autres bâtiments"
+    }
+  ],
   "Génie civil": [
     {
       "code": "42.11Z",
@@ -1197,6 +1427,14 @@
     {
       "code": "42.12Z",
       "libelle": "Construction de voies ferrées de surface et souterraines"
+    },
+    {
+      "code": "42.13A",
+      "libelle": "Construction d'ouvrages d'art"
+    },
+    {
+      "code": "42.13B",
+      "libelle": "Construction et entretien de tunnels"
     },
     {
       "code": "42.21Z",
@@ -1212,7 +1450,7 @@
     },
     {
       "code": "42.99Z",
-      "libelle": "Construction d'autres ouvrages de génie civil n.c.a."
+      "libelle": "Construction d'autres ouvrages de gànie civil n.c.a."
     }
   ],
   "Travaux de construction spécialisés": [
@@ -1221,12 +1459,56 @@
       "libelle": "Travaux de démolition"
     },
     {
+      "code": "43.12A",
+      "libelle": "Travaux de terrassement courants et travaux préparatoires"
+    },
+    {
+      "code": "43.12B",
+      "libelle": "Travaux de terrassement spécialisés ou de grande masse"
+    },
+    {
       "code": "43.13Z",
       "libelle": "Forages et sondages"
     },
     {
+      "code": "43.21A",
+      "libelle": "Travaux d'installation électrique dans tous locaux"
+    },
+    {
+      "code": "43.21B",
+      "libelle": "Travaux d'installation électrique sur la voie publique"
+    },
+    {
+      "code": "43.22A",
+      "libelle": "Travaux d'installation d'eau et de gaz en tous locaux"
+    },
+    {
+      "code": "43.22B",
+      "libelle": "Travaux d'installation d'équipements thermiques et de climatisation"
+    },
+    {
+      "code": "43.29A",
+      "libelle": "Travaux d'isolation"
+    },
+    {
+      "code": "43.29B",
+      "libelle": "Autres travaux d'installation n.c.a."
+    },
+    {
       "code": "43.31Z",
       "libelle": "Travaux de plâtrerie"
+    },
+    {
+      "code": "43.32A",
+      "libelle": "Travaux de menuiserie bois et PVC"
+    },
+    {
+      "code": "43.32B",
+      "libelle": "Travaux de menuiserie métallique et serrurerie"
+    },
+    {
+      "code": "43.32C",
+      "libelle": "Agencement de lieux de vente"
     },
     {
       "code": "43.33Z",
@@ -1239,9 +1521,37 @@
     {
       "code": "43.39Z",
       "libelle": "Autres travaux de finition"
+    },
+    {
+      "code": "43.91A",
+      "libelle": "Travaux de charpente"
+    },
+    {
+      "code": "43.91B",
+      "libelle": "Travaux de couverture par éléments"
+    },
+    {
+      "code": "43.99A",
+      "libelle": "Travaux d'étanchéification"
+    },
+    {
+      "code": "43.99B",
+      "libelle": "Travaux de montage de structures métalliques"
+    },
+    {
+      "code": "43.99C",
+      "libelle": "Travaux de maçonnerie générale et gros œuvre de bâtiment"
+    },
+    {
+      "code": "43.99D",
+      "libelle": "Autres travaux spécialisés de construction"
+    },
+    {
+      "code": "43.99E",
+      "libelle": "Location avec opérateur de matériel de construction"
     }
   ],
-  "Commerce et réparation d'automobiles et de motocycles": [
+  "Commerce et réparation d'automobiles": [
     {
       "code": "45.11Z",
       "libelle": "Commerce de voitures et de véhicules automobiles légers"
@@ -1249,6 +1559,14 @@
     {
       "code": "45.19Z",
       "libelle": "Commerce d'autres véhicules automobiles"
+    },
+    {
+      "code": "45.20A",
+      "libelle": "Entretien et réparation de véhicules automobiles légers"
+    },
+    {
+      "code": "45.20B",
+      "libelle": "Entretien et réparation d'autres véhicules automobiles"
     },
     {
       "code": "45.31Z",
@@ -1269,6 +1587,14 @@
       "libelle": "Intermédiaires du commerce en matières premières agricoles, animaux vivants, matières premières textiles et produits semi-finis"
     },
     {
+      "code": "46.12A",
+      "libelle": "Centrales d'achat de carburant"
+    },
+    {
+      "code": "46.12B",
+      "libelle": "Autres intermédiaires du commerce en combustibles, métaux, minéraux et produits chimiques"
+    },
+    {
       "code": "46.13Z",
       "libelle": "Intermédiaires du commerce en bois et matériaux de construction"
     },
@@ -1285,12 +1611,28 @@
       "libelle": "Intermédiaires du commerce en textiles, habillement, fourrures, chaussures et articles en cuir"
     },
     {
+      "code": "46.17A",
+      "libelle": "Centrales d'achat alimentaires"
+    },
+    {
+      "code": "46.17B",
+      "libelle": "Autres intermédiaires du commerce en denrées, boissons et tabac"
+    },
+    {
       "code": "46.18Z",
       "libelle": "Intermédiaires spécialisés dans le commerce d'autres produits spécifiques"
     },
     {
+      "code": "46.19A",
+      "libelle": "Centrales d'achat non alimentaires"
+    },
+    {
+      "code": "46.19B",
+      "libelle": "Autres intermédiaires du commerce en produits divers"
+    },
+    {
       "code": "46.21Z",
-      "libelle": "Commerce de gros (commerce interentreprises) de céréales, de tabac non manufacturé, de semences et d'aliments pour le bétail"
+      "libelle": "Commerce de gros (commerce interentreprises) de céréales, de tabac non manufacturà, de semences et d'aliments pour le bàtail"
     },
     {
       "code": "46.22Z",
@@ -1309,8 +1651,20 @@
       "libelle": "Commerce de gros (commerce interentreprises) de fruits et légumes"
     },
     {
+      "code": "46.32A",
+      "libelle": "Commerce de gros (commerce interentreprises) de viandes de boucherie"
+    },
+    {
+      "code": "46.32B",
+      "libelle": "Commerce de gros (commerce interentreprises) de produits à base de viande"
+    },
+    {
+      "code": "46.32C",
+      "libelle": "Commerce de gros (commerce interentreprises) de volailles et gibier"
+    },
+    {
       "code": "46.33Z",
-      "libelle": "Commerce de gros (commerce interentreprises) de produits laitiers, œufs, huiles et matières grasses comestibles"
+      "libelle": "Commerce de gros (commerce interentreprises) de produits laitiers, ?ufs, huiles et matiéres grasses comestibles"
     },
     {
       "code": "46.34Z",
@@ -1327,6 +1681,22 @@
     {
       "code": "46.37Z",
       "libelle": "Commerce de gros (commerce interentreprises) de café, thé, cacao et épices"
+    },
+    {
+      "code": "46.38A",
+      "libelle": "Commerce de gros (commerce interentreprises) de poissons, crustacés et mollusques"
+    },
+    {
+      "code": "46.38B",
+      "libelle": "Commerce de gros (commerce interentreprises) alimentaire spécialisé divers"
+    },
+    {
+      "code": "46.39A",
+      "libelle": "Commerce de gros (commerce interentreprises) de produits surgelàs"
+    },
+    {
+      "code": "46.39B",
+      "libelle": "Commerce de gros (commerce interentreprises) alimentaire non spécialisé"
     },
     {
       "code": "46.41Z",
@@ -1346,7 +1716,7 @@
     },
     {
       "code": "46.45Z",
-      "libelle": "Commerce de gros (commerce interentreprises) de parfumerie et de produits de beauté"
+      "libelle": "Commerce de gros (commerce interentreprises) de parfumerie et de produits de beautà"
     },
     {
       "code": "46.46Z",
@@ -1397,12 +1767,40 @@
       "libelle": "Commerce de gros (commerce interentreprises) d'autres machines et équipements de bureau"
     },
     {
+      "code": "46.69A",
+      "libelle": "Commerce de gros (commerce interentreprises) de matériel àlectrique"
+    },
+    {
+      "code": "46.69B",
+      "libelle": "Commerce de gros (commerce interentreprises) de fournitures et équipements industriels divers"
+    },
+    {
+      "code": "46.69C",
+      "libelle": "Commerce de gros (commerce interentreprises) de fournitures et équipements divers pour le commerce et les services"
+    },
+    {
       "code": "46.71Z",
       "libelle": "Commerce de gros (commerce interentreprises) de combustibles et de produits annexes"
     },
     {
       "code": "46.72Z",
       "libelle": "Commerce de gros (commerce interentreprises) de minerais et métaux"
+    },
+    {
+      "code": "46.73A",
+      "libelle": "Commerce de gros (commerce interentreprises) de bois et de matériaux de construction"
+    },
+    {
+      "code": "46.73B",
+      "libelle": "Commerce de gros (commerce interentreprises) d'appareils sanitaires et de produits de décoration"
+    },
+    {
+      "code": "46.74A",
+      "libelle": "Commerce de gros (commerce interentreprises) de quincaillerie"
+    },
+    {
+      "code": "46.74B",
+      "libelle": "Commerce de gros (commerce interentreprises) de fournitures pour la plomberie et le chauffage"
     },
     {
       "code": "46.75Z",
@@ -1422,6 +1820,38 @@
     }
   ],
   "Commerce de détail": [
+    {
+      "code": "47.11A",
+      "libelle": "Commerce de détail de produits surgelés"
+    },
+    {
+      "code": "47.11B",
+      "libelle": "Commerce d'alimentation générale"
+    },
+    {
+      "code": "47.11C",
+      "libelle": "Supérettes"
+    },
+    {
+      "code": "47.11D",
+      "libelle": "Supermarchés"
+    },
+    {
+      "code": "47.11E",
+      "libelle": "Magasins multi-commerces"
+    },
+    {
+      "code": "47.11F",
+      "libelle": "Hypermarchés"
+    },
+    {
+      "code": "47.19A",
+      "libelle": "Grands magasins"
+    },
+    {
+      "code": "47.19B",
+      "libelle": "Autres commerces de détail en magasin non spécialisé"
+    },
     {
       "code": "47.21Z",
       "libelle": "Commerce de détail de fruits et légumes en magasin spécialisé"
@@ -1471,12 +1901,28 @@
       "libelle": "Commerce de détail de textiles en magasin spécialisé"
     },
     {
+      "code": "47.52A",
+      "libelle": "Commerce de détail de quincaillerie, peintures et verres en petites surfaces (moins de 400 m²)"
+    },
+    {
+      "code": "47.52B",
+      "libelle": "Commerce de détail de quincaillerie, peintures et verres en grandes surfaces (400 m² et plus)"
+    },
+    {
       "code": "47.53Z",
       "libelle": "Commerce de détail de tapis, moquettes et revêtements de murs et de sols en magasin spécialisé"
     },
     {
       "code": "47.54Z",
       "libelle": "Commerce de détail d'appareils électroménagers en magasin spécialisé"
+    },
+    {
+      "code": "47.59A",
+      "libelle": "Commerce de détail de meubles"
+    },
+    {
+      "code": "47.59B",
+      "libelle": "Commerce de détail d'autres équipements du foyer"
     },
     {
       "code": "47.61Z",
@@ -1503,6 +1949,14 @@
       "libelle": "Commerce de détail d'habillement en magasin spécialisé"
     },
     {
+      "code": "47.72A",
+      "libelle": "Commerce de détail de la chaussure"
+    },
+    {
+      "code": "47.72B",
+      "libelle": "Commerce de détail de maroquinerie et d'articles de voyage"
+    },
+    {
       "code": "47.73Z",
       "libelle": "Commerce de détail de produits pharmaceutiques en magasin spécialisé"
     },
@@ -1512,7 +1966,7 @@
     },
     {
       "code": "47.75Z",
-      "libelle": "Commerce de détail de parfumerie et de produits de beauté en magasin spécialisé"
+      "libelle": "Commerce de détail de parfumerie et de produits de beautà en magasin spécialisé"
     },
     {
       "code": "47.76Z",
@@ -1521,6 +1975,18 @@
     {
       "code": "47.77Z",
       "libelle": "Commerce de détail d'articles d'horlogerie et de bijouterie en magasin spécialisé"
+    },
+    {
+      "code": "47.78A",
+      "libelle": "Commerces de détail d'optique"
+    },
+    {
+      "code": "47.78B",
+      "libelle": "Commerces de détail de charbons et combustibles"
+    },
+    {
+      "code": "47.78C",
+      "libelle": "Autres commerces de détail spécialisés divers"
     },
     {
       "code": "47.79Z",
@@ -1537,9 +2003,25 @@
     {
       "code": "47.89Z",
       "libelle": "Autres commerces de détail sur éventaires et marchés"
+    },
+    {
+      "code": "47.91A",
+      "libelle": "Vente à distance sur catalogue général"
+    },
+    {
+      "code": "47.91B",
+      "libelle": "Vente à distance sur catalogue spécialisé"
+    },
+    {
+      "code": "47.99A",
+      "libelle": "Vente à domicile"
+    },
+    {
+      "code": "47.99B",
+      "libelle": "Vente par automates et autres commerces de détail hors magasin, éventaires ou marchés n.c.a."
     }
   ],
-  "Transports terrestres et transport par conduites": [
+  "Transport terrestre": [
     {
       "code": "49.10Z",
       "libelle": "Transport ferroviaire interurbain de voyageurs"
@@ -1557,6 +2039,30 @@
       "libelle": "Transports de voyageurs par taxis"
     },
     {
+      "code": "49.39A",
+      "libelle": "Transports routiers réguliers de voyageurs"
+    },
+    {
+      "code": "49.39B",
+      "libelle": "Autres transports routiers de voyageurs"
+    },
+    {
+      "code": "49.39C",
+      "libelle": "Tàlàphériques et remontées mécaniques"
+    },
+    {
+      "code": "49.41A",
+      "libelle": "Transports routiers de fret interurbains"
+    },
+    {
+      "code": "49.41B",
+      "libelle": "Transports routiers de fret de proximité"
+    },
+    {
+      "code": "49.41C",
+      "libelle": "Location de camions avec chauffeur"
+    },
+    {
       "code": "49.42Z",
       "libelle": "Services de déménagement"
     },
@@ -1565,7 +2071,7 @@
       "libelle": "Transports par conduites"
     }
   ],
-  "Transports par eau": [
+  "Transport par eau": [
     {
       "code": "50.10Z",
       "libelle": "Transports maritimes et côtiers de passagers"
@@ -1583,7 +2089,7 @@
       "libelle": "Transports fluviaux de fret"
     }
   ],
-  "Transports aériens": [
+  "Transport aérien": [
     {
       "code": "51.10Z",
       "libelle": "Transports aériens de passagers"
@@ -1597,7 +2103,15 @@
       "libelle": "Transports spatiaux"
     }
   ],
-  "Entreposage et services auxiliaires des transports": [
+  "Entreposage et transport": [
+    {
+      "code": "52.10A",
+      "libelle": "Entreposage et stockage frigorifique"
+    },
+    {
+      "code": "52.10B",
+      "libelle": "Entreposage et stockage non frigorifique"
+    },
     {
       "code": "52.21Z",
       "libelle": "Services auxiliaires des transports terrestres"
@@ -1609,6 +2123,22 @@
     {
       "code": "52.23Z",
       "libelle": "Services auxiliaires des transports aériens"
+    },
+    {
+      "code": "52.24A",
+      "libelle": "Manutention portuaire"
+    },
+    {
+      "code": "52.24B",
+      "libelle": "Manutention non portuaire"
+    },
+    {
+      "code": "52.29A",
+      "libelle": "Messagerie, fret express"
+    },
+    {
+      "code": "52.29B",
+      "libelle": "Affrètement et organisation des transports"
     }
   ],
   "Activités de poste et de courrier": [
@@ -1641,8 +2171,28 @@
   ],
   "Restauration": [
     {
+      "code": "56.10A",
+      "libelle": "Restauration traditionnelle"
+    },
+    {
+      "code": "56.10B",
+      "libelle": "Cafétérias et autres libres-services"
+    },
+    {
+      "code": "56.10C",
+      "libelle": "Restauration de type rapide"
+    },
+    {
       "code": "56.21Z",
       "libelle": "Services des traiteurs"
+    },
+    {
+      "code": "56.29A",
+      "libelle": "Restauration collective sous contrat"
+    },
+    {
+      "code": "56.29B",
+      "libelle": "Autres services de restauration n.c.a."
     },
     {
       "code": "56.30Z",
@@ -1652,19 +2202,19 @@
   "Édition": [
     {
       "code": "58.11Z",
-      "libelle": "Édition de livres"
+      "libelle": "édition de livres"
     },
     {
       "code": "58.12Z",
-      "libelle": "Édition de répertoires et de fichiers d'adresses"
+      "libelle": "édition de répertoires et de fichiers d'adresses"
     },
     {
       "code": "58.13Z",
-      "libelle": "Édition de journaux"
+      "libelle": "édition de journaux"
     },
     {
       "code": "58.14Z",
-      "libelle": "Édition de revues et périodiques"
+      "libelle": "édition de revues et périodiques"
     },
     {
       "code": "58.19Z",
@@ -1672,13 +2222,45 @@
     },
     {
       "code": "58.21Z",
-      "libelle": "Édition de jeux électroniques"
+      "libelle": "édition de jeux électroniques"
+    },
+    {
+      "code": "58.29A",
+      "libelle": "édition de logiciels système et de réseau"
+    },
+    {
+      "code": "58.29B",
+      "libelle": "édition de logiciels outils de développement et de langages"
+    },
+    {
+      "code": "58.29C",
+      "libelle": "édition de logiciels applicatifs"
     }
   ],
-  "Production de films cinématographiques, de vidéo et de programmes de télévision": [
+  "Production audiovisuelle": [
+    {
+      "code": "59.11A",
+      "libelle": "Production de films et de programmes pour la télévision"
+    },
+    {
+      "code": "59.11B",
+      "libelle": "Production de films institutionnels et publicitaires"
+    },
+    {
+      "code": "59.11C",
+      "libelle": "Production de films pour le cinéma"
+    },
     {
       "code": "59.12Z",
       "libelle": "Post-production de films cinématographiques, de vidéo et de programmes de télévision"
+    },
+    {
+      "code": "59.13A",
+      "libelle": "Distribution de films cinématographiques"
+    },
+    {
+      "code": "59.13B",
+      "libelle": "édition et distribution vidéo"
     },
     {
       "code": "59.14Z",
@@ -1692,7 +2274,15 @@
   "Programmation et diffusion": [
     {
       "code": "60.10Z",
-      "libelle": "Édition et diffusion de programmes radio"
+      "libelle": "édition et diffusion de programmes radio"
+    },
+    {
+      "code": "60.20A",
+      "libelle": "édition de chaînes généralistes"
+    },
+    {
+      "code": "60.20B",
+      "libelle": "édition de chaînes thématiques"
     }
   ],
   "Télécommunications": [
@@ -1713,10 +2303,18 @@
       "libelle": "Autres activités de télécommunication"
     }
   ],
-  "Programmation, conseil et autres activités informatiques": [
+  "Programmation informatique": [
     {
       "code": "62.01Z",
       "libelle": "Programmation informatique"
+    },
+    {
+      "code": "62.02A",
+      "libelle": "Conseil en systèmes et logiciels informatiques"
+    },
+    {
+      "code": "62.02B",
+      "libelle": "Tierce maintenance de systèmes et d'applications informatiques"
     },
     {
       "code": "62.03Z",
@@ -1793,7 +2391,7 @@
       "libelle": "Caisses de retraite"
     }
   ],
-  "Activités auxiliaires de services financiers et d'assurance": [
+  "Activités auxiliaires": [
     {
       "code": "66.11Z",
       "libelle": "Administration de marchés financiers"
@@ -1801,6 +2399,14 @@
     {
       "code": "66.12Z",
       "libelle": "Courtage de valeurs mobilières et de marchandises"
+    },
+    {
+      "code": "66.19A",
+      "libelle": "Supports juridiques de gestion de patrimoine mobilier"
+    },
+    {
+      "code": "66.19B",
+      "libelle": "Autres activités auxiliaires de services financiers, hors assurance et caisses de retraite, n.c.a."
     },
     {
       "code": "66.21Z",
@@ -1825,11 +2431,27 @@
       "libelle": "Activités des marchands de biens immobiliers"
     },
     {
+      "code": "68.20A",
+      "libelle": "Location de logements"
+    },
+    {
+      "code": "68.20B",
+      "libelle": "Location de terrains et d'autres biens immobiliers"
+    },
+    {
       "code": "68.31Z",
       "libelle": "Agences immobilières"
+    },
+    {
+      "code": "68.32A",
+      "libelle": "Administration d'immeubles et autres biens immobiliers"
+    },
+    {
+      "code": "68.32B",
+      "libelle": "Supports juridiques de gestion de patrimoine immobilier"
     }
   ],
-  "Activités juridiques et comptables": [
+  "Activités juridiques": [
     {
       "code": "69.10Z",
       "libelle": "Activités juridiques"
@@ -1839,7 +2461,7 @@
       "libelle": "Activités comptables"
     }
   ],
-  "Activités des sièges sociaux ; conseil de gestion": [
+  "Activités des sièges sociaux": [
     {
       "code": "70.10Z",
       "libelle": "Activités des sièges sociaux"
@@ -1853,13 +2475,29 @@
       "libelle": "Conseil pour les affaires et autres conseils de gestion"
     }
   ],
-  "Activités d'architecture et d'ingénierie": [
+  "Activités d'architecture": [
     {
       "code": "71.11Z",
       "libelle": "Activités d'architecture"
+    },
+    {
+      "code": "71.12A",
+      "libelle": "Activités des géomètres"
+    },
+    {
+      "code": "71.12B",
+      "libelle": "Ingénierie, études techniques"
+    },
+    {
+      "code": "71.20A",
+      "libelle": "Contrôle technique automobile"
+    },
+    {
+      "code": "71.20B",
+      "libelle": "Analyses, essais et inspections techniques"
     }
   ],
-  "Recherche-développement scientifique": [
+  "Recherche-développement": [
     {
       "code": "72.11Z",
       "libelle": "Recherche-développement en biotechnologie"
@@ -1873,7 +2511,7 @@
       "libelle": "Recherche-développement en sciences humaines et sociales"
     }
   ],
-  "Publicité et études de marché": [
+  "Publicité": [
     {
       "code": "73.11Z",
       "libelle": "Activités des agences de publicité"
@@ -1887,7 +2525,7 @@
       "libelle": "Études de marché et sondages"
     }
   ],
-  "Autres activités spécialisées, scientifiques et techniques": [
+  "Autres activités spécialisées": [
     {
       "code": "74.10Z",
       "libelle": "Activités spécialisées de design"
@@ -1899,6 +2537,14 @@
     {
       "code": "74.30Z",
       "libelle": "Traduction et interprétation"
+    },
+    {
+      "code": "74.90A",
+      "libelle": "Activités des économistes de la construction"
+    },
+    {
+      "code": "74.90B",
+      "libelle": "Activités spécialisées, scientifiques et techniques diverses"
     }
   ],
   "Activités vétérinaires": [
@@ -1907,7 +2553,15 @@
       "libelle": "Activités vétérinaires"
     }
   ],
-  "Activités de location et location-bail": [
+  "Activités de location": [
+    {
+      "code": "77.11A",
+      "libelle": "Location de courte durée de voitures et de véhicules automobiles légers"
+    },
+    {
+      "code": "77.11B",
+      "libelle": "Location de longue durée de voitures et de véhicules automobiles légers"
+    },
     {
       "code": "77.12Z",
       "libelle": "Location et location-bail de camions"
@@ -1967,7 +2621,7 @@
       "libelle": "Autre mise à disposition de ressources humaines"
     }
   ],
-  "Activités des agences de voyage et autres services de réservation": [
+  "Activités des agences de voyage": [
     {
       "code": "79.11Z",
       "libelle": "Activités des agences de voyage"
@@ -1995,10 +2649,10 @@
       "libelle": "Activités d'enquête"
     }
   ],
-  "Services relatifs aux bâtiments et aménagement paysager": [
+  "Services aux bâtiments": [
     {
       "code": "81.10Z",
-      "libelle": "Activités combinées de soutien lié aux bâtiments"
+      "libelle": "Activités combinées de soutien liées aux bâtiments"
     },
     {
       "code": "81.21Z",
@@ -2009,11 +2663,19 @@
       "libelle": "Autres activités de nettoyage des bâtiments et nettoyage industriel"
     },
     {
+      "code": "81.29A",
+      "libelle": "Désinfection, désinsectisation, dératisation"
+    },
+    {
+      "code": "81.29B",
+      "libelle": "Autres activités de nettoyage n.c.a."
+    },
+    {
       "code": "81.30Z",
       "libelle": "Services d'aménagement paysager"
     }
   ],
-  "Activités administratives et autres activités de soutien aux entreprises": [
+  "Activités administratives": [
     {
       "code": "82.11Z",
       "libelle": "Services administratifs combinés de bureau"
@@ -2070,11 +2732,23 @@
     },
     {
       "code": "84.24Z",
-      "libelle": "Activités d’ordre public et de sécurité"
+      "libelle": "Activités d'ordre public et de sécurité"
     },
     {
       "code": "84.25Z",
       "libelle": "Services du feu et de secours"
+    },
+    {
+      "code": "84.30A",
+      "libelle": "Activités générales de sécurité sociale"
+    },
+    {
+      "code": "84.30B",
+      "libelle": "Gestion des retraites complémentaires"
+    },
+    {
+      "code": "84.30C",
+      "libelle": "Distribution sociale de revenus"
     }
   ],
   "Enseignement": [
@@ -2115,25 +2789,137 @@
       "libelle": "Enseignement de la conduite"
     },
     {
+      "code": "85.59A",
+      "libelle": "Formation continue d'adultes"
+    },
+    {
+      "code": "85.59B",
+      "libelle": "Autres enseignements"
+    },
+    {
       "code": "85.60Z",
       "libelle": "Activités de soutien à l'enseignement"
     }
   ],
-  "Activités pour la santé humaine": [
+  "Activités hospitalières": [
     {
       "code": "86.10Z",
       "libelle": "Activités hospitalières"
     },
     {
       "code": "86.21Z",
-      "libelle": "Activité des médecins généralistes"
+      "libelle": "Activités des médecins généralistes"
+    },
+    {
+      "code": "86.22A",
+      "libelle": "Activités de radiodiagnostic et de radiothérapie"
+    },
+    {
+      "code": "86.22B",
+      "libelle": "Activités chirurgicales"
+    },
+    {
+      "code": "86.22C",
+      "libelle": "Autres activités des médecins spécialistes"
     },
     {
       "code": "86.23Z",
       "libelle": "Pratique dentaire"
+    },
+    {
+      "code": "86.90A",
+      "libelle": "Ambulances"
+    },
+    {
+      "code": "86.90B",
+      "libelle": "Laboratoires d'analyses médicales"
+    },
+    {
+      "code": "86.90C",
+      "libelle": "Centres de collecte et banques d'organes"
+    },
+    {
+      "code": "86.90D",
+      "libelle": "Activités des infirmiers et des sages-femmes"
+    },
+    {
+      "code": "86.90E",
+      "libelle": "Activités des professionnels de la rééducation, de l'appareillage et des pédicures-podologues"
+    },
+    {
+      "code": "86.90F",
+      "libelle": "Activités de santé humaine non classées ailleurs"
     }
   ],
-  "Activités créatives, artistiques et de spectacle": [
+  "Hébergement social": [
+    {
+      "code": "87.10A",
+      "libelle": "Hébergement médicalisé pour personnes âgées"
+    },
+    {
+      "code": "87.10B",
+      "libelle": "Hébergement médicalisé pour enfants handicapés"
+    },
+    {
+      "code": "87.10C",
+      "libelle": "Hébergement médicalisé pour adultes handicapés et autre hébergement médicalisé"
+    },
+    {
+      "code": "87.20A",
+      "libelle": "Hébergement social pour handicapés mentaux et malades mentaux"
+    },
+    {
+      "code": "87.20B",
+      "libelle": "Hébergement social pour toxicomanes"
+    },
+    {
+      "code": "87.30A",
+      "libelle": "Hébergement social pour personnes âgées"
+    },
+    {
+      "code": "87.30B",
+      "libelle": "Hébergement social pour handicapés physiques"
+    },
+    {
+      "code": "87.90A",
+      "libelle": "Hébergement social pour enfants en difficultés"
+    },
+    {
+      "code": "87.90B",
+      "libelle": "Hébergement social pour adultes et familles en difficultés et autre hébergement social"
+    }
+  ],
+  "Action sociale sans hébergement": [
+    {
+      "code": "88.10A",
+      "libelle": "Aide à domicile"
+    },
+    {
+      "code": "88.10B",
+      "libelle": "Accueil ou accompagnement sans hébergement d'adultes handicapés ou de personnes àgées"
+    },
+    {
+      "code": "88.10C",
+      "libelle": "Aide par le travail"
+    },
+    {
+      "code": "88.91A",
+      "libelle": "Accueil de jeunes enfants"
+    },
+    {
+      "code": "88.91B",
+      "libelle": "Accueil ou accompagnement sans hébergement d'enfants handicapés"
+    },
+    {
+      "code": "88.99A",
+      "libelle": "Autre accueil ou accompagnement sans hébergement d'enfants et d'adolescents"
+    },
+    {
+      "code": "88.99B",
+      "libelle": "Action sociale sans hébergement n.c.a."
+    }
+  ],
+  "Activités créatives": [
     {
       "code": "90.01Z",
       "libelle": "Arts du spectacle vivant"
@@ -2143,11 +2929,19 @@
       "libelle": "Activités de soutien au spectacle vivant"
     },
     {
+      "code": "90.03A",
+      "libelle": "Création artistique relevant des arts plastiques"
+    },
+    {
+      "code": "90.03B",
+      "libelle": "Autre création artistique"
+    },
+    {
       "code": "90.04Z",
       "libelle": "Gestion de salles de spectacles"
     }
   ],
-  "Bibliothèques, archives, musées et autres activités culturelles": [
+  "Gestion du patrimoine culturel": [
     {
       "code": "91.01Z",
       "libelle": "Gestion des bibliothèques et des archives"
@@ -2165,13 +2959,13 @@
       "libelle": "Gestion des jardins botaniques et zoologiques et des réserves naturelles"
     }
   ],
-  "Organisation de jeux de hasard et d'argent": [
+  "Organisation de jeux de hasard": [
     {
       "code": "92.00Z",
       "libelle": "Organisation de jeux de hasard et d'argent"
     }
   ],
-  "Activités sportives, récréatives et de loisirs": [
+  "Activités sportives": [
     {
       "code": "93.11Z",
       "libelle": "Gestion d'installations sportives"
@@ -2223,7 +3017,7 @@
       "libelle": "Autres organisations fonctionnant par adhésion volontaire"
     }
   ],
-  "Réparation d'ordinateurs et de biens personnels et domestiques": [
+  "Réparation d'ordinateurs": [
     {
       "code": "95.11Z",
       "libelle": "Réparation d'ordinateurs et d'équipements périphériques"
@@ -2259,6 +3053,22 @@
   ],
   "Autres services personnels": [
     {
+      "code": "96.01A",
+      "libelle": "Blanchisserie-teinturerie de gros"
+    },
+    {
+      "code": "96.01B",
+      "libelle": "Blanchisserie-teinturerie de détail"
+    },
+    {
+      "code": "96.02A",
+      "libelle": "Coiffure"
+    },
+    {
+      "code": "96.02B",
+      "libelle": "Soins de beauté"
+    },
+    {
       "code": "96.03Z",
       "libelle": "Services funéraires"
     },
@@ -2277,7 +3087,7 @@
       "libelle": "Activités des ménages en tant qu'employeurs de personnel domestique"
     }
   ],
-  "Activités indifférenciées des ménages": [
+  "Activités des ménages en tant qu'employeurs de personnel domestique": [
     {
       "code": "98.10Z",
       "libelle": "Activités indifférenciées des ménages en tant que producteurs de biens pour usage propre"

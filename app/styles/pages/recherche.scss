@@ -26,7 +26,6 @@
 
   // Sidebar filters
   .sidebar-filters {
-    min-height: calc(100vh - 80px);
 
     .badge {
       @include badge-style($light-secondary, $white, small);

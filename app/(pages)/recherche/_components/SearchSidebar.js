@@ -14,10 +14,11 @@ import { EFFECTIF_MAPPING } from "@/_utils/effectifMapping";
 // Créer un trigger personnalisé pour les départements
 const DepartementTrigger = ({ selectedDepartements, onToggle }) => {
   const hasSelection = selectedDepartements.length > 0;
+  console.log(selectedDepartements);
   const displayText = selectedDepartements.length === 0 
     ? "Sélectionner des départements..."
     : selectedDepartements.length === 1
-    ? `${selectedDepartements[0]} département sélectionné`
+    ? `${selectedDepartements.length} département sélectionné`
     : `${selectedDepartements.length} départements sélectionnés`;
 
   return (

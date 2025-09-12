@@ -9,8 +9,8 @@ export const CHART_COLORS = {
 	neutral: '#64748b',           // $neutral
 	
 	// Couleurs par défaut pour données non publiées
-	defaultColor: '#f0f6ff',    // Bleu très clair pour données par défaut
-	defaultColorPie: '#f0f6ff', // Même couleur pour cohérence
+	defaultColor: '#d1e3ff',    // Bleu très clair pour données par défaut
+	defaultColorPie: '#d1e3ff', // Même couleur pour cohérence
 
 	// Couleurs de complétion (pour les cercles pie charts)
 	completionLight: 'rgba(236, 244, 255, 0.5)',    // Complétion normale

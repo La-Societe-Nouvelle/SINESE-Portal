@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Row, Col } from "react-bootstrap";
 import { getQueryType } from "@/_utils/apiUrlBuilder";
+import { sortByTotalIndicators } from "@/_utils/utils";
 
 // Components
 import SearchHeader from "./_components/SearchHeader";
@@ -171,7 +172,9 @@ function SearchContent() {
       fetch(apiUrl)
         .then((res) => res.json())
         .then((data) => {
-          setResults(data.legalUnits || []);
+          // Trier par nombre total d'indicateurs (plus d'indicateurs en premier)
+          const sortedResults = sortByTotalIndicators(data.legalUnits || []);
+          setResults(sortedResults);
           setLoading(false);
         })
         .catch((error) => {

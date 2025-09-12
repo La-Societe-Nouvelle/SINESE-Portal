@@ -8,7 +8,7 @@ export default function DatasetsPage() {
   // Données en dur 
   const datasets = [
     {
-      id: "sinese-stock-unitelegal-2025-09-01",
+      id: "SINESE-FichierStock-UnitesLegales",
       title: "SINESE - Fichier stock UniteLegale du 01 Septembre 2025",
       description: "Base de données complète des empreintes sociales et environnementales des entreprises françaises selon les indicateurs SINESE.",
       lastUpdate: "2025-09-01",
@@ -20,7 +20,7 @@ export default function DatasetsPage() {
       frequency: "Mensuelle"
     },
     {
-      id: "sinese-indicateurs-metadata",
+      id: "SINESE-Métadonnées-Indicateurs",
       title: "Métadonnées des indicateurs SINESE",
       description: "Métadonnées complètes des 12 indicateurs d'empreinte sociétale utilisés dans SINESE.",
       lastUpdate: "2024-11-20",

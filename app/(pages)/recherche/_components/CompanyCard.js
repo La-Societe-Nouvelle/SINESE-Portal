@@ -1,8 +1,9 @@
 "use client";
 
 import { Card, Row, Col, Button, Badge } from "react-bootstrap";
-import { MapPin, Users, Building, BarChart3, Heart, Star, TrendingUp, Info, CheckCircle, BadgeCheck } from "lucide-react";
+import { MapPin, Users, Building, BarChart3, Heart, Star, TrendingUp, Info, CheckCircle, BadgeCheck, Calculator } from "lucide-react";
 import { getEffectifLabel, getEffectifBadgeColor } from "@/_utils/effectifMapping";
+import { hasPublishedOrEstimatedData } from "@/_utils/utils";
 
 export default function CompanyCard({ company }) {
   return (
@@ -146,15 +147,25 @@ export default function CompanyCard({ company }) {
             </div>
 
             <div className="company-actions mb-3">
-              <Button
-                href={`/entreprise/${company.siren}`}
-                variant="secondary"
-                style={{ borderRadius: '0.5rem', minWidth: '180px' }}
-              >
-                <BarChart3 size={16} className="me-2" />
-                Voir l'empreinte
-
-              </Button>
+              {hasPublishedOrEstimatedData(company) ? (
+                <Button
+                  href={`/entreprise/${company.siren}`}
+                  variant="secondary"
+                  style={{ borderRadius: '0.5rem', minWidth: '200px' }}
+                >
+                  <BarChart3 size={16} className="me-2" />
+                  Voir l'empreinte
+                </Button>
+              ) : (
+                <Button
+                  href={`/entreprise/${company.siren}`}
+                  variant="outline-primary"
+                  style={{ borderRadius: '0.5rem', minWidth: '200px' }}
+                >
+                  <Calculator size={16} className="me-2" />
+                  Estimer l'empreinte
+                </Button>
+              )}
             </div>
 
 
