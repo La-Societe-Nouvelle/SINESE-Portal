@@ -194,6 +194,7 @@ export default function HomePage() {
                     onChange={handleChange}
                     onFocus={() => query.length > 2 && setShowSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
                   />
                   <button 
                     type="submit" 
