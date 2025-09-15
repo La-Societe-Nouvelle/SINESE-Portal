@@ -22,8 +22,31 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const timeoutRef = useRef();
+  const abortControllerRef = useRef();
+  const cacheRef = useRef(new Map());
 
   const fetchSuggestions = async (q) => {
+    // Vérifier le cache d'abord
+    const cacheKey = q.toLowerCase();
+    if (cacheRef.current.has(cacheKey)) {
+      const cachedData = cacheRef.current.get(cacheKey);
+      // Vérifier si le cache n'est pas trop ancien (5 minutes)
+      if (Date.now() - cachedData.timestamp < 5 * 60 * 1000) {
+        setSuggestions(cachedData.data);
+        setLoading(false);
+        return;
+      } else {
+        cacheRef.current.delete(cacheKey);
+      }
+    }
+
+    // Annuler la requête précédente
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Créer un nouveau AbortController
+    abortControllerRef.current = new AbortController();
     setLoading(true);
 
     try {
@@ -32,36 +55,81 @@ export default function HomePage() {
         .replace(/[\u0300-\u036f]/g, "")
         .toUpperCase();
 
-      const res = await fetch(`/api/legalunit/${stringQuery}`);
+      // Ajouter des paramètres pour limiter les résultats et optimiser la requête
+      const res = await fetch(`/api/legalunit/${stringQuery}?limit=10&empreintePubliee=false`, {
+        signal: abortControllerRef.current.signal,
+        timeout: 5000 // 5 secondes de timeout
+      });
+
+      if (!res.ok) {
+        // Si 502, c'est probablement l'API externe qui est down
+        if (res.status === 502) {
+          console.warn('API externe indisponible temporairement');
+          setSuggestions([]);
+          return;
+        }
+        throw new Error(`HTTP ${res.status}`);
+      }
+
       const data = await res.json();
-      setSuggestions(data.legalUnits || []);
+      const results = data.legalUnits || [];
+
+      // Mettre en cache le résultat
+      cacheRef.current.set(cacheKey, {
+        data: results,
+        timestamp: Date.now()
+      });
+
+      // Nettoyer le cache si trop d'entrées (max 50)
+      if (cacheRef.current.size > 50) {
+        const oldestKey = cacheRef.current.keys().next().value;
+        cacheRef.current.delete(oldestKey);
+      }
+
+      setSuggestions(results);
     } catch (error) {
-      console.error('Erreur lors de la recherche:', error);
+      if (error.name === 'AbortError') {
+        // Requête annulée, ne rien faire
+        return;
+      }
+
+      // Log plus détaillé pour le debug
+      console.error('Erreur lors de la recherche des suggestions:', {
+        query: q,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      });
+
+      // Afficher un état vide au lieu d'une erreur pour l'UX
       setSuggestions([]);
     } finally {
       setLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
     setQuery(value);
-    
-    // Annuler la requête précédente si elle existe
+
+    // Annuler le timeout précédent
     clearTimeout(timeoutRef.current);
-    
+
     if (value.length > 2) {
-      // Si on tape pendant qu'une requête est en cours, on annule le loading
-      // mais on garde les anciennes suggestions jusqu'à ce que la nouvelle requête aboutisse
       setShowSuggestions(true);
-      
+
+      // Debounce plus agressif pour les suggestions (600ms)
       timeoutRef.current = setTimeout(() => {
         fetchSuggestions(value);
-      }, 300);
+      }, 600);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
       setLoading(false);
+      // Annuler toute requête en cours
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
     }
   };
 

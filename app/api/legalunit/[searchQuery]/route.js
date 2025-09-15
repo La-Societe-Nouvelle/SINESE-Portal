@@ -66,9 +66,18 @@ export async function GET(req, { params }) {
     
     if (!apiRes.ok) {
       console.error('API Error:', apiRes.status, apiRes.statusText);
-      return Response.json({ 
-        legalUnits: [], 
-        error: `API returned ${apiRes.status}` 
+
+      // 404 = pas de résultats trouvés, retourner un tableau vide avec 200
+      if (apiRes.status === 404) {
+        return Response.json({
+          legalUnits: [],
+          message: "Aucun résultat trouvé"
+        });
+      }
+
+      return Response.json({
+        legalUnits: [],
+        error: `API returned ${apiRes.status}`
       }, { status: 502 });
     }
     
