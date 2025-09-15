@@ -71,21 +71,9 @@ export const PieChart = ({
 		'Reste'
 	];
 
-	const datasets = [
-		// Dataset principal (entreprise)
-		{
-			data: [companyValue, 100 - companyValue],
-			backgroundColor: [
-				pieColors.company,
-				isDefaultValue ? pieColors.completionDefault : pieColors.completionLight
-			],
-			borderWidth: 2,
-			borderColor: '#fff',
-			weight: showDivisionData ? 0.5 : 1, // Même largeur pour les deux datasets
-		}
-	];
+	const datasets = [];
 
-	// Ajout du dataset branche si disponible
+	// Ajout du dataset branche en premier (à l'intérieur) si disponible
 	if (showDivisionData) {
 		datasets.push({
 			data: [branchValue, 100 - branchValue],
@@ -98,6 +86,18 @@ export const PieChart = ({
 			weight: 0.5, // Même largeur que le dataset principal
 		});
 	}
+
+	// Dataset principal (entreprise) - maintenant à l'extérieur
+	datasets.push({
+		data: [companyValue, 100 - companyValue],
+		backgroundColor: [
+			pieColors.company,
+			isDefaultValue ? pieColors.completionDefault : pieColors.completionLight
+		],
+		borderWidth: 2,
+		borderColor: '#fff',
+		weight: showDivisionData ? 0.5 : 1, // Même largeur pour les deux datasets
+	});
 
 	const chartData = {
 		labels: labels,

@@ -79,6 +79,11 @@ a {
   outline-offset: 2px;
 }
 
+// Remove focus outline from logo in header
+.navbar-brand:focus {
+  outline: none;
+}
+
 // Subtle animations for all interactive elements
 button,
 .btn,
