@@ -19,13 +19,9 @@ function SearchContent() {
 
   // Search and results state
   const [query, setQuery] = useState(initialQuery);
-  const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(initialQuery.length > 2); 
+  const [loading, setLoading] = useState(initialQuery.length > 2);
   const [hasSearched, setHasSearched] = useState(false);
-
-  // Ref pour gérer le timeout de debounce
-  const debounceTimeoutRef = useRef(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,60 +45,55 @@ function SearchContent() {
 
  
 
-  // Debouncing de la query pour éviter trop de requêtes
+  // Recherche initiale si on arrive avec un paramètre de recherche
   useEffect(() => {
-    // Nettoyer le timeout précédent
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current);
+    if (initialQuery.length > 2) {
+      performSearch(initialQuery, filters);
     }
+  }, []);
 
-    // Déterminer le délai de debounce selon le type de recherche
-    const getDebounceDelay = (searchQuery) => {
-      const queryType = getQueryType(searchQuery);
+  // Fonction pour effectuer la recherche
+  const performSearch = (searchQuery, searchFilters) => {
+    const shouldSearch = searchQuery.length > 2 ||
+      searchFilters.departements.length > 0 ||
+      searchFilters.sectors.length > 0 ||
+      searchFilters.trancheEffectifs ||
+      searchFilters.economieSocialeSolidaire ||
+      searchFilters.societeMission ||
+      searchFilters.donneesPubliees.length > 0;
 
-      // SIREN exact (9 chiffres) : recherche immédiate
-      if (queryType === 'siren_exact') {
-        return 0;
-      }
+    if (shouldSearch) {
+      setLoading(true);
+      setHasSearched(true);
+      setCurrentPage(1);
 
-      // SIREN partiel (3-8 chiffres) : délai court
-      if (queryType === 'siren_partial') {
-        return 300;
-      }
+      const apiUrl = buildApiUrl(searchQuery, searchFilters);
 
-      // Recherche textuelle : délai plus long pour laisser l'utilisateur finir de taper
-      return 600;
-    };
-
-    const delay = getDebounceDelay(query);
-
-    // Si pas de délai, mettre à jour immédiatement
-    if (delay === 0) {
-      setDebouncedQuery(query);
+      fetch(apiUrl)
+        .then((res) => res.json())
+        .then((data) => {
+          const sortedResults = sortByTotalIndicators(data.legalUnits || []);
+          setResults(sortedResults);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Erreur lors de la recherche:', error);
+          setResults([]);
+          setLoading(false);
+        });
     } else {
-      // Sinon, programmer la mise à jour avec délai
-      debounceTimeoutRef.current = setTimeout(() => {
-        setDebouncedQuery(query);
-      }, delay);
-    }
-
-    // Cleanup function
-    return () => {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
+      if (hasSearched) {
+        setResults([]);
+        setHasSearched(false);
       }
-    };
-  }, [query]);
-
-  // Remettre à la première page à chaque nouvelle recherche
-  useEffect(() => {
-    setCurrentPage(1);
-    // Reset hasSearched when query changes significantly
-    const { empreintePubliee, sortBy, ...searchFilters } = filters;
-    if (debouncedQuery.length <= 2 && !Object.values(searchFilters).some(f => Array.isArray(f) ? f.length > 0 : f)) {
-      setHasSearched(false);
+      setLoading(false);
     }
-  }, [debouncedQuery, filters]);
+  };
+
+  // Recherche déclenchée par les filtres
+  useEffect(() => {
+    performSearch(query, filters);
+  }, [filters]);
 
   // Build API URL using new pattern: /api/legalunit/terme instead of ?q=terme
   const buildApiUrl = (searchQuery, searchFilters) => {
@@ -167,51 +158,10 @@ function SearchContent() {
     return queryString ? `${path}?${queryString}` : path;
   };
 
-  // API call to fetch search results using new URL patterns
-  useEffect(() => {
-
-    const shouldSearch = debouncedQuery.length > 2 ||
-      filters.departements.length > 0 ||
-      filters.sectors.length > 0 ||
-      filters.trancheEffectifs ||
-      filters.economieSocialeSolidaire ||
-      filters.societeMission ||
-      filters.donneesPubliees.length > 0;
-
-    if (shouldSearch) {
-      setLoading(true);
-      setHasSearched(true); // Mark that we've performed a search
-
-      // Build the new API URL using the new patterns
-      const apiUrl = buildApiUrl(debouncedQuery, filters);
-      console.log('url', apiUrl);
-
-
-      fetch(apiUrl)
-        .then((res) => res.json())
-        .then((data) => {
-          // Trier par nombre total d'indicateurs (plus d'indicateurs en premier)
-          const sortedResults = sortByTotalIndicators(data.legalUnits || []);
-          setResults(sortedResults);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Erreur lors de la recherche:', error);
-          setResults([]);
-          setLoading(false);
-        });
-    } else {
-      // Clear results and reset search state when criteria are not met
-      if (hasSearched) {
-        setResults([]);
-        setHasSearched(false);
-      }
-      setLoading(false);
-    }
-  }, [debouncedQuery, filters, hasSearched]);
-
   const handleSearch = (e) => {
     e.preventDefault();
+    // Déclencher la recherche manuellement
+    performSearch(query, filters);
   };
 
   return (

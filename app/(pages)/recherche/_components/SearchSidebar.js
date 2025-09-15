@@ -190,19 +190,6 @@ export default function SearchSidebar({
 
       {/* Body */}
       <div className="sidebar-body">
-        {/* Option recherche entreprises avec données */}
-        <div className="filter-group">
-          <Form.Check
-            type="checkbox"
-            id="filter-published-data-only-sidebar"
-            label="Empreinte sociétale publiée"
-            checked={filters.empreintePubliee ?? true}
-            onChange={(e) => setFilters({...filters, empreintePubliee: e.target.checked})}
-            className="mb-2 filter-checkbox small"
-            disabled
-          />
-        </div>
-
         {/* Active filters */}
         {hasActiveFilters && (
           <div className="filter-group active-filters">
@@ -276,6 +263,21 @@ export default function SearchSidebar({
                 ))
               }
             </div>
+          </div>
+        )}
+
+        {/* Option recherche - Apparaît seulement si on a des filtres */}
+        {(filters.sectors.length > 0 || filters.departements.length > 0 || filters.trancheEffectifs || filters.economieSocialeSolidaire || filters.societeMission || filters.donneesPubliees.length > 0) && (
+          <div className="filter-group">
+            <Form.Check
+              type="checkbox"
+              id="filter-published-data-only-sidebar"
+              label="Données disponibles"
+              checked={filters.empreintePubliee ?? true}
+              onChange={(e) => setFilters({...filters, empreintePubliee: e.target.checked})}
+              className="mb-2 filter-checkbox small"
+              disabled
+            />
           </div>
         )}
 

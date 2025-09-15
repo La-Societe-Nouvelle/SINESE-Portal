@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Form,  Button } from "react-bootstrap";
 import { Search } from "lucide-react";
 
@@ -15,26 +16,29 @@ export default function SearchHeader({ query, setQuery, onSearch }) {
               <div className="position-relative">
                 <Form.Control
                   type="text"
-                  placeholder="Nom d'entreprise, SIREN, secteur d'activité..."
+                  placeholder="Nom d'entreprise ou N° SIREN"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   autoFocus
-                  className="border-0 shadow-sm py-2 px-3 pe-5"
+                  className="border-0 shadow-sm py-2 px-3"
                   style={{
                     fontSize: '1rem',
-                    borderRadius: '0.5rem'
+                    borderRadius: '0.5rem',
+                    paddingRight: '180px' // Espace pour le bouton
                   }}
                 />
-                <Button 
-                  variant="link" 
-                  type="submit" 
-                  className="position-absolute top-50 end-0 translate-middle-y me-2 p-2 text-muted"
+                <Button
+                  variant="secondary"
+                  type="submit"
+                  className="position-absolute top-50 end-0 translate-middle-y border-0"
                   style={{
-                    border: 'none',
-                    background: 'none'
+                    fontSize: '0.875rem',
+                    borderRadius: '0 0.5rem 0.5rem 0',
+                    right: '0px' // Collé au bord droit
                   }}
                 >
-                  <Search size={16} />
+                  <Search size={16} className="me-1" />
+                  Rechercher une entreprise
                 </Button>
               </div>
             </Form>

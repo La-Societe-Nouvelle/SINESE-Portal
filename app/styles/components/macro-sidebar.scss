@@ -6,7 +6,6 @@
     box-shadow: 0 2px 12px rgba($primary, 0.06);
     position: sticky;
     top: 2rem;
-    max-height: calc(100vh - 180px);
     overflow-y: auto;
     @include custom-scrollbar(4px, #f1f1f1, rgba($primary, 0.3));
   }
