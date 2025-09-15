@@ -355,23 +355,6 @@ export default function SearchSidebar({
               className="mb-2 filter-checkbox"
             />
 
-            <Form.Check 
-              type="checkbox"
-              id="filter-artisanale-sidebar"
-              label="Activité principale artisanale"
-              checked={filters.activitePrincipaleArtisanale}
-              onChange={(e) => setFilters({...filters, activitePrincipaleArtisanale: e.target.checked})}
-              className="mb-2 filter-checkbox"
-            />
-
-            <Form.Check 
-              type="checkbox"
-              id="filter-extractive-sidebar"
-              label="Activité principale extractive"
-              checked={filters.activitePrincipaleExtractive}
-              onChange={(e) => setFilters({...filters, activitePrincipaleExtractive: e.target.checked})}
-              className="mb-2 filter-checkbox"
-            />
 
             <Form.Check
               type="checkbox"
