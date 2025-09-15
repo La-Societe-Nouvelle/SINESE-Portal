@@ -1,29 +1,26 @@
 const path = require('path')
 
-module.exports = (env) => {
-  
-  let baseConfig = {
-    sassOptions: {
-      includePaths: [path.join(__dirname, 'styles')],
-    }
-  }
-
-  if(env.production)
-    return {...baseConfig,
-            basePath: 'https://lasocietenouvelle.org'};
-  return {
-    ...baseConfig,
-    experimental: {
-      workerThreads: false,
-      cpus: 1
-    },
-  };
-}
-
 module.exports = {
   reactStrictMode: true,
+  
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'app/styles')],
+  },
 
-  // async rewrites() {
+  experimental: {
+    workerThreads: false,
+    cpus: 1
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: '/open-data/:path*',
+        destination: '/api/serve-file/:path*',
+      },
+    ];
+  },
+
   async redirects() {
     return [
       {

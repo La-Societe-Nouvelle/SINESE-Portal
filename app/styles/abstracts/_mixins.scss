@@ -1,0 +1,271 @@
+/* ==========================================================================
+   SINESE Portal - Mixins Library
+   Bibliothèque de mixins réutilisables pour garantir la cohérence
+   ========================================================================== */
+
+@use "sass:color";
+
+// =============================================================================
+// 1. INTERACTIONS - Effets visuels standardisés
+// =============================================================================
+
+// Mixin pour les effets de survol avec élévation
+@mixin hover-lift($translateY: -2px, $shadow-opacity: 0.08, $duration: 0.2s) {
+  transition: all $duration cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY($translateY);
+    box-shadow: 0 #{abs($translateY) * 2} #{abs($translateY) * 8}px rgba($primary, $shadow-opacity);
+  }
+}
+
+// Mixin pour les effets de survol avec échelle
+@mixin hover-scale($scale: 1.05, $duration: 0.2s) {
+  transition: transform $duration ease;
+  
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+// Mixin pour les états de focus accessibles
+@mixin focus-ring($color: $secondary, $opacity: 0.5, $offset: 2px, $width: 2px) {
+  &:focus {
+    outline: #{$width} solid rgba($color, $opacity);
+    outline-offset: $offset;
+  }
+}
+
+// Mixin pour les transitions fluides standardisées
+@mixin smooth-transition($properties: all, $duration: 0.2s, $easing: cubic-bezier(0.4, 0, 0.2, 1)) {
+  transition: $properties $duration $easing;
+}
+
+// =============================================================================
+// 2. LOADING STATES - États de chargement cohérents
+// =============================================================================
+
+// Mixin pour les animations de skeleton loading
+@mixin skeleton-loading($bg-light: #f0f0f0, $bg-dark: #e0e0e0, $duration: 1.5s) {
+  background: linear-gradient(90deg, $bg-light 25%, $bg-dark 50%, $bg-light 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer $duration infinite;
+}
+
+// Mixin pour les spinners de chargement
+@mixin loading-spinner($size: 40px, $border-width: 3px, $color: $secondary, $bg-color: rgba($primary, 0.1)) {
+  width: $size;
+  height: $size;
+  border: $border-width solid $bg-color;
+  border-top: $border-width solid $color;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+// =============================================================================
+// 3. RESPONSIVE DESIGN - Breakpoints standardisés
+// =============================================================================
+
+// Mixin responsive avec breakpoints cohérents
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == mobile {
+    @media (max-width: 767.98px) { @content; }
+  }
+  @if $breakpoint == tablet {
+    @media (max-width: 991.98px) { @content; }
+  }
+  @if $breakpoint == tablet-up {
+    @media (min-width: 768px) { @content; }
+  }
+  @if $breakpoint == desktop {
+    @media (min-width: 992px) { @content; }
+  }
+  @if $breakpoint == desktop-large {
+    @media (min-width: 1200px) { @content; }
+  }
+}
+
+// =============================================================================
+// 4. COMPOSANTS - Patterns visuels récurrents
+// =============================================================================
+
+// Mixin pour les cartes avec élévation - utilise les variables harmonisées
+@mixin card-elevation($level: 1) {
+  @if $level == 0 {
+    box-shadow: $box-shadow-xs;
+  } @else if $level == 1 {
+    box-shadow: $box-shadow-sm;
+  } @else if $level == 2 {
+    box-shadow: $box-shadow-md;
+  } @else if $level == 3 {
+    box-shadow: $box-shadow-lg;
+  } @else if $level == 4 {
+    box-shadow: $box-shadow-xl;
+  }
+}
+
+// Mixin pour les badges cohérents
+@mixin badge-style($bg-color: $light-secondary, $text-color: $secondary, $size: small) {
+  display: inline-block;
+  background-color: $bg-color;
+  color: $text-color;
+  font-weight: 600;
+  border-radius: $border-radius-sm;
+  border: 1px solid rgba($text-color, 0.2);
+  
+  @if $size == small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  } @else if $size == medium {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+  } @else if $size == large {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+// Mixin pour les boutons avec états cohérents
+@mixin button-interactive($bg-color: $secondary, $text-color: white, $hover-darken: -5%) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: 1px solid $bg-color;
+  font-weight: 600;
+  border-radius: $border-radius-sm;
+  @include smooth-transition();
+  @include focus-ring($bg-color);
+  
+  &:hover {
+    background-color: color.adjust($bg-color, $lightness: $hover-darken);
+    border-color: color.adjust($bg-color, $lightness: $hover-darken);
+    transform: translateY(-1px);
+    @include card-elevation(2);
+    color: $text-color;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// =============================================================================
+// 5. MIXINS IDENTIFIÉS DANS L'AUDIT - Nouveaux patterns
+// =============================================================================
+
+// Mixin pour les cartes avec hover interactif (identifié dans l'audit)
+@mixin card-interactive($lift: -2px, $shadow-level: 2, $border-hover: $primary) {
+  @include smooth-transition();
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-md;
+  &:hover {
+    transform: translateY($lift);
+    // Utilise les variables d'ombres harmonisées selon le niveau
+    @if $shadow-level == 1 {
+      box-shadow: $box-shadow-hover-sm;
+    } @else if $shadow-level == 2 {
+      box-shadow: $box-shadow-hover-md;
+    } @else {
+      box-shadow: $box-shadow-hover-lg;
+    }
+  }
+}
+
+// Mixin pour les boutons d'action (pattern répété identifié)
+@mixin btn-action($bg-color: $secondary, $text-color: white, $lift: -1px) {
+  font-weight: 600;
+  border-radius: $btn-border-radius-sm;
+  background-color: $bg-color;
+  color: $text-color;
+  padding: $btn-padding-y $btn-padding-x;
+  @include smooth-transition();
+  
+  &:hover {
+    background-color: color.adjust($bg-color, $lightness: -8%);
+    transform: translateY($lift);
+    @include card-elevation(2);
+  }
+  
+  &:focus {
+    @include focus-ring($bg-color);
+  }
+}
+
+// Mixin pour les containers de chargement (pattern récurrent)
+@mixin loading-container($min-height: 400px, $padding: 2rem) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: $min-height;
+  padding: $padding;
+  
+  .loading-spinner {
+    @include loading-spinner(60px, 3px, $secondary, rgba($primary, 0.1));
+  }
+}
+
+// Mixin pour les barres de défilement personnalisées (identifié dans plusieurs fichiers)
+@mixin custom-scrollbar($width: 4px, $track-color: #f1f1f1, $thumb-color: rgba($primary, 0.3)) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $width;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $width;
+    
+    &:hover {
+      background: color.adjust($thumb-color, $alpha: 0.2);
+    }
+  }
+}
+
+// =============================================================================
+// 6. LAYOUTS - Mise en page cohérente
+// =============================================================================
+
+// Mixin pour les conteneurs avec padding responsive
+@mixin container-padding($mobile: 1rem, $tablet: 2rem, $desktop: 3rem) {
+  @include respond-to(mobile) {
+    padding: $mobile;
+  }
+  @include respond-to(tablet) {
+    padding: $tablet;
+  }
+  @include respond-to(desktop) {
+    padding: $desktop;
+  }
+}
+
+// Mixin pour les espacement cohérents
+@mixin spacing($property: margin, $size: md, $sides: all) {
+  $spacing-value: map-get((
+    xs: 0.25rem,
+    sm: 0.5rem,
+    md: 1rem,
+    lg: 1.5rem,
+    xl: 2rem,
+    xxl: 3rem
+  ), $size);
+  
+  @if $sides == all {
+    #{$property}: $spacing-value;
+  } @else if $sides == vertical {
+    #{$property}-top: $spacing-value;
+    #{$property}-bottom: $spacing-value;
+  } @else if $sides == horizontal {
+    #{$property}-left: $spacing-value;
+    #{$property}-right: $spacing-value;
+  }
+}

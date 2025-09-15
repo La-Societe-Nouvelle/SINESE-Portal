@@ -1,0 +1,470 @@
+/* ==========================================================================
+   SINESE Portal - Animations Library
+   Bibliothèque centralisée d'animations pour éviter les doublons
+   ========================================================================== */
+
+// =============================================================================
+// 1. ANIMATIONS FONDAMENTALES - Réutilisables partout
+// =============================================================================
+
+// Animation de rotation standard pour tous les spinners
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Animation de pulsation pour les éléments de focus
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+// Animation de battement de cœur pour les notifications
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+// Animation de rebond léger
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+// =============================================================================
+// 2. LOADING ANIMATIONS - États de chargement
+// =============================================================================
+
+// Animation shimmer/skeleton standardisée (remplace les 3 versions existantes)
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// Animation de loading dots unifiée (remplace loading-dots + loading-dots-state)
+@keyframes loading-dots {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+// Animation de chargement par vagues
+@keyframes loading-wave {
+  0%, 60%, 100% {
+    transform: initial;
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+// Animation de progression circulaire
+@keyframes loading-circle {
+  0% {
+    transform: rotate(0deg);
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    transform: rotate(360deg);
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+// =============================================================================
+// 3. ANIMATIONS D'INTERFACE - Micro-interactions
+// =============================================================================
+
+// Animation de slide-in depuis différentes directions
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-bottom {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// Animation de fade standardisée
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+// Animation de zoom élégant
+@keyframes zoom-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// =============================================================================
+// 4. ANIMATIONS SPÉCIALISÉES - Effets avancés
+// =============================================================================
+
+// Animation de shimmer pour les arrière-plans (remplace shimmer-bg)
+@keyframes shimmer-background {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+// Animation de float pour les éléments flottants
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+// Animation de tilt léger pour les hover states
+@keyframes tilt {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(1deg); }
+  75% { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+// Animation de glow pour les éléments en focus
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba($secondary, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($secondary, 0.8);
+  }
+}
+
+// =============================================================================
+// 5. ANIMATIONS DE NOTIFICATION - Alertes et messages
+// =============================================================================
+
+// Animation pour les alertes qui apparaissent
+@keyframes alert-appear {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Animation pour les tooltips
+@keyframes tooltip-appear {
+  0% {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// =============================================================================
+// 6. CLASSES UTILITAIRES - Application rapide des animations
+// =============================================================================
+
+// Classes pour appliquer facilement les animations
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+.animate-bounce { animation: bounce-subtle 1s ease-in-out infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-shimmer { animation: skeleton-shimmer 1.5s infinite; }
+.animate-loading-dots { animation: loading-dots 1.4s ease-in-out infinite both; }
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-slide-in-top { animation: slide-in-top 0.3s ease-out; }
+.animate-slide-in-bottom { animation: slide-in-bottom 0.3s ease-out; }
+.animate-zoom-in { animation: zoom-in 0.3s ease-out; }
+
+// Alias pour compatibilité
+.fadeIn { animation: fade-in 0.3s ease-out; }
+.slideUp { animation: slide-in-bottom 0.4s ease-out; }
+.slideDown { animation: slide-in-top 0.4s ease-out; }
+.scaleIn { animation: zoom-in 0.3s ease-out; }
+.spin { animation: spin 1s linear infinite; }
+
+// Classes pour les délais d'animation (staggering)
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+.animate-delay-500 { animation-delay: 0.5s; }
+
+// Classes pour les durées personnalisées
+.animate-fast { animation-duration: 0.15s; }
+.animate-normal { animation-duration: 0.3s; }
+.animate-slow { animation-duration: 0.5s; }
+.animate-slower { animation-duration: 1s; }
+
+// =============================================================================
+// 7. TRANSITIONS & HOVER EFFECTS - Utilitaires de transition
+// =============================================================================
+
+/* Transitions de base */
+.transition-all { transition: all 0.2s ease; }
+.transition-fast { transition: all 0.15s ease; }
+.transition-slow { transition: all 0.3s ease; }
+.transition-smooth { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Transformations hover */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.hover-lift-sm {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.hover-lift-lg {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.hover-scale {
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.hover-scale-sm {
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* États de chargement */
+.loading-shimmer {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: skeleton-shimmer 1.5s infinite;
+  }
+}
+
+.skeleton-line {
+  height: 1rem;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  
+  &.skeleton-title {
+    height: 1.5rem;
+    width: 60%;
+  }
+  
+  &.skeleton-subtitle {
+    height: 1rem;
+    width: 40%;
+  }
+  
+  &.skeleton-text {
+    height: 0.875rem;
+  }
+}
+
+.loading-dots {
+  display: inline-flex;
+  gap: 0.25rem;
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: loading-dots 1.4s infinite ease-in-out both;
+    
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0s; }
+  }
+}
+
+/* Animations spécifiques aux boutons */
+.btn-hover-grow {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.btn-hover-lift {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Animations pour cartes */
+.card-hover {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Animations pour liens */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+/* États de focus */
+.focus-ring {
+  &:focus {
+    outline: 2px solid rgba($primary, 0.5);
+    outline-offset: 2px;
+  }
+}
+
+/* Classes pour animations conditionnelles */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+  
+  &.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Classe pour respecter les préférences d'accessibilité
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-float,
+  .animate-shimmer,
+  .animate-loading-dots,
+  .animate-fade-in,
+  .animate-slide-in-top,
+  .animate-slide-in-bottom,
+  .animate-zoom-in {
+    animation: none;
+  }
+}

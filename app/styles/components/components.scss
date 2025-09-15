@@ -1,0 +1,29 @@
+.bg-light-purple {
+  background-color: rgba(238, 228, 251, 0.8);
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(238, 228, 251, 1);
+  }
+}
+.bg-light-green {
+  background-color: rgba(235, 251, 226, 0.8);
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(235, 251, 226, 1);
+  }
+}
+.bg-light-orange {
+  background-color: rgba(253, 242, 224, 0.8);
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(253, 242, 224, 1);
+  }
+}
+.bg-light-blue {
+  background-color: rgba(228, 246, 251, 0.8);
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(228, 246, 251);
+  }
+}
+

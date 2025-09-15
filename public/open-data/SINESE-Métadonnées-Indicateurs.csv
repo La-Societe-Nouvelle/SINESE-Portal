@@ -1,0 +1,17 @@
+code,libelle,unite
+ART,Contribution aux Métiers d'Art et aux Savoir-Faire,P100
+BEGES,Bilan des Emissions de Gaz à Effet de Serre,TCO2E
+DIS,Indice de répartition des rémunérations,P100
+ECO,Contribution à l'économie nationale,P100
+GEQ,Indice d'écart de rémunérations F/H,P100
+GHG,Intensité d'Émissions de Gaz à effet de serre,GCO2E_CPEUR
+HAZ,Intensité d'Utilisation de produits dangereux,G_CPEUR
+IDR,Rapport interdécile d9/d1  ,IND
+IEP,Index de l'Egalité Professionnelle,I100
+KNW,Contribution à l'Evolution des compétences et des connaissances,P100
+MAT,Intensité d'Extraction de Matières premières,G_CPEUR
+MIF,Impact Score,I100
+NRG,Intensité de Consommation d'Energie,KJ_CPEUR
+SOC,Contribution aux Acteurs d'Intérêt social,P100
+WAS,Intensité de Production de Déchets,G_CPEUR
+WAT,Intensité de Consommation d'Eau,L_CPEUR

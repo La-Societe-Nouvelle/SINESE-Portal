@@ -1,0 +1,195 @@
+/* ----- React Select Styles Uniformes ----- */
+
+// Variables pour la cohérence - utilisation des variables globales
+$select-primary-color: $select-primary;
+$select-border-color: $gray-300;
+$select-text-color: $gray-700;
+$select-placeholder-color: $placeholder-color;
+$select-background-hover: $select-hover-bg;
+$select-background-selected: $select-primary;
+
+// Styles par défaut pour tous les react-select
+.react-select-container {
+  .react-select__control {
+    min-height: 32px;
+    font-size: 0.875rem;
+    border-color: $select-border-color;
+    border-radius: 0.375rem;
+    box-shadow: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: $select-primary-color;
+    }
+
+    &--is-focused {
+      border-color: $select-primary-color;
+      box-shadow: 0 0 0 3px rgba(117, 139, 253, 0.1);
+    }
+
+    &--is-disabled {
+      background-color: $gray-100;
+      border-color: $gray-200;
+    }
+  }
+
+  .react-select__value-container {
+    padding: 2px 8px;
+  }
+
+  .react-select__single-value {
+    color: $select-text-color;
+    font-size: 0.875rem;
+  }
+
+  .react-select__placeholder {
+    color: $select-placeholder-color;
+    font-size: 0.875rem;
+  }
+
+  .react-select__input-container {
+    color: $select-text-color;
+    font-size: 0.875rem;
+  }
+
+  .react-select__indicator-separator {
+    background-color: $select-border-color;
+  }
+
+  .react-select__dropdown-indicator {
+    color: $select-placeholder-color;
+    
+    &:hover {
+      color: $select-primary-color;
+    }
+  }
+
+  .react-select__clear-indicator {
+    color: $select-placeholder-color;
+    
+    &:hover {
+      color: $danger-red;
+    }
+  }
+
+  // Menu dropdown
+  .react-select__menu {
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid $select-border-color;
+    margin-top: 2px;
+  }
+
+  .react-select__menu-list {
+    border-radius: 0.375rem;
+    padding: 4px;
+  }
+
+  .react-select__option {
+    font-size: 0.875rem;
+    padding: 8px 12px;
+    border-radius: 0.25rem;
+    margin-bottom: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &--is-focused {
+      background-color: $select-background-hover;
+      color: $select-text-color;
+    }
+
+    &--is-selected {
+      background-color: $select-background-selected;
+      color: white;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .react-select__no-options-message {
+    color: $select-placeholder-color;
+    font-size: 0.875rem;
+    padding: 12px;
+  }
+
+  // Multi-select specifique
+  &.react-select-multi {
+    .react-select__multi-value {
+      background-color: $primary-lightest;
+      border: 1px solid $primary;
+      border-radius: 0.375rem;
+      margin: 1px 2px;
+      
+      &__label {
+        color: $primary-dark;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 2px 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &__remove {
+        color: $primary;
+        border-radius: 0 0.375rem 0.375rem 0;
+        padding: 0 4px;
+        
+        &:hover {
+          background-color: $primary;
+          color: white;
+        }
+      }
+    }
+
+    .react-select__value-container {
+      padding: 2px 4px;
+    }
+
+    // Masquer le bouton clear global par défaut sur les multi-select
+    .react-select__clear-indicator {
+      display: none;
+    }
+  }
+
+  // Taille small
+  &.react-select-small {
+    .react-select__control {
+      min-height: 28px;
+      font-size: 0.8125rem;
+    }
+
+    .react-select__single-value,
+    .react-select__placeholder,
+    .react-select__input-container {
+      font-size: 0.8125rem;
+    }
+
+    .react-select__option {
+      font-size: 0.8125rem;
+      padding: 6px 10px;
+    }
+  }
+
+  // Taille large
+  &.react-select-large {
+    .react-select__control {
+      min-height: 40px;
+      font-size: 1rem;
+    }
+
+    .react-select__single-value,
+    .react-select__placeholder,
+    .react-select__input-container {
+      font-size: 1rem;
+    }
+
+    .react-select__option {
+      font-size: 1rem;
+      padding: 10px 14px;
+    }
+  }
+}
+

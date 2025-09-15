@@ -1,0 +1,45 @@
+.open-data-portal {
+
+  background-color: $light;
+  padding-bottom: 2rem;
+
+  small {
+    font-size: 0.7rem;
+  }
+
+  .btn-badge {
+    background: transparent;
+    border: none;
+  }
+
+  .footprint-sections {
+    .card {
+      @include card-interactive($hover-lift-distance, 0.08, $primary);
+    }
+  }
+
+  .accordion-item {
+    margin-bottom: 1rem;
+    border-bottom: 2px solid $light;
+    border-radius: 1rem;
+
+    &:first-of-type {
+      border-radius: 1rem;
+    }
+
+    &:last-of-type {
+      border-radius: 1rem;
+
+      .accordion-collapse {
+        border-radius: 1rem;
+      }
+    }
+
+    h3 {
+      margin-bottom: 0;
+    }
+
+
+  }
+
+}

@@ -1,0 +1,171 @@
+/* ----- Footer ----- */
+.footer {
+  
+  // Section Newsletter - transition douce depuis CTA
+  .newsletter-section {
+    background: linear-gradient(180deg, 
+      rgba(white, 0.9) 0%,
+      rgba($light, 0.4) 50%,
+      rgba($light, 0.8) 100%
+    );
+    border-top: 1px solid rgba($primary, 0.08);
+    position: relative;
+
+
+    h3 {
+      color: $primary-dark;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+    
+    p {
+      color: $text-muted;
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+  }
+  
+  // Section principale - fond bleu avec texte blanc
+  .main-footer {
+    background: linear-gradient(135deg, 
+      rgba($primary, 0.95) 0%,
+      rgba($primary-dark, 1) 100%
+    ) !important;
+    color: white;
+    border-top: 1px solid rgba($secondary, 0.3);
+
+    .footer-section {
+      h5 {
+        color: white;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        
+        &::after {
+          content: '';
+          display: block;
+          width: 30px;
+          height: 2px;
+          background: $secondary;
+          margin-top: 0.5rem;
+          border-radius: 1px;
+        }
+      }
+      
+      h6 {
+        color: rgba(white, 0.9);
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      p {
+        color: rgba(white, 0.8);
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+      
+      ul li a {
+        color: rgba(white, 0.8);
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: inline-block;
+        
+        &:hover {
+          color: $secondary;
+          text-decoration: none;
+          transform: translateX(3px);
+        }
+        
+        i {
+          color: rgba(white, 0.7);
+          opacity: 0.7;
+          transition: opacity 0.3s ease;
+        }
+        
+        &:hover i {
+          color: $secondary;
+          opacity: 1;
+        }
+      }
+      
+      .d-flex a {
+        color: rgba(white, 0.8);
+        transition: all 0.3s ease;
+        opacity: 0.8;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(white, 0.1);
+        
+        &:hover {
+          opacity: 1;
+          background: rgba($secondary, 0.2);
+          color: $secondary;
+          transform: translateY(-3px) scale(1.05);
+        }
+      }
+    }
+  }
+  
+  // Footer bottom - plus contrasté
+  .footer-bottom {
+    background: $primary ;
+    
+    p {
+      color: rgba(white, 0.9);
+      font-size: 0.875rem;
+    }
+    
+    .list-inline-item {
+      color: rgba(white, 0.7);
+      
+      a {
+        color: rgba(white, 0.7);
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          color: white;
+          text-decoration: none;
+        }
+      }
+      
+      // Amélioration des séparateurs
+      &:not(:last-child)::after {
+        content: '';
+        margin: 0 0.75rem;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .footer {
+    .newsletter-section {
+      text-align: center;
+      
+      .btn {
+        margin-top: 1rem;
+        width: 100%;
+      }
+    }
+    
+    .main-footer {
+      .footer-section {
+        text-align: center;
+        margin-bottom: 2rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

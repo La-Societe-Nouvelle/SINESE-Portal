@@ -1,0 +1,250 @@
+/* ==========================================================================
+   SINESE Portal - Variables SCSS
+   Système de design optimisé pour l'accessibilité et l'expérience utilisateur
+   ========================================================================== */
+
+@use "sass:color";
+
+// =============================================================================
+// 1. COULEURS - Palette d'identité
+// =============================================================================
+
+// Couleurs primaires
+$primary: #1e3a8a;         // Bleu professionnel principal
+$secondary: #e74c5a;       // Rouge corail pour les actions
+$tertiary: #6c7fdd;        // Bleu pervenche pour les accents
+
+// Couleurs dérivées
+$primary-light: #3b82f6;        // Bleu plus clair pour survols
+$primary-dark: #1e40af;         // Bleu marine foncé pour états actifs
+$primary-lighter: #60a5fa;      // Bleu clair pour éléments interactifs
+$primary-lightest: #dbeafe;     // Bleu très clair pour arrière-plans
+$secondary-light: #ed6b77;
+$tertiary-light: #8d9de8;
+$success: #059669;         // Vert émeraude qui s'harmonise avec la palette bleue SINESE   
+
+// Couleurs fonctionnelles
+$neutral: #64748b;         // Gris neutre pour textes secondaires
+$light: #f7f8fc;          // Bleu très clair pour les fonds
+$background: #fdfdfe;      // Fond principal
+$light-secondary: #FEEBEC; // Fond très clair pour secondary
+
+// Variables de compatibilité
+$info: #e0e7ff;
+
+// Couleurs hardcodées identifiées dans l'audit
+$text-dark: #1f2937;           // Répété dans recherche.scss
+$border-light-gray: #e5e7eb;   // Répété dans recherche.scss, api.scss
+$bg-code-dark: #1a1a1a;        // Répété dans api.scss
+$placeholder-color: #9ca3af;   // Répété dans react-select.scss, homepage.scss
+
+// Couleurs spécialisées pour React Select
+$select-primary: #758bfd;       // Couleur principale pour les selects
+$select-hover-bg: rgba(117, 139, 253, 0.1);
+
+// Couleurs pour les états
+$success-green: #28a745;        // Répété dans macroeconomies.scss, api.scss
+$danger-red: #dc3545;           // Répété dans api.scss
+$info-blue: #17a2b8;           // Répété dans macroeconomies.scss
+
+// Couleurs fréquemment utilisées en dur
+$white: #ffffff;
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+// Couleurs de background communes
+$bg-light-gray: #f8f9fa;
+$bg-very-light: #fafbfc;
+$bg-border-light: #f1f3f4;
+$bg-subtle: #f0f0f8;
+
+// Couleurs pour warnings
+$warning-text: #664d03;
+$warning-bg: #fff3cd;
+$warning-border: #ffecb5;
+
+// =============================================================================
+// 2. TYPOGRAPHIE - Hiérarchie et lisibilité
+// =============================================================================
+
+// Polices
+$font-family-sans-serif: "Poppins", system-ui, -apple-system, sans-serif;
+$headings-font-family: "Raleway", "Roboto", system-ui, sans-serif;
+
+// Tailles de police - Corps de texte
+$font-size-base: 1rem;              // 16px - Standard web optimal
+$line-height-base: 1.6;             // Lisibilité optimale
+$small-font-size: 0.875rem;         // 14px - Métadonnées, légendes
+$lead-font-size: 1.125rem;          // 18px - Introduction, mise en avant
+
+// Hiérarchie des titres
+$h1-font-size: 2.5rem;              // 40px - Titre principal
+$h2-font-size: 2rem;                // 32px - Sections importantes  
+$h3-font-size: 1.5rem;              // 24px - Sous-sections
+$h4-font-size: 1.25rem;             // 20px - Sous-titres
+$h5-font-size: 1.125rem;            // 18px - Détails
+$h6-font-size: 1rem;                // 16px - Minimum lisible
+$headings-margin-bottom: 1rem;
+$headings-font-weight: 700;
+
+// Variables calculées pour éviter les répétitions - À définir avant leur utilisation
+$secondary-lighter-30: color.adjust($secondary, $lightness: 30%);
+$secondary-lighter-10: color.adjust($secondary, $lightness: 10%);
+$secondary-darker-5: color.adjust($secondary, $lightness: -5%);
+$secondary-darker-8: color.adjust($secondary, $lightness: -8%);
+$secondary-darker-10: color.adjust($secondary, $lightness: -10%);
+$secondary-darker-20: color.adjust($secondary, $lightness: -20%);
+
+$primary-lighter-75: color.adjust($primary, $lightness: 75%);
+$primary-light-lighter-10: color.adjust($primary-light, $lightness: 10%);
+
+$light-lighter-2: color.adjust($light, $lightness: 2%);
+$light-darker-3: color.adjust($light, $lightness: -3%);
+
+$neutral-lighter-15: color.adjust($neutral, $lightness: 15%);
+
+// Couleurs de texte optimisées pour le contraste
+$body-color: $primary;               // #3b4d8f - Lecture principale
+$headings-color: $primary-dark;      // #1e3464 - Titres plus marqués
+$text-muted: $neutral;               // #64748b - Métadonnées
+$text-light: $neutral-lighter-15;    // Texte très discret
+$link-color: $secondary;             // #e74c5a - Liens et CTA
+$link-hover-color: $secondary-darker-10;
+$link-decoration: none;
+
+// =============================================================================
+// 3. ARRIÈRE-PLANS ET SURFACES
+// =============================================================================
+
+$body-bg: $background;               // #fdfdfe - Fond principal
+$card-bg: #ffffff;                   // Cartes et contenus
+$section-bg: $light;                 // #f7f8fc - Sections alternées
+
+// =============================================================================
+// 4. ESPACEMENT ET FORMES
+// =============================================================================
+
+// Border-radius système
+$border-radius: 0.75rem;             // Radius standard moderne
+$border-radius-sm: 0.5rem;           // Petit radius
+$border-radius-lg: 1rem;             // Grand radius
+$border-color: $light;               // Bordures discrètes
+
+// Variables d'espacement manquantes
+$container-padding-mobile: 1rem;     // Répété plusieurs fois
+$container-padding-tablet: 2rem;     // Répété plusieurs fois
+$container-padding-desktop: 3rem;    // Répété plusieurs fois
+
+$chart-height-mobile: 240px;         // Dans macroeconomies.scss
+$chart-height-desktop: 280px;        // Dans macroeconomies.scss
+$sidebar-max-height: calc(100vh - 180px); // Répété
+
+// Hauteurs d'icônes standardisées
+$icon-size-sm: 32px;
+$icon-size-md: 40px;
+$icon-size-lg: 80px;
+
+// Tailles de badges
+$badge-size-xs: 0.65rem;
+$badge-size-sm: 0.7rem;
+$badge-size-md: 0.75rem;
+$badge-size-lg: 0.85rem;
+
+// =============================================================================
+// 5. BOUTONS - Système d'interaction
+// =============================================================================
+
+$btn-border-radius: 0.5rem;         // Radius moderne
+$btn-border-radius-sm: 0.375rem;    // Small buttons
+$btn-font-weight: 600;               // Lisibilité optimale
+$btn-font-size: 0.875rem;           // Taille cohérente
+
+// Padding optimisé pour l'accessibilité (zone tactile 44px minimum)
+$btn-padding-y: 0.625rem;           // 10px - Équilibré
+$btn-padding-x: 1.25rem;            // 20px - Confortable pour le clic
+$btn-padding-y-sm: 0.375rem;        // 6px - Compact
+$btn-padding-x-sm: 1rem;            // 16px
+$btn-padding-y-lg: 0.75rem;         // 12px - Imposant
+$btn-padding-x-lg: 1.5rem;          // 24px
+
+// =============================================================================
+// 6. NAVIGATION
+// =============================================================================
+
+$navbar-light-color: $primary;
+$navbar-light-hover-color: $secondary;
+$nav-link-padding-y: 0.85rem;
+$nav-link-font-weight: 600;
+$nav-link-font-size: 0.85rem;
+
+// =============================================================================
+// 7. COMPOSANTS - Cards, Dropdowns, etc.
+// =============================================================================
+
+// Cards
+$card-cap-bg: #fbfbff;
+$card-border-width: 0;
+$card-cap-padding-y: 1rem;
+
+// Accordeons
+$accordion-button-active-bg: #fff;
+$accordion-border-radius: 1rem;
+$accordion-border-width: 0;
+$accordion-border-color: $light;
+
+// Dropdowns
+$dropdown-min-width: 18rem;
+$dropdown-link-active-bg: transparent;
+$dropdown-font-size: 0.85rem;
+$dropdown-border-color: $light;
+$dropdown-border-width: 2px;
+$dropdown-link-hover-bg: $light;
+
+// Autres composants
+$badge-font-weight: 600;
+$modal-content-bg: $light;
+$pagination-font-size: 0.8rem;
+$form-check-input-border: 1px solid rgba($primary-light, .7);
+$input-border-color: rgba($primary-light, .7);
+
+// Variables pour les transitions (centralisées)
+$transition-base: all 0.2s ease;
+$transition-fast: all 0.15s ease;
+$transition-slow: all 0.3s ease;
+$transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Variables pour les ombres - alignées avec l'identité visuelle SINESE
+// Utilisation de la couleur primaire pour une cohérence avec les cartes company-card
+$box-shadow-xs: 0 1px 2px rgba($primary, 0.03);                    // Très subtile
+$box-shadow-sm: 0 1px 3px rgba($primary, 0.04);                    // Cards de base
+$box-shadow-md: 0 4px 12px rgba($primary, 0.08);                   // Cards importantes 
+$box-shadow-lg: 0 8px 25px rgba($primary, 0.12);                   // Cards principales
+$box-shadow-xl: 0 12px 40px rgba($primary, 0.16);                  // Cards hero
+
+// Ombres neutres pour éléments non-corporate (menus, dropdowns, etc.)
+$box-shadow-neutral-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+$box-shadow-neutral-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+$box-shadow-neutral-lg: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+// Ombres pour hover states
+$box-shadow-hover-sm: 0 2px 8px rgba($primary, 0.08);
+$box-shadow-hover-md: 0 6px 16px rgba(0, 0, 0, 0.15);
+$box-shadow-hover-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+// Variables pour les hover effects
+$hover-lift-distance: -2px;
+$hover-lift-sm-distance: -1px;
+$hover-lift-lg-distance: -4px;
+$hover-scale-factor: 1.05;
+$hover-scale-sm-factor: 1.02;
+
+ 
+@import "bootstrap/scss/bootstrap";

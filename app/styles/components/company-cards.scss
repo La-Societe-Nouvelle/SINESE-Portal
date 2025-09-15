@@ -1,0 +1,135 @@
+/* ==========================================================================
+   Company Cards - Refactorisé avec mixins
+   ========================================================================== */
+
+.company-card {
+  @include card-interactive($hover-lift-distance, 0.08, $primary);
+  border: 1px solid rgba($primary, 0.05);
+  
+  .company-name {
+    a.hover-underline:hover {
+      text-decoration: underline !important;
+    }
+  }
+  
+  .company-badges {
+    .badge {
+      @include badge-style($light-secondary, $secondary, small);
+      font-size: $badge-size-sm;
+    }
+  }
+  
+  .company-info {
+    h5 a {
+      color: $text-dark;
+      @extend .transition-all;
+      
+      &:hover {
+        color: $primary; // Couleur par défaut, peut être surchargée
+      }
+      
+      &.hover-underline:hover {
+        text-decoration: underline !important;
+      }
+    }
+  }
+  
+  .btn-action {
+    @include btn-action($secondary, white, -1px);
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .company-details {
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+    }
+  }
+  
+
+}
+
+
+/* Badges spécialisés */
+.badge.bg-purple {
+  background: linear-gradient(135deg, #6f42c1, #8e44ad) !important;
+  @extend .hover-scale;
+}
+
+/* Responsive design avec mixin */
+.company-card {
+  @include respond-to(mobile) {
+    .company-badges {
+      @include spacing(margin-top, sm);
+      
+      .badge {
+        font-size: $badge-size-xs;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+    
+    .company-details {
+      .detail-item {
+        @include spacing(margin-bottom, sm);
+      }
+    }
+    
+    .company-actions {
+      @include spacing(margin-top, md);
+      text-align: center !important;
+   
+    }
+  }
+}
+
+/* États et effets standardisés */
+.hover-shadow {
+  @extend .transition-fast;
+}
+
+.results-list .company-card:last-child {
+  @include spacing(margin-bottom, xl);
+}
+
+/* Focus states standardisés */
+.company-card {
+  a:focus,
+  .btn:focus {
+    @extend .focus-ring;
+  }
+}
+
+
+/* Cercles d'indicateurs */
+.indicator-circle {
+    .indicator-base {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 4px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      @extend .hover-scale;
+    }
+    
+    .indicator-published {
+      background-color: #2563eb;
+      color: white;
+    }
+    
+    .indicator-light {
+      background-color: #f8f9fa;
+      color: #6c757d;
+      border: 1px solid #dee2e6;
+    }
+    
+    .indicator-label {
+      font-size: 0.65rem;
+      line-height: 1.2;
+      text-align: center;
+      display: block;
+    }
+  }

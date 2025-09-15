@@ -1,0 +1,352 @@
+
+// =============================================================================
+// SINESE Portal - Main SCSS Entry Point
+// Architecture optimisée pour la réutilisabilité et la maintenabilité
+// =============================================================================
+
+// 1. ABSTRACTS - Variables d'abord, puis mixins et animations
+@import "variables";
+@import "abstracts/mixins";
+@import "abstracts/animations";
+
+// 2. PARTS & LAYOUT - Structure de base
+@import "parts/buttons";
+@import "parts/header";
+@import "parts/footer";
+
+// 3. COMPONENTS - Composants réutilisables
+@import "components/react-select";
+@import "components/company-cards";
+@import "components/macro-sidebar";
+@import "components/loading-state";
+@import "components/search-results-divider";
+@import "components/components";
+
+// 4. UTILITIES - Système responsive centralisé
+@import "utilities/responsive";
+@import "utilities/shadows";
+
+// 5. PAGES - Styles spécifiques par page
+@import "pages/homepage";
+@import "pages/recherche";
+@import "pages/macroeconomies";
+@import "pages/companyFootprint";
+@import "pages/datasets";
+@import "pages/api";
+
+
+
+
+// =============================================================================
+// 5. BASE STYLES - Styles globaux et polices
+// =============================================================================
+
+// Google Fonts
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Raleway:wght@300;400;600;800&family=Roboto:wght@100;300;400;700&display=swap");
+
+// Styles de base globaux
+
+html,
+body {
+  cursor: default;
+}
+
+
+// Smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Global improvements
+* {
+  box-sizing: border-box;
+}
+
+// Modern micro-interactions
+a {
+  @extend .transition-all;
+
+  &:hover {
+    text-decoration: none;
+    color: $secondary;
+  }
+}
+
+// Modern focus states
+*:focus {
+  outline: 2px solid rgba($secondary, 0.5);
+  outline-offset: 2px;
+}
+
+// Subtle animations for all interactive elements
+button,
+.btn,
+input,
+select,
+textarea {
+  @extend .transition-smooth;
+}
+
+// Loading states
+.loading {
+  @extend .loading-shimmer;
+}
+
+
+
+strong {
+  font-weight: 600;
+}
+
+ol {
+  margin: 2rem;
+
+  li {
+    margin: 1rem 0;
+  }
+
+  li::marker {
+    color: $secondary;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+}
+
+.border-light {
+  border-color: $bg-subtle !important;
+}
+
+.bg-light , .bg-info{
+ color : $primary;
+}
+
+.bg-badge-light-secondary {
+  background-color: $light-secondary;
+  border: 1px solid $secondary;
+  color: $secondary;
+}
+
+.bg-light-secondary {
+  background-color: $light-secondary;
+}
+
+
+.underline {
+  position: relative;
+
+  &::after {
+    content: "";
+    width: 100%;
+    position: absolute;
+    background-color: $secondary;
+    height: 10px;
+    bottom: 0.1rem;
+    left: 0.1em;
+    z-index: -1;
+    opacity: 0.7;
+  }
+}
+
+
+
+.alert-info {
+  border: 1px solid $light;
+  background-color: $bg-very-light;
+  font-size: 0.8rem;
+
+  p,
+  h4 {
+    margin-bottom: 1rem;
+  }
+}
+
+
+section.indic {
+  img {
+    width: 100px;
+    display: block;
+    margin: 1rem auto;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  h3 {
+    font-size: 1rem;
+    width: 200px;
+    margin: auto;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+
+
+.alert-warning {
+  color: $warning-text;
+  background-color: $warning-bg;
+  border-color: $warning-border;
+}
+
+
+hr {
+  color: $light;
+  opacity: 1;
+}
+
+
+
+p {
+
+
+  a {
+    color: $secondary;
+  }
+}
+
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+}
+
+
+
+// Back to Top Button
+.back-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background-color: $secondary;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba($secondary, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @extend .btn-hover-lift;
+  
+  &:hover {
+    background-color: $secondary-darker-5;
+    box-shadow: 0 6px 20px rgba($secondary, 0.4);
+  }
+  
+  &:focus {
+    @extend .focus-ring;
+  }
+  
+  @media (max-width: 768px) {
+    width: 45px;
+    height: 45px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+// Pagination moderne cohérente avec le design system
+.pagination {
+  --bs-pagination-border-radius: #{$border-radius-sm};
+  --bs-pagination-font-size: 0.875rem;
+  --bs-pagination-font-weight: #{$btn-font-weight};
+  
+  .page-item {
+    margin: 0 0.125rem;
+    
+    .page-link {
+      border: 1px solid rgba($primary, 0.08);
+      color: $primary;
+      background-color: $white;
+      padding: 0.5rem 0.75rem;
+      border-radius: $border-radius-sm;
+      @extend .transition-smooth;
+      font-weight: $btn-font-weight;
+      box-shadow: 0 1px 3px rgba($primary, 0.04);
+      
+      &:hover {
+        background-color: $light;
+        border-color: rgba($primary, 0.15);
+        color: $primary-dark;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba($primary, 0.08);
+      }
+      
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($primary, 0.15);
+        border-color: $primary-light;
+        outline: none;
+      }
+    }
+    
+    &.active .page-link {
+      background-color: $secondary;
+      border-color: $secondary;
+      color: white;
+      box-shadow: 0 2px 8px rgba($secondary, 0.25);
+      transform: translateY(-1px);
+      
+      &:hover {
+        background-color: $secondary-darker-5;
+        border-color: $secondary-darker-5;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 12px rgba($secondary, 0.35);
+      }
+    }
+    
+    &.disabled .page-link {
+      color: $text-muted;
+      background-color: $bg-light-gray;
+      border-color: rgba($primary, 0.05);
+      cursor: not-allowed;
+      opacity: 0.6;
+      
+      &:hover {
+        transform: none;
+        box-shadow: 0 1px 3px rgba($primary, 0.04);
+      }
+    }
+    
+    &:first-child .page-link {
+      border-radius: $border-radius-sm;
+    }
+    
+    &:last-child .page-link {
+      border-radius: $border-radius-sm;
+    }
+  }
+  
+  // Style spécial pour les ellipsis
+  .page-item .page-link.disabled {
+    background: transparent;
+    border: none;
+    color: $text-muted;
+    cursor: default;
+    
+    &:hover {
+      background: transparent;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// Version compacte pour mobile
+@media (max-width: 768px) {
+  .pagination {
+    --bs-pagination-font-size: 0.75rem;
+    
+    .page-item .page-link {
+      padding: 0.375rem 0.5rem;
+      min-width: 2.25rem;
+    }
+  }
+}
+
+
