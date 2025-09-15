@@ -43,7 +43,11 @@ export async function GET(req, { params }) {
     if (searchParams.get("societeMission")) {
       frontendFilters.societeMission = searchParams.get("societeMission") === "true";
     }
-    
+
+    if (searchParams.get("empreintePubliee")) {
+      frontendFilters.empreintePubliee = searchParams.get("empreintePubliee") === "true";
+    }
+
     // Convert frontend filters to API format
     const apiFilters = convertFiltersToApiFormat(frontendFilters);
     

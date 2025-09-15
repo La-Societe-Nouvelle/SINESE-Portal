@@ -40,7 +40,11 @@ export async function GET(req) {
     if (searchParams.get("societeMission")) {
       frontendFilters.societeMission = searchParams.get("societeMission") === "true";
     }
-    
+
+    if (searchParams.get("empreintePubliee")) {
+      frontendFilters.empreintePubliee = searchParams.get("empreintePubliee") === "true";
+    }
+
     // Convert frontend filters to API format
     console.log('ApiFilters:', frontendFilters);
     // Must have at least one filter for filters-only search

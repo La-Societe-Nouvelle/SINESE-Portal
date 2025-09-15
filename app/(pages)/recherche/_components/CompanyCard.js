@@ -59,7 +59,6 @@ export default function CompanyCard({ company }) {
                   )}
                 </div>
               </div>
-              {console.log(company)}
               {/* Informations essentielles groupées */}
               <div className="company-details">
                 <Row className="g-3">

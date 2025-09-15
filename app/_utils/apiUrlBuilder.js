@@ -9,7 +9,6 @@
  * @param {string} baseUrl - Base API URL (e.g., 'https://api.lasocietenouvelle.org')
  * @param {string} query - Search query (SIREN, partial SIREN, or text)
  * @param {Object} filters - Search filters
- * @param {string[]} filters.regions - Region codes (e.g., ['69', '75', '13'])
  * @param {string[]} filters.sectors - Sector codes (e.g., ['62.01A', '43.21A'])
  * @param {string[]} filters.trancheEffectifs - Size ranges (e.g., ['12', '21', '22'])
  * @param {boolean} filters.economieSocialeSolidaire - ESS filter
@@ -32,10 +31,7 @@ export function buildLegalUnitSearchUrl(baseUrl = null, query = "", filters = {}
   }
   
   const url = new URL(searchPath, apiBaseUrl);
-  // Add filters as query parameters
-  if (filters.regions && filters.regions.length > 0) {
-    url.searchParams.set('regions', filters.regions.join(','));
-  }
+ 
   
   if (filters.departements && filters.departements.length > 0) {
     url.searchParams.set('departements', filters.departements.join(','));
@@ -66,6 +62,10 @@ export function buildLegalUnitSearchUrl(baseUrl = null, query = "", filters = {}
   }
   if (filters.donneesPubliees && filters.donneesPubliees.length > 0) {
     url.searchParams.set('donneesPubliees', filters.donneesPubliees.join(','));
+  }
+
+  if (filters.empreintePubliee !== undefined) {
+    url.searchParams.set('empreintePubliee', filters.empreintePubliee.toString());
   }
 
   return url.toString();
@@ -102,7 +102,11 @@ export function convertFiltersToApiFormat(frontendFilters) {
   if (frontendFilters.societeMission !== undefined) {
     apiFilters.societeMission = frontendFilters.societeMission;
   }
-  
+
+  if (frontendFilters.empreintePubliee !== undefined) {
+    apiFilters.empreintePubliee = frontendFilters.empreintePubliee;
+  }
+
   return apiFilters;
 }
 

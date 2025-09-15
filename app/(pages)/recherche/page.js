@@ -43,7 +43,8 @@ function SearchContent() {
     societeMission: false,
     activitePrincipaleArtisanale: false,
     activitePrincipaleFormationRecherche: false,
-    donneesPubliees: []
+    donneesPubliees: [],
+    empreintePubliee : true,
   });
 
  
@@ -97,13 +98,26 @@ function SearchContent() {
   useEffect(() => {
     setCurrentPage(1);
     // Reset hasSearched when query changes significantly
-    if (debouncedQuery.length <= 2 && !Object.values(filters).some(f => Array.isArray(f) ? f.length > 0 : f && f !== 'pertinence')) {
+    const { empreintePubliee, sortBy, ...searchFilters } = filters;
+    if (debouncedQuery.length <= 2 && !Object.values(searchFilters).some(f => Array.isArray(f) ? f.length > 0 : f)) {
       setHasSearched(false);
     }
   }, [debouncedQuery, filters]);
 
   // Build API URL using new pattern: /api/legalunit/terme instead of ?q=terme
   const buildApiUrl = (searchQuery, searchFilters) => {
+    // Si on a seulement une recherche textuelle (pas de filtres), forcer empreintePubliee à false
+    const hasFilters = searchFilters.departements?.length > 0 ||
+                      searchFilters.sectors?.length > 0 ||
+                      searchFilters.trancheEffectifs ||
+                      searchFilters.economieSocialeSolidaire ||
+                      searchFilters.societeMission ||
+                      searchFilters.donneesPubliees?.length > 0;
+
+    const modifiedFilters = { ...searchFilters };
+    if (!hasFilters && searchQuery.length > 2) {
+      modifiedFilters.empreintePubliee = false;
+    }
     // Build path: /api/legalunit/terme or /api/legalunit/ (for filters only)
     let path = '/api/legalunit';
     if (searchQuery && searchQuery.trim()) {
@@ -116,31 +130,35 @@ function SearchContent() {
     const params = new URLSearchParams();
 
     // Format filters according to API documentation
-    if (searchFilters.sectors?.length > 0) {
-      params.set('sectors', searchFilters.sectors.join(','));
+    if (modifiedFilters.sectors?.length > 0) {
+      params.set('sectors', modifiedFilters.sectors.join(','));
     }
-    if (searchFilters.departements?.length > 0) {
-      params.set('departements', searchFilters.departements.join(','));
+    if (modifiedFilters.departements?.length > 0) {
+      params.set('departements', modifiedFilters.departements.join(','));
     }
-    if (searchFilters.trancheEffectifs) {
-      params.set('trancheEffectifs', searchFilters.trancheEffectifs);
+    if (modifiedFilters.trancheEffectifs) {
+      params.set('trancheEffectifs', modifiedFilters.trancheEffectifs);
     }
-    if (searchFilters.economieSocialeSolidaire) {
+    if (modifiedFilters.economieSocialeSolidaire) {
       params.set('economieSocialeSolidaire', 'true');
     }
-    if (searchFilters.societeMission) {
+    if (modifiedFilters.societeMission) {
       params.set('societeMission', 'true');
     }
 
     // Additional filters according to API documentation
-    if (searchFilters.donneesPubliees?.length > 0) {
-      params.set('donneesPubliees', searchFilters.donneesPubliees.join(','));
+    if (modifiedFilters.donneesPubliees?.length > 0) {
+      params.set('donneesPubliees', modifiedFilters.donneesPubliees.join(','));
+    }
+    // Empreinte sociétale publiée filter
+    if (modifiedFilters.empreintePubliee !== undefined) {
+      params.set('empreintePubliee', modifiedFilters.empreintePubliee.toString());
     }
     // Note: These filters are not documented in the API spec but kept for compatibility
-    if (searchFilters.activitePrincipaleArtisanale) {
+    if (modifiedFilters.activitePrincipaleArtisanale) {
       params.set('artisanale', 'true');
     }
-    if (searchFilters.activitePrincipaleFormationRecherche) {
+    if (modifiedFilters.activitePrincipaleFormationRecherche) {
       params.set('formationRecherche', 'true');
     }
 
@@ -149,7 +167,7 @@ function SearchContent() {
     return queryString ? `${path}?${queryString}` : path;
   };
 
-  // API call to fetch search results using new URL patterns  
+  // API call to fetch search results using new URL patterns
   useEffect(() => {
 
     const shouldSearch = debouncedQuery.length > 2 ||
@@ -166,8 +184,8 @@ function SearchContent() {
 
       // Build the new API URL using the new patterns
       const apiUrl = buildApiUrl(debouncedQuery, filters);
+      console.log('url', apiUrl);
 
-      console.log(`🔍 Search type: ${getQueryType(debouncedQuery)}, URL: ${apiUrl}`);
 
       fetch(apiUrl)
         .then((res) => res.json())

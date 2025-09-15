@@ -8,13 +8,11 @@ import NafSidebarSelector from "@/_components/forms/NafSidebarSelector";
 import DepartementSidebarSelector from "@/_components/forms/DepartementSidebarSelector";
 import EffectifSidebarSelector from "@/_components/forms/EffectifSidebarSelector";
 import IndicateurSidebarSelector from "@/_components/forms/IndicateurSidebarSelector";
-import indicsData from "@/_libs/indics.json";
 import { EFFECTIF_MAPPING } from "@/_utils/effectifMapping";
 
 // Créer un trigger personnalisé pour les départements
 const DepartementTrigger = ({ selectedDepartements, onToggle }) => {
   const hasSelection = selectedDepartements.length > 0;
-  console.log(selectedDepartements);
   const displayText = selectedDepartements.length === 0 
     ? "Sélectionner des départements..."
     : selectedDepartements.length === 1
@@ -70,14 +68,7 @@ const IndicateurTrigger = ({ selectedIndicateurs, onToggle }) => {
   );
 };
 
-// Générer les options d'indicateurs à partir du fichier JSON
-const indicateursOptions = Object.entries(indicsData)
-  .filter(([code, indic]) => indic.inEmpreinteSocietale === true)
-  .map(([code, indic]) => ({
-    value: code,
-    label: indic.libelle
-  }))
-  .sort((a, b) => a.label.localeCompare(b.label));
+
 
 export default function SearchSidebar({ 
   query, 
@@ -157,24 +148,25 @@ export default function SearchSidebar({
   }, [nafSidebarOpen, departementSidebarOpen, effectifSidebarOpen, indicateurSidebarOpen]);
 
   const resetFilters = () => {
+    // Vider la barre de recherche en premier
+    setQuery("");
+
     // Réinitialiser tous les filtres
     setFilters({
-      secteur: "", 
-      sectors: [], 
-      departements: [], 
-      trancheEffectifs: "", 
-      formeJuridique: "", 
+      secteur: "",
+      sectors: [],
+      departements: [],
+      trancheEffectifs: "",
+      formeJuridique: "",
       sortBy: "pertinence",
-      economieSocialeSolidaire: false, 
-      societeMission: false, 
+      economieSocialeSolidaire: false,
+      societeMission: false,
       activitePrincipaleArtisanale: false,
-      activitePrincipaleFormationRecherche: false, 
-      donneesPubliees: []
+      activitePrincipaleFormationRecherche: false,
+      donneesPubliees: [],
+      empreintePubliee: true,
     });
-    
-    // Vider la barre de recherche
-    setQuery("");
-    
+
     // Vider les résultats
     setResults([]);
   };
@@ -198,6 +190,19 @@ export default function SearchSidebar({
 
       {/* Body */}
       <div className="sidebar-body">
+        {/* Option recherche entreprises avec données */}
+        <div className="filter-group">
+          <Form.Check
+            type="checkbox"
+            id="filter-published-data-only-sidebar"
+            label="Empreinte sociétale publiée"
+            checked={filters.empreintePubliee ?? true}
+            onChange={(e) => setFilters({...filters, empreintePubliee: e.target.checked})}
+            className="mb-2 filter-checkbox small"
+            disabled
+          />
+        </div>
+
         {/* Active filters */}
         {hasActiveFilters && (
           <div className="filter-group active-filters">
@@ -366,7 +371,7 @@ export default function SearchSidebar({
               className="mb-2 filter-checkbox"
             />
 
-            <Form.Check 
+            <Form.Check
               type="checkbox"
               id="filter-formation-sidebar"
               label="Formation et recherche"
@@ -374,6 +379,7 @@ export default function SearchSidebar({
               onChange={(e) => setFilters({...filters, activitePrincipaleFormationRecherche: e.target.checked})}
               className="mb-2 filter-checkbox"
             />
+
           </div>
         </div>
       </div>
