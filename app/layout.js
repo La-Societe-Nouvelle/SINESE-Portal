@@ -68,7 +68,7 @@ export default function RootLayout({ children }) {
               </Nav>
 
               <Nav className="ms-auto">
-                <Button href="/publier" variant="secondary" >
+                <Button href="https://publication.sinese.fr/" variant="secondary" >
                   <Upload size={16} className="me-2" />
                   Publier sur SINESE.fr
                 </Button>
