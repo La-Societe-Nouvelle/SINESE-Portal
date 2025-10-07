@@ -135,7 +135,6 @@ export const InformationDetailsModal = ({
           </Card>
         </Col>
       </Row>
-{console.log('indic', indic)}
       {/* Description de l'indicateur avec ODDs intégrés */}
       <Card className="border-0 shadow-sm">
         <Card.Body className="small">

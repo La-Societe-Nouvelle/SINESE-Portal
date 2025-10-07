@@ -22,7 +22,6 @@ export async function searchLegalUnits(query = "", filters = {}, options = {}) {
     // Build the API URL using our utility
     const apiUrl = buildLegalUnitSearchUrl(API_BASE_URL, query, apiFilters);
     
-    console.log(`Search type: ${getQueryType(query)}, URL: ${apiUrl}`);
     
     const response = await fetch(apiUrl);
     

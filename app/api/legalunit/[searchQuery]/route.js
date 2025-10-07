@@ -59,7 +59,6 @@ export async function GET(req, { params }) {
     // Build the API URL using the new patterns
     const apiUrl = buildLegalUnitSearchUrl(process.env.API_BASE_URL, searchQuery, apiFilters);
     
-    console.log('Calling API:', apiUrl);
     
     // Make the API call
     const apiRes = await fetch(apiUrl);

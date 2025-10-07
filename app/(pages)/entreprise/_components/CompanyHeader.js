@@ -39,7 +39,6 @@ export default function CompanyHeader({ legalUnit }) {
                   <div className="d-flex align-items-center mb-1">
                     <MapPin size={16} className="text-muted me-2" />
                     <small className="text-muted">Siège</small>
-                    {console.log(legalUnit)}
                   </div>
                   <div className="fw-medium">
                     {legalUnit.statutdiffusion

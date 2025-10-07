@@ -27,7 +27,6 @@ export async function GET(req) {
     if (donneesPubliees) {
       frontendFilters.donneesPubliees = donneesPubliees.split(',').map(s => s.trim()).filter(s => s);
     }
-    console.log(donneesPubliees)
     // Parse single filters
     if (searchParams.get("trancheEffectifs")) {
       frontendFilters.trancheEffectifs = searchParams.get("trancheEffectifs");
@@ -46,7 +45,6 @@ export async function GET(req) {
     }
 
     // Convert frontend filters to API format
-    console.log('ApiFilters:', frontendFilters);
     // Must have at least one filter for filters-only search
     if (Object.keys(frontendFilters).length === 0) {
       return Response.json({ 
@@ -58,7 +56,6 @@ export async function GET(req) {
     // Build the API URL (empty query, filters only)
     const apiUrl = buildLegalUnitSearchUrl(process.env.API_BASE_URL, "", frontendFilters);
     
-    console.log('Calling API (filters only):', apiUrl);
     
     // Make the API call
     const apiRes = await fetch(apiUrl);

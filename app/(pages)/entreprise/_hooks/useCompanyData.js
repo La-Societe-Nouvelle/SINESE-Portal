@@ -73,7 +73,6 @@ export function useCompanyData(siren) {
         `${process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org'}/macrodata/macro_fpt_a88?division=${code}&aggregate=PRD&area=FRA`
       );
       const response = await res.json();
-        console.log(response);
       if (response.header?.code === 200) {
         let divisionFootprints = {};
         response.data.forEach((element) => {

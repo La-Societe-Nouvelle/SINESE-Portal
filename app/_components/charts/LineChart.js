@@ -3,7 +3,6 @@ import { Line } from "react-chartjs-2";
 
 export const LineChart = ({ data, color = "#3b4d8f", unit }) => {
 
-	console.log(unit)
 	// Validation des données
 	if (!data || data.length === 0) {
 		return (

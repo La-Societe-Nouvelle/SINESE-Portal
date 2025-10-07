@@ -28,7 +28,6 @@ export default function MacroeconomiesPage() {
     try {
       setIsLoadingMetadata(true);
       setError(null);
-        console.log(process.env.NEXT_PUBLIC_API_URL);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/macrodata/metadata/macro_fpt`
       );
