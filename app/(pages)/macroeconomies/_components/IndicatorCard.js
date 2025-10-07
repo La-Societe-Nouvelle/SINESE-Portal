@@ -39,7 +39,7 @@ export default function IndicatorCard({
             </div>
           ) : data && data.length > 0 ? (
             <div className="chart-wrapper">
-              <LineChart data={data} color={color} />
+              <LineChart data={data} color={color} unit={unit} />
             </div>
           ) : (
             <div className="chart-empty">

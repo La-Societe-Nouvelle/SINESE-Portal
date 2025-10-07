@@ -1,39 +1,29 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   reactStrictMode: true,
-  
+
+  // Options pour Sass
   sassOptions: {
     includePaths: [path.join(__dirname, 'app/styles')],
   },
 
+  // Expérimental : gestion CPU / worker (optionnel)
   experimental: {
     workerThreads: false,
-    cpus: 1
+    cpus: 1,
   },
 
-  async rewrites() {
-    return [
-      {
-        source: '/open-data/:path*',
-        destination: '/api/serve-file/:path*',
-      },
-    ];
+  // Filtrage des warnings répétitifs Webpack (SCSS/PostCSS)
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.ignoreWarnings = [
+        {
+          message: /repetitive deprecation warnings omitted/,
+        },
+      ];
+    }
+    return config;
   },
 
-  async redirects() {
-    return [
-      {
-        source: "/:portail*",
-        has: [
-          {
-            type: "host",
-            value: "portail.lasocietenouvelle.org",
-          },
-        ],
-        destination: "https://lasocietenouvelle.org/portail",
-        permanent: true,
-      },
-    ];
-  },
 };

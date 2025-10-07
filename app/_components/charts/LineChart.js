@@ -1,7 +1,9 @@
 import Chart from 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 
-export const LineChart = ({ data, color = "#3b4d8f" }) => {
+export const LineChart = ({ data, color = "#3b4d8f", unit }) => {
+
+	console.log(unit)
 	// Validation des données
 	if (!data || data.length === 0) {
 		return (
@@ -72,8 +74,8 @@ export const LineChart = ({ data, color = "#3b4d8f" }) => {
 				},
 			},
 			y: {
-				min: valueMin < 0 ? valueMin : Math.max(0, valueMin),
-				max: valueMax,
+				min: valueMin < 0 ? valueMin : 0,
+				max: unit.includes("%") ? 100 : valueMax,
 				grid: {
 					color: '#f1f3f4',
 					borderColor: '#e9ecef',

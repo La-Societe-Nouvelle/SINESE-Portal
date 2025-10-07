@@ -37,7 +37,6 @@ export const ContentSocialFootprint = ({
   additionnalData,
 }) => {
 
-  console.log(additionnalData);
   const legalUnitData = {
     ...footprint,
     ...additionnalData
