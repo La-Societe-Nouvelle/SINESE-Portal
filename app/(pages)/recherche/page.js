@@ -40,7 +40,7 @@ function SearchContent() {
     activitePrincipaleArtisanale: false,
     activitePrincipaleFormationRecherche: false,
     donneesPubliees: [],
-    empreintePubliee : true,
+    empreintePubliee : false, // temp 
   });
 
  
@@ -68,7 +68,6 @@ function SearchContent() {
       setCurrentPage(1);
 
       const apiUrl = buildApiUrl(searchQuery, searchFilters);
-
       fetch(apiUrl)
         .then((res) => res.json())
         .then((data) => {
