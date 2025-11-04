@@ -68,8 +68,3 @@ routes:
     cache:
       enabled: true
       cookies: ['*']
-
-  # Redirection www vers le domaine principal
-  "https://www.{default}/":
-    type: redirect
-    to: "https://{default}/"
