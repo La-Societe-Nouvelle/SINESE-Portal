@@ -50,8 +50,9 @@ export function useCompanyData(siren) {
 
   const fetchDivisionFootprint = useCallback(async (code) => {
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`
+        `${apiUrl}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`
       );
       const response = await res.json();
 
