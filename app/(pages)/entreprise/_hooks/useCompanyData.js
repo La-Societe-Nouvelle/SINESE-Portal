@@ -11,7 +11,7 @@ export function useCompanyData(siren) {
     historicalDivisionFootprint: null,
     meta: null
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,12 +19,13 @@ export function useCompanyData(siren) {
     try {
       setLoading(true);
       setError(null);
-      
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+
       const res = await fetch(`${apiUrl}/legalunitFootprint/${siren}`);
+   
       const response = await res.json();
-      
+
       if (response.header?.code === 200) {
         setData(prev => ({
           ...prev,
@@ -53,7 +54,7 @@ export function useCompanyData(siren) {
         `${process.env.NEXT_PUBLIC_API_URL}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`
       );
       const response = await res.json();
-      
+
       if (response.header?.code === 200) {
         setData(prev => ({
           ...prev,
@@ -82,7 +83,7 @@ export function useCompanyData(siren) {
           }
           divisionFootprints[indic].push(element);
         });
-        
+
         setData(prev => ({
           ...prev,
           historicalDivisionFootprint: divisionFootprints
@@ -110,7 +111,7 @@ export function useCompanyData(siren) {
   }, [siren, fetchLegalUnitFootprint, fetchDivisionFootprint]);
 
   // Calcul des données par défaut
-  const hasDefaultData = data.footprint && 
+  const hasDefaultData = data.footprint &&
     ["ECO", "ART", "SOC", "IDR", "GEQ", "KNW", "GHG", "NRG", "WAT", "MAT", "WAS", "HAZ"].some(
       (indic) => data.footprint[indic]?.flag === "d"
     );
