@@ -51,9 +51,10 @@ const Graph = ({ indic }) => {
   let [error, setError] = useState(false);
 
   const fetchData = useCallback(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_API_URL}/macrodata/macro_fpt_a38?branch=TOTAL&aggregate=NVA&indic=${indic.toUpperCase()}`
+        `${apiUrl}/macrodata/macro_fpt_a38?branch=TOTAL&aggregate=NVA&indic=${indic.toUpperCase()}`
       )
       .then((response) => {
         if (response.data.header.code == 200) {

@@ -45,9 +45,10 @@ function TrendChart({ indic, aggregate, code, branch }) {
   const [error, setError] = useState(false);
 
   const getHistoricalDataTrend = async () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_API_URL}/serie/MACRO_HISTORICALDATA_TREND_${indic}_FRA_BRANCH?area=FRA&code=${code}&aggregate=${aggregate}`
+        `${apiUrl}/serie/MACRO_HISTORICALDATA_TREND_${indic}_FRA_BRANCH?area=FRA&code=${code}&aggregate=${aggregate}`
       )
       .then((response) => {
         if (response.data.header.code == 200) {
@@ -66,10 +67,10 @@ function TrendChart({ indic, aggregate, code, branch }) {
   };
 
   const getTargetData = async (id) => {
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_API_URL}/serie/${id}?area=FRA&code=${code}&aggregate=${aggregate}`
+        `${apiUrl}/serie/${id}?area=FRA&code=${code}&aggregate=${aggregate}`
       )
       .then((response) => {
         if (response.data.header.code == 200) {
