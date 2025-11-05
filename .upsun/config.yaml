@@ -61,10 +61,25 @@ applications:
 
 # Configuration des routes
 routes:
-  # Route principale pour sinese.fr
-  "https://{default}/":
+  # Redirection HTTP domaine apex vers HTTPS www
+  "http://sinese.fr/":
+    type: redirect
+    to: "https://www.sinese.fr/"
+
+  # Redirection HTTPS domaine apex vers HTTPS www
+  "https://sinese.fr/":
+    type: redirect
+    to: "https://www.sinese.fr/"
+
+  # Redirection HTTP www vers HTTPS www
+  "http://www.sinese.fr/":
+    type: redirect
+    to: "https://www.sinese.fr/"
+
+  # Route principale HTTPS www (application)
+  "https://www.sinese.fr/":
     type: upstream
     upstream: "app:http"
     cache:
       enabled: true
-      cookies: ['*']
+      cookies: ["*"]
