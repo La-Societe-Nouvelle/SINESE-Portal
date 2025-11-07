@@ -7,6 +7,8 @@ import { Upload, Building2, Search, TrendingUp, Mail, DatabaseIcon, Link, Chevro
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
   title: "SINESE - Système d'Information National sur l'Empreinte Sociétale des Entreprises",
+  description:
+    "Le portail SINESE répertorie les données relatives à l'empreinte sociétale des entreprises en France. Il permet de consulter en toute transparence les performances extra-financières des entreprises afin d'identifier celles dont les activités sont alignées avec les objectifs et plans nationaux sur les enjeux clés de durabilité.",
   keywords: [
     "SINESE",
     "Empreinte Sociétale",
@@ -14,23 +16,42 @@ export const metadata = {
     "Système d'Information",
     "Développement Durable",
     "Responsabilité Sociétale des Entreprises",
+    "Impact Sociétal",
+    "Données Ouvertes",
   ],
-  description:
-    "Le portail SINESE répertorie les données relatives à l'empreinte sociétale des entreprises en France. Il permet de consulter en toute transparence les performances extra-financières des entreprises afin d'identifier celles dont les activités sont alignées avec les objectifs et plans nationaux sur les enjeux clés de durabilité.",
+  authors: [{ name: "SINESE" }],
+  creator: "SINESE",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: "https://sinese.fr",
+    siteName: "SINESE",
     title: "SINESE - Système d'Information National sur l'Empreinte Sociétale des Entreprises",
     description:
       "Le portail SINESE répertorie les données relatives à l'empreinte sociétale des entreprises en France. Il permet de consulter en toute transparence les performances extra-financières des entreprises afin d'identifier celles dont les activités sont alignées avec les objectifs et plans nationaux sur les enjeux clés de durabilité.",
-    url: "https://sinese.fr",
-    siteName: "SINESE",
     images: [
       {
-        url: "/images/sinese-og-image.png",
+        url: "/images/og-image-sinese.jpg",
         width: 1200,
         height: 630,
         alt: "SINESE - Système d'Information National sur l'Empreinte Sociétale des Entreprises",
+        type: "image/jpeg",
       },
     ],
+  },
+  alternates: {
+    canonical: "https://sinese.fr",
   },
 };
 
