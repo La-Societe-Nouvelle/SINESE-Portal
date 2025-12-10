@@ -2,14 +2,14 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Form, Button, Alert, InputGroup } from "react-bootstrap";
 import { useSession } from "next-auth/react";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function ConnexionPage() {
+function ConnexionForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -106,5 +106,13 @@ export default function ConnexionPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ConnexionPage() {
+  return (
+    <Suspense fallback={<div className="auth-page"><div className="auth-card">Chargement...</div></div>}>
+      <ConnexionForm />
+    </Suspense>
   );
 }
