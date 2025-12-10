@@ -1,8 +1,7 @@
 import "./styles/main.scss";
-import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Button } from "react-bootstrap";
-import Footer from "./_components/footer";
+import NavbarSwitcher from "./_components/NavbarSwitcher";
 import BackToTop from "./_components/BackToTop";
-import { Upload, Building2, Search, TrendingUp, Mail, DatabaseIcon, Link, ChevronDown, Code } from "lucide-react";
+import Footer from "./_components/footer";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -56,55 +55,16 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
   return (
     <html lang="fr">
       <body>
-        <Navbar expand="lg" className="header-nav" variant="light">
-          <Container fluid className="px-4">
-            <NavbarBrand href="/" className="d-flex align-items-center">
-              <img src="/logo-sinese.svg" alt="SINESE" height={50} className="me-3" />
-            </NavbarBrand>
-
-            <NavbarToggle aria-controls="basic-navbar-nav" />
-            <NavbarCollapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <NavLink href="/recherche" className="nav-item-custom">
-                  <Search size={16} className="me-2" />
-                  <span>Entreprises</span>
-                </NavLink>
-
-                <NavLink href="/macroeconomies" className="nav-item-custom">
-                  <TrendingUp size={16} className="me-2" />
-                  <span>Macroéconomie</span>
-                </NavLink>
-                <NavLink href="/datasets" className="nav-item-custom">
-                  <DatabaseIcon size={16} className="me-2" />
-                  <span>Open Data</span>
-                </NavLink>
-                <NavLink href="/api" className="nav-item-custom">
-                  <Code size={16} className="me-2" />
-                  <span>API</span>
-                </NavLink>
-              </Nav>
-
-              <Nav className="ms-auto">
-                <Button href="https://publication.sinese.fr/" variant="secondary" >
-                  <Upload size={16} className="me-2" />
-                  Publier sur SINESE.fr
-                </Button>
-
-              </Nav>
-            </NavbarCollapse>
-          </Container>
-        </Navbar>
-
+        
+        <NavbarSwitcher />
         <main className="main-content flex-grow-1">
           {children}
         </main>
-
         <BackToTop />
-        <Footer></Footer>
+        <Footer />
       </body>
     </html>
   );
