@@ -5,7 +5,7 @@
 import { Suspense, useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Form, Button, Alert, InputGroup } from "react-bootstrap";
+import { Form, Button, Alert, InputGroup, Spinner } from "react-bootstrap";
 import { useSession } from "next-auth/react";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -14,6 +14,7 @@ function ConnexionForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/publications/espace";
@@ -35,16 +36,24 @@ function ConnexionForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     setError("");
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-    if (res.ok) {
-      router.push(callbackUrl);
-    } else {
-      setError("Email ou mot de passe incorrect.");
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      if (res.ok) {
+        router.push(callbackUrl);
+      } else {
+        setError("Email ou mot de passe incorrect.");
+        setIsSubmitting(false);
+      }
+    } catch {
+      setError("Une erreur est survenue lors de la connexion.");
+      setIsSubmitting(false);
     }
   };
 
@@ -96,7 +105,8 @@ function ConnexionForm() {
             </InputGroup>
           </Form.Group>
 
-          <Button variant="secondary" type="submit" className="w-100">
+          <Button variant="secondary" type="submit" className="w-100" disabled={isSubmitting}>
+            {isSubmitting && <Spinner size="sm" className="me-2" />}
             Se connecter
           </Button>
         </Form>
