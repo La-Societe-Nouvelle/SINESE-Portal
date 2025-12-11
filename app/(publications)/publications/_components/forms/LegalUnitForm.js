@@ -74,16 +74,16 @@ export default function LegalUnitForm({
       const newLegalUnit = await addLegalUnit({ siren: legalunit.siren, denomination: legalunit.denomination });
       setLegalUnits((prev) => [
         ...prev,
-        { siren: legalunit.siren, denomination: legalunit.denomination, id: legalunit.id || null },
+        newLegalUnit,
       ]);
       setSelectedLegalUnit({
         id: newLegalUnit.id,
-        siren: legalunit.siren,
-        denomination: legalunit.denomination,
+        siren: newLegalUnit.siren,
+        denomination: newLegalUnit.denomination,
       });
       setShowAddModal(false);
-    } catch {
-      setError("Erreur réseau.");
+    } catch (err) {
+      setError(err.message || "Erreur lors de l'ajout de l'entreprise.");
     }
     setLoading(false);
   };
