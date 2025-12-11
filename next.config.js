@@ -8,21 +8,16 @@ module.exports = {
     includePaths: [path.join(__dirname, 'app/styles')],
   },
 
-  // Expérimental : gestion CPU / worker (optionnel)
-  experimental: {
-    workerThreads: false,
-    cpus: 1,
-  },
-
   // Filtrage des warnings répétitifs Webpack (SCSS/PostCSS)
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.ignoreWarnings = [
-        {
-          message: /repetitive deprecation warnings omitted/,
-        },
-      ];
-    }
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      {
+        message: /repetitive deprecation warnings omitted/,
+      },
+      {
+        message: /Sass @import rules are deprecated/,
+      },
+    ];
     return config;
   },
 

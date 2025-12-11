@@ -349,7 +349,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="cta-actions">
-                  <a href="/api" className="btn btn-primary ">
+                  <a href="/api-sinese" className="btn btn-primary ">
                     <Code2 size={18} className="me-2" />
                     Documentation API
                   </a>

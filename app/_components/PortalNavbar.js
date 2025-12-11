@@ -31,7 +31,7 @@ export default function PortalNavbar() {
               <DatabaseIcon size={16} className="me-2" />
               <span>Open Data</span>
             </NavLink>
-            <NavLink href="/api" className="nav-item-custom">
+            <NavLink href="/api-sinese" className="nav-item-custom">
               <Code size={16} className="me-2" />
               <span>API</span>
             </NavLink>

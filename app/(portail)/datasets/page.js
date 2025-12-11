@@ -194,7 +194,7 @@ export default function DatasetsPage() {
                 <p className="small">
                   Pour accéder aux données en temps réel, consultez la documentation de notre API.
                 </p>
-                <Button variant="link" size="sm" className="p-0" href="/api">
+                <Button variant="link" size="sm" className="p-0" href="/api-sinese">
                   Documentation API →
                 </Button>
               </Card.Body>
