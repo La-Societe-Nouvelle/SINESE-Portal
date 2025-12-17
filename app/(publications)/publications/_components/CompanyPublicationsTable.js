@@ -126,6 +126,9 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
 
       if (res.ok) {
         router.refresh();
+        // Wait a bit for the refresh to complete before hiding loading state
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setShowAddModal(false);
       } else {
         const error = await res.json();
         alert(error.error || "Erreur lors de l'ajout de l'entreprise");

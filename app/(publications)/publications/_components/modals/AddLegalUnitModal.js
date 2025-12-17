@@ -9,6 +9,15 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
   const [found, setFound] = useState(false);
   const [error, setError] = useState("");
 
+  // Reset form when modal is closed
+  useEffect(() => {
+    if (!show) {
+      setForm({ denomination: "", siren: "" });
+      setFound(false);
+      setError("");
+    }
+  }, [show]);
+
   useEffect(() => {
     const fetchLegalUnit = async () => {
       setError("");
@@ -56,12 +65,11 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
     setFound(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.denomination || !form.siren) return;
-    onAdd({ ...form });
+    await onAdd({ ...form });
     setForm({ denomination: "", siren: "" });
-    onHide();
   };
 
   return (

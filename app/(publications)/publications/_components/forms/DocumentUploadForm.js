@@ -146,7 +146,7 @@ export default function DocumentUploadForm({ documents = [], onChange, selectedL
                       {doc.name}
                     </div>
                     <small className="text-muted d-block">
-                      {formatFileSize(doc.size)} • {formatDate(doc.uploadedAt)}
+                      {formatFileSize(doc.size)} • {doc.uploadedAt ? `Uploadé le ${formatDate(doc.uploadedAt)}` : "Prêt à être uploadé"}
                     </small>
                   </div>
                 </div>

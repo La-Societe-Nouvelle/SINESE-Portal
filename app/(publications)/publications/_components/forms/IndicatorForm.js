@@ -20,7 +20,7 @@ export default function IndicatorForm({ name, unit, data, category, onChange, ur
     if ((field === "value" || field === "uncertainty") && value !== "") {
       
       if (!isValidNumber(value)) {
-        setFieldErrors((prev) => ({ ...prev, [field]: `La ${field} doit être un nombre valide` }));
+        setFieldErrors((prev) => ({ ...prev, [field]: `La valeur doit être un nombre valide.` }));
       } else {
         setFieldErrors((prev) => {
           const updated = { ...prev };
