@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 export const middleware = withAuth(
   function middleware(req) {
     const hostname = req.headers.get("host") || "";
-    const isPublicationsSubdomain = hostname.startsWith("publications.");
+    const isPublicationSubdomain = hostname.startsWith("publication.");
 
-    // Rewrite pour le sous-domaine publications.sinese.fr
-    if (isPublicationsSubdomain && !req.nextUrl.pathname.startsWith("/publications")) {
+    // Rewrite pour le sous-domaine publication.sinese.fr
+    if (isPublicationSubdomain && !req.nextUrl.pathname.startsWith("/publications")) {
       const url = req.nextUrl.clone();
       url.pathname = `/publications${url.pathname}`;
       return NextResponse.rewrite(url);
@@ -15,7 +15,7 @@ export const middleware = withAuth(
 
     // If user is not authenticated and trying to access protected routes
     if (!req.nextauth.token && req.nextUrl.pathname.startsWith("/publications/espace")) {
-      const redirectUrl = isPublicationsSubdomain
+      const redirectUrl = isPublicationSubdomain
         ? new URL("/connexion", req.url)
         : new URL("/publications/connexion", req.url);
       return NextResponse.redirect(redirectUrl);
@@ -26,9 +26,9 @@ export const middleware = withAuth(
       req.nextauth.token &&
       (req.nextUrl.pathname === "/publications/connexion" ||
         req.nextUrl.pathname === "/publications/inscription" ||
-        (isPublicationsSubdomain && (req.nextUrl.pathname === "/connexion" || req.nextUrl.pathname === "/inscription")))
+        (isPublicationSubdomain && (req.nextUrl.pathname === "/connexion" || req.nextUrl.pathname === "/inscription")))
     ) {
-      const redirectUrl = isPublicationsSubdomain
+      const redirectUrl = isPublicationSubdomain
         ? new URL("/espace", req.url)
         : new URL("/publications/espace", req.url);
       return NextResponse.redirect(redirectUrl);
@@ -38,7 +38,7 @@ export const middleware = withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const hostname = req.headers.get("host") || "";
-        const isPublicationsSubdomain = hostname.startsWith("publications.");
+        const isPublicationSubdomain = hostname.startsWith("publication.");
 
         // Allow public routes
         const publicRoutes = [
@@ -48,7 +48,7 @@ export const middleware = withAuth(
         ];
 
         // For subdomain, adjust routes
-        if (isPublicationsSubdomain) {
+        if (isPublicationSubdomain) {
           const subdomainPublicRoutes = ["/connexion", "/inscription", "/"];
           if (subdomainPublicRoutes.includes(req.nextUrl.pathname)) {
             return true;
