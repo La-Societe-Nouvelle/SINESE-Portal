@@ -15,7 +15,7 @@ export async function GET(_req, { params }) {
       );
     }
 
-    // Récupérer la dernière publication publiée pour ce SIREN avec ses documents
+    // Récupérer la dernière publication avec des documents publiés pour le SIREN donné
     const { rows } = await pool.query(
       `SELECT p.id, p.year, p.documents, p.period_start, p.period_end, p.updated_at,
               lu.denomination, lu.siren
@@ -55,7 +55,7 @@ export async function GET(_req, { params }) {
       documents: documents
     });
   } catch (error) {
-    console.error("❌ Erreur récupération rapports publiés:", error);
+    console.error("Erreur récupération rapports publiés:", error);
     return NextResponse.json(
       { error: "Erreur lors de la récupération des rapports" },
       { status: 500 }
