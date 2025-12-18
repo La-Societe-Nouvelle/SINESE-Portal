@@ -99,12 +99,12 @@ routes:
       enabled: false
 
   # Redirection HTTP publications vers HTTPS publications
-  "http://publications.sinese.fr/":
+  "http://publication.sinese.fr/":
     type: redirect
-    to: "https://publications.sinese.fr/"
+    to: "https://publication.sinese.fr/"
 
   # Route HTTPS publications (sous-domaine)
-  "https://publications.sinese.fr/":
+  "https://publication.sinese.fr/":
     type: upstream
     upstream: "app:http"
     cache:
