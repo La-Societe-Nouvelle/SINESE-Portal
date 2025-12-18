@@ -60,6 +60,8 @@ applications:
         NODE_ENV: "production"
         # Augmente la heap size Node.js à 1.5GB pour éviter les crashes mémoire
         NODE_OPTIONS: "--max-old-space-size=1536"
+        # Désactive la télémétrie Next.js
+        NEXT_TELEMETRY_DISABLED: "1"
 
 # Configuration des routes
 routes:
