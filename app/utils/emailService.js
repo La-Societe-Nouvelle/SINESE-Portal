@@ -26,9 +26,6 @@ export function getWelcomeEmailTemplate(firstName, lastName, email) {
             <!-- Header -->
             <tr>
               <td style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); padding: 40px 30px; text-align: center;">
-                <div style="margin-bottom: 20px;">
-                  <img src="https://sinese.fr/logo-sinese.png" alt="SINESE" style="height: 50px; width: auto;" />
-                </div>
                 <h1 style="color: white; margin: 10px 0; font-size: 28px; font-weight: 700;">
                   Bienvenue sur l'espace publication de SINESE !
                 </h1>

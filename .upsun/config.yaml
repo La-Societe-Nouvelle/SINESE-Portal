@@ -95,3 +95,15 @@ routes:
     upstream: "app:http"
     cache:
       enabled: false
+
+  # Redirection HTTP publications vers HTTPS publications
+  "http://publications.sinese.fr/":
+    type: redirect
+    to: "https://publications.sinese.fr/"
+
+  # Route HTTPS publications (sous-domaine)
+  "https://publications.sinese.fr/":
+    type: upstream
+    upstream: "app:http"
+    cache:
+      enabled: false
