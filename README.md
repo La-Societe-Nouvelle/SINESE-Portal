@@ -1,6 +1,6 @@
 # SINESE Portal
 
-Portail web pour accéder aux données ouvertes de La Société Nouvelle et publier des rapports d'empreinte sociétale et environnementale.
+Portail web pour accéder aux données ouvertes de La Société Nouvelle et publier l’empreinte sociétale et environnementale de son entreprise.
 
 ## À propos
 
