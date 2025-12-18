@@ -80,7 +80,7 @@ function Footer() {
               <div className="footer-section">
                 <h6 className="fw-bold mb-3">Ressources</h6>
                 <ul className="list-unstyled">
-                  <li className="mb-2"><a href="/api" className=" text-decoration-none">API publique</a></li>
+                  <li className="mb-2"><a href="/api-sinese" className=" text-decoration-none">API publique</a></li>
                   <li className="mb-2"><a href="https://docs.lasocietenouvelle.org" className=" text-decoration-none" target="_blank">Documentation</a></li>
                   <li className="mb-2"><a href="https://partners.metriz.lasocietenouvelle.org/" className=" text-decoration-none" target="_blank">Metriz | Mesure de l'empreinte sociétale</a></li>
                 </ul>

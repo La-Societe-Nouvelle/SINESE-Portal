@@ -1,0 +1,131 @@
+{
+  "eco": {
+    "libelle": "Contribution à l'économie nationale",
+    "category": "Création de la valeur",
+    "nbDecimals": 1,
+    "odds": ["08", "12"],
+    "unit": "%",
+    "color": "#27187e",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/eco"
+  },
+  "soc": {
+    "libelle": "Contribution aux Acteurs d'Intérêt social",
+    "category": "Création de la valeur",
+    "nbDecimals": 1,
+    "odds": ["08", "12"],
+    "unit": "%",
+    "color": "#27187e",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/soc"
+  },
+  "art": {
+    "libelle": "Contribution aux Métiers d'Art et aux Savoir-Faire",
+    "category": "Création de la valeur",
+    "nbDecimals": 1,
+    "odds": ["08", "09", "12"],
+    "unit": "%",
+    "color": "#27187e",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/art"
+  },
+  "idr": {
+    "libelle": "Indice d'écart des rémunérations",
+    "category": "Empreinte sociale",
+    "nbDecimals": 2,
+    "odds": ["08", "10"],
+    "unit": "",
+    "color": "#fa595f",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/idr"
+  },
+  "geq": {
+    "libelle": "Indice d'écart de rémunérations Femmes/Hommes",
+    "category": "Empreinte sociale",
+    "nbDecimals": 1,
+    "odds": ["05", "10"],
+    "unit": "%",
+    "color": "#fa595f",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/geq"
+  },
+  "knw": {
+    "libelle": "Contribution à l'Evolution des compétences et des connaissances",
+    "category": "Empreinte sociale",
+    "nbDecimals": 1,
+    "odds": ["08", "09", "12"],
+    "unit": "%",
+    "color": "#fa595f",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/knw"
+  },
+  "ghg": {
+    "libelle": "Intensité d'émission de gaz à effet de serre",
+    "category": "Empreinte environnementale",
+    "nbDecimals": 0,
+    "odds": ["12", "13", "14", "15"],
+    "unit": "gCO2e/€",
+    "color": "#59c774",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/ghg"
+  },
+  "haz": {
+    "libelle": "Intensité d'Utilisation de produits dangereux",
+    "category": "Empreinte environnementale",
+    "nbDecimals": 1,
+    "odds": ["02", "03", "12", "14", "15"],
+    "unit": "g/€",
+    "color": "#59c774",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/haz"
+  },
+  "mat": {
+    "libelle": "Intensité d'Extraction de Matières premières",
+    "category": "Empreinte environnementale",
+    "nbDecimals": 0,
+    "odds": ["12", "14", "15"],
+    "unit": "g/€",
+    "color": "#59c774",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/mat"
+  },
+  "nrg": {
+    "libelle": "Intensité de Consommation d'Energie",
+    "category": "Empreinte environnementale",
+    "nbDecimals": 0,
+    "odds": ["07", "12", "13"],
+    "unit": "kJ/€",
+    "color": "#59c774",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/nrg"
+  },
+  "was": {
+    "libelle": "Intensité de Production de Déchets",
+    "category": "Empreinte environnementale",
+    "nbDecimals": 0,
+    "odds": ["03", "11", "12", "14", "15"],
+    "unit": "g/€",
+    "color": "#59c774",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/was"
+  },
+  "wat": {
+    "libelle": "Intensité de Consommation d'Eau",
+    "category": "Empreinte environnementale",
+    "nbDecimals": 1,
+    "odds": ["06", "12", "14", "15"],
+    "unit": "L/€",
+    "color": "#59c774",
+    "docUrl": "https://docs.lasocietenouvelle.org/empreinte-societale/indicateurs/wat"
+  },
+  "impactScore": {
+    "libelle": "Impact Score",
+    "category": "Indicateurs supplémentaires",
+    "nbDecimals": 2,
+    "unit": "%",
+    "color": "#5efa78"
+  },
+  "iep": {
+    "libelle": "IEP",
+    "category": "Indicateurs supplémentaires",
+    "nbDecimals": 2,
+    "unit": "%",
+    "color": "#f29746"
+  },
+  "bges": {
+    "libelle": "BGES",
+    "category": "Indicateurs supplémentaires",
+    "nbDecimals": 2,
+    "unit": "tCO2e",
+    "color": "#004b99"
+  }
+}

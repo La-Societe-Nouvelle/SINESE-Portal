@@ -1,0 +1,48 @@
+.table {
+
+  thead {
+    background: linear-gradient(135deg, #f7f8fc 0%, #f0f4ff 100%);
+    border-bottom: 2px solid #e5e7eb;
+
+    th {
+      color: #1e3a8a;
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      svg {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #f1f3f4;
+      transition: all 0.15s ease;
+
+      td {
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+        color: #374151;
+      }
+    }
+  }
+
+
+  code {
+    background-color: rgba($primary, 0.1);
+    color: $primary;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+
+  }
+
+  .badge {
+    @include badge-style($light-secondary, $white, small);
+  }
+
+}

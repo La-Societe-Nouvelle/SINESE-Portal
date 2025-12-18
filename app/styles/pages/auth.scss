@@ -1,0 +1,257 @@
+// =============================================================================
+// PAGES D'AUTHENTIFICATION - Inscription & Connexion
+// =============================================================================
+
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $light 0%, $background 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+
+  // Logo SINESE en haut
+  .auth-logo {
+    margin-bottom: 0.5rem;
+    text-align: center;
+
+    img {
+      height: 80px;
+      width: auto;
+    }
+  }
+
+  // Card principale
+  .auth-card {
+    background: white;
+    border-radius: $border-radius-lg;
+    box-shadow: $box-shadow-xl;
+    max-width: 550px;
+    width: 100%;
+    padding: 3rem 2.5rem;
+
+    @media (max-width: 768px) {
+      padding: 2rem 1.5rem;
+      max-width: 100%;
+    }
+
+    .auth-title {
+      font-family: $headings-font-family;
+      font-size: $h2-font-size;
+      font-weight: 700;
+      color: $primary-dark;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .auth-subtitle {
+      color: $neutral;
+      font-size: $font-size-base;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+  }
+
+  // Formulaires
+  .auth-form {
+    .form-label {
+      font-weight: 600;
+      color: $primary;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+      border: 1px solid $border-light-gray;
+      border-radius: $border-radius-sm;
+      padding: 0.55rem 0.8rem;
+      font-size: $font-size-base;
+      transition: $transition-base;
+
+      &:focus {
+        border-color: $primary-dark;
+        box-shadow: 0 0 0 3px rgba($primary-dark, 0.1);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    // InputGroup pour mot de passe avec bouton œil
+    .input-group {
+      position: relative;
+
+      .form-control {
+        padding-right: 3rem;
+      }
+
+      .btn-icon-input-group-text {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        background: transparent;
+        border: none;
+        padding: 0 0.875rem;
+        color: $neutral;
+        z-index: 3;
+        transition: $transition-base;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          color: $primary-dark;
+          background: transparent;
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: none;
+          color: $primary-dark;
+        }
+
+        i {
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    // Bouton principal
+    .btn-primary {
+      background-color: $primary-dark;
+      border-color: $primary-dark;
+      font-weight: 600;
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+      border-radius: $border-radius-sm;
+      transition: $transition-base;
+
+      &:hover:not(:disabled) {
+        background-color: $primary;
+        transform: translateY(-2px);
+        box-shadow: $box-shadow-hover-sm;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    // Bouton secondaire (connexion)
+    .btn-secondary {
+      background-color: $secondary;
+      border-color: $secondary;
+      font-weight: 600;
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+      border-radius: $border-radius-sm;
+
+      &:hover:not(:disabled) {
+        background-color: $secondary-light;
+        transform: translateY(-2px);
+        box-shadow: $box-shadow-hover-sm;
+      }
+    }
+  }
+
+  // Lien alternatif (inscription/connexion)
+  .auth-alt-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: $neutral;
+    font-size: 0.9rem;
+
+    a {
+      color: $primary-dark;
+      text-decoration: none;
+      font-weight: 600;
+      transition: $transition-base;
+
+      &:hover {
+        color: $primary;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // Alerts
+  .alert {
+    border-radius: $border-radius-sm;
+    margin-bottom: 1.5rem;
+    padding: 0.875rem 1rem;
+
+    &.alert-danger {
+      background-color: lighten($secondary, 40%);
+      color: darken($secondary, 20%);
+      border: none;
+    }
+
+    &.alert-success {
+      background-color: lighten($success, 40%);
+      color: darken($success, 20%);
+      border: none;
+    }
+  }
+
+  // Divider avec texte
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid $border-light-gray;
+    }
+
+    span {
+      padding: 0 1rem;
+      color: $neutral;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Card "Première visite" pour la page connexion
+.auth-info-box {
+  background: $light;
+  border: 1px solid $border-light-gray;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: $primary-dark;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: $text-dark;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: $primary-dark;
+    text-decoration: underline;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}

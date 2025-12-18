@@ -58,9 +58,24 @@ applications:
     variables:
       env:
         NODE_ENV: "production"
+        # Augmente la heap size Node.js à 1.5GB pour éviter les crashes mémoire
+        NODE_OPTIONS: "--max-old-space-size=1536"
+        # Désactive la télémétrie Next.js
+        NEXT_TELEMETRY_DISABLED: "1"
 
 # Configuration des routes
 routes:
+  # Route par défaut pour les environnements de staging (domaines auto-générés)
+  "https://{default}/":
+    type: upstream
+    upstream: "app:http"
+    cache:
+      enabled: false
+
+  "http://{default}/":
+    type: redirect
+    to: "https://{default}/"
+
   # Redirection HTTP domaine apex vers HTTPS www
   "http://sinese.fr/":
     type: redirect
@@ -81,5 +96,16 @@ routes:
     type: upstream
     upstream: "app:http"
     cache:
-      enabled: true
-      cookies: ["*"]
+      enabled: false
+
+  # Redirection HTTP publications vers HTTPS publications
+  "http://publications.sinese.fr/":
+    type: redirect
+    to: "https://publications.sinese.fr/"
+
+  # Route HTTPS publications (sous-domaine)
+  "https://publications.sinese.fr/":
+    type: upstream
+    upstream: "app:http"
+    cache:
+      enabled: false

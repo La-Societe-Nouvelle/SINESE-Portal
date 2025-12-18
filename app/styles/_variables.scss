@@ -47,18 +47,7 @@ $success-green: #28a745;        // Répété dans macroeconomies.scss, api.scss
 $danger-red: #dc3545;           // Répété dans api.scss
 $info-blue: #17a2b8;           // Répété dans macroeconomies.scss
 
-// Couleurs fréquemment utilisées en dur
-$white: #ffffff;
-$gray-50: #f9fafb;
-$gray-100: #f3f4f6;
-$gray-200: #e5e7eb;
-$gray-300: #d1d5db;
-$gray-400: #9ca3af;
-$gray-500: #6b7280;
-$gray-600: #4b5563;
-$gray-700: #374151;
-$gray-800: #1f2937;
-$gray-900: #111827;
+
 
 // Couleurs de background communes
 $bg-light-gray: #f8f9fa;
@@ -189,10 +178,25 @@ $nav-link-font-size: 0.85rem;
 // 7. COMPOSANTS - Cards, Dropdowns, etc.
 // =============================================================================
 
-// Cards
-$card-cap-bg: #fbfbff;
-$card-border-width: 0;
-$card-cap-padding-y: 1rem;
+// Cards - Customisation complète Bootstrap
+$card-spacer-y: 1rem;                   // Padding vertical intérieur
+$card-spacer-x: 1rem;                   // Padding horizontal intérieur
+$card-title-spacer-y: 0.5rem;           // Espacement après titre de card
+$card-title-color: $primary-dark;       // Couleur des titres de card
+$card-subtitle-color: $text-muted;      // Couleur des sous-titres
+$card-border-width: 0;                  // Pas de bordure
+$card-border-color: transparent;        // Couleur bordure (invisible)
+$card-border-radius: $border-radius;    // Border radius standard
+$card-inner-border-radius: $border-radius;
+$card-cap-padding-y: 1rem;              // Padding header card
+$card-cap-padding-x: 1rem;              // Padding horizontal header
+$card-cap-bg: #fbfbff;                  // Fond header card
+$card-cap-color: $primary-dark;         // Couleur texte header
+$card-height: auto;                     // Hauteur auto
+$card-color: $body-color;               // Couleur texte card
+$card-bg: #ffffff;                      // Fond card blanc
+$card-img-overlay-padding: 1rem;        // Padding overlay image
+$card-group-margin: 0.75rem;            // Espacement group cards
 
 // Accordeons
 $accordion-button-active-bg: #fff;
@@ -210,7 +214,8 @@ $dropdown-link-hover-bg: $light;
 
 // Autres composants
 $badge-font-weight: 600;
-$modal-content-bg: $light;
+$modal-content-bg: #fff;
+$modal-padding: 2rem;
 $pagination-font-size: 0.8rem;
 $form-check-input-border: 1px solid rgba($primary-light, .7);
 $input-border-color: rgba($primary-light, .7);
@@ -246,5 +251,6 @@ $hover-lift-lg-distance: -4px;
 $hover-scale-factor: 1.05;
 $hover-scale-sm-factor: 1.02;
 
- 
+$emphasis-color-rgba: rgb(135, 182, 244, 0.1); 
+
 @import "bootstrap/scss/bootstrap";

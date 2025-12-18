@@ -111,9 +111,23 @@ function getFallbackDatasets() {
 }
 
 /**
- * Endpoint POST pour forcer la synchronisation (temporairement désactivé)
+ * Endpoint POST pour forcer la synchronisation (réservé aux admins)
  */
 export async function POST(request) {
+  const { getServerSession } = await import("next-auth");
+  const { authOptions } = await import("../auth/[...nextauth]/route");
+
+  // Vérifier l'authentification
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Non autorisé. Veuillez vous connecter." }, { status: 401 });
+  }
+
+  // Vérifier le rôle admin
+  if (session.user.role !== "admin") {
+    return NextResponse.json({ error: "Accès refusé. Droits administrateur requis." }, { status: 403 });
+  }
+
   try {
     const { force } = await request.json();
     

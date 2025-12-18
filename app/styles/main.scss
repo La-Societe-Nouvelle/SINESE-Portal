@@ -1,4 +1,3 @@
-
 // =============================================================================
 // SINESE Portal - Main SCSS Entry Point
 // Architecture optimisée pour la réutilisabilité et la maintenabilité
@@ -15,12 +14,13 @@
 @import "parts/footer";
 
 // 3. COMPONENTS - Composants réutilisables
+@import "components/forms";
 @import "components/react-select";
 @import "components/company-cards";
 @import "components/macro-sidebar";
 @import "components/loading-state";
 @import "components/search-results-divider";
-@import "components/components";
+@import "components/tables";
 
 // 4. UTILITIES - Système responsive centralisé
 @import "utilities/responsive";
@@ -33,6 +33,8 @@
 @import "pages/companyFootprint";
 @import "pages/datasets";
 @import "pages/api";
+@import "pages/publications";
+@import "pages/auth";
 
 
 
@@ -50,6 +52,7 @@
 html,
 body {
   cursor: default;
+  background-color: $light;
 }
 
 
@@ -73,11 +76,7 @@ a {
   }
 }
 
-// Modern focus states
-*:focus {
-  outline: 2px solid rgba($secondary, 0.5);
-  outline-offset: 2px;
-}
+
 
 // Remove focus outline from logo in header
 .navbar-brand:focus {
@@ -122,8 +121,9 @@ ol {
   border-color: $bg-subtle !important;
 }
 
-.bg-light , .bg-info{
- color : $primary;
+.bg-light,
+.bg-info {
+  color: $primary;
 }
 
 .bg-badge-light-secondary {
@@ -238,16 +238,16 @@ p {
   align-items: center;
   justify-content: center;
   @extend .btn-hover-lift;
-  
+
   &:hover {
     background-color: $secondary-darker-5;
     box-shadow: 0 6px 20px rgba($secondary, 0.4);
   }
-  
+
   &:focus {
     @extend .focus-ring;
   }
-  
+
   @media (max-width: 768px) {
     width: 45px;
     height: 45px;
@@ -256,15 +256,15 @@ p {
   }
 }
 
-// Pagination moderne cohérente avec le design system
+// Pagination 
 .pagination {
   --bs-pagination-border-radius: #{$border-radius-sm};
   --bs-pagination-font-size: 0.875rem;
   --bs-pagination-font-weight: #{$btn-font-weight};
-  
+
   .page-item {
     margin: 0 0.125rem;
-    
+
     .page-link {
       border: 1px solid rgba($primary, 0.08);
       color: $primary;
@@ -274,7 +274,7 @@ p {
       @extend .transition-smooth;
       font-weight: $btn-font-weight;
       box-shadow: 0 1px 3px rgba($primary, 0.04);
-      
+
       &:hover {
         background-color: $light;
         border-color: rgba($primary, 0.15);
@@ -282,21 +282,21 @@ p {
         transform: translateY(-1px);
         box-shadow: 0 2px 8px rgba($primary, 0.08);
       }
-      
+
       &:focus {
         box-shadow: 0 0 0 3px rgba($primary, 0.15);
         border-color: $primary-light;
         outline: none;
       }
     }
-    
+
     &.active .page-link {
       background-color: $secondary;
       border-color: $secondary;
       color: white;
       box-shadow: 0 2px 8px rgba($secondary, 0.25);
       transform: translateY(-1px);
-      
+
       &:hover {
         background-color: $secondary-darker-5;
         border-color: $secondary-darker-5;
@@ -304,36 +304,36 @@ p {
         box-shadow: 0 3px 12px rgba($secondary, 0.35);
       }
     }
-    
+
     &.disabled .page-link {
       color: $text-muted;
       background-color: $bg-light-gray;
       border-color: rgba($primary, 0.05);
       cursor: not-allowed;
       opacity: 0.6;
-      
+
       &:hover {
         transform: none;
         box-shadow: 0 1px 3px rgba($primary, 0.04);
       }
     }
-    
+
     &:first-child .page-link {
       border-radius: $border-radius-sm;
     }
-    
+
     &:last-child .page-link {
       border-radius: $border-radius-sm;
     }
   }
-  
+
   // Style spécial pour les ellipsis
   .page-item .page-link.disabled {
     background: transparent;
     border: none;
     color: $text-muted;
     cursor: default;
-    
+
     &:hover {
       background: transparent;
       transform: none;
@@ -342,11 +342,21 @@ p {
   }
 }
 
+.main-content {
+  min-height: calc(100vh - 160px); 
+  padding-bottom: 2rem;
+}
+
+
+  small {
+    font-size: 0.7rem;
+  }
+
 // Version compacte pour mobile
 @media (max-width: 768px) {
   .pagination {
     --bs-pagination-font-size: 0.75rem;
-    
+
     .page-item .page-link {
       padding: 0.375rem 0.5rem;
       min-width: 2.25rem;
@@ -355,3 +365,8 @@ p {
 }
 
 
+// Modal Content Customization
+
+.modal-body {
+  padding: $modal-padding;
+}

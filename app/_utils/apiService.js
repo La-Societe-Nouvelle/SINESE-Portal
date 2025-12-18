@@ -3,7 +3,7 @@
  * Handles all interactions with La Société Nouvelle API
  */
 
-import { buildLegalUnitSearchUrl, convertFiltersToApiFormat, getQueryType } from './apiUrlBuilder';
+import { buildLegalUnitSearchUrl, convertFiltersToApiFormat } from './apiUrlBuilder';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
 

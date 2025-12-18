@@ -5,43 +5,56 @@
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://sinese.fr/</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
     <priority>1.00</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://sinese.fr/portail</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
+    <loc>https://sinese.fr/recherche</loc>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
+    <priority>0.95</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://sinese.fr/macroeconomies</loc>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
     <priority>0.90</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://sinese.fr/publier-empreinte</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.80</priority>
+    <loc>https://sinese.fr/datasets</loc>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
+    <priority>0.90</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://sinese.fr/faq</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.64</priority>
+    <loc>https://sinese.fr/api</loc>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
+    <priority>0.85</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://sinese.fr/newsletter</loc>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
+    <priority>0.70</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://sinese.fr/contact</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.50</priority>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
+    <priority>0.70</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://lasocietenouvelle.org/mentions-legales</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
+    <loc>https://sinese.fr/mentions-legales</loc>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
     <priority>0.40</priority>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>https://lasocietenouvelle.org/politique-confidentialite</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
+    <loc>https://sinese.fr/politique-confidentialite</loc>
+    <lastmod>2025-11-07T00:00:00+00:00</lastmod>
     <priority>0.40</priority>
+    <changefreq>yearly</changefreq>
   </url>
-  <url>
-    <loc>https://lasocietenouvelle.org/portail/company/889182770</loc>
-    <lastmod>2023-04-26T08:05:00+00:00</lastmod>
-    <priority>0.40</priority>
-  </url>
-
 </urlset>
