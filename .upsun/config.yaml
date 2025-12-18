@@ -98,14 +98,21 @@ routes:
     cache:
       enabled: false
 
-  # Redirection HTTP publications vers HTTPS publications
-  "http://publication.sinese.fr/":
-    type: redirect
-    to: "https://publication.sinese.fr/"
-
   # Route HTTPS publications (sous-domaine)
   "https://publication.sinese.fr/":
     type: upstream
     upstream: "app:http"
     cache:
       enabled: false
+    redirects:
+      paths:
+        "/":
+          to: "https://www.sinese.fr/publications"
+          prefix: true
+          append_suffix: true
+          code: 301
+
+  # Redirection de publication.sinese.fr vers www.sinese.fr/publications/ (avec le chemin)
+  "https://publication.sinese.fr/{path}":
+    type: redirect
+    to: "https://www.sinese.fr/publications/{path}"
