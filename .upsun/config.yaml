@@ -111,8 +111,3 @@ routes:
           prefix: true
           append_suffix: true
           code: 301
-
-  # Redirection de publication.sinese.fr vers www.sinese.fr/publications/ (avec le chemin)
-  "https://publication.sinese.fr/{path}":
-    type: redirect
-    to: "https://www.sinese.fr/publications/{path}"
