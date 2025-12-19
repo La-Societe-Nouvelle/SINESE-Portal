@@ -2,6 +2,7 @@ import "./styles/main.scss";
 import NavbarSwitcher from "./_components/NavbarSwitcher";
 import BackToTop from "./_components/BackToTop";
 import Footer from "./_components/footer";
+import PartnershipBanner from "./_components/PartnershipBanner";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
@@ -58,8 +59,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <body>
-        
+
         <NavbarSwitcher />
+        <PartnershipBanner />
         <main className="main-content flex-grow-1">
           {children}
         </main>
