@@ -65,6 +65,7 @@ export async function GET(req) {
 
       // 404 = pas de résultats trouvés, retourner un tableau vide avec 200
       if (apiRes.status === 404) {
+        console.error(`[API 404] GET ${req.url} - Aucun résultat trouvé. Filters: ${JSON.stringify(frontendFilters)}`);
         return Response.json({
           legalUnits: [],
           message: "Aucun résultat trouvé"
