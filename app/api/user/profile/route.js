@@ -29,6 +29,7 @@ export async function GET(request) {
     );
 
     if (result.rows.length === 0) {
+      console.error(`[API 404] GET ${request.url} - Utilisateur non trouvé.`);
       return NextResponse.json(
         { error: "Utilisateur non trouvé." },
         { status: 404 }
@@ -102,6 +103,7 @@ export async function PUT(request) {
     );
 
     if (result.rows.length === 0) {
+      console.error(`[API 404] PUT ${request.url} - Utilisateur non trouvé. Body: ${JSON.stringify({ firstName, lastName, profile })}`);
       return NextResponse.json(
         { error: "Utilisateur non trouvé." },
         { status: 404 }

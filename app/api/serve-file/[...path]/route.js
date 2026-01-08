@@ -15,6 +15,7 @@ export async function GET(request, { params }) {
     try {
       await access(fullPath);
     } catch {
+      console.error(`[API 404] GET ${request.url} - Fichier non trouvé: ${fullPath}`);
       return NextResponse.json(
         { error: 'Fichier non trouvé' }, 
         { status: 404 }

@@ -24,6 +24,7 @@ export async function DELETE(req, { params }) {
     );
 
     if (checkRes.rows.length === 0) {
+      console.error(`[API 404] DELETE ${req.url} - Publication not found or access denied. Params: ${JSON.stringify(params)}`);
       return NextResponse.json(
         { error: "Publication not found or access denied" },
         { status: 404 }
