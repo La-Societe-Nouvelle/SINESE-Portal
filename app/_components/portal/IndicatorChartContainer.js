@@ -61,6 +61,7 @@ export const IndicatorChartContainer = ({
                   height="30"
                   src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
                   alt={indic}
+                  style={{ objectFit: 'contain' }}
                 />
               ) : (
                 <Image
@@ -68,6 +69,7 @@ export const IndicatorChartContainer = ({
                   height="30"
                   src={logoPath}
                   alt={indic}
+                  style={{ objectFit: 'contain' }}
                 />
               )}
             </div>
@@ -146,6 +148,7 @@ export const IndicatorChartContainer = ({
                     height="40"
                     src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
                     alt={indic}
+                    style={{ objectFit: 'contain' }}
                   />
                 ) : (
                   <Image
@@ -153,6 +156,7 @@ export const IndicatorChartContainer = ({
                     height="40"
                     src={logoPath}
                     alt={indic}
+                    style={{ objectFit: 'contain' }}
                   />
                 )}
               </div>
