@@ -93,6 +93,7 @@ export default function FootprintSection({
                     legalUnitData={allData}
                     divisionData={divisionFootprint}
                     historicalDivisionFootprint={historicalDivisionFootprint}
+                    showLink={false}
                   />
                 ))
               }

@@ -24,7 +24,8 @@ export const IndicatorChartContainer = ({
   legalUnitData,
   divisionData,
   historicalData,
-  historicalDivisionFootprint
+  historicalDivisionFootprint,
+  showLink = true
 }) => {
   // --------------------------------------------------
   // Metadonnées
@@ -111,16 +112,23 @@ export const IndicatorChartContainer = ({
               <Eye size={14} className="me-1" />
               Voir détails
             </button>
+            {
+              showLink && (
+                <>
+                  <a
+                    href={`https://lasocietenouvelle.org/indicateurs/${indic.toLowerCase()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn small btn-light btn-sm d-flex align-items-center"
+                  >
+                    <ExternalLink size={10} className="me-1" />
+                    En savoir plus
+                  </a>
+                </>
+              )
+            }
 
-            <a
-              href={`https://lasocietenouvelle.org/indicateurs/${indic.toLowerCase()}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn small btn-light btn-sm d-flex align-items-center"
-            >
-              <ExternalLink size={10} className="me-1" />
-              En savoir plus
-            </a>
+
           </div>
 
           {/* Source */}
@@ -158,7 +166,7 @@ export const IndicatorChartContainer = ({
               </div>
               <div className="flex-grow-1">
                 <Modal.Title className="mb-1 text-primary">{libelle}</Modal.Title>
-        
+
               </div>
             </div>
           </Modal.Header>
