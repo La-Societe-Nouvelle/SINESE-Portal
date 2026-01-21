@@ -15,44 +15,37 @@ export async function GET(_req, { params }) {
       );
     }
 
-    // Récupérer la dernière publication avec des documents publiés pour le SIREN donné
-    const { rows } = await pool.query(
-      `SELECT p.id, p.year, p.documents, p.period_start, p.period_end, p.updated_at,
-              lu.denomination, lu.siren
-       FROM publications.publications p
-       JOIN publications.legal_units lu ON lu.id = p.legal_unit_id
-       WHERE lu.siren = $1 AND p.status = 'published' AND p.documents IS NOT NULL
-       ORDER BY p.year DESC
-       LIMIT 1`,
+    // Rapports depuis footprints.reports uniquement
+    const footprintsResult = await pool.query(
+      `SELECT id, siren, type, year,
+              mime_type, file_origin, file_url AS url, storage_type, file_name,
+              file_size, upload_date,
+              created_at, updated_at
+         FROM footprints.reports
+        WHERE siren = $1
+        ORDER BY year DESC`,
       [siren]
     );
 
-    if (rows.length === 0) {
-      return NextResponse.json(
-        { hasPublishedDocuments: false },
-        { status: 200 }
-      );
-    }
-
-    const publication = rows[0];
-
-    // Filtrer les documents (on peut vouloir seulement les rapports par exemple)
-    const documents = Array.isArray(publication.documents) ? publication.documents : [];
+    const reports = footprintsResult.rows.map(report => ({
+      id: report.id,
+      siren: report.siren,
+      type: report.type,
+      year: report.year,
+      url: report.url,
+      fileOrigin: report.file_origin,
+      fileName: report.file_name,
+      fileSize: report.file_size,
+      contentType: report.mime_type,
+      uploadedAt: report.upload_date,
+      storageType: report.storage_type,
+      createdAt: report.created_at,
+      updatedAt: report.updated_at
+    }));
 
     return NextResponse.json({
-      hasPublishedDocuments: documents.length > 0,
-      publication: {
-        id: publication.id,
-        year: publication.year,
-        periodStart: publication.period_start,
-        periodEnd: publication.period_end,
-        updatedAt: publication.updated_at,
-        legalUnit: {
-          denomination: publication.denomination,
-          siren: publication.siren
-        }
-      },
-      documents: documents
+      hasPublishedDocuments: reports.length > 0,
+      documents: reports
     });
   } catch (error) {
     console.error("Erreur récupération rapports publiés:", error);

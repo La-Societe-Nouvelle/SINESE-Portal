@@ -1,16 +1,12 @@
 "use client";
 
-import {  Info, RefreshCcw } from "lucide-react";
-import { Button } from "react-bootstrap";
+import {  Info } from "lucide-react";
 
-export default function DefaultDataExplanation({ hasDefaultData }) {
+export default function DefaultDataExplanation() {
   if (!hasDefaultData) return null;
 
   return (
-    <div className="mb-4 p-4 shadow-sm " style={{
-      borderLeft: '4px solid #f9a13cff',
-      borderRadius: '0 1rem 1rem 0'
-    }}>
+    <div className="mb-4 p-4 shadow-sm default-data-explanation">
       <div className="d-flex align-items-center justify-content-start mb-2">
         <Info size={16} className=" me-2" />
         <h3 className="h6 mb-0 ">Données sectorielles utilisées</h3>
@@ -24,12 +20,6 @@ export default function DefaultDataExplanation({ hasDefaultData }) {
       <p className="mt-3 mb-2 fw-medium" style={{ fontSize: '0.9rem', color: '#1e3a8a' }}>
         <strong>Vous êtes dirigeant de cette entreprise ?</strong> Publiez vos données réelles pour améliorer la précision de votre empreinte sociétale.
       </p>
-      <Button variant="primary" 
-      className="mt-2"
-      onClick={() => window.open('https://publication.sinese.fr', '_blank')}>
-        <RefreshCcw size={16} className="me-2" />
-        Actualiser mes empreintes
-      </Button>
     </div>
   );
 }
