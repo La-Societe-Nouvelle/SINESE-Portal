@@ -96,7 +96,7 @@ export default function RecapForm({
         <div className="recap-section">
           <h4>
             <FileText size={20} className="me-2" style={{ display: 'inline' }} />
-            Documents joints ({documents.length})
+            Documents ({documents.length})
           </h4>
           <ListGroup variant="flush">
             {documents.map((doc) => (

@@ -2,11 +2,9 @@ import { useState, useMemo } from "react";
 
 const DEFAULT_STEPS = [
   { key: "formEntreprise", label: "Entreprise", icon: "Building" },
-  { key: "formDeclaration", label: "Déclaration", icon: "FileText", disabled: true },
-  { key: "formEmpreinte", label: "Empreinte Sociétale", parent: "formDeclaration" },
-  { key: "formExtraIndic", label: "Indicateurs supplémentaires", parent: "formDeclaration" },
-  { key: "formDocuments", label: "Rapports RSE/ESG", icon: "FileText" },
-  { key: "formRecap", label: "Récapitulatif", icon: "BarChart3" },
+  { key: "formIndicateurs", label: "Indicateurs", icon: "BarChart3" },
+  { key: "formRapport", label: "Rapport RSE/ESG", icon: "FileText" },
+  { key: "formRecap", label: "Récapitulatif", icon: "CheckCircle" },
 ];
 
 export default function usePublicationSteps({ initialStep = "formEntreprise", steps = DEFAULT_STEPS } = {}) {

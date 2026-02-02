@@ -1,7 +1,7 @@
 "use client";
 
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Dropdown } from "react-bootstrap";
-import { LogOut, Upload, Settings, User, Shield } from "lucide-react";
+import { LogOut, Upload, Settings, User, Shield, Home } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
 export default function PublicationsNavbar() {
@@ -27,14 +27,18 @@ export default function PublicationsNavbar() {
         <NavbarToggle aria-controls="publications-navbar-nav" />
         <NavbarCollapse id="publications-navbar-nav">
           <Nav className="me-auto">
+            <NavLink href="/publications/espace" className="nav-item-custom">
+              <Home size={16} className="me-2" />
+              <span>Mon espace</span>
+            </NavLink>
             <NavLink href="/publications/espace/publier" className="nav-item-custom">
               <Upload size={16} className="me-2" />
-              <span>Demande de publication</span>
+              <span>Nouvelle publication</span>
             </NavLink>
 
             <NavLink href="/publications/espace/gestion" className="nav-item-custom">
               <Settings size={16} className="me-2" />
-              <span>Gérer mes publications</span>
+              <span>Suivre mes publications</span>
             </NavLink>
 
             {session?.user?.role === "admin" && (

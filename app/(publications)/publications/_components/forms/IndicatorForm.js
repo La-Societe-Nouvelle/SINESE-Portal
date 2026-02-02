@@ -111,21 +111,7 @@ export default function IndicatorForm({ name, unit, data, category, onChange, ur
           </div>
         </Col>
       </Row>
-      {url && (
-        <div className="indicator-doc-link mt-3">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="d-flex align-items-center gap-2"
-            tabIndex={0}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <HelpCircle size={16} />
-            <span>Voir la documentation</span>
-          </a>
-        </div>
-      )}
+
     </Form.Group>
   );
 }

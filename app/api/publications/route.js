@@ -17,10 +17,10 @@ export async function POST(request) {
     const declarationData = JSON.parse(formData.get("declarationData"));
     const documents = formData.get("documents") ? JSON.parse(formData.get("documents")) : [];
     const year = formData.get("year");
-    const periodStart = formData.get("periodStart");
-    const periodEnd = formData.get("periodEnd");
-    if (!year || !periodStart || !periodEnd) {
-      return NextResponse.json({ error: "Année, période de début et de fin sont requis." }, { status: 400 });
+    const periodStart = formData.get("periodStart") || null;
+    const periodEnd = formData.get("periodEnd") || null;
+    if (!year) {
+      return NextResponse.json({ error: "L'année est requise." }, { status: 400 });
     }
     const status = formData.get("status");
     const legalUnitId = legalUnit.id;

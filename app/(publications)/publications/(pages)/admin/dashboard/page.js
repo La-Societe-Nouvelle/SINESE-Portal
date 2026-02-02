@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Container, Card, Table, Badge, Spinner, Alert, Button, Row, Col, Modal } from "react-bootstrap";
-import { ClipboardList, Building2, Calendar, User, ExternalLink, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3 } from "lucide-react";
+import { ClipboardList, Building2, Calendar, User, ExternalLink, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3, CheckCircle, XCircle, Link2 } from "lucide-react";
 import Link from "next/link";
 import indicators from "../../../_lib/indicators.json";
 
@@ -12,6 +12,7 @@ export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [publications, setPublications] = useState([]);
+  const [pendingReports, setPendingReports] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,6 +49,13 @@ export default function AdminDashboard() {
       }
       const pendingData = await pendingRes.json();
       setPublications(pendingData.publications);
+
+      // Fetch pending reports
+      const reportsRes = await fetch("/api/admin/pending-reports");
+      if (reportsRes.ok) {
+        const reportsData = await reportsRes.json();
+        setPendingReports(reportsData.reports || []);
+      }
 
       // Fetch statistics
       const statsRes = await fetch("/api/admin/publications-stats");
@@ -108,6 +116,23 @@ export default function AdminDashboard() {
   const closeDetailsModal = () => {
     setShowDetailsModal(false);
     setSelectedPublication(null);
+  };
+
+  const handleReportAction = async (reportId, newStatus) => {
+    try {
+      const res = await fetch(`/api/admin/reports/${reportId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) {
+        throw new Error("Erreur lors de la mise à jour du rapport");
+      }
+      // Remove from pending list
+      setPendingReports((prev) => prev.filter((r) => r.id !== reportId));
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   if (status === "loading" || loading) {
@@ -319,6 +344,82 @@ export default function AdminDashboard() {
                         <Eye size={14} className="me-1" style={{ display: 'inline' }} />
                         Voir
                       </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Card.Body>
+      </Card>
+
+      {/* Pending Reports */}
+      <Card className="mt-4">
+        <Card.Header className="bg-light">
+          <div className="d-flex justify-content-between align-items-center">
+            <h5 className="mb-0">Rapports en attente de validation</h5>
+            <Badge bg="info" pill>
+              {pendingReports.length}
+            </Badge>
+          </div>
+        </Card.Header>
+        <Card.Body className="p-0">
+          {pendingReports.length === 0 ? (
+            <div className="text-center py-5">
+              <FileText size={48} className="text-muted mb-3" />
+              <p className="text-muted">Aucun rapport en attente de validation</p>
+            </div>
+          ) : (
+            <Table responsive hover className="mb-0">
+              <thead>
+                <tr>
+                  <th style={{ width: "8%" }}>Année</th>
+                  <th style={{ width: "15%" }}>SIREN</th>
+                  <th style={{ width: "15%" }}>Type</th>
+                  <th style={{ width: "17%" }}>Document</th>
+                  <th style={{ width: "15%" }}>Utilisateur</th>
+                  <th style={{ width: "15%" }}>Date</th>
+                  <th style={{ width: "15%" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingReports.map((report) => (
+                  <tr key={report.id}>
+                    <td><strong>{report.year}</strong></td>
+                    <td><code className="small">{report.siren}</code></td>
+                    <td><Badge bg="info">{report.type}</Badge></td>
+                    <td>
+                      {report.file_url && (
+                        <a href={report.file_url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline-secondary">
+                          {report.file_origin === "external" ? (
+                            <><Link2 size={14} className="me-1" style={{ display: "inline" }} />Lien</>
+                          ) : (
+                            <><Download size={14} className="me-1" style={{ display: "inline" }} />{report.file_name || "Fichier"}</>
+                          )}
+                        </a>
+                      )}
+                    </td>
+                    <td><span className="small text-muted">{report.user_email || "-"}</span></td>
+                    <td><span className="small text-muted">{formatDate(report.created_at)}</span></td>
+                    <td>
+                      <div className="d-flex gap-1">
+                        <Button
+                          variant="outline-success"
+                          size="sm"
+                          onClick={() => handleReportAction(report.id, "published")}
+                          title="Approuver"
+                        >
+                          <CheckCircle size={14} style={{ display: "inline" }} />
+                        </Button>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => handleReportAction(report.id, "rejected")}
+                          title="Rejeter"
+                        >
+                          <XCircle size={14} style={{ display: "inline" }} />
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import PortalNavbar from "./PortalNavbar";
+import PartnershipBanner from "./PartnershipBanner";
 
 export default function NavbarSwitcher() {
   const pathname = usePathname();
@@ -12,5 +13,11 @@ export default function NavbarSwitcher() {
     return null;
   }
 
-  return <PortalNavbar />;
+  return (
+    <>
+      <PortalNavbar />
+      <PartnershipBanner />
+    </>
+
+  )
 }

@@ -1,0 +1,137 @@
+// Year Selector Component Styles
+// Interactive year selection with optional period detail
+
+// Style for disabled options in year select
+select option:disabled {
+  color: #9ca3af !important;
+  font-style: italic;
+}
+
+.year-selector-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+
+  &:hover:not(.active) {
+    border-color: lighten( $primary, 40%);
+    background-color: #fafbfc;
+  }
+
+  &.active {
+    border-color: lighten( $primary, 20%);
+    background-color: rgba(30, 64, 175, 0.05);
+  }
+}
+
+.year-selector-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.year-selector-card-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.year-selector-card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  background-color: #f3f4f6;
+
+  .year-selector-card.active & {
+    background-color: #1e40af;
+
+    svg {
+      color: #ffffff;
+    }
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #9ca3af;
+    transition: color 0.2s ease;
+  }
+}
+
+.year-selector-card-text {
+  h6 {
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 1rem;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+}
+
+.year-selector-card-checkbox {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  .year-selector-card.active & {
+    background-color: #1e40af;
+
+    svg {
+      color: #ffffff;
+    }
+  }
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: transparent;
+    transition: color 0.2s ease;
+  }
+}
+
+.year-selector-period-section {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: #f9fafb;
+
+  h5 {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .period-inputs {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+
+    .period-input-group {
+      flex-grow: 1;
+    }
+
+    .period-separator {
+      color: #9ca3af;
+      font-weight: 500;
+      padding-bottom: 0.5rem;
+    }
+  }
+}

@@ -76,7 +76,7 @@ export default async function EspacePage() {
               <div className="row">
                 <div className="col-10">
                   <div className="card-body">
-                    <h4 className="card-title">Publier des indicateurs</h4>
+                    <h4 className="card-title">Nouvelle publication</h4>
                     <p className="card-text">Commencez une nouvelle déclaration pour une entreprise.</p>
                     <a href="/publications/espace/publier" className="btn btn-secondary">
                       Accéder au formulaire
@@ -85,6 +85,25 @@ export default async function EspacePage() {
                 </div>
                 <div className="col-2 d-flex align-items-center justify-content-center">
                   <img src="/illustrations/form.svg" alt="" className="img-fluid" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="card mb-4 p-3 shadow-sm">
+              <div className="row">
+                <div className="col-10">
+                  <div className="card-body">
+                    <h4 className="card-title">Publier un rapport</h4>
+                    <p className="card-text">Publiez un rapport de durabilité (RSE, CSRD, ESG, VSME...) pour une entreprise.</p>
+                    <a href="/publications/espace/publier" className="btn btn-secondary">
+                      Accéder au formulaire
+                    </a>
+                  </div>
+                </div>
+                <div className="col-2 d-flex align-items-center justify-content-center">
+                  <img src="/illustrations/documents.svg" alt="" className="img-fluid" />
                 </div>
               </div>
             </div>
