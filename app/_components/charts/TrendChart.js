@@ -45,20 +45,21 @@ function TrendChart({ indic, aggregate, code, branch }) {
   const [error, setError] = useState(false);
 
   const getHistoricalDataTrend = async () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
     await axios
       .get(
-        `${apiUrl}/serie/MACRO_HISTORICALDATA_TREND_${indic}_FRA_BRANCH?area=FRA&code=${code}&aggregate=${aggregate}`
+        `${apiUrl}/v2/macrodata/macro_fpt_a88?division=${code}&aggregate=${aggregate}&area=FRA&indic=${indic}`
       )
       .then((response) => {
-        if (response.data.header.code == 200) {
-          setTitle(response.data.meta.label);
-          setSourceTrend(response.data.meta.source);
-          setInfoTrend(response.data.meta.info);
-          setUnit(response.data.meta.unitSymbol);
-          setTrends(response.data.data);
+        const resData = response.data;
+        if (resData.data) {
+          setTitle(resData.meta?.label || `Tendance ${indic}`);
+          setSourceTrend(resData.meta?.source);
+          setInfoTrend(resData.meta?.info);
+          setUnit(resData.meta?.unitSymbol || '');
+          setTrends(resData.data);
         } else {
-          setError(response.data.header);
+          setError(resData.error);
         }
       })
       .catch((error) => {
@@ -67,18 +68,19 @@ function TrendChart({ indic, aggregate, code, branch }) {
   };
 
   const getTargetData = async (id) => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
     await axios
       .get(
-        `${apiUrl}/serie/${id}?area=FRA&code=${code}&aggregate=${aggregate}`
+        `${apiUrl}/v2/macrodata/${id}?area=FRA&code=${code}&aggregate=${aggregate}`
       )
       .then((response) => {
-        if (response.data.header.code == 200) {
-          setSourceTarget(response.data.meta.source);
-          setInfoTarget(response.data.meta.info);
-          setTarget(response.data.data);
+        const resData = response.data;
+        if (resData.data) {
+          setSourceTarget(resData.meta?.source);
+          setInfoTarget(resData.meta?.info);
+          setTarget(resData.data);
         } else {
-          setError(response.data.header);
+          setError(resData.error);
         }
       })
       .catch((error) => {

@@ -28,9 +28,9 @@ export default function MacroeconomiesPage() {
     try {
       setIsLoadingMetadata(true);
       setError(null);
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
       const response = await fetch(
-        `${apiUrl}/macrodata/metadata/macro_fpt`
+        `${apiUrl}/v2/macrodata/macro_fpt/metadata`
       );
       
       if (!response.ok) {
@@ -57,9 +57,9 @@ export default function MacroeconomiesPage() {
       setIsLoadingData(true);
       setError(null);
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
       const params = new URLSearchParams(selectedValues);
-      const url = `${apiUrl}/macrodata/${dataset}?${params}`;
+      const url = `${apiUrl}/v2/macrodata/${dataset}?${params}`;
 
       const response = await fetch(url);
       

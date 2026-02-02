@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
+
 export function useCompanyData(siren) {
   const [data, setData] = useState({
     legalUnit: null,
@@ -21,23 +23,20 @@ export function useCompanyData(siren) {
       setLoading(true);
       setError(null);
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
-
-      const res = await fetch(`${apiUrl}/legalunitFootprint/${siren}`);
-   
+      const res = await fetch(`${API_BASE_URL}/v2/legalunitfootprint/${siren}`);
       const response = await res.json();
 
-      if (response.header?.code === 200) {
+      if (res.ok && response.data) {
         setData(prev => ({
           ...prev,
-          legalUnit: response.legalUnit,
-          footprint: response.footprint,
-          additionnalData: response.additionnalData,
-          meta: response.metaData
+          legalUnit: response.data.legalUnit,
+          footprint: response.data.footprint,
+          additionnalData: response.data.additionnalData,
+          meta: response.data.metadata || response.meta
         }));
-        return response.legalUnit;
+        return response.data.legalUnit;
       } else {
-        setError(response.header);
+        setError(response.error || { code: res.status, message: res.statusText });
         return null;
       }
     } catch (error) {
@@ -51,19 +50,18 @@ export function useCompanyData(siren) {
 
   const fetchDivisionFootprint = useCallback(async (code) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
       const res = await fetch(
-        `${apiUrl}/defaultfootprint/?code=${code}&aggregate=PRD&area=FRA`
+        `${API_BASE_URL}/v2/defaultfootprint?code=${code}&aggregate=PRD&area=FRA`
       );
       const response = await res.json();
 
-      if (response.header?.code === 200) {
+      if (res.ok && response.data) {
         setData(prev => ({
           ...prev,
-          divisionFootprint: response.footprint
+          divisionFootprint: response.data.footprint
         }));
       } else {
-        console.error('Erreur division footprint:', response.header);
+        console.error('Erreur division footprint:', response.error);
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des données sectorielles:', error);
@@ -73,12 +71,14 @@ export function useCompanyData(siren) {
   const fetchHistoricalDivisionFootprint = useCallback(async (code) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org'}/macrodata/macro_fpt_a88?division=${code}&aggregate=PRD&area=FRA`
+        `${API_BASE_URL}/v2/macrodata/macro_fpt_a88?division=${code}&aggregate=PRD&area=FRA`
       );
       const response = await res.json();
-      if (response.header?.code === 200) {
+
+      if (res.ok && response.data) {
         let divisionFootprints = {};
-        response.data.forEach((element) => {
+        const dataArray = Array.isArray(response.data) ? response.data : [];
+        dataArray.forEach((element) => {
           const indic = element.indic;
           if (!divisionFootprints[indic]) {
             divisionFootprints[indic] = [];
@@ -91,7 +91,7 @@ export function useCompanyData(siren) {
           historicalDivisionFootprint: divisionFootprints
         }));
       } else {
-        console.error('Erreur données historiques:', response.header);
+        console.error('Erreur données historiques:', response.error);
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des données historiques:', error);

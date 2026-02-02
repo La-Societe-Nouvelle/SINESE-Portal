@@ -169,12 +169,13 @@ export default function PublicationForm({ initialData = {}, mode = "create", isL
       // Check published indicators only on formEntreprise step
       if (currentStep === "formEntreprise") {
         try {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
           const res = await fetch(
-            `https://api.lasocietenouvelle.org/legalunitfootprint/${selectedLegalUnit.siren}`
+            `${apiUrl}/v2/legalunitfootprint/${selectedLegalUnit.siren}`
           );
           if (res.ok) {
             const data = await res.json();
-            const footprint = data.footprint || {};
+            const footprint = data.data?.footprint || {};
 
             // Count indicators with flag "p" (published) for the selected year
             const publishedIndicatorCount = Object.values(footprint).filter(

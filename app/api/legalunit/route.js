@@ -1,3 +1,4 @@
+// TODO: Migrate to v2 search endpoint (GET /v2/legalunits/search) when available
 import { buildLegalUnitSearchUrl, convertFiltersToApiFormat } from '@/_utils/apiUrlBuilder';
 
 export async function GET(req) {

@@ -51,19 +51,20 @@ const Graph = ({ indic }) => {
   let [error, setError] = useState(false);
 
   const fetchData = useCallback(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
     axios
       .get(
-        `${apiUrl}/macrodata/macro_fpt_a38?branch=TOTAL&aggregate=NVA&indic=${indic.toUpperCase()}`
+        `${apiUrl}/v2/macrodata/macro_fpt_a38?branch=TOTAL&aggregate=NVA&indic=${indic.toUpperCase()}`
       )
       .then((response) => {
-        if (response.data.header.code == 200) {
+        const resData = response.data;
+        if (resData.data) {
           setTitle(metaGraphs[indic].title);
-          setSource(response.data.meta.doc);
+          setSource(resData.meta?.doc);
           setUnit(metaGraphs[indic].unit);
-          setSerie(response.data.data);
+          setSerie(resData.data);
         } else {
-          setError(response.data.header);
+          setError(resData.error);
         }
       })
       .catch((error) => {

@@ -65,19 +65,19 @@ export default function PublishedReportSection({ publishedReport }) {
   };
 
   return (
-    <Card className="mb-4 shadow-sm border-0 published-report-section">
-      <Card.Header className="bg-white border-bottom">
+    <Card className="mb-4 shadow-sm  published-report-section">
+      <Card.Header className="bg-light py-3 border-bottom card-header">
         <div className="d-flex align-items-center">
           <FileCheck size={20} className="me-2" />
           <h5 className="mb-0">Rapports publiés</h5>
         </div>
       </Card.Header>
       <Card.Body className="p-4">
-        <div className="d-flex flex-column gap-4">
+        <div className="d-flex flex-column gap-1">
           {documents.map((doc, index) => (
             <div
               key={index}
-              className="d-flex flex-column flex-sm-row align-items-start p-4 border rounded published-report-section__item"
+              className="d-flex flex-column flex-sm-row align-items-center published-report-section__item"
             >
               {/* Colonne 1: Icône + Infos */}
               <div className="d-flex align-items-flex-start flex-grow-1 w-100 w-sm-auto mb-3 mb-sm-0 me-sm-4">

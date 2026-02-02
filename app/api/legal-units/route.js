@@ -45,13 +45,14 @@ export async function POST(req) {
     return NextResponse.json({ error: "SIREN et dénomination sont requis." }, { status: 400 });
   }
 
-  // 1. Vérifier l'existence via l'API SINESE
-  const apiRes = await fetch(`https://api.lasocietenouvelle.org/legalUnitfootprint/${siren}`);
+  // 1. Vérifier l'existence via l'API SINESE (v2)
+  const apiBaseUrl = process.env.API_BASE_URL || 'https://api.sinese.fr';
+  const apiRes = await fetch(`${apiBaseUrl}/v2/legalunitfootprint/${siren}`);
   if (!apiRes.ok) {
     return NextResponse.json({ error: "Entreprise non trouvée dans le répertoire SINESE." }, { status: 404 });
   }
   const apiData = await apiRes.json();
-  const legalUnitData = apiData.legalUnit;
+  const legalUnitData = apiData.data?.legalUnit;
 
   // 2. Transaction
   const client = await pool.connect();

@@ -25,7 +25,9 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
       setSearching(true);
       setForm((f) => ({ ...f, denomination: "" }));
       try {
-        const res = await fetch(`https://api.lasocietenouvelle.org/legalunit/${form.siren}`);
+        // TODO: Migrate to v2 search endpoint when available
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
+        const res = await fetch(`${apiUrl}/legalunit/${form.siren}`);
         if (!res.ok) throw new Error();
         const data = await res.json();
         if (!data.legalUnits || data.legalUnits.length === 0) {

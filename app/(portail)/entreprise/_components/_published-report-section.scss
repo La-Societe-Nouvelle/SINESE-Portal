@@ -1,15 +1,20 @@
 @import "../../../styles/_variables.scss";
 
 .published-report-section {
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.08);
   &__item {
     transition: $transition-base;
     background: $card-bg;
-    border-color: $bg-border-light;
-    padding: 1rem;
+    border: 1px solid  $bg-subtle;
+;
+
     &:hover {
       box-shadow: $box-shadow-md;
       background: $section-bg;
     }
+
+    padding: 1rem;
+    border-radius: 0.75rem;
   }
 
   &__icon {

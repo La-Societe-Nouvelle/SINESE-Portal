@@ -1,12 +1,15 @@
 /**
- * Utility functions for building API URLs for La Société Nouvelle API
+ * Utility functions for building API URLs for SINESE API
  * Supports all search patterns: exact SIREN, partial SIREN, text search, and filters
+ *
+ * TODO: Migrate search to v2 endpoint (GET /v2/legalunits/search?q={query}&filters...)
+ * Currently uses v1 endpoint /legalunit/{query} as v2 search is not yet available
  */
 
 
 /**
  * Build API URL for legal unit search
- * @param {string} baseUrl - Base API URL (e.g., 'https://api.lasocietenouvelle.org')
+ * @param {string} baseUrl - Base API URL (e.g., 'https://api.sinese.fr')
  * @param {string} query - Search query (SIREN, partial SIREN, or text)
  * @param {Object} filters - Search filters
  * @param {string[]} filters.sectors - Sector codes (e.g., ['62.01A', '43.21A'])
@@ -17,7 +20,7 @@
  */
 export function buildLegalUnitSearchUrl(baseUrl = null, query = "", filters = {}) {
   // Use environment variable if no baseUrl provided
-  const apiBaseUrl = baseUrl || process.env.NEXT_PUBLIC_API_URL || 'https://api.lasocietenouvelle.org';
+  const apiBaseUrl = baseUrl || process.env.NEXT_PUBLIC_API_URL || 'https://api.sinese.fr';
   
   // Determine the search path based on query type
   let searchPath = '/legalunit';
