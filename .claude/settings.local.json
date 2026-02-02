@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "WebFetch(domain:api.sinese.fr)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

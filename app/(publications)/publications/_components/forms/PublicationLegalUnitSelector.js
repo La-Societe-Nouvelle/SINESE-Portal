@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Form, Button, Alert, Spinner, Modal } from "react-bootstrap";
-import { Plus, Search } from "lucide-react";
+import { Plus  } from "lucide-react";
 import { fetchLegalUnits, addLegalUnit } from "@/services/legalUnitService";
 
 export default function PublicationLegalUnitSelector({ selectedLegalunitId, onLegalUnitSelect }) {

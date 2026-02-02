@@ -5,23 +5,17 @@ import Select from "react-select";
 import AddLegalUnitModal from "../modals/AddLegalUnitModal";
 import YearSelector from "./YearSelector";
 import { addLegalUnit } from "@/services/legalUnitService";
+import { usePublicationFormContext } from "../../_context/PublicationFormContext";
 
-export default function LegalUnitForm({
-  selectedLegalUnit,
-  setSelectedLegalUnit,
-  periodEnd,
-  setPeriodEnd,
-  periodStart,
-  setPeriodStart,
-  selectedYear,
-  setSelectedYear,
-  showDetailPeriod,
-  setShowDetailPeriod,
-  mode,
-  setErrors,
-  isLegalUnitPreselected = false,
-  hidePeriod = false,
-}) {
+export default function LegalUnitForm({ hidePeriod = false }) {
+  const {
+    selectedLegalUnit, setSelectedLegalUnit,
+    selectedYear, setSelectedYear,
+    showDetailPeriod, setShowDetailPeriod,
+    periodStart, setPeriodStart,
+    periodEnd, setPeriodEnd,
+    mode, setErrors, isLegalUnitPreselected,
+  } = usePublicationFormContext();
   const [showAddModal, setShowAddModal] = useState(false);
 
   const [legalUnits, setLegalUnits] = useState([]);

@@ -167,3 +167,11 @@ export function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString("fr-FR");
 }
+
+export function formatFileSize(bytes) {
+  if (!bytes || bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
+}

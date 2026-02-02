@@ -2,27 +2,24 @@
 import { useState, Fragment } from "react";
 import { Building, FileText, BarChart3, AlertTriangle, ChevronRight } from "lucide-react";
 import { Col, ListGroup, ProgressBar, Badge } from "react-bootstrap";
+import { usePublicationFormContext } from "../../_context/PublicationFormContext";
 
 const LUCIDE_ICONS = { Building, FileText, BarChart3 };
 
-export default function ProgressSidebar({ 
-  steps, 
-  currentStep, 
-  currentStepIndex, 
-  handleStepChange, 
-  errors, 
-  completedEseIndicators, 
-  totalEseIndicators, 
-  completedSupplementaryIndicators, 
-  totalSupplementaryIndicators,
-  selectedLegalUnit,
-  selectedYear
-}) {
+export default function ProgressSidebar({ onStepChange }) {
+  const {
+    steps, currentStep, currentStepIndex,
+    errors, indicatorCounts,
+    selectedLegalUnit, selectedYear,
+    hasIndicators, hasReport,
+  } = usePublicationFormContext();
+
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const activeStep = steps[currentStepIndex];
-  
+
   // Check if user can navigate to other steps
   const canNavigate = selectedLegalUnit && selectedYear;
+  const canAccessRecap = (hasIndicators || hasReport) && !errors.formIndicateurs && !errors.formRapport;
 
   return (
     <Col md={3} className="progress-sidebar">
@@ -50,7 +47,7 @@ export default function ProgressSidebar({
               const isActive = currentStep === step.key;
               const IconComponent = step.icon ? LUCIDE_ICONS[step.icon] : null;
               const isOptional = step.key === "formIndicateurs" || step.key === "formRapport";
-              const isDisabled = step.key !== "formEntreprise" && !canNavigate;
+              const isDisabled = (step.key !== "formEntreprise" && !canNavigate) || (step.key === "formRecap" && !canAccessRecap);
 
               return (
                 <button
@@ -58,7 +55,7 @@ export default function ProgressSidebar({
                   className={`progress-sidebar-mobile-item ${isActive ? "active" : ""} ${isDisabled ? "disabled" : ""}`}
                   onClick={() => { 
                     if (!isDisabled) {
-                      handleStepChange(step.key);
+                      onStepChange(step.key);
                       setMobileExpanded(false);
                     }
                   }}
@@ -87,7 +84,7 @@ export default function ProgressSidebar({
             const isActive = currentStep === step.key;
             const IconComponent = step.icon ? LUCIDE_ICONS[step.icon] : null;
             const isOptional = step.key === "formIndicateurs" || step.key === "formRapport";
-            const isDisabled = step.key !== "formEntreprise" && !canNavigate;
+            const isDisabled = (step.key !== "formEntreprise" && !canNavigate) || (step.key === "formRecap" && !canAccessRecap);
 
             if (step.disabled) return null;
 
@@ -96,7 +93,7 @@ export default function ProgressSidebar({
                 <ListGroup.Item
                   action={!isDisabled}
                   active={isActive}
-                  onClick={() => !isDisabled && handleStepChange(step.key)}
+                  onClick={() => !isDisabled && onStepChange(step.key)}
                   className={`d-flex align-items-center ${isActive ? "active" : ""} ${isDisabled ? "disabled" : ""}`}
                   style={{ cursor: isDisabled ? "not-allowed" : "pointer", opacity: isDisabled ? 0.5 : 1 }}
                 >
@@ -113,13 +110,13 @@ export default function ProgressSidebar({
                     <ListGroup.Item className="ps-5 small text-muted d-flex align-items-center">
                       <span className="flex-grow-1">Indicateurs ESE</span>
                       <Badge bg="secondary" className="ms-2">
-                        {completedEseIndicators}/{totalEseIndicators}
+                        {indicatorCounts.completedEse}/{indicatorCounts.totalEse}
                       </Badge>
                     </ListGroup.Item>
                     <ListGroup.Item className="ps-5 small text-muted d-flex align-items-center">
                       <span className="flex-grow-1">Autres indicateurs</span>
                       <Badge bg="secondary" className="ms-2">
-                        {completedSupplementaryIndicators}/{totalSupplementaryIndicators}
+                        {indicatorCounts.completedSupplementary}/{indicatorCounts.totalSupplementary}
                       </Badge>
                     </ListGroup.Item>
                   </>
