@@ -179,6 +179,25 @@
     }
   }
 
+  // Lien retour au portail
+  .auth-back-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid $border-light-gray;
+    color: $neutral;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: $transition-base;
+
+    &:hover {
+      color: $primary-dark;
+    }
+  }
+
   // Alerts
   .alert {
     border-radius: $border-radius-sm;

@@ -7,7 +7,8 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Form, Button, Alert, InputGroup, Spinner } from "react-bootstrap";
 import { useSession } from "next-auth/react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 function ConnexionForm() {
   const [email, setEmail] = useState("");
@@ -114,7 +115,13 @@ function ConnexionForm() {
         <div className="auth-alt-link">
           Pas encore de compte ? <a href="/publications/inscription">Créez-en un</a>
         </div>
+
+      
       </div>
+        <Link href="/" className="btn btn-primary btn-sm mt-4 d-inline-flex align-items-center">
+          <ArrowLeft size={16} />
+          Retour au portail
+        </Link>
     </div>
   );
 }

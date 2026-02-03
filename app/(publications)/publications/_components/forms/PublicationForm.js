@@ -93,23 +93,27 @@ function PublicationFormContent() {
                 {/* Step: Indicateurs */}
                 {currentStep === "formIndicateurs" && (
                   <div>
-                    <h5 className="mb-3">Empreinte sociétale</h5>
-                    <IndicatorsForm
-                      data={declarationData || {}}
-                      categories={["Création de la valeur", "Empreinte sociale", "Empreinte environnementale"]}
-                      onChange={(data) => updateDeclarationData(data)}
-                      errors={errors}
-                    />
-                    <h5 className="mt-4 mb-3">Indicateurs supplémentaires</h5>
-                    <p className="text-muted small">
-                      Indicateurs complémentaires déjà déclarés auprès d'organismes publics.
-                    </p>
-                    <IndicatorsForm
-                      data={declarationData || {}}
-                      categories="Indicateurs supplémentaires"
-                      onChange={(data) => updateDeclarationData(data)}
-                      errors={errors}
-                    />
+                    <div id="section-indicateurs-ese">
+                      <h5 className="mb-3">Empreinte sociétale</h5>
+                      <IndicatorsForm
+                        data={declarationData || {}}
+                        categories={["Création de la valeur", "Empreinte sociale", "Empreinte environnementale"]}
+                        onChange={(data) => updateDeclarationData(data)}
+                        errors={errors}
+                      />
+                    </div>
+                    <div id="section-indicateurs-autres">
+                      <h5 className="mt-4 mb-3">Indicateurs supplémentaires</h5>
+                      <p className="text-muted small">
+                        Indicateurs complémentaires déjà déclarés auprès d'organismes publics.
+                      </p>
+                      <IndicatorsForm
+                        data={declarationData || {}}
+                        categories="Indicateurs supplémentaires"
+                        onChange={(data) => updateDeclarationData(data)}
+                        errors={errors}
+                      />
+                    </div>
                   </div>
                 )}
 

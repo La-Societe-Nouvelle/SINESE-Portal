@@ -107,17 +107,30 @@ export default function ProgressSidebar({ onStepChange }) {
                 </ListGroup.Item>
                 {step.key === "formIndicateurs" && isActive && (
                   <>
-                    <ListGroup.Item className="ps-5 small text-muted d-flex align-items-center">
+                    <ListGroup.Item
+                      action
+                      className="ps-5 small text-muted d-flex align-items-center sidebar-anchor-link"
+                      onClick={() => {
+                        const el = document.getElementById("section-indicateurs-ese");
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
                       <span className="flex-grow-1">Indicateurs ESE</span>
                       <Badge bg="secondary" className="ms-2">
                         {indicatorCounts.completedEse}/{indicatorCounts.totalEse}
                       </Badge>
                     </ListGroup.Item>
-                    <ListGroup.Item className="ps-5 small text-muted d-flex align-items-center">
+                    <ListGroup.Item
+                      action
+                      className="ps-5 small text-muted d-flex align-items-center sidebar-anchor-link"
+                      onClick={() => {
+                        const el = document.getElementById("section-indicateurs-autres");
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
                       <span className="flex-grow-1">Autres indicateurs</span>
-                      <Badge bg="secondary" className="ms-2">
-                        {indicatorCounts.completedSupplementary}/{indicatorCounts.totalSupplementary}
-                      </Badge>
                     </ListGroup.Item>
                   </>
                 )}

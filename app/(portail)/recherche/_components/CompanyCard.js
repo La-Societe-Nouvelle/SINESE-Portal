@@ -132,7 +132,7 @@ export default function CompanyCard({ company }) {
 
               {/* Indicateurs hors panel ESE */}
               {company.publishedIndicators?.external.length > 0 && (
-                <div className="indicator-circle text-center">
+                <div className="indicator-circle text-center" >
                   <div className="indicator-base indicator-light">
                     {company.publishedIndicators.external.length}
                   </div>

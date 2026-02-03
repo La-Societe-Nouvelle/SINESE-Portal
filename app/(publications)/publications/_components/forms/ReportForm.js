@@ -6,9 +6,8 @@ import { usePublicationFormContext } from "../../_context/PublicationFormContext
 
 const REPORT_TYPES = [
   { value: "RSE", label: "Rapport RSE" },
-  { value: "ESRS", label: "Rapport de durabilité - ESRS" },
-  { value: "CSRD", label: "Rapport de durabilité - CSRD" },
-  { value: "VSME", label: "Rapport de durabilité - VSME" },
+  { value: "ESRS", label: "Rapport de durabilité (ESRS) " },
+  { value: "VSME", label: "Rapport de durabilité (VSME) " },
   { value: "AUTRE", label: "Autre rapport de durabilité" },
 ];
 
