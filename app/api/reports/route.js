@@ -18,6 +18,7 @@ export async function POST(request) {
   try {
     const formData = await request.formData();
 
+    const reportId = formData.get("reportId");
     const publicationId = formData.get("publicationId");
     const type = formData.get("type");
     const fileUrl = formData.get("fileUrl");
@@ -71,21 +72,14 @@ export async function POST(request) {
     const isExternal = storageType === "external";
     const fileOrigin = isExternal ? "external" : "ovh";
     const dbStorageType = isExternal ? "external" : "ovh";
-
-    // Vérifier si un rapport existe déjà pour cette publication
-    const existingReport = await pool.query(
-      `SELECT id FROM publications.reports WHERE publication_id = $1`,
-      [publicationId]
-    );
-
-    let result;
-    if (existingReport.rows.length > 0) {
-      // Mettre à jour le rapport existant
-      result = await pool.query(
+    console.log('reportid:', reportId);
+    // Si reportId fourni, mettre à jour le rapport existant
+    if (reportId) {
+      const result = await pool.query(
         `UPDATE publications.reports
          SET type = $1, mime_type = $2, file_origin = $3, file_url = $4,
              storage_type = $5, file_name = $6, file_size = $7, updated_at = NOW()
-         WHERE publication_id = $8
+         WHERE id = $8 AND publication_id = $9
          RETURNING id, created_at`,
         [
           type,
@@ -95,30 +89,43 @@ export async function POST(request) {
           dbStorageType,
           fileName || null,
           fileSize ? parseInt(fileSize) : null,
+          reportId,
           publicationId,
         ]
       );
-    } else {
-      // Créer un nouveau rapport
-      result = await pool.query(
-        `INSERT INTO publications.reports
-          (publication_id, siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
-         RETURNING id, created_at`,
-        [
-          publicationId,
-          siren,
-          type,
-          year,
-          mimeType || null,
-          fileOrigin,
-          fileUrl,
-          dbStorageType,
-          fileName || null,
-          fileSize ? parseInt(fileSize) : null,
-        ]
+
+      if (result.rows.length === 0) {
+        return NextResponse.json(
+          { error: "Rapport non trouvé ou accès refusé." },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json(
+        { success: true, reportId: result.rows[0].id },
+        { status: 200 }
       );
     }
+
+    // Sinon, créer un nouveau rapport
+    const result = await pool.query(
+      `INSERT INTO publications.reports
+       (publication_id, siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
+       RETURNING id, created_at`,
+      [
+        publicationId,
+        siren,
+        type,
+        year,
+        mimeType || null,
+        fileOrigin,
+        fileUrl,
+        dbStorageType,
+        fileName || null,
+        fileSize ? parseInt(fileSize) : null,
+      ]
+    );
 
     return NextResponse.json(
       { success: true, reportId: result.rows[0].id },

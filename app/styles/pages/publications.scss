@@ -62,7 +62,14 @@
     border-radius: 50%;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
+  &.status-rejected {
+      background-color: lighten($secondary, 35%);
+      color: darken($secondary, 20%);
 
+    .status-dot {
+        background-color: $secondary;
+      }
+    }
   &.status-draft {
     background-color: lighten($tertiary, 45%);
     color: darken($tertiary, 20%);
@@ -276,6 +283,15 @@
     font-weight: 600;
     font-size: 0.75rem;
     white-space: nowrap;
+
+    &.status-rejected {
+      background-color: lighten($secondary, 35%);
+      color: darken($secondary, 20%);
+
+      svg {
+        color: $secondary;
+      }
+    }
 
     &.status-published {
       background-color: lighten($success, 40%);

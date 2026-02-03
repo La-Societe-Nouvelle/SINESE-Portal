@@ -9,10 +9,10 @@ import ErrorAlert from "@/_components/Error";
 import PageHeader from "../_components/PageHeader";
 import FootprintSection from "../_components/FootprintSection";
 import LoadingState from "../_components/LoadingState";
-import PublishedReportSection from "../_components/PublishedReportSection";
 
 // Hooks personnalisés
 import { useCompanyData } from "../_hooks/useCompanyData";
+import PublishedReportSection from "../_components/PublishedReportSection";
 
 export default function EntreprisePage() {
   const { siren } = useParams();

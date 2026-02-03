@@ -23,8 +23,9 @@ export async function addPublication({ legalUnit, declarationData, documents = [
 
   return await response.json();
 }
-export async function addReport({ publicationId, type, fileUrl, fileName, fileSize, mimeType, storageType }) {
+export async function addReport({ reportId, publicationId, type, fileUrl, fileName, fileSize, mimeType, storageType }) {
   const formData = new FormData();
+  if (reportId) formData.append("reportId", reportId);
   formData.append("publicationId", publicationId);
   formData.append("type", type);
   formData.append("fileUrl", fileUrl);

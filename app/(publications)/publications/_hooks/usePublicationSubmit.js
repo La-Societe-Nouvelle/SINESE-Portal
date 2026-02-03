@@ -11,6 +11,7 @@ export default function usePublicationSubmit() {
     declarationData, reportType, uploadMode, reportDocuments, externalUrl,
     hasIndicators, hasReport, errors,
     currentStep, currentStepIndex, steps,
+    reportId, setReportId,
     setLoading, setSuccess, setErrors, setDraftSavedNotification,
     saveDraftRef,
   } = ctx;
@@ -33,12 +34,14 @@ export default function usePublicationSubmit() {
 
         // Si rapport avec URL externe, sauvegarder aussi le rapport
         if (reportType && uploadMode === "url" && externalUrl.trim()) {
-          await addReport({
+          const reportResult = await addReport({
+            reportId: reportId || undefined,
             publicationId: result.publicationId,
             type: reportType,
             fileUrl: externalUrl.trim(),
             storageType: "external",
           });
+          setReportId(reportResult.reportId);
         }
 
         setDraftSavedNotification(true);
@@ -47,7 +50,7 @@ export default function usePublicationSubmit() {
         console.error("Erreur lors de l'enregistrement du brouillon :", e);
       }
     }
-  }, [currentStepIndex, steps.length, selectedYear, periodEnd, selectedLegalUnit, declarationData, showDetailPeriod, periodStart, reportType, uploadMode, externalUrl, setDraftSavedNotification]);
+  }, [currentStepIndex, steps.length, selectedYear, periodEnd, selectedLegalUnit, declarationData, showDetailPeriod, periodStart, reportType, uploadMode, externalUrl, reportId, setReportId, setDraftSavedNotification]);
 
   // Register saveDraft into context ref so auto-save effect can call it
   useEffect(() => {
@@ -113,6 +116,7 @@ export default function usePublicationSubmit() {
         }
 
         await addReport({
+          reportId: reportId || undefined,
           publicationId,
           type: reportType,
           fileUrl,

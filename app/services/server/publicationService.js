@@ -99,6 +99,7 @@ export async function getPublicationById(id) {
       siren: pub.siren,
     },
     report_type: report?.type || "",
+    report_id: report?.id || null,
     external_url: isExternal ? report.file_url : "",
     documents,
   };

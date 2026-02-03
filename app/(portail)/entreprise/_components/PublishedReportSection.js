@@ -2,10 +2,11 @@
 
 import { Card } from "react-bootstrap";
 import { FileText, Download, FileCheck, FileCode, FileSpreadsheet } from "lucide-react";
-import './_published-report-section.scss';
+import { REPORT_TYPES } from "@/(publications)/publications/_components/forms/ReportForm";
 
 /**
- * Section pour afficher les documents publiés (rapport SINESE)
+ * Section pour afficher les rapports de durabilité publiés (CSRD/VSME/RSE)
+ * UI améliorée avec badges type/année/stockage, taille fichier et meilleure lisibilité
  */
 export default function PublishedReportSection({ publishedReport }) {
   if (!publishedReport?.hasPublishedDocuments) {
@@ -14,116 +15,128 @@ export default function PublishedReportSection({ publishedReport }) {
 
   const { documents } = publishedReport;
 
-  const getFileTypeColor = (mimeType) => {
-    if (!mimeType) return 'secondary';
-    const mime = mimeType.toLowerCase();
-    if (mime.includes('pdf')) return 'danger';
-    if (mime.includes('xbrl') || mime.includes('xml')) return 'success';
-    if (mime.includes('spreadsheet') || mime.includes('excel') || mime.includes('sheet')) return 'primary';
-    if (mime.includes('word') || mime.includes('document')) return 'warning';
+
+
+  const getFileTypeColor = (filename) => {
+    const ext = filename?.split('.').pop()?.toLowerCase();
+    if (ext === 'pdf') return 'danger';
+    if (ext === 'xbrl' || ext === 'xml') return 'success';
+    if (ext === 'xlsx' || ext === 'xls') return 'primary';
     return 'secondary';
   };
 
-  const getFileIcon = (mimeType) => {
-    if (!mimeType) return FileText;
-    const mime = mimeType.toLowerCase();
-    if (mime.includes('pdf')) return FileText;
-    if (mime.includes('xbrl') || mime.includes('xml')) return FileCode;
-    if (mime.includes('spreadsheet') || mime.includes('excel') || mime.includes('sheet')) return FileSpreadsheet;
+  const getReportTypeLabel = (type) => {
+    if (!type) return 'Rapport';
+    const normalized = String(type).trim().toLowerCase();
+    const match = REPORT_TYPES.find((t) => t.value?.toLowerCase() === normalized);
+    return match?.label || type;
+  };
+
+  const stripExtension = (value) => {
+    if (!value || typeof value !== "string") return value;
+    const lastDot = value.lastIndexOf(".");
+    if (lastDot <= 0) return value;
+    return value.slice(0, lastDot);
+  };
+
+  const capitalizeFirst = (value) => {
+    if (!value || typeof value !== "string") return value;
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
+
+  const getDisplayName = (doc) => {
+    let name = null;
+    if (doc?.fileName) name = doc.fileName;
+    else if (doc?.name) name = doc.name;
+    else if (doc?.url) {
+      try {
+        const parsed = new URL(doc.url);
+        const parts = parsed.pathname?.split('/').filter(Boolean) || [];
+        const last = parts[parts.length - 1];
+        if (last) name = decodeURIComponent(last);
+        else return `Lien externe (${parsed.hostname})`;
+      } catch {
+        return "Lien externe";
+      }
+    }
+
+    if (!name) return "Lien externe";
+    return capitalizeFirst(stripExtension(name));
+  };
+
+  const getFileIcon = (filename) => {
+    const ext = filename?.split('.').pop()?.toLowerCase();
+    if (ext === 'pdf') return FileText;
+    if (ext === 'xbrl' || ext === 'xml') return FileCode;
+    if (ext === 'xlsx' || ext === 'xls') return FileSpreadsheet;
     return FileText;
   };
 
-  const getTypeLabel = (type) => {
-    const typeMap = {
-      'csrd': 'CSRD',
-      'vsme': 'VSME',
-      'rse': 'RSE',
-      'esg': 'ESG',
-      'durabilité': 'Durabilité',
-      'sustainability': 'Durabilité'
-    };
-    return typeMap[type?.toLowerCase()] || type || 'Rapport';
-  };
-
-  const getTypeBadgeColor = (type) => {
-    const colorMap = {
-      'csrd': 'danger',
-      'vsme': 'warning',
-      'rse': 'success',
-      'esg': 'info',
-      'durabilité': 'secondary',
-      'sustainability': 'secondary'
-    };
-    return colorMap[type?.toLowerCase()] || 'secondary';
-  };
-
-  const formatFileSize = (bytes) => {
-    if (!bytes) return '';
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-  };
-
   return (
-    <Card className="mb-4 shadow-sm border-0 published-report-section">
-      <Card.Header className="bg-white border-bottom">
+    <Card className="mb-4 shadow-sm border-0">
+      <Card.Header className=" border-bottom">
         <div className="d-flex align-items-center">
           <FileCheck size={20} className="me-2" />
-          <h5 className="mb-0">Rapports publiés</h5>
+          <div>
+            <h5 className="mb-0">Rapports publiés</h5>
+            <small className="text-muted">{documents.length} rapport{documents.length > 1 ? 's' : ''}</small>
+          </div>
         </div>
       </Card.Header>
       <Card.Body className="p-4">
-        <div className="d-flex flex-column gap-4">
-          {documents.map((doc, index) => (
-            <div
-              key={index}
-              className="d-flex flex-column flex-sm-row align-items-start p-4 border rounded published-report-section__item"
-            >
-              {/* Colonne 1: Icône + Infos */}
-              <div className="d-flex align-items-flex-start flex-grow-1 w-100 w-sm-auto mb-3 mb-sm-0 me-sm-4">
-                <div
-                  className={`rounded d-flex align-items-center justify-content-center me-3 flex-shrink-0 published-report-section__icon bg-${getFileTypeColor(doc.contentType)}-subtle`}
-                >
-                  {(() => {
-                    const IconComponent = getFileIcon(doc.contentType);
-                    return <IconComponent size={22} className={`text-${getFileTypeColor(doc.contentType)}`} />;
-                  })()}
-                </div>
-                <div className="flex-grow-1 min-w-0">
-                  <div className="fw-semibold text-dark mb-2 published-report-section__filename">
-                    {doc.fileName || doc.name || "Fichier"}
+        <div className="d-flex flex-column px-2">
+          {documents.map((doc, index) => {
+            const displayName = getDisplayName(doc);
+            const iconSource = doc.fileName || doc.name || doc.url || displayName;
+            const IconComponent = getFileIcon(iconSource);
+            return (
+              <div
+                key={index}
+                className={`d-flex align-items-center justify-content-between py-2 ${index < documents.length - 1 ? 'border-bottom' : ''}`}
+                style={{
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(248, 249, 250, 1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }}
+              >
+                {/* Ligne unique: icône + nom + badges */}
+                <div className="d-flex align-items-center gap-3 flex-grow-1">
+                  <div
+                    className="rounded d-flex align-items-center justify-content-center flex-shrink-0"
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      backgroundColor: `var(--bs-${getFileTypeColor(displayName)}-subtle)`
+                    }}
+                  >
+                    <IconComponent size={20} className={`text-${getFileTypeColor(displayName)}`} />
                   </div>
-                  <div className="d-flex gap-2 flex-wrap align-items-center mb-2">
-                    <span className={`badge bg-${getTypeBadgeColor(doc.type)} text-white`}>
-                      {getTypeLabel(doc.type)}
-                    </span>
-                    <span className="badge bg-light text-dark border border-secondary-subtle">{doc.year}</span>
+                  <div className="flex-grow-1">
+                    <div className="fw-semibold text-dark">{displayName}</div>
+                    <div className="d-flex gap-2 flex-wrap mt-1">
+                      <span className="badge bg-info text-dark">{getReportTypeLabel(doc.type)}</span>
+                      <span className="badge bg-light text-dark border border-secondary-subtle">{doc.year}</span>
+                    </div>
                   </div>
-                  {doc.fileSize && (
-                    <small className="text-muted d-block">
-                      {formatFileSize(doc.fileSize)}
-                    </small>
-                  )}
                 </div>
-              </div>
-
-              {/* Colonne 2: Bouton télécharger */}
-              <div className="d-flex align-items-center w-sm-auto ms-sm-auto">
                 <a
                   href={doc.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary btn-sm d-inline-flex align-items-center gap-2 w-100 w-sm-auto justify-content-center justify-content-sm-start"
-                  title={`Télécharger ${doc.fileName || 'le rapport'}`}
+                  className="btn btn-sm btn-primary d-inline-flex align-items-center gap-2 ms-3"
+                  style={{ whiteSpace: 'nowrap' }}
+                  title={`Télécharger ${displayName}`}
                 >
                   <Download size={16} />
-                  <span>Télécharger</span>
+                  <span className="d-none d-sm-inline">Télécharger</span>
                 </a>
               </div>
-            </div>
-
-          ))}
-          
+            );
+          })}
         </div>
       </Card.Body>
     </Card>

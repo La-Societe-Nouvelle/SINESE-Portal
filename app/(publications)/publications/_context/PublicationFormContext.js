@@ -17,6 +17,7 @@ const ACTIONS = {
   SET_UPLOAD_MODE: "SET_UPLOAD_MODE",
   SET_REPORT_DOCUMENTS: "SET_REPORT_DOCUMENTS",
   SET_EXTERNAL_URL: "SET_EXTERNAL_URL",
+  SET_REPORT_ID: "SET_REPORT_ID",
   SET_ERRORS: "SET_ERRORS",
   CLEAR_ERROR: "CLEAR_ERROR",
   SET_LOADING: "SET_LOADING",
@@ -49,6 +50,8 @@ function publicationFormReducer(state, action) {
       return { ...state, reportDocuments: action.payload };
     case ACTIONS.SET_EXTERNAL_URL:
       return { ...state, externalUrl: action.payload };
+    case ACTIONS.SET_REPORT_ID:
+      return { ...state, reportId: action.payload };
     case ACTIONS.SET_ERRORS:
       return { ...state, errors: action.payload };
     case ACTIONS.CLEAR_ERROR: {
@@ -96,6 +99,7 @@ function createInitialState(initialData) {
     uploadMode: initialData.external_url ? "url" : "file",
     reportDocuments: initialData.documents || [],
     externalUrl: initialData.external_url || "",
+    reportId: initialData.report_id || null,
     errors: {},
     warnings: {},
     loading: false,
@@ -181,6 +185,7 @@ export function PublicationFormProvider({ initialData = {}, mode = "create", isL
   const setUploadMode = useCallback((v) => dispatch({ type: ACTIONS.SET_UPLOAD_MODE, payload: v }), []);
   const setReportDocuments = useCallback((v) => dispatch({ type: ACTIONS.SET_REPORT_DOCUMENTS, payload: v }), []);
   const setExternalUrl = useCallback((v) => dispatch({ type: ACTIONS.SET_EXTERNAL_URL, payload: v }), []);
+  const setReportId = useCallback((v) => dispatch({ type: ACTIONS.SET_REPORT_ID, payload: v }), []);
   const setErrors = useCallback((v) => {
     if (typeof v === "function") {
       dispatch({ type: ACTIONS.SET_ERRORS, payload: v });
@@ -281,6 +286,7 @@ export function PublicationFormProvider({ initialData = {}, mode = "create", isL
       setUploadMode,
       setReportDocuments,
       setExternalUrl,
+      setReportId,
       setErrors,
       clearError,
       setLoading,

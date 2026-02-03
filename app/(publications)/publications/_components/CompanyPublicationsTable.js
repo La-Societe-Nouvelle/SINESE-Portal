@@ -159,6 +159,14 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
         </span>
       );
     }
+    if(status === 'rejected') {
+      return (
+        <span className="status-badge status-rejected">
+          <span className="status-dot"></span>
+          Rejetée
+        </span>
+      );
+    }
     return (
       <span className="status-badge status-published">
         <Check size={14} className="me-1" />

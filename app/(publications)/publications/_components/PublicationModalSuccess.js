@@ -26,9 +26,7 @@ export default function PublicationModalSuccess({ show, onHide }) {
         <p className="text-muted mb-2">
           Votre demande de publication a bien été reçue et sera examinée par notre équipe.
         </p>
-        <p className="text-muted mb-4 small">
-          Vous recevrez un email de confirmation dès que votre publication sera validée.
-        </p>
+
 
         <div className="d-flex flex-column gap-2">
           <button
