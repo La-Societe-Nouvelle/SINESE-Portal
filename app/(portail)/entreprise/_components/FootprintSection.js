@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, Row } from "react-bootstrap";
-import {  Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { IndicatorChartContainer } from "@/_components/portal/IndicatorChartContainer";
 import Link from "next/link";
 
@@ -53,27 +53,20 @@ export default function FootprintSection({
             hasDefaultData && (
               <div className="mb-4 p-4 shadow-sm bg-light">
                 <div className="d-flex align-items-center justify-content-start mb-2">
-                  <Info size={16} className=" me-2" />
-                  <h3 className="h6 mb-0 ">Données sectorielles utilisées</h3>
+                  <Info size={16} className="me-2" />
+                  <h3 className="h6 mb-0">Données sectorielles utilisées</h3>
                 </div>
-                <p className="text-muted mb-0 " style={{ fontSize: '0.8rem' }}>
+                <p className="text-muted mb-0" style={{ fontSize: '0.8rem' }}>
                   Certains indicateurs utilisent des <b>
-
-                    <Link href="https://www.lasocietenouvelle.org/docs/donnees-par-defaut" target="_blank" rel="noopener noreferrer" >
+                    <Link href="https://www.lasocietenouvelle.org/docs/donnees-par-defaut" target="_blank" rel="noopener noreferrer">
                       valeurs sectorielles par défaut
                     </Link>
-                  </b>
-                  calculées à partir de données statistiques nationales. Ces estimations permettent
-                  d'évaluer l'empreinte sociétale même sans données spécifiques de l'entreprise.
-                  Les valeurs par défaut sont établies selon l'activité principale (code NAF),
-                  les effectifs et d'autres caractéristiques de l'entreprise.
+                  </b> calculées à partir de données statistiques nationales. Ces estimations offrent une première évaluation de l'empreinte sociétale de votre entreprise, même en l'absence de données spécifiques.
                 </p>
-                <p className="mt-3 mb-2 fw-medium" style={{ fontSize: '0.9rem', color: '#1e3a8a' }}>
-                  <b>Vous êtes dirigeant de cette entreprise ? </b>
-                  <Link href="https://publication.sinese.fr/" target="_blank" rel="noopener noreferrer">Publiez vos données réelles</Link> pour améliorer la précision de votre empreinte sociétale.
-                </p>
+                <p className="mt-3 mb-2 " style={{ fontSize: '0.9rem', color: '#1e3a8a' }}>
+                  <b>Vous êtes dirigeant de cette entreprise ?</b><br />
+                  <Link href="https://publication.sinese.fr/" target="_blank" rel="noopener noreferrer">Publiez vos données</Link> pour afficher une mesure exacte de votre empreinte sociétale.                </p>
               </div>
-
             )
           }
 
