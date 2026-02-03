@@ -113,46 +113,47 @@ export async function POST(request, { params }) {
       );
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // 4. Copier les indicateurs dans footprints.uniteslegales
-    // ═══════════════════════════════════════════════════════════════
-    if (publication.data && typeof publication.data === 'object') {
-      const indicateurs = Object.entries(publication.data);
+    // Temporairement désactivé  
+    // // ═══════════════════════════════════════════════════════════════
+    // // 4. Copier les indicateurs dans footprints.uniteslegales
+    // // ═══════════════════════════════════════════════════════════════
+    // if (publication.data && typeof publication.data === 'object') {
+    //   const indicateurs = Object.entries(publication.data);
       
-      for (const [indicCode, indicData] of indicateurs) {
-        // Ne traiter que les indicateurs avec une valeur
-        if (!indicData || indicData.value === undefined || indicData.value === null || indicData.value === '') {
-          continue;
-        }
+    //   for (const [indicCode, indicData] of indicateurs) {
+    //     // Ne traiter que les indicateurs avec une valeur
+    //     if (!indicData || indicData.value === undefined || indicData.value === null || indicData.value === '') {
+    //       continue;
+    //     }
 
 
-        // UPSERT dans footprints.uniteslegales (clé primaire: siren, year, indic)
-        await client.query(
-          `INSERT INTO footprints.uniteslegales
-            (siren, indic, year, value, flag, info, uncertainty, lastupdate, origin, lastupload)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), $8, NOW())
-           ON CONFLICT (siren, year, indic)
-           DO UPDATE SET
-             value = EXCLUDED.value,
-             flag = EXCLUDED.flag,
-             info = EXCLUDED.info,
-             uncertainty = EXCLUDED.uncertainty,
-             lastupdate = NOW(),
-             origin = EXCLUDED.origin,
-             lastupload = NOW()`,
-          [
-            publication.siren,
-            indicCode.toUpperCase(),
-            publication.year.toString(), // year est varchar dans footprints
-            parseFloat(indicData.value),
-            'p', // flag = 'p' pour published
-            indicData.comment || null,
-            indicData.uncertainty !== undefined ? parseInt(indicData.uncertainty) : null,
-            'publication', // origin
-          ]
-        );
-      }
-    }
+    //     // UPSERT dans footprints.uniteslegales (clé primaire: siren, year, indic)
+    //     await client.query(
+    //       `INSERT INTO footprints.uniteslegales
+    //         (siren, indic, year, value, flag, info, uncertainty, lastupdate, origin, lastupload)
+    //        VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), $8, NOW())
+    //        ON CONFLICT (siren, year, indic)
+    //        DO UPDATE SET
+    //          value = EXCLUDED.value,
+    //          flag = EXCLUDED.flag,
+    //          info = EXCLUDED.info,
+    //          uncertainty = EXCLUDED.uncertainty,
+    //          lastupdate = NOW(),
+    //          origin = EXCLUDED.origin,
+    //          lastupload = NOW()`,
+    //       [
+    //         publication.siren,
+    //         indicCode.toUpperCase(),
+    //         publication.year.toString(), // year est varchar dans footprints
+    //         parseFloat(indicData.value),
+    //         'p', // flag = 'p' pour published
+    //         indicData.comment || null,
+    //         indicData.uncertainty !== undefined ? parseInt(indicData.uncertainty) : null,
+    //         'publication', // origin
+    //       ]
+    //     );
+    //   }
+    // }
    await client.query("COMMIT");
 
     return NextResponse.json({
