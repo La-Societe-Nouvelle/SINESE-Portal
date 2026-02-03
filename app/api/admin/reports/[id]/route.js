@@ -5,7 +5,8 @@ import { authOptions } from "@/api/auth/[...nextauth]/route";
 
 /**
  * API admin pour valider ou rejeter un rapport
- * À la validation (status=published) : met à jour publications.reports ET copie dans footprints.reports
+ * Met à jour le status de la PUBLICATION parente (pas du rapport)
+ * À la validation (status=published) : copie dans footprints.reports
  */
 export async function PATCH(request, { params }) {
   const session = await getServerSession(authOptions);
@@ -28,22 +29,30 @@ export async function PATCH(request, { params }) {
 
     await client.query("BEGIN");
 
-    // Mettre à jour le status dans publications.reports
-    const result = await client.query(
-      `UPDATE publications.reports
-          SET status = $1, updated_at = NOW()
-        WHERE id = $2
-        RETURNING *`,
-      [status, id]
+    // Récupérer le rapport et sa publication parente
+    const reportResult = await client.query(
+      `SELECT r.*, p.id as pub_id
+       FROM publications.reports r
+       JOIN publications.publications p ON p.id = r.publication_id
+       WHERE r.id = $1`,
+      [id]
     );
 
-    if (result.rows.length === 0) {
+    if (reportResult.rows.length === 0) {
       await client.query("ROLLBACK");
       console.error(`Rapport non trouvé: ${id}`);
       return NextResponse.json({ error: "Rapport non trouvé" }, { status: 404 });
     }
 
-    const report = result.rows[0];
+    const report = reportResult.rows[0];
+
+    // Mettre à jour le status de la PUBLICATION parente
+    await client.query(
+      `UPDATE publications.publications
+       SET status = $1, updated_at = NOW(), publication_date = CASE WHEN $1 = 'published' THEN NOW() ELSE publication_date END
+       WHERE id = $2`,
+      [status, report.publication_id]
+    );
 
     // Si validé, copier dans footprints.reports
     if (status === "published") {
@@ -94,10 +103,11 @@ export async function GET(_request, { params }) {
     const { id } = await params;
 
     const result = await pool.query(
-      `SELECT r.*, u.email as user_email
-         FROM publications.reports r
-         LEFT JOIN publications.users u ON u.id = r.user_id
-        WHERE r.id = $1`,
+      `SELECT r.*, p.status as publication_status, lu.denomination
+       FROM publications.reports r
+       JOIN publications.publications p ON p.id = r.publication_id
+       JOIN publications.legal_units lu ON lu.id = p.legal_unit_id
+       WHERE r.id = $1`,
       [id]
     );
 

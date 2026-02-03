@@ -1,9 +1,23 @@
+"use client";
 import { Modal } from "react-bootstrap";
 import { CheckCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function PublicationModalSuccess({ show, onHide }) {
+  const router = useRouter();
+
+  const handleGoToGestion = () => {
+    onHide();
+    router.push("/publications/espace/gestion");
+  };
+
+  const handleNewPublication = () => {
+    onHide();
+    router.push("/publications/espace/publier");
+  };
+
   return (
-    <Modal show={show} onHide={onHide} centered backdrop="static" keyboard={false}>
+    <Modal show={show} onHide={handleGoToGestion} centered backdrop="static" keyboard={false}>
       <Modal.Body className="text-center py-5 px-4">
         <div className="success-icon-wrapper">
           <CheckCircle size={48} className="text-success success-icon-animated" />
@@ -17,19 +31,20 @@ export default function PublicationModalSuccess({ show, onHide }) {
         </p>
 
         <div className="d-flex flex-column gap-2">
-          <a
-            href="/publications/espace/gestion"
+          <button
+            type="button"
             className="btn btn-primary"
-            onClick={onHide}
+            onClick={handleGoToGestion}
           >
             Voir mes demandes de publication
-          </a>
-          <a
-            href="/publications/espace/publier"
+          </button>
+          <button
+            type="button"
             className="btn btn-outline-secondary btn-sm"
+            onClick={handleNewPublication}
           >
             Faire une nouvelle publication
-          </a>
+          </button>
         </div>
       </Modal.Body>
     </Modal>

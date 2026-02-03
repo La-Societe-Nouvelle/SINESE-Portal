@@ -29,18 +29,17 @@ export async function POST(request) {
     }
 
     const result = await pool.query(
-      `INSERT INTO publications.publications (legal_unit_id, year, data, documents, status, period_start, period_end)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO publications.publications (legal_unit_id, year, data, status, period_start, period_end)
+        VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (legal_unit_id, year)
         DO UPDATE SET
           data = publications.data || EXCLUDED.data,
-          documents = EXCLUDED.documents,
           status = EXCLUDED.status,
           period_start = EXCLUDED.period_start,
           period_end = EXCLUDED.period_end,
           updated_at = NOW()
         RETURNING id, created_at`,
-      [legalUnitId, year, JSON.stringify(declarationData), JSON.stringify(documents), status, periodStart, periodEnd]
+      [legalUnitId, year, JSON.stringify(declarationData), status, periodStart, periodEnd]
     );
 
     return NextResponse.json({ success: true, publicationId: result.rows[0].id }, { status: 200 });

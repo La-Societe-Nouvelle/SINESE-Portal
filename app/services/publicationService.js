@@ -5,8 +5,9 @@ export async function addPublication({ legalUnit, declarationData, documents = [
   formData.append("documents", JSON.stringify(documents));
   formData.append("year", year);
   formData.append("status", status);
-  formData.append("periodStart", periodStart);
-  formData.append("periodEnd", periodEnd);
+  // Ne pas envoyer si null/undefined (FormData convertit null en "null")
+  if (periodStart) formData.append("periodStart", periodStart);
+  if (periodEnd) formData.append("periodEnd", periodEnd);
 
   const response = await fetch("/api/publications", {
     method: "POST",
@@ -14,17 +15,18 @@ export async function addPublication({ legalUnit, declarationData, documents = [
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || "Erreur lors de l'envoi de la publication");
+    const data = await response.json();
+    const error = new Error(data.error || "Erreur lors de l'envoi de la publication");
+    error.isApiError = true;
+    throw error;
   }
 
   return await response.json();
 }
-export async function addReport({ siren, type, year, fileUrl, fileName, fileSize, mimeType, storageType }) {
+export async function addReport({ publicationId, type, fileUrl, fileName, fileSize, mimeType, storageType }) {
   const formData = new FormData();
-  formData.append("siren", siren);
+  formData.append("publicationId", publicationId);
   formData.append("type", type);
-  formData.append("year", year);
   formData.append("fileUrl", fileUrl);
   if (fileName) formData.append("fileName", fileName);
   if (fileSize) formData.append("fileSize", fileSize);
@@ -36,12 +38,15 @@ export async function addReport({ siren, type, year, fileUrl, fileName, fileSize
     body: formData,
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || "Erreur lors de la soumission du rapport");
+    const error = new Error(data.error || "Erreur lors de la soumission du rapport");
+    error.isApiError = true;
+    throw error;
   }
 
-  return await response.json();
+  return data;
 }
 
 export async function updatePublicationStatus(id, status) {

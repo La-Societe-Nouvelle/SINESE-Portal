@@ -164,67 +164,69 @@ export default function IndicatorsForm({ data = {}, onChange, categories, errors
                 )}
                 <div className={`indicator-category-body ${isCollapsed ? "collapsed" : ""}`} style={{ borderLeftColor: groupColor }}>
                   {group.items.map((indicator) => {
-                const idx = getOriginalIndex(indicator);
-                const complete = isIndicatorComplete(indicator, data);
-                const invalid = isIndicatorInvalid(indicator, data);
-                const hasValue = data[indicator.name]?.value !== undefined && data[indicator.name]?.value !== "";
-                const inProgress = hasValue && !complete;
-                const statusLabel = complete ? "Complété" : inProgress ? "En cours" : "Non déclaré";
-                const statusClass = complete ? "success" : inProgress ? "warning" : "muted";
+                    const idx = getOriginalIndex(indicator);
+                    const complete = isIndicatorComplete(indicator, data);
+                    const invalid = isIndicatorInvalid(indicator, data);
+                    const hasValue = data[indicator.name]?.value !== undefined && data[indicator.name]?.value !== "";
+                    const inProgress = hasValue && !complete;
+                    const statusLabel = complete ? "Complété" : inProgress ? "En cours" : "Non déclaré";
+                    const statusClass = complete ? "success" : inProgress ? "warning" : "muted";
 
-                return (
-                  <Accordion.Item
-                    eventKey={String(idx)}
-                    key={indicator.name}
-                    className="indicator-item"
-                  >
-                    <Accordion.Header className="indicator-header">
-                      <div className="indicator-header-content">
-                        <div className="indicator-label-wrapper">
-                          <span className="indicator-label">{indicator.libelle}</span>
-                          <span className="indicator-unit">{indicator.unit && `[${indicator.unit}]`}</span>
-                          {invalid && errors && (errors.formEmpreinte || errors.formExtraIndic) && (
-                            <span className="status-icon error" title="Indicateur incomplet ou invalide">
-                              <AlertCircle size={18} />
-                            </span>
-                          )}
-                          {complete && (
-                            <span className="status-icon success" title="Complété">
-                              <CheckCircle2 size={18} />
-                            </span>
-                          )}
-                        </div>
-                        <div className="indicator-status-icons">
-                          <span className={`indicator-status-pill ${statusClass}`}>{statusLabel}</span>
-                          {indicator.docUrl && (
-                            <a
-                              href={indicator.docUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="indicator-doc-quick"
-                              onClick={(e) => e.stopPropagation()}
-                              title="Voir la documentation"
-                            >
-                              <HelpCircle size={16} />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <IndicatorForm
-                        name={indicator.name}
-                        unit={indicator.unit}
-                        url={indicator.docUrl}
-                        category={indicator.category}
-                        nbDecimals={indicator.nbDecimals}
-                        data={data}
-                        onChange={onChange}
-                      />
-                    </Accordion.Body>
-                  </Accordion.Item>
-                );
-              })}
+                    return (
+                      <Accordion.Item
+                        eventKey={String(idx)}
+                        key={indicator.name}
+                        className="indicator-item"
+                      >
+                        <Accordion.Header className="indicator-header">
+                          <div className="indicator-header-content">
+                            <div className="indicator-label-wrapper">
+                              <span className="indicator-label">{indicator.libelle}</span>
+                              <span className="indicator-unit">{indicator.unit && `[${indicator.unit}]`}</span>
+                              {invalid && errors && (errors.formEmpreinte || errors.formExtraIndic) && (
+                                <span className="status-icon error" title="Indicateur incomplet ou invalide">
+                                  <AlertCircle size={18} />
+                                </span>
+                              )}
+                              {complete && (
+                                <span className="status-icon success" title="Complété">
+                                  <CheckCircle2 size={18} />
+                                </span>
+                              )}
+                            </div>
+                            <div className="indicator-status-icons me-2">
+                              {indicator.docUrl && (
+                                <a
+                                  href={indicator.docUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="indicator-doc-quick"
+                                  onClick={(e) => e.stopPropagation()}
+                                  title="Voir la documentation"
+                                >
+                                  <HelpCircle size={16} />
+                                </a>
+                              )}
+
+                              <span className={`indicator-status-pill ${statusClass}`}>{statusLabel}</span>
+
+                            </div>
+                          </div>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          <IndicatorForm
+                            name={indicator.name}
+                            unit={indicator.unit}
+                            url={indicator.docUrl}
+                            category={indicator.category}
+                            nbDecimals={indicator.nbDecimals}
+                            data={data}
+                            onChange={onChange}
+                          />
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    );
+                  })}
                 </div>
               </div>
             );

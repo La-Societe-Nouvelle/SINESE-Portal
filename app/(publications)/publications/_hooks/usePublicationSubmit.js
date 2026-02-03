@@ -20,7 +20,8 @@ export default function usePublicationSubmit() {
     const year = selectedYear || (periodEnd ? new Date(periodEnd).getFullYear() : undefined);
     if (selectedLegalUnit && selectedLegalUnit.id && year) {
       try {
-        await addPublication({
+        // Sauvegarder la publication
+        const result = await addPublication({
           legalUnit: selectedLegalUnit,
           declarationData,
           documents: [],
@@ -29,13 +30,24 @@ export default function usePublicationSubmit() {
           periodEnd: showDetailPeriod ? periodEnd : null,
           status: "draft",
         });
+
+        // Si rapport avec URL externe, sauvegarder aussi le rapport
+        if (reportType && uploadMode === "url" && externalUrl.trim()) {
+          await addReport({
+            publicationId: result.publicationId,
+            type: reportType,
+            fileUrl: externalUrl.trim(),
+            storageType: "external",
+          });
+        }
+
         setDraftSavedNotification(true);
         setTimeout(() => setDraftSavedNotification(false), 3000);
       } catch (e) {
         console.error("Erreur lors de l'enregistrement du brouillon :", e);
       }
     }
-  }, [currentStepIndex, steps.length, selectedYear, periodEnd, selectedLegalUnit, declarationData, showDetailPeriod, periodStart, setDraftSavedNotification]);
+  }, [currentStepIndex, steps.length, selectedYear, periodEnd, selectedLegalUnit, declarationData, showDetailPeriod, periodStart, reportType, uploadMode, externalUrl, setDraftSavedNotification]);
 
   // Register saveDraft into context ref so auto-save effect can call it
   useEffect(() => {
@@ -58,40 +70,38 @@ export default function usePublicationSubmit() {
         return;
       }
 
-      // Submit indicators if filled
-      if (hasIndicators) {
-        const year = selectedYear || (periodEnd ? new Date(periodEnd).getFullYear() : undefined);
+      const year = selectedYear || (periodEnd ? new Date(periodEnd).getFullYear() : new Date().getFullYear());
 
-        let uploadedDocuments = reportDocuments;
-        if (hasReport && uploadMode === "file" && reportDocuments.length > 0) {
+      // Upload documents OVH si nécessaire (avant création publication)
+      let uploadedDocuments = [];
+      if (hasReport && uploadMode === "file" && reportDocuments.length > 0) {
+        if (!reportDocuments[0].url) {
           uploadedDocuments = await uploadDocumentsToOVH(reportDocuments, selectedLegalUnit.siren);
+        } else {
+          uploadedDocuments = reportDocuments;
         }
-
-        await addPublication({
-          legalUnit: selectedLegalUnit,
-          declarationData,
-          documents: hasReport && uploadMode === "file" ? uploadedDocuments : [],
-          year,
-          periodStart: showDetailPeriod ? periodStart : null,
-          periodEnd: showDetailPeriod ? periodEnd : null,
-          status: "pending",
-        });
       }
 
-      // Submit report if filled
-      if (hasReport) {
-        const year = selectedYear
-          ? selectedYear
-          : (periodEnd ? new Date(periodEnd).getFullYear() : new Date().getFullYear());
+      // ÉTAPE 1: Toujours créer/mettre à jour la publication
+      // Même si hasIndicators est false (report-only), on crée une publication avec data vide
+      const publicationResult = await addPublication({
+        legalUnit: selectedLegalUnit,
+        declarationData: hasIndicators ? declarationData : {},
+        documents: hasIndicators && uploadedDocuments.length > 0 ? uploadedDocuments : [],
+        year,
+        periodStart: showDetailPeriod ? periodStart : null,
+        periodEnd: showDetailPeriod ? periodEnd : null,
+        status: "pending",
+      });
 
+      const publicationId = publicationResult.publicationId;
+
+      // ÉTAPE 2: Si rapport, le soumettre avec publication_id
+      if (hasReport) {
         let fileUrl, fileName, fileSize, mimeType, storageType;
 
-        if (uploadMode === "file" && reportDocuments.length > 0) {
-          let uploaded = reportDocuments;
-          if (!reportDocuments[0].url) {
-            uploaded = await uploadDocumentsToOVH(reportDocuments, selectedLegalUnit.siren);
-          }
-          const doc = uploaded[0];
+        if (uploadMode === "file" && uploadedDocuments.length > 0) {
+          const doc = uploadedDocuments[0];
           fileUrl = doc.url;
           fileName = doc.name;
           fileSize = doc.size;
@@ -103,9 +113,8 @@ export default function usePublicationSubmit() {
         }
 
         await addReport({
-          siren: selectedLegalUnit.siren,
+          publicationId,
           type: reportType,
-          year,
           fileUrl,
           fileName,
           fileSize,

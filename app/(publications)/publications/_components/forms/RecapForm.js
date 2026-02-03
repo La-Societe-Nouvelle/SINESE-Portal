@@ -1,6 +1,6 @@
 import indicators from "./../../_lib/indicators.json";
 import { Table, Form, Card, Row, Col, Badge } from "react-bootstrap";
-import { BarChart3, FileText, Link2 } from "lucide-react";
+import { BarChart, BarChart2, BarChart3, ChartBar, FileBarChart2, FileText, Link2, Paperclip, PieChart } from "lucide-react";
 import { usePublicationFormContext } from "../../_context/PublicationFormContext";
 import { REPORT_TYPES } from "./ReportForm";
 import { formatFileSize } from "../../_utils";
@@ -53,8 +53,8 @@ export default function RecapForm() {
           <Card.Header className="bg-light">
             <div className="d-flex align-items-center justify-content-between">
               <h6 className="mb-0 d-flex align-items-center">
-                <BarChart3 size={18} className="me-2" />
-                Indicateurs principaux
+                <BarChart2 size={18} className="me-2" />
+                Indicateurs de l'Empreinte Sociétale
               </h6>
             </div>
           </Card.Header>
@@ -94,7 +94,9 @@ export default function RecapForm() {
       ) && (
         <Card className="mb-3">
           <Card.Header className="bg-light">
-            <h6 className="mb-0">Indicateurs supplémentaires</h6>
+            <h6 className="mb-0">
+              <PieChart size={18} className="me-2" /> 
+              Indicateurs supplémentaires</h6>
           </Card.Header>
           <Card.Body className="p-0">
             <Table className="mb-0 table-sm table-striped">
@@ -128,8 +130,8 @@ export default function RecapForm() {
         <Card className="mb-3">
           <Card.Header className="bg-light">
             <h6 className="mb-0 d-flex align-items-center">
-              <FileText size={18} className="me-2" />
-              Rapport joint
+              <Paperclip size={18} className="me-2" />
+              Rapport{reportDocuments.length > 1 ? "s" : ""}
             </h6>
           </Card.Header>
           <Card.Body>
@@ -148,7 +150,7 @@ export default function RecapForm() {
                   reportDocuments.map((doc) => (
                     <div key={doc.id}>
                       <FileText size={14} className="me-1" style={{ display: "inline" }} />
-                      {doc.name} ({formatFileSize(doc.size)})
+                      {doc.name} 
                     </div>
                   ))
                 ) : (

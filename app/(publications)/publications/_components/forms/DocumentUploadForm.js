@@ -138,7 +138,7 @@ export default function DocumentUploadForm({ documents = [], onChange, selectedL
       {/* Documents uploadés */}
       {documents.length > 0 && (
         <div className="uploaded-documents-section mt-4">
-          <h6 className="mb-3">Documents ({documents.length})</h6>
+          <h6 className="mb-3">Rapport{documents.length > 1 ? "s" : ""} ({documents.length})</h6>
           <ListGroup variant="flush">
             {documents.map((doc) => (
               <ListGroup.Item key={doc.id} className="d-flex align-items-center justify-content-between py-2 border-bottom">
@@ -149,7 +149,7 @@ export default function DocumentUploadForm({ documents = [], onChange, selectedL
                       {doc.name}
                     </div>
                     <small className="text-muted d-block">
-                      {formatFileSize(doc.size)} • {doc.uploadedAt ? `Uploadé le ${formatDate(doc.uploadedAt)}` : "Prêt à être uploadé"}
+                      {doc.uploadedAt ? `Uploadé le ${formatDate(doc.uploadedAt)}` : "Prêt à être uploadé"}
                     </small>
                   </div>
                 </div>

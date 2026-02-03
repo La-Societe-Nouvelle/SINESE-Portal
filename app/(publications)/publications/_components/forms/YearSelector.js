@@ -28,9 +28,11 @@ export default function YearSelector({
     setSelectedYear(year);
 
     if (year) {
-      // Set default period dates (January 1st to December 31st of selected year)
-      setPeriodStart(`${year}-01-01`);
-      setPeriodEnd(`${year}-12-31`);
+      // Only prefill period dates if showDetailPeriod is active
+      if (showDetailPeriod) {
+        setPeriodStart(`${year}-01-01`);
+        setPeriodEnd(`${year}-12-31`);
+      }
 
       const existingPublication = publishedYears.find((y) => Number(y.year) === year);
 
@@ -46,15 +48,12 @@ export default function YearSelector({
         }
       });
     } else {
-      // Clear period dates if no year selected
       setPeriodStart("");
       setPeriodEnd("");
     }
   };
 
-  const handleDetailPeriodChange = (e) => {
-    setShowDetailPeriod(e.target.checked);
-  };
+
 
   return (
     <>
@@ -87,14 +86,20 @@ export default function YearSelector({
         <Form.Group className="form-group">
           {/* Carte cliquable pour préciser la période */}
           <div
-            onClick={() => setShowDetailPeriod(!showDetailPeriod)}
+            onClick={() => {
+              const newValue = !showDetailPeriod;
+              setShowDetailPeriod(newValue);
+              if (newValue) {
+                // Prefill with default dates when checking
+                setPeriodStart(`${selectedYear}-01-01`);
+                setPeriodEnd(`${selectedYear}-12-31`);
+              } else {
+                // Clear period dates when unchecking
+                setPeriodStart("");
+                setPeriodEnd("");
+              }
+            }}
             className={`year-selector-card ${showDetailPeriod ? 'active' : ''} mb-3`}
-            onMouseEnter={(e) => {
-              // Hover effect handled by SCSS
-            }}
-            onMouseLeave={(e) => {
-              // Hover effect handled by SCSS
-            }}
           >
             <div className="year-selector-card-content">
               <div className="year-selector-card-left">

@@ -79,18 +79,23 @@ function createInitialState(initialData) {
     showDetailPeriod: (() => {
       const start = initialData.period_start;
       const end = initialData.period_end;
-      if (!start || !end) return false;
+      // Vérifier null, undefined, string "null", ou string vide
+      if (!start || !end || start === "null" || end === "null") return false;
       const year = initialData.year;
-      if (year && start === `${year}-01-01` && end === `${year}-12-31`) return false;
+      if (!year) return true;
+      // Convertir en format ISO (YYYY-MM-DD) pour comparer
+      const startStr = start instanceof Date ? start.toISOString().split("T")[0] : String(start).split("T")[0];
+      const endStr = end instanceof Date ? end.toISOString().split("T")[0] : String(end).split("T")[0];
+      if (startStr === `${year}-01-01` && endStr === `${year}-12-31`) return false;
       return true;
     })(),
-    periodStart: initialData.period_start || "",
-    periodEnd: initialData.period_end || "",
+    periodStart: (initialData.period_start && initialData.period_start !== "null") ? initialData.period_start : "",
+    periodEnd: (initialData.period_end && initialData.period_end !== "null") ? initialData.period_end : "",
     declarationData: initialData.data || {},
-    reportType: "",
-    uploadMode: "file",
-    reportDocuments: [],
-    externalUrl: "",
+    reportType: initialData.report_type || "",
+    uploadMode: initialData.external_url ? "url" : "file",
+    reportDocuments: initialData.documents || [],
+    externalUrl: initialData.external_url || "",
     errors: {},
     warnings: {},
     loading: false,
@@ -101,7 +106,7 @@ function createInitialState(initialData) {
   };
 }
 
-// ── Context ──────────────────────────────────────────────────────────
+// ── Context ─────────────────────────────────────────────────────────
 const PublicationFormContext = createContext(null);
 
 export function usePublicationFormContext() {
@@ -220,6 +225,8 @@ export function PublicationFormProvider({ initialData = {}, mode = "create", isL
     selectedLegalUnit: state.selectedLegalUnit,
     periodStart: state.periodStart,
     periodEnd: state.periodEnd,
+    reportType: state.reportType,
+    externalUrl: state.externalUrl,
     step: stepNav.currentStep,
   });
 
@@ -234,20 +241,24 @@ export function PublicationFormProvider({ initialData = {}, mode = "create", isL
         !isEqual(state.selectedLegalUnit, lastDraft.current.selectedLegalUnit) ||
         state.periodStart !== lastDraft.current.periodStart ||
         state.periodEnd !== lastDraft.current.periodEnd ||
+        state.reportType !== lastDraft.current.reportType ||
+        state.externalUrl !== lastDraft.current.externalUrl ||
         stepNav.currentStep !== lastDraft.current.step;
 
-      if (hasChanged && hasIndicators && saveDraftRef.current) {
+      if (hasChanged && (hasIndicators || hasReport) && saveDraftRef.current) {
         saveDraftRef.current();
         lastDraft.current = {
           declarationData: state.declarationData,
           selectedLegalUnit: state.selectedLegalUnit,
           periodStart: state.periodStart,
           periodEnd: state.periodEnd,
+          reportType: state.reportType,
+          externalUrl: state.externalUrl,
           step: stepNav.currentStep,
         };
       }
     }
-  }, [state.declarationData, state.selectedLegalUnit, state.periodStart, state.periodEnd, stepNav.currentStep, state.errors, hasIndicators, hasReport]);
+  }, [state.declarationData, state.selectedLegalUnit, state.periodStart, state.periodEnd, state.reportType, state.externalUrl, stepNav.currentStep, state.errors, hasIndicators, hasReport]);
 
   const value = useMemo(
     () => ({
