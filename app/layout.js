@@ -59,9 +59,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <body>
-
         <NavbarSwitcher />
-        <PartnershipBanner />
         <main className="main-content flex-grow-1">
           {children}
         </main>

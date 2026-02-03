@@ -1,9 +1,8 @@
 "use client";
 
-import { Card, Row, Col } from "react-bootstrap";
-import { TrendingUp, Users, Leaf, Info } from "lucide-react";
+import { Card, Row } from "react-bootstrap";
+import {  Info } from "lucide-react";
 import { IndicatorChartContainer } from "@/_components/portal/IndicatorChartContainer";
-import DefaultDataExplanation from "./DefaultDataExplanation";
 import Link from "next/link";
 
 export default function FootprintSection({
@@ -42,7 +41,7 @@ export default function FootprintSection({
       {/* Section principale - Indicateurs ESE */}
 
       <Card className="mb-5">
-        <Card.Header className="bg-light py-3 border-bottom">
+        <Card.Header className="py-3 border-bottom">
           <h3 className="mb-1">
             Empreinte Sociétale et Environnementale
           </h3>
@@ -106,7 +105,7 @@ export default function FootprintSection({
       {/* Section secondaire - Données additionnelles */}
       {additionalIndicators.some(indic => Object.keys(allData).includes(indic)) && (
         <Card className="mb-4 shadow-sm border-0">
-          <Card.Header className="bg-light py-3 border-bottom">
+          <Card.Header className=" py-3 border-bottom">
             <h3 className="h6 mb-1 text-primary">
               Données additionnelles
             </h3>

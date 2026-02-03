@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Container, Card, Table, Badge, Spinner, Alert, Button, Row, Col, Modal } from "react-bootstrap";
-import { ClipboardList, Building2, Calendar, User, ExternalLink, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3 } from "lucide-react";
+import { ClipboardList, Building2, Calendar, User, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3, CheckCircle, XCircle, Link2 } from "lucide-react";
 import Link from "next/link";
 import indicators from "../../../_lib/indicators.json";
 
@@ -108,6 +108,30 @@ export default function AdminDashboard() {
   const closeDetailsModal = () => {
     setShowDetailsModal(false);
     setSelectedPublication(null);
+  };
+
+  const handlePublicationAction = async (publicationId, action) => {
+    try {
+      const endpoint = action === "published" 
+        ? `/api/admin/publications/${publicationId}/approve`
+        : `/api/admin/publications/${publicationId}/reject`;
+        
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Erreur lors de la mise à jour de la publication");
+      }
+      
+      await fetchPendingPublications();
+      setShowDetailsModal(false);
+      setSelectedPublication(null);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   if (status === "loading" || loading) {
@@ -311,14 +335,32 @@ export default function AdminDashboard() {
                       <span className="small text-muted">{formatDate(pub.created_at)}</span>
                     </td>
                     <td>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        onClick={() => openPublicationDetails(pub.id)}
-                      >
-                        <Eye size={14} className="me-1" style={{ display: 'inline' }} />
-                        Voir
-                      </Button>
+                      <div className="d-flex gap-1">
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
+                          onClick={() => openPublicationDetails(pub.id)}
+                        >
+                          <Eye size={14} className="me-1" style={{ display: 'inline' }} />
+                          Voir
+                        </Button>
+                        <Button
+                          variant="outline-success"
+                          size="sm"
+                          onClick={() => handlePublicationAction(pub.id, "published")}
+                          title="Approuver"
+                        >
+                          <CheckCircle size={14} style={{ display: "inline" }} />
+                        </Button>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => handlePublicationAction(pub.id, "rejected")}
+                          title="Rejeter"
+                        >
+                          <XCircle size={14} style={{ display: "inline" }} />
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -418,6 +460,46 @@ export default function AdminDashboard() {
                   </Row>
                 </Card.Body>
               </Card>
+
+              {/* Report */}
+              {selectedPublication.report && (
+                <Card className="mb-3">
+                  <Card.Header className="bg-light">
+                    <h6 className="mb-0">Rapport de durabilité</h6>
+                  </Card.Header>
+                  <Card.Body>
+                    <Row className="mb-2">
+                      <Col md={4}><strong>Type :</strong></Col>
+                      <Col md={8}>{selectedPublication.report.type}</Col>
+                    </Row>
+                    <Row className="mb-2">
+                      <Col md={4}><strong>Origine :</strong></Col>
+                      <Col md={8}>{selectedPublication.report.file_origin || selectedPublication.report.storage_type || "ovh"}</Col>
+                    </Row>
+                    <Row className="mb-2">
+                      <Col md={4}><strong>Document :</strong></Col>
+                      <Col md={8}>
+                        {selectedPublication.report.file_url ? (
+                          <a
+                            href={selectedPublication.report.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-sm btn-outline-primary"
+                          >
+                            {selectedPublication.report.file_origin === "external" ? (
+                              <><Link2 size={14} className="me-1" style={{ display: "inline" }} />Lien externe</>
+                            ) : (
+                              <><Download size={14} className="me-1" style={{ display: "inline" }} />{selectedPublication.report.file_name || "Fichier"}</>
+                            )}
+                          </a>
+                        ) : (
+                          <span className="text-muted">Non disponible</span>
+                        )}
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              )}
 
               {/* Documents */}
               {selectedPublication.documents && selectedPublication.documents.length > 0 && (
@@ -539,6 +621,22 @@ export default function AdminDashboard() {
           )}
         </Modal.Body>
         <Modal.Footer>
+          {selectedPublication?.status === "pending" && (
+            <div className="me-auto d-flex gap-2">
+              <Button
+                variant="success"
+                onClick={() => handlePublicationAction(selectedPublication.id, "published")}
+              >
+                Approuver
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => handlePublicationAction(selectedPublication.id, "rejected")}
+              >
+                Rejeter
+              </Button>
+            </div>
+          )}
           <Button variant="primary" onClick={closeDetailsModal}>
             Fermer
           </Button>

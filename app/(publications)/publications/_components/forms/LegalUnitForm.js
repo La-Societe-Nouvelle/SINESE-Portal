@@ -3,19 +3,19 @@ import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import { Plus,  AlertTriangle, ExternalLink } from "lucide-react";
 import Select from "react-select";
 import AddLegalUnitModal from "../modals/AddLegalUnitModal";
+import YearSelector from "./YearSelector";
 import { addLegalUnit } from "@/services/legalUnitService";
+import { usePublicationFormContext } from "../../_context/PublicationFormContext";
 
-export default function LegalUnitForm({
-  selectedLegalUnit,
-  setSelectedLegalUnit,
-  periodEnd,
-  setPeriodEnd,
-  periodStart,
-  setPeriodStart,
-  mode,
-  setErrors,
-  isLegalUnitPreselected = false,
-}) {
+export default function LegalUnitForm({ hidePeriod = false }) {
+  const {
+    selectedLegalUnit, setSelectedLegalUnit,
+    selectedYear, setSelectedYear,
+    showDetailPeriod, setShowDetailPeriod,
+    periodStart, setPeriodStart,
+    periodEnd, setPeriodEnd,
+    mode, setErrors, isLegalUnitPreselected,
+  } = usePublicationFormContext();
   const [showAddModal, setShowAddModal] = useState(false);
 
   const [legalUnits, setLegalUnits] = useState([]);
@@ -156,38 +156,9 @@ export default function LegalUnitForm({
       setSelectedLegalUnit(null);
     }
   };
-
-  const handlePeriodEndChange = (e) => {
-    const value = e.target.value;
-
-    setPeriodEnd(value);
-
-    const year = new Date(value).getFullYear();
-    const existingPublication = publishedYears.find((y) => Number(y.year) === year);
-
-    setErrors((prev) => {
-      if (existingPublication) {
-        const statusText =
-          existingPublication.status === "published"
-            ? "déjà publiée"
-            : existingPublication.status === "pending"
-              ? "en attente de validation"
-              : "en cours de rédaction (brouillon)";
-
-        return {
-          ...prev,
-          formEntreprise: `Une demande de publication a déjà été faite pour l'année ${year}.`,
-        };
-      } else {
-        const { formEntreprise, ...rest } = prev;
-        return rest;
-      }
-    });
-  };
   return (
     <>
       <Form.Group className="form-group" controlId="legalUnit">
-        <Form.Label>Entreprise</Form.Label>
 
         <div className="d-flex align-items-flex-start gap-3">
           <div style={{ flex: 1 }}>
@@ -240,34 +211,20 @@ export default function LegalUnitForm({
 
       </Form.Group>
 
-      <Form.Group className="form-group" controlId="period">
-        <Form.Label>Période de l'exercice</Form.Label>
-        <div className="d-flex gap-3 align-items-flex-end">
-          <div className="flex-grow-1">
-            <Form.Label className="small">Date de début</Form.Label>
-            <Form.Control
-              type="date"
-              value={periodStart || ""}
-              onChange={(e) => setPeriodStart(e.target.value)}
-              required
-              aria-label="Date de début"
-            />
-          </div>
-          <span className="text-muted fw-500">au</span>
-          <div className="flex-grow-1">
-            <Form.Label className="small">Date de fin</Form.Label>
-            <Form.Control
-              type="date"
-              value={periodEnd || ""}
-              onChange={handlePeriodEndChange}
-              onBlur={handlePeriodEndChange}
-              required
-              aria-label="Date de fin"
-              min={periodStart || ""}
-            />
-          </div>
-        </div>
-      </Form.Group>
+      {!hidePeriod && (
+        <YearSelector
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
+          periodStart={periodStart}
+          setPeriodStart={setPeriodStart}
+          periodEnd={periodEnd}
+          setPeriodEnd={setPeriodEnd}
+          showDetailPeriod={showDetailPeriod}
+          setShowDetailPeriod={setShowDetailPeriod}
+          publishedYears={publishedYears}
+          setErrors={setErrors}
+        />
+      )}
 
       {error && (
         <Alert variant="danger" className="alert mb-0">

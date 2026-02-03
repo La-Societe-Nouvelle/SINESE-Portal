@@ -157,7 +157,6 @@ export default function ProfilPage() {
 
       <Container className="py-4">
         <Row>
-          {/* Profile Information Section */}
           <Col lg={6} className="mb-4">
             <Card className="shadow-sm h-100">
               <Card.Body className="p-4">
@@ -227,8 +226,8 @@ export default function ProfilPage() {
                       required
                     >
                       <option value="">Sélectionnez votre profil</option>
-                      <option value="expert-comptable">Expert-comptable</option>
-                      <option value="entreprise">Représentant d'entreprise</option>
+                      <option value="expert-comptable">Expert·e-comptable</option>
+                      <option value="entreprise">Dirigeant·e d'entreprise</option>
                       <option value="autre">Autre</option>
                     </Form.Select>
                   </Form.Group>

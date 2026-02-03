@@ -1,250 +1,68 @@
 "use client";
-import { addPublication } from "@/services/publicationService";
-import { Building, FileText, BarChart3, AlertTriangle, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
-import { Button, Modal, Row, Col, Card, ListGroup, ProgressBar } from "react-bootstrap";
-import { isEqual } from "lodash";
-import { useState, useEffect, useRef } from "react";
-import { validateEmpreinte, validateExtraIndic, validatePeriod } from "../../_utils";
+import { AlertTriangle, Info, Save } from "lucide-react";
+import { Row, Col, Card } from "react-bootstrap";
+import { PublicationFormProvider, usePublicationFormContext } from "../../_context/PublicationFormContext";
+import usePublicationSubmit from "../../_hooks/usePublicationSubmit";
+import { validateStep } from "../../_utils/validation";
 import IndicatorsForm from "./IndicatorsForm";
 import LegalUnitForm from "./LegalUnitForm";
-import DocumentUploadForm, { uploadDocumentsToOVH } from "./DocumentUploadForm";
+import ProgressSidebar from "./ProgressSidebar";
+import ReportForm from "./ReportForm";
 import RecapForm from "./RecapForm";
-import usePublicationSteps from "../../_hooks/usePublicationSteps";
-
-// Mapping de noms Lucide vers les composants
-const LUCIDE_ICONS = {
-  Building,
-  FileText,
-  BarChart3,
-};
+import PublicationModalSuccess from "../PublicationModalSuccess";
+import StepHeader from "./StepHeader";
+import NavigationButtons from "./NavigationButtons";
 
 export default function PublicationForm({ initialData = {}, mode = "create", isLegalUnitPreselected = false }) {
-  // Initialize period dates from initialData only
-  const getInitialPeriodStart = () => {
-    return initialData.period_start || "";
-  };
+  return (
+    <PublicationFormProvider initialData={initialData} mode={mode} isLegalUnitPreselected={isLegalUnitPreselected}>
+      <PublicationFormContent />
+    </PublicationFormProvider>
+  );
+}
 
-  const getInitialPeriodEnd = () => {
-    return initialData.period_end || "";
-  };
+function PublicationFormContent() {
+  const ctx = usePublicationFormContext();
+  const {
+    steps, currentStep, currentStepIndex,
+    errors, warnings, loading, success, userInteracted,
+    draftSavedNotification, setSuccess,
+    hasIndicators, hasReport,
+    setUserInteracted, setErrors, goToNextStep, goToPrevStep, setCurrentStep,
+    mode,
+    // For IndicatorsForm
+    declarationData, updateDeclarationData,
+  } = ctx;
 
-  const [selectedLegalUnit, setSelectedLegalUnit] = useState(initialData.legalUnit || "");
-  const [periodStart, setPeriodStart] = useState(getInitialPeriodStart());
-  const [periodEnd, setPeriodEnd] = useState(getInitialPeriodEnd());
-  const [declarationData, setDeclarationData] = useState(initialData.data || {});
-  const [documents, setDocuments] = useState(initialData.documents || []);
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [confirmationChecked, setConfirmationChecked] = useState(false);
+  const { handleSubmitPublication } = usePublicationSubmit();
 
-  const { steps, currentStep, setCurrentStep, currentStepIndex, goToNextStep, goToPrevStep } = usePublicationSteps();
-
-  // Référence pour stocker le dernier brouillon
-  const lastDraft = useRef({
-    declarationData,
-    documents,
-    selectedLegalUnit,
-    periodStart,
-    periodEnd,
-    confirmationChecked,
-    step: currentStep,
-  });
-
-  // Validation
-  function validateStep(stepKey) {
-    switch (stepKey) {
-      case "formEntreprise":
-        if (!selectedLegalUnit) return "Veuillez sélectionner une entreprise.";
-        const periodError = validatePeriod(periodStart, periodEnd);
-        if (periodError) return periodError;
-        return null;
-      case "formEmpreinte":
-        return validateEmpreinte(declarationData);
-      case "formExtraIndic":
-        return validateExtraIndic(declarationData);
-      case "formDocuments":
-        // Les documents sont optionnels, pas d'erreur de validation
-        return null;
-      case "formRecap":
-        if (!confirmationChecked) return "Veuillez confirmer la déclaration.";
-        return null;
-      default:
-        return null;
-    }
-  }
-
-  useEffect(() => {
-    const errorMsg = validateStep(currentStep);
-
-    // TOUJOURS mettre à jour l'erreur pour éviter le cache
-    setErrors((prev) => {
-      if (errorMsg) {
-        return { ...prev, [currentStep]: errorMsg };
-      } else {
-        const updated = { ...prev };
-        delete updated[currentStep];
-        return updated;
-      }
-    });
-  }, [declarationData, documents, selectedLegalUnit, periodStart, periodEnd, confirmationChecked, currentStep]);
-
-  // Effet séparé pour la sauvegarde automatique
-  useEffect(() => {
-    const errorMsg = validateStep(currentStep);
-
-    // Sauvegarder le brouillon si aucune erreur
-    if (!errorMsg && !errors[currentStep]) {
-      const hasChanged =
-        !isEqual(declarationData, lastDraft.current.declarationData) ||
-        !isEqual(documents, lastDraft.current.documents) ||
-        !isEqual(selectedLegalUnit, lastDraft.current.selectedLegalUnit) ||
-        periodStart !== lastDraft.current.periodStart ||
-        periodEnd !== lastDraft.current.periodEnd ||
-        confirmationChecked !== lastDraft.current.confirmationChecked ||
-        currentStep !== lastDraft.current.step;
-
-      if (hasChanged) {
-        saveDraft();
-        lastDraft.current = {
-          declarationData,
-          documents,
-          selectedLegalUnit,
-          periodStart,
-          periodEnd,
-          step: currentStep,
-        };
-      }
-    }
-  }, [declarationData, documents, selectedLegalUnit, periodStart, periodEnd, confirmationChecked, currentStep, errors]);
-
-  useEffect(() => {
-    // Ajoute un délai pour laisser le DOM se mettre à jour
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 50);
-  }, [currentStep]);
-
-  async function handleNextStep() {
-    const errorMsg = validateStep(currentStep);
+  function handleNextStep() {
+    setUserInteracted(true);
+    const errorMsg = validateStep(currentStep, ctx, { hasIndicators, hasReport });
     if (errorMsg) {
-      setErrors((prev) => ({ ...prev, [currentStep]: errorMsg }));
+      setErrors({ ...errors, [currentStep]: errorMsg });
       return;
     }
-    // Also check if there are existing errors in the errors state (from child components)
-    if (errors[currentStep]) {
-      return;
-    }
+    if (errors[currentStep]) return;
     goToNextStep();
   }
 
   function handlePrevStep() {
-    const errorMsg = validateStep(currentStep);
+    const errorMsg = validateStep(currentStep, ctx, { hasIndicators, hasReport });
     if (errorMsg) {
-      setErrors((prev) => ({ ...prev, [currentStep]: errorMsg }));
+      setErrors({ ...errors, [currentStep]: errorMsg });
     }
     goToPrevStep();
   }
 
   function handleStepChange(targetStep) {
     if (targetStep === currentStep) return;
-    const errorMsg = validateStep(currentStep);
+    const errorMsg = validateStep(currentStep, ctx, { hasIndicators, hasReport });
     if (errorMsg) {
-      setErrors((prev) => ({ ...prev, [currentStep]: errorMsg }));
+      setErrors({ ...errors, [currentStep]: errorMsg });
     }
-    // Also check if there are existing errors in the errors state (from child components)
-    if (errors[currentStep]) {
-      return;
-    }
-
+    if (errors[currentStep]) return;
     setCurrentStep(targetStep);
-  }
-
-  async function saveDraft() {
-    if (currentStepIndex === steps.length - 1) return;
-
-    const year = periodEnd ? new Date(periodEnd).getFullYear() : undefined;
-
-    if (selectedLegalUnit && selectedLegalUnit.id && year) {
-      // Check published indicators only on formEntreprise step
-      if (currentStep === "formEntreprise") {
-        try {
-          const res = await fetch(
-            `https://api.lasocietenouvelle.org/legalunitfootprint/${selectedLegalUnit.siren}`
-          );
-          if (res.ok) {
-            const data = await res.json();
-            const footprint = data.footprint || {};
-
-            // Count indicators with flag "p" (published) for the selected year
-            const publishedIndicatorCount = Object.values(footprint).filter(
-              (indicator) => indicator?.flag === "p" && Number(indicator?.year) === year
-            ).length;
-
-            // If all 12 ESE indicators are already published for this year, don't allow new declaration
-            if (publishedIndicatorCount === 12) {
-              setErrors((prev) => ({
-                ...prev,
-                formEntreprise:
-                  `Tous les indicateurs ESE ont déjà été publiés pour l'année ${year} pour cette entreprise. Aucune nouvelle déclaration n'est possible.`,
-              }));
-              return;
-            }
-          }
-        } catch (e) {
-          console.error("Erreur lors de la vérification des indicateurs publiés:", e);
-          // Continue with save even if API call fails
-        }
-      }
-
-      try {
-        await addPublication({
-          legalUnit: selectedLegalUnit,
-          declarationData,
-          documents,
-          year,
-          periodStart,
-          periodEnd,
-          status: "draft",
-        });
-      } catch (e) {
-        console.error("Erreur lors de l'enregistrement du brouillon :", e);
-      }
-    }
-  }
-
-  async function handleSubmitPublication() {
-    setLoading(true);
-    try {
-      const errorMsg = validateStep(currentStep);
-      if (errorMsg) {
-        setErrors((prev) => ({ ...prev, [currentStep]: errorMsg }));
-        setLoading(false);
-        return;
-      }
-
-      // Uploader les documents avant de soumettre la publication
-      let uploadedDocuments = documents;
-      if (documents.length > 0) {
-        uploadedDocuments = await uploadDocumentsToOVH(documents, selectedLegalUnit.siren);
-      }
-
-      await addPublication({
-        legalUnit: selectedLegalUnit,
-        declarationData,
-        documents: uploadedDocuments,
-        year: periodEnd ? new Date(periodEnd).getFullYear() : undefined,
-        periodStart,
-        periodEnd,
-        status: "pending",
-      });
-      setSuccess(true);
-    } catch (e) {
-      console.error("Erreur lors de la soumission:", e);
-      setErrors((prev) => ({ ...prev, submit: e.message || "Erreur lors de la soumission" }));
-    } finally {
-      setLoading(false);
-    }
   }
 
   return (
@@ -253,135 +71,94 @@ export default function PublicationForm({ initialData = {}, mode = "create", isL
         <Card className="publication-form-card border-0">
           <Card.Body>
             <h3 className="main-title">
-              {mode === "edit" ? "Modifier la publication" : "Nouvelle demande de publication"}
+              <span className="me-2">Formulaire de publication</span>
             </h3>
 
             <Row className="g-4">
-              <ProgressSidebar
-                steps={steps}
-                currentStep={currentStep}
-                currentStepIndex={currentStepIndex}
-                handleStepChange={handleStepChange}
-                errors={errors}
-              />
+              <ProgressSidebar onStepChange={handleStepChange} />
               <Col className="col-lg-9">
-                <div className="form-section-header">
-                  <h3>
-                    {steps[currentStepIndex].icon &&
-                      (() => {
-                        const IconComponent = LUCIDE_ICONS[steps[currentStepIndex].icon];
-                        return IconComponent ? <IconComponent size={20} className="me-2" style={{ display: 'inline' }} /> : null;
-                      })()
-                    }
-                    {steps[currentStepIndex].label}
-                  </h3>
-                  <div className="text-muted">
-                    {currentStep === "formEntreprise" &&
-                      "Sélectionnez ou ajoutez une entreprise pour commencer votre déclaration."}
-                    {currentStep === "formEmpreinte" &&
-                      "Complétez les indicateurs de l'empreinte sociétale qui seront publiés sur SINESE."}
-                    {currentStep === "formExtraIndic" &&
-                      "Ajoutez ici des indicateurs complémentaires déjà déclarés auprès d'organismes publics pour enrichir vos données accessibles sur SINESE."}
-                    {currentStep === "formDocuments" &&
-                      "Joignez votre rapport RSE/ESG (PDF ou XBRL). Il sera publié avec votre empreinte sociétale sur SINESE."}
-                    {currentStep === "formRecap" && "Vérifiez et validez votre demande de publication."}
+                {/* Auto-save notification */}
+                {draftSavedNotification && (
+                  <div className="draft-saved-toast">
+                    <Save size={14} style={{ display: "inline" }} />
+                    Brouillon sauvegardé
                   </div>
-                </div>
+                )}
 
-                {/* Forms by step */}
-                {currentStep === "formEntreprise" && (
-                  <LegalUnitForm
-                    selectedLegalUnit={selectedLegalUnit}
-                    setSelectedLegalUnit={setSelectedLegalUnit}
-                    periodStart={periodStart}
-                    setPeriodStart={setPeriodStart}
-                    periodEnd={periodEnd}
-                    setPeriodEnd={setPeriodEnd}
-                    mode={mode}
-                    setErrors={setErrors}
-                    isLegalUnitPreselected={isLegalUnitPreselected}
-                  />
+                <StepHeader />
+
+                {/* Step: Entreprise */}
+                {currentStep === "formEntreprise" && <LegalUnitForm />}
+
+                {/* Step: Indicateurs */}
+                {currentStep === "formIndicateurs" && (
+                  <div>
+                    <h5 className="mb-3">Empreinte sociétale</h5>
+                    <IndicatorsForm
+                      data={declarationData || {}}
+                      categories={["Création de la valeur", "Empreinte sociale", "Empreinte environnementale"]}
+                      onChange={(data) => updateDeclarationData(data)}
+                      errors={errors}
+                    />
+                    <h5 className="mt-4 mb-3">Indicateurs supplémentaires</h5>
+                    <p className="text-muted small">
+                      Indicateurs complémentaires déjà déclarés auprès d'organismes publics.
+                    </p>
+                    <IndicatorsForm
+                      data={declarationData || {}}
+                      categories="Indicateurs supplémentaires"
+                      onChange={(data) => updateDeclarationData(data)}
+                      errors={errors}
+                    />
+                  </div>
                 )}
-                {currentStep === "formEmpreinte" && (
-                  <IndicatorsForm
-                    data={declarationData || {}}
-                    categories={["Création de la valeur", "Empreinte sociale", "Empreinte environnementale"]}
-                    onChange={(data) => setDeclarationData((d) => ({ ...d, ...data }))}
-                    errors={errors}
-                  />
-                )}
-                {currentStep === "formExtraIndic" && (
-                  <IndicatorsForm
-                    data={declarationData || {}}
-                    categories="Indicateurs supplémentaires"
-                    onChange={(data) => setDeclarationData((d) => ({ ...d, ...data }))}
-                    errors={errors}
-                  />
-                )}
-                {currentStep === "formDocuments" && (
-                  <DocumentUploadForm
-                    documents={documents}
-                    onChange={setDocuments}
-                    selectedLegalUnit={selectedLegalUnit}
-                  />
-                )}
-                {currentStep === "formRecap" && (
-                  <RecapForm
-                    legalUnit={selectedLegalUnit}
-                    declarationData={declarationData}
-                    documents={documents}
-                    setConfirmationChecked={setConfirmationChecked}
-                    confirmationChecked={confirmationChecked}
-                    periodEnd={periodEnd}
-                  />
+
+                {/* Step: Rapport */}
+                {currentStep === "formRapport" && <ReportForm />}
+
+                {/* Step: Récapitulatif */}
+                {currentStep === "formRecap" && <RecapForm />}
+
+                {/* Warning for optional steps */}
+                {warnings[currentStep] && !errors[currentStep] && (
+                  <div className="alert alert-warning mt-4 mb-4">
+                    <Info size={18} className="me-2" style={{ display: 'inline', flexShrink: 0 }} />
+                    <div>{warnings[currentStep]}</div>
+                  </div>
                 )}
 
                 {/* Error message for current step */}
-                {errors[currentStep] && (
+                {userInteracted && errors[currentStep] && (
                   <div className="alert alert-danger mt-4 mb-4">
-                    <AlertTriangle size={18} className="me-2" style={{ display: 'inline' }} />
-                    <div>{errors[currentStep]}</div>
+                    <AlertTriangle size={18} className="me-2" style={{ display: 'inline', flexShrink: 0 }} />
+                    <div>
+                      <strong>Erreur :</strong> {errors[currentStep]}
+                    </div>
+                  </div>
+                )}
+
+                {errors.submit && (
+                  <div className="alert alert-danger mt-4 mb-4">
+                    <AlertTriangle size={18} className="me-2" style={{ display: 'inline', flexShrink: 0 }} />
+                    <div>
+                      <strong>Erreur lors de la soumission :</strong> {errors.submit}
+                      <p className="mt-2 mb-0 small">Si le problème persiste, veuillez contacter le support technique.</p>
+                    </div>
                   </div>
                 )}
 
                 {/* Action buttons */}
-                <div className="form-actions">
-                  {currentStepIndex > 0 && (
-                    <Button variant="light" onClick={handlePrevStep}>
-                      <ChevronLeft size={16} className="me-1" style={{ display: 'inline' }} /> Précédent
-                    </Button>
-                  )}
-                  <Button
-                    variant={currentStepIndex === steps.length - 1 ? "secondary" : "primary"}
-                    disabled={loading || !!errors[currentStep]}
-                    onClick={() => {
-                      if (currentStepIndex === steps.length - 1) {
-                        handleSubmitPublication();
-                      } else {
-                        handleNextStep();
-                      }
-                    }}
-                  >
-                    {loading ? (
-                      <>
-                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Envoi en cours...
-                      </>
-                    ) : currentStepIndex === 0 && mode !== "edit" ? (
-                      <>
-                        Commencer <ChevronRight size={16} className="ms-1" style={{ display: 'inline' }} />
-                      </>
-                    ) : currentStepIndex === steps.length - 1 ? (
-                      <>
-                        <CheckCircle size={16} className="me-1" style={{ display: 'inline' }} /> Envoyer la demande
-                      </>
-                    ) : (
-                      <>
-                        Suivant <ChevronRight size={16} className="ms-1" style={{ display: 'inline' }} />
-                      </>
-                    )}
-                  </Button>
-                </div>
+                <NavigationButtons
+                  currentStepIndex={currentStepIndex}
+                  stepsLength={steps.length}
+                  loading={loading}
+                  hasError={!!errors[currentStep]}
+                  disableNext={currentStep === "formRapport" && ((!hasIndicators && !hasReport) || !!errors.formIndicateurs || !!errors.formRapport)}
+                  mode={mode}
+                  onPrev={handlePrevStep}
+                  onNext={handleNextStep}
+                  onSubmit={handleSubmitPublication}
+                />
               </Col>
             </Row>
           </Card.Body>
@@ -392,79 +169,3 @@ export default function PublicationForm({ initialData = {}, mode = "create", isL
   );
 }
 
-function ProgressSidebar({ steps, currentStep, currentStepIndex, handleStepChange, errors }) {
-  return (
-    <Col md={3} className="progress-sidebar">
-      <ListGroup variant="flush" className="mb-3">
-        {steps.map((step, idx) => {
-          const hasError = !!errors[step.key];
-          const isActive = currentStep === step.key;
-          const IconComponent = step.icon ? LUCIDE_ICONS[step.icon] : null;
-
-          if (step.parent) {
-            return (
-              <ListGroup.Item
-                key={step.key}
-                action
-                active={isActive}
-                onClick={() => handleStepChange(step.key)}
-                className="ps-4 d-flex align-items-center"
-              >
-                <span className="me-2"></span>
-                <span className="flex-grow-1">{step.label}</span>
-                {hasError && <AlertTriangle size={16} className="text-danger" title="Erreur sur cette étape" />}
-              </ListGroup.Item>
-            );
-          }
-
-          return (
-            <ListGroup.Item
-              key={step.key}
-              action
-              active={isActive}
-              onClick={() => handleStepChange(step.key)}
-              className={`d-flex align-items-center ${isActive ? "active" : ""}`}
-              disabled={step.disabled}
-            >
-              {IconComponent && <IconComponent size={18} className="me-2" />}
-              <span className="flex-grow-1">{step.label}</span>
-              {hasError && (
-                <AlertTriangle size={16} className="text-danger" title="Erreur sur cette étape" />
-              )}
-            </ListGroup.Item>
-          );
-        })}
-      </ListGroup>
-
-      <ProgressBar
-        now={((currentStepIndex + 1) / steps.length) * 100}
-        className="mt-2"
-      />
-    </Col>
-  );
-}
-
-function PublicationModalSuccess({ show, onHide }) {
-  return (
-    <Modal show={show} onHide={onHide} centered backdrop="static" keyboard={false}>
-
-      <Modal.Body className="text-center py-5 px-4">
-        <div className="mb-4">
-          <CheckCircle size={24} className="text-success" />
-        </div>
-        <h5 className="fw-bold mb-2">Demande de publication envoyée !</h5>
-        <p className="text-muted mb-4">
-          Votre demande a bien été reçue. Vous serez notifié par email dès que votre publication sera validée.
-        </p>
-
-        <a
-          href="/publications/espace/gestion"
-          className="btn btn-primary"
-          onClick={onHide}
-        >
-          Voir mes demandes de publication
-        </a>
-      </Modal.Body>
-    </Modal>
-  );
-}

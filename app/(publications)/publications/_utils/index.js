@@ -41,16 +41,18 @@ export function isIndicatorInvalid(indicator, data) {
 }
 
 export function validatePeriod(periodStart, periodEnd) {
-  if (!periodStart || !periodEnd) return "Veuillez renseigner la période de l'exercice.";
+  if (!periodStart && !periodEnd) return "Veuillez renseigner les dates de début et de fin de l'exercice (ex: 01/01/2024 au 31/12/2024).";
+  if (!periodStart) return "Veuillez renseigner la date de début de l'exercice.";
+  if (!periodEnd) return "Veuillez renseigner la date de fin de l'exercice.";
 
   if (periodStart > periodEnd) {
-    return "La date de fin de période doit être postérieure à la date de début.";
+    return "La date de fin de période doit être postérieure à la date de début. Vérifiez l'ordre des dates.";
   }
 
   const endYear = new Date(periodEnd).getFullYear();
   const currentYear = new Date().getFullYear();
   if (endYear > currentYear) {
-    return "Veuillez sélectionner une période valide.";
+    return `L'année de fin (${endYear}) ne peut pas être dans le futur. Veuillez sélectionner une année antérieure ou égale à ${currentYear}.`;
   }
 
   return null;
@@ -84,7 +86,7 @@ export function validateEmpreinte(declarationData) {
   });
 
   if (invalidIndicators.length > 0) {
-    return `Les indicateurs suivants ont des valeurs invalides: ${invalidIndicators.join(", ")}. Veuillez renseigner une valeur et une incertitude numérique valide.`;
+    return `Les indicateurs suivants sont incomplets ou invalides : ${invalidIndicators.join(", ")}. Chaque indicateur commencé doit avoir une valeur numérique et une incertitude (en %) valides.`;
   }
 
   return null;
@@ -113,7 +115,7 @@ export function validateExtraIndic(declarationData) {
   });
 
   if (invalidIndicators.length > 0) {
-    return `Les indicateurs supplémentaires suivants ont des valeurs invalides: ${invalidIndicators.join(", ")}. Veuillez renseigner une valeur numérique valide.`;
+    return `Les indicateurs supplémentaires suivants sont incomplets : ${invalidIndicators.join(", ")}. Veuillez saisir une valeur numérique valide (ex: 12.5).`;
   }
 
   return null;
@@ -164,4 +166,12 @@ export function formatDate(dateString) {
   if (!dateString) return "";
   const date = new Date(dateString);
   return date.toLocaleDateString("fr-FR");
+}
+
+export function formatFileSize(bytes) {
+  if (!bytes || bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
 }

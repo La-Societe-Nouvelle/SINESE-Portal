@@ -9,7 +9,6 @@ async function PublicationFormWrapper({ searchParams }) {
   let initialData = {};
   let isLegalUnitPreselected = false;
 
-  // If a legal unit ID is provided, fetch and pre-select it
   if (selectedLegalunitId) {
     const legalUnit = await getLegalUnitById(selectedLegalunitId);
     if (legalUnit) {
@@ -25,8 +24,8 @@ export default async function PublicationPage({ searchParams }) {
   return (
     <div>
       <PublicationsPageHeader
-        title="Publier des indicateurs"
-        description="Commencez une nouvelle déclaration pour une entreprise."
+        title="Publier sur SINESE"
+        description="Publiez des indicateurs et/ou un rapport de durabilité pour une entreprise."
       />
       <div className="container">
         <PublicationFormWrapper searchParams={searchParams} />

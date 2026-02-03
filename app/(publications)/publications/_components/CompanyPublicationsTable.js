@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { ChevronDown, Edit2, FileText, Building2, Calendar, Check, Plus, ExternalLink, AlertCircle, Trash2 } from "lucide-react";
+import { ChevronDown, Edit2, FileText, Building2, Check, Plus, ExternalLink, AlertCircle, Trash2, Paperclip } from "lucide-react";
 import AddLegalUnitModal from "./modals/AddLegalUnitModal";
+import { REPORT_TYPES } from "./forms/ReportForm";
 
 export default function CompanyPublicationsTable({ legalunits = [], publications = [] }) {
   const router = useRouter();
@@ -157,11 +158,33 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
           En attente de validation
         </span>
       );
-    } 
+    }
+    if(status === 'rejected') {
+      return (
+        <span className="status-badge status-rejected">
+          <span className="status-dot"></span>
+          Rejetée
+        </span>
+      );
+    }
     return (
       <span className="status-badge status-published">
         <Check size={14} className="me-1" />
         Publié
+      </span>
+    );
+  };
+
+  const getReportBadge = (pub) => {
+    // Affiche un badge uniquement si un rapport est joint
+    if (!pub.report_count || parseInt(pub.report_count) === 0) {
+      return null;
+    }
+    const reportLabel = REPORT_TYPES.find(t => t.value === pub.report_type)?.label || 'Rapport de durabilité';
+    return (
+      <span className="type-badge type-report small" title={reportLabel}>
+        <Paperclip size={12} className="me-1" />
+        {reportLabel}
       </span>
     );
   };
@@ -359,6 +382,7 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
                           <div className="publication-detail-info">
                             <FileText size={16} className="publication-icon" />
                             <span className="publication-year">Année {pub.year}</span>
+                            {getReportBadge(pub)}
                           </div>
                         </td>
                         <td>{getStatusBadge(pub.status)}</td>

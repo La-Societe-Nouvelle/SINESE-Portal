@@ -115,14 +115,14 @@
     "color": "#5efa78"
   },
   "iep": {
-    "libelle": "IEP",
+    "libelle": "Index de l'égalité professionnelle",
     "category": "Indicateurs supplémentaires",
     "nbDecimals": 2,
     "unit": "%",
     "color": "#f29746"
   },
   "bges": {
-    "libelle": "BGES",
+    "libelle": "Bilan GES",
     "category": "Indicateurs supplémentaires",
     "nbDecimals": 2,
     "unit": "tCO2e",

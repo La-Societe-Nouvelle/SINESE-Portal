@@ -12,8 +12,8 @@ export default async function EditPublicationPage({ params }) {
     return (
       <div>
         <PublicationsPageHeader
-          title="Modifier une publication"
-          description="Modifiez votre publication en brouillon."
+          title="Publier sur SINESE"
+          description="Publiez des indicateurs et/ou un rapport de durabilité pour une entreprise."
         />
         <div className="container">
           <div className="alert alert-warning">
@@ -30,8 +30,8 @@ export default async function EditPublicationPage({ params }) {
   return (
     <div>
       <PublicationsPageHeader
-        title="Modifier une publication"
-        description="Modifiez votre publication en brouillon."
+        title="Publier sur SINESE"
+        description="Publiez des indicateurs et/ou un rapport de durabilité pour une entreprise."
       />
       <div className="container">
         <PublicationForm initialData={publication} mode="edit" />
