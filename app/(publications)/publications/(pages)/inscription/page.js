@@ -136,8 +136,9 @@ export default function RegisterPage() {
             <Form.Label>Vous êtes :</Form.Label>
             <Form.Select value={profile} onChange={(e) => setProfile(e.target.value)} required>
               <option value="">Sélectionnez votre profil</option>
-              <option value="expert-comptable">Expert-comptable</option>
-              <option value="entreprise">Représentant d'entreprise</option>
+              <option value="">Sélectionnez votre profil</option>
+              <option value="expert-comptable">Expert·e-comptable</option>
+              <option value="entreprise">Dirigeant·e d'entreprise</option>
               <option value="autre">Autre</option>
             </Form.Select>
           </Form.Group>
