@@ -59,7 +59,7 @@ export const IndicatorChartContainer = ({
                 <Image
                   width="30"
                   height="30"
-                  src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
+                  src={"/ESE/picto/ese-" + indic.toLowerCase() + "-color.svg"}
                   alt={indic}
                 />
               ) : (
@@ -144,7 +144,7 @@ export const IndicatorChartContainer = ({
                   <Image
                     width="40"
                     height="40"
-                    src={"/ESE/icon-ese-bleues/" + indic.toLowerCase() + ".svg"}
+                    src={"/ESE/picto/ese-" + indic.toLowerCase() + "-color.svg"}
                     alt={indic}
                   />
                 ) : (
@@ -158,7 +158,7 @@ export const IndicatorChartContainer = ({
               </div>
               <div className="flex-grow-1">
                 <Modal.Title className="mb-1 text-primary">{libelle}</Modal.Title>
-        
+
               </div>
             </div>
           </Modal.Header>
