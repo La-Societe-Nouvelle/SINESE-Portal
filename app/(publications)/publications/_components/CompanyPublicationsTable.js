@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { ChevronDown, Edit2, FileText, Building2, Check, Plus, ExternalLink, AlertCircle, Trash2, Paperclip } from "lucide-react";
+import { ChevronDown, Edit2, FileText, Building2, Check, Plus, ExternalLink, AlertCircle, Trash2, Paperclip, Eye, RotateCcw } from "lucide-react";
 import AddLegalUnitModal from "./modals/AddLegalUnitModal";
 import { REPORT_TYPES } from "./forms/ReportForm";
+import indicators from "../_lib/indicators.json";
 
 export default function CompanyPublicationsTable({ legalunits = [], publications = [] }) {
   const router = useRouter();
@@ -19,6 +20,11 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
   const [deletingUnitId, setDeletingUnitId] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [viewPublication, setViewPublication] = useState(null);
+  const [showRevertModal, setShowRevertModal] = useState(false);
+  const [pubToRevert, setPubToRevert] = useState(null);
+  const [revertingId, setRevertingId] = useState(null);
 
   // Grouper les publications par entreprise
   const publicationsByUnit = publications.reduce((acc, pub) => {
@@ -107,6 +113,41 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
       setDeletingUnitId(null);
       setUnitToDelete(null);
     }
+  };
+
+  const openRevertModal = (pub) => {
+    setPubToRevert(pub);
+    setShowRevertModal(true);
+  };
+
+  const handleRevertToDraft = async () => {
+    if (!pubToRevert) return;
+    setRevertingId(pubToRevert.id);
+    setShowRevertModal(false);
+    try {
+      const res = await fetch(`/api/publications/${pubToRevert.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "draft" }),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        alert(error.error || "Erreur lors de l'annulation");
+        return;
+      }
+      router.refresh();
+    } catch (error) {
+      console.error("Error reverting publication:", error);
+      alert("Erreur lors de l'annulation");
+    } finally {
+      setRevertingId(null);
+      setPubToRevert(null);
+    }
+  };
+
+  const openViewModal = (pub) => {
+    setViewPublication(pub);
+    setShowViewModal(true);
   };
 
   // Check if a legal unit can be deleted (no publications or only drafts)
@@ -411,6 +452,27 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
                                 </button>
                               </div>
                             )}
+                            {pub.status === 'pending' && (
+                              <div className="d-flex gap-2 justify-content-end align-items-center">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); openViewModal(pub); }}
+                                  className="btn btn-link btn-sm text-primary p-0 small"
+                                  title="Consulter le contenu de la demande"
+                                >
+                                  <Eye size={10} className="me-1" />
+                                  <span>Consulter</span>
+                                </button>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); openRevertModal(pub); }}
+                                  className="btn btn-link btn-sm text-warning p-0 small"
+                                  title="Annuler la demande et repasser en brouillon"
+                                  disabled={revertingId === pub.id}
+                                >
+                                  <RotateCcw size={10} className="me-1" />
+                                  <span>{revertingId === pub.id ? "..." : "Annuler"}</span>
+                                </button>
+                              </div>
+                            )}
                             {pub.status === 'published' && (
                               <Link
                                 href={`/entreprise/${pub.siren}`}
@@ -528,6 +590,113 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
 
       {/* Add Legal Unit Modal */}
       <AddLegalUnitModal show={showAddModal} onHide={() => setShowAddModal(false)} onAdd={handleAdd} />
+
+      {/* Revert to Draft Confirmation Modal */}
+      <Modal show={showRevertModal} onHide={() => setShowRevertModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title className="d-flex align-items-center gap-2">
+            <RotateCcw size={20} className="text-warning" />
+            <span>Annuler la demande</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="mb-0">
+            Êtes-vous sûr de vouloir annuler la demande pour l'année{" "}
+            <strong>{pubToRevert?.year}</strong> ?
+          </p>
+          <p className="text-muted small mt-2 mb-0">
+            La demande repassera en brouillon et vous pourrez la modifier avant de la resoumettre.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={() => setShowRevertModal(false)}>
+            Conserver
+          </Button>
+          <Button variant="warning" onClick={handleRevertToDraft}>
+            <RotateCcw size={16} className="me-1" />
+            Annuler la demande
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* View Pending Publication Modal */}
+      <Modal show={showViewModal} onHide={() => setShowViewModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title className="d-flex align-items-center gap-2">
+            <Eye size={20} />
+            <span>Demande en attente — {viewPublication?.legalunit} ({viewPublication?.year})</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {viewPublication && (
+            <>
+              <div className="mb-3">
+                <span className="text-muted small">SIREN : </span>
+                <strong>{viewPublication.siren}</strong>
+                {(viewPublication.period_start || viewPublication.period_end) && (
+                  <span className="ms-3 text-muted small">
+                    Période : {viewPublication.period_start ?? "—"} → {viewPublication.period_end ?? "—"}
+                  </span>
+                )}
+              </div>
+
+              {viewPublication.report_count > 0 && (
+                <div className="mb-3">
+                  <h6 className="text-muted small text-uppercase mb-1">Rapport joint</h6>
+                  <span className="type-badge type-report small">
+                    <Paperclip size={12} className="me-1" />
+                    {REPORT_TYPES.find(t => t.value === viewPublication.report_type)?.label || viewPublication.report_type}
+                  </span>
+                </div>
+              )}
+
+              {viewPublication.data && Object.keys(viewPublication.data).length > 0 ? (
+                <div>
+                  <h6 className="text-muted small text-uppercase mb-2">Indicateurs déclarés</h6>
+                  <table className="table table-sm">
+                    <thead>
+                      <tr>
+                        <th>Indicateur</th>
+                        <th className="text-end">Valeur</th>
+                        <th className="text-end">Incertitude</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(viewPublication.data).map(([code, indic]) => (
+                        <tr key={code}>
+                          <td>
+                            <span className="fw-medium">{indicators[code]?.libelle ?? code}</span>
+                            {indic.comment && (
+                              <div className="text-muted small">{indic.comment}</div>
+                            )}
+                          </td>
+                          <td className="text-end">
+                            {indic.value}{indicators[code]?.unit ? ` ${indicators[code].unit}` : ""}
+                          </td>
+                          <td className="text-end">
+                            {indic.uncertainty ? `± ${indic.uncertainty}%` : "—"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-muted small">Aucun indicateur renseigné.</p>
+              )}
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={() => setShowViewModal(false)}>
+            Fermer
+          </Button>
+          <Button variant="warning" onClick={() => { setShowViewModal(false); openRevertModal(viewPublication); }}>
+            <RotateCcw size={16} className="me-1" />
+            Annuler la demande
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
