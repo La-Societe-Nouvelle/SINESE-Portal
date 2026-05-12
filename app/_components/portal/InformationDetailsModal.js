@@ -5,7 +5,7 @@ import { Image,Badge, Card, Row, Col } from "react-bootstrap"
 
 //-- Packages
 import _ from "lodash";
-import { Calendar, Info, RefreshCw, AlertTriangle, ExternalLink, Check, EqualApproximately, CircleQuestionMark } from "lucide-react";
+import { Calendar, Info, RefreshCw, AlertTriangle,  Check, EqualApproximately, CircleQuestionMark } from "lucide-react";
 
 //-- Components
 import Description from "../indic/Description";

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Alert, Button, Col, Container, Form, Row, Card, Spinner } from "react-bootstrap";
 import PageHeader from "@/_components/PageHeader";
-import { sendContactMessage } from "@/_utils/contact-api";
+import { sendContactMessage } from "@/actions/contact";
 
 export default function Contact() {
   // États du formulaire
@@ -70,11 +70,11 @@ export default function Contact() {
 
     try {
       const result = await sendContactMessage(formData);
-      
+
       if (result.success) {
         setAlert({
           type: "success",
-          message: result.data.message
+          message: "Votre message a été envoyé avec succès. Un email de confirmation vous a été envoyé."
         });
         // Réinitialiser le formulaire
         setFormData({ name: "", email: "", subject: "", message: "" });

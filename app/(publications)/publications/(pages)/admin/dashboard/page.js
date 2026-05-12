@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { getPendingPublications, getPublicationsStats, getAdminPublication, approvePublication, rejectPublication } from "@/actions/admin/publications";
 import { Container, Card, Table, Badge, Spinner, Alert, Button, Row, Col, Modal, Form } from "react-bootstrap";
-import { ClipboardList, Building2, Calendar, User, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3, CheckCircle, XCircle, Link2, FilePlus } from "lucide-react";
+import { ClipboardList, Building2, Calendar, User, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3, CheckCircle, XCircle, Link2, FilePlus, X, Check } from "lucide-react";
 import Link from "next/link";
 import indicators from "../../../_lib/indicators.json";
 
@@ -41,23 +42,13 @@ export default function AdminDashboard() {
   const fetchPendingPublications = async () => {
     setLoading(true);
     setError(null);
-
     try {
-      // Fetch pending publications
-      const pendingRes = await fetch("/api/admin/pending-publications");
-      if (!pendingRes.ok) {
-        const errorData = await pendingRes.json();
-        throw new Error(errorData.error || "Erreur lors du chargement");
-      }
-      const pendingData = await pendingRes.json();
+      const pendingData = await getPendingPublications();
+      if (pendingData.error) throw new Error(pendingData.error);
       setPublications(pendingData.publications);
 
-      // Fetch statistics
-      const statsRes = await fetch("/api/admin/publications-stats");
-      if (statsRes.ok) {
-        const statsData = await statsRes.json();
-        setStats(statsData);
-      }
+      const statsData = await getPublicationsStats();
+      if (!statsData.error) setStats(statsData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -91,13 +82,9 @@ export default function AdminDashboard() {
   const openPublicationDetails = async (publicationId) => {
     setLoadingDetails(true);
     setShowDetailsModal(true);
-
     try {
-      const res = await fetch(`/api/admin/publications/${publicationId}`);
-      if (!res.ok) {
-        throw new Error("Erreur lors du chargement des détails");
-      }
-      const data = await res.json();
+      const data = await getAdminPublication(publicationId);
+      if (data.error) throw new Error(data.error);
       setSelectedPublication(data.publication);
     } catch (err) {
       console.error(err);
@@ -115,14 +102,8 @@ export default function AdminDashboard() {
 
   const handleApprove = async (publicationId) => {
     try {
-      const res = await fetch(`/api/admin/publications/${publicationId}/approve`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Erreur lors de l'approbation");
-      }
+      const result = await approvePublication(publicationId);
+      if (result.error) throw new Error(result.error);
       await fetchPendingPublications();
       setShowDetailsModal(false);
       setSelectedPublication(null);
@@ -140,15 +121,8 @@ export default function AdminDashboard() {
   const handleReject = async () => {
     if (!rejectTargetId) return;
     try {
-      const res = await fetch(`/api/admin/publications/${rejectTargetId}/reject`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ comment: rejectComment || null }),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Erreur lors du rejet");
-      }
+      const result = await rejectPublication(rejectTargetId, rejectComment || null);
+      if (result.error) throw new Error(result.error);
       setShowRejectModal(false);
       setRejectTargetId(null);
       setRejectComment("");

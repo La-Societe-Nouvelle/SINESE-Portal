@@ -3,6 +3,7 @@ import { Modal, Form, Button, InputGroup, Spinner, Alert } from "react-bootstrap
 import { useState, useEffect } from "react";
 import { Building, Search, CheckCircle, AlertTriangle, FilePlus } from "lucide-react";
 import { REPORT_TYPES } from "../forms/ReportForm";
+import { createAdminPublication } from "@/actions/admin/publications";
 
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: 6 }, (_, i) => CURRENT_YEAR - i);
@@ -70,22 +71,13 @@ export default function AdminPublishModal({ show, onHide, onSuccess }) {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch("/api/admin/publications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          siren,
-          denomination,
-          year: parseInt(year),
-          reportType: reportType || null,
-          reportUrl: reportUrl.trim() || null,
-          notes: notes.trim() || null,
-        }),
+      const result = await createAdminPublication({
+        siren,
+        year: parseInt(year),
+        reportType: reportType || null,
+        reportUrl: reportUrl.trim() || null,
       });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Erreur lors de la publication");
-      }
+      if (result.error) throw new Error(result.error);
       onSuccess();
       onHide();
     } catch (err) {

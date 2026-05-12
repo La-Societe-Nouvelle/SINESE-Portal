@@ -4,14 +4,13 @@
 import { useState } from "react";
 
 //-- Bootstrap
-import { Badge, Button, Col, Image, Modal, Card } from "react-bootstrap";
-import { Info, ExternalLink, Eye } from "lucide-react";
+import {  Col, Image, Modal, Card } from "react-bootstrap";
+import {  ExternalLink, Eye } from "lucide-react";
 
 //-- Charts
 import { IndicatorChart } from "../charts/IndicatorChart";
 
-//-- Utils
-import FlagBadge from "./FlagBadges";
+ 
 
 //-- Libs
 import metaIndics from "@/_libs/indics";
@@ -23,8 +22,6 @@ export const IndicatorChartContainer = ({
   indic,
   legalUnitData,
   divisionData,
-  historicalData,
-  historicalDivisionFootprint
 }) => {
   // --------------------------------------------------
   // Metadonnées
@@ -33,7 +30,6 @@ export const IndicatorChartContainer = ({
     inEmpreinteSocietale,
     libelle,
     odds,
-    unitLabel,
     logoPath
   } = metaIndics[indic];
 
@@ -41,7 +37,6 @@ export const IndicatorChartContainer = ({
   // State
 
   const [modalOpen, setModalOpen] = useState(null);
-  const [showHistoricalChart, setShowHistoricalChart] = useState(false);
 
   // --------------------------------------------------
 

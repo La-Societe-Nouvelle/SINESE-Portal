@@ -1,9 +1,8 @@
 import indicators from "./../../_lib/indicators.json";
 import { Table, Form, Card, Row, Col, Badge, FloatingLabel } from "react-bootstrap";
-import { BarChart, BarChart2, BarChart3, ChartBar, FileBarChart2, FileText, Link2, Paperclip, PieChart } from "lucide-react";
+import {  BarChart2, FileText, Link2, Paperclip, PieChart } from "lucide-react";
 import { usePublicationFormContext } from "../../_context/PublicationFormContext";
 import { REPORT_TYPES } from "./ReportForm";
-import { formatFileSize } from "../../_utils";
 
 export default function RecapForm() {
   const {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Form, Button, Alert, Spinner, Modal } from "react-bootstrap";
 import { Plus  } from "lucide-react";
-import { fetchLegalUnits, addLegalUnit } from "@/services/legalUnitService";
+import { getLegalUnits, addLegalUnit } from "@/actions/legalUnits";
 
 export default function PublicationLegalUnitSelector({ selectedLegalunitId, onLegalUnitSelect }) {
   const [legalUnits, setLegalUnits] = useState([]);
@@ -19,7 +19,7 @@ export default function PublicationLegalUnitSelector({ selectedLegalunitId, onLe
     const loadLegalUnits = async () => {
       try {
         setLoading(true);
-        const units = await fetchLegalUnits();
+        const units = await getLegalUnits();
         setLegalUnits(units);
       } catch (err) {
         setError(err.message);
@@ -37,26 +37,16 @@ export default function PublicationLegalUnitSelector({ selectedLegalunitId, onLe
     setCreatingUnit(true);
     setCreateError("");
 
-    try {
-      const newUnit = await addLegalUnit({
-        siren: formData.siren,
-        denomination: formData.denomination,
-      });
-
-      // Ajouter la nouvelle unité à la liste
-      setLegalUnits([...legalUnits, newUnit]);
-
-      // Sélectionner automatiquement la nouvelle unité
-      onLegalUnitSelect(newUnit);
-
-      // Réinitialiser le formulaire et fermer la modal
+    const result = await addLegalUnit({ siren: formData.siren, denomination: formData.denomination });
+    if (result.error) {
+      setCreateError(result.error);
+    } else {
+      setLegalUnits([...legalUnits, result]);
+      onLegalUnitSelect(result);
       setFormData({ siren: "", denomination: "" });
       setShowCreateModal(false);
-    } catch (err) {
-      setCreateError(err.message);
-    } finally {
-      setCreatingUnit(false);
     }
+    setCreatingUnit(false);
   };
 
   if (loading) {

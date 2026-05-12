@@ -6,6 +6,7 @@ import { Container, Form, Button, InputGroup, Spinner, Alert, Card } from "react
 import { Building, Search, CheckCircle, AlertTriangle, ArrowLeft, Upload, Link2 } from "lucide-react";
 import Link from "next/link";
 import { REPORT_TYPES } from "../../../_components/forms/ReportForm";
+import { createAdminPublication } from "@/actions/admin/publications";
 import DocumentUploadForm, { uploadDocumentsToOVH } from "../../../_components/forms/DocumentUploadForm";
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -93,24 +94,17 @@ export default function AdminPublierPage() {
         storageType = "external";
       }
 
-      const res = await fetch("/api/admin/publications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          siren,
-          year: parseInt(year),
-          reportType,
-          reportUrl,
-          storageType,
-          fileName,
-          fileSize,
-          mimeType,
-        }),
+      const result = await createAdminPublication({
+        siren,
+        year: parseInt(year),
+        reportType,
+        reportUrl,
+        storageType,
+        fileName,
+        fileSize,
+        mimeType,
       });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Erreur lors de la publication");
-      }
+      if (result.error) throw new Error(result.error);
       router.push("/publications/admin/dashboard");
     } catch (err) {
       setError(err.message);

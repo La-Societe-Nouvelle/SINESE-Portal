@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { register } from "@/services/authService";
-import { Eye, EyeOff } from "lucide-react";
+import { registerUser } from "@/actions/auth";
+import { Eye, EyeOff, X, XCircle } from "lucide-react";
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState("");
@@ -36,7 +36,8 @@ export default function RegisterPage() {
     }
 
     try {
-      await register({ email, password, profile, firstName, lastName });
+      const result = await registerUser({ email, password, profile, firstName, lastName });
+      if (result.error) throw new Error(result.error);
 
       const loginRes = await signIn("credentials", {
         email,
@@ -88,7 +89,7 @@ export default function RegisterPage() {
 
         {error && (
           <Alert variant="danger" className="d-flex align-items-center gap-2 px-3 py-2 rounded-3">
-            <i className="bi bi-exclamation-triangle-fill me-2" style={{ fontSize: 22 }}></i>
+          <XCircle size={22} className="me-2" />
             <div>{error}</div>
           </Alert>
         )}

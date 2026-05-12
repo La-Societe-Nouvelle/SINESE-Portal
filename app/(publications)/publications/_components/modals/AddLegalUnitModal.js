@@ -2,6 +2,7 @@
 import { Modal, Form, Button, InputGroup, Spinner, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Building, Search, CheckCircle, AlertTriangle, X, ShieldAlert } from "lucide-react";
+import { checkLegalUnitAttachment } from "@/actions/legalUnits";
 
 export default function AddLegalUnitModal({ show, onHide, onAdd }) {
   const [form, setForm] = useState({ denomination: "", siren: "" });
@@ -52,9 +53,8 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
         }
 
         // Check attachment to another user
-        const checkRes = await fetch(`/api/legal-units/check?siren=${form.siren}`);
-        if (checkRes.ok) {
-          const checkData = await checkRes.json();
+        const checkData = await checkLegalUnitAttachment(form.siren);
+        if (!checkData.error) {
           setAttachedToOther(checkData.attachedToOtherUser);
         }
       } catch {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Modal, Button, Spinner } from "react-bootstrap";
@@ -8,11 +8,15 @@ import { ChevronDown, Edit2, FileText, Building2, Check, Plus, ExternalLink, Ale
 import AddLegalUnitModal from "./modals/AddLegalUnitModal";
 import { REPORT_TYPES } from "./forms/ReportForm";
 import indicators from "../_lib/indicators.json";
+import { deleteLegalUnit, addLegalUnit } from "@/actions/legalUnits";
+import { deletePublication, updatePublicationStatus } from "@/actions/publications";
 
 export default function CompanyPublicationsTable({ legalunits = [], publications = [] }) {
   const router = useRouter();
   const [expandedUnits, setExpandedUnits] = useState({});
   const [deletingId, setDeletingId] = useState(null);
+  const [isUnitPending, startUnitTransition] = useTransition();
+  const [isPubPending, startPubTransition] = useTransition();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [publicationToDelete, setPublicationToDelete] = useState(null);
   const [showDeleteUnitModal, setShowDeleteUnitModal] = useState(false);
@@ -56,32 +60,22 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     setShowDeleteModal(true);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!publicationToDelete) return;
 
     setDeletingId(publicationToDelete.id);
     setShowDeleteModal(false);
 
-    try {
-      const res = await fetch(`/api/publications/${publicationToDelete.id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        alert(error.error || "Erreur lors de la suppression");
-        return;
+    startPubTransition(async () => {
+      const result = await deletePublication(publicationToDelete.id);
+      if (result.error) {
+        alert(result.error);
+      } else {
+        router.refresh();
       }
-
-      // Refresh the page to update the list
-      router.refresh();
-    } catch (error) {
-      console.error("Error deleting publication:", error);
-      alert("Erreur lors de la suppression");
-    } finally {
       setDeletingId(null);
       setPublicationToDelete(null);
-    }
+    });
   };
 
   const openDeleteUnitModal = (unit) => {
@@ -89,32 +83,22 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     setShowDeleteUnitModal(true);
   };
 
-  const handleDeleteUnit = async () => {
+  const handleDeleteUnit = () => {
     if (!unitToDelete) return;
 
     setDeletingUnitId(unitToDelete.id);
     setShowDeleteUnitModal(false);
 
-    try {
-      const res = await fetch(`/api/legal-units/${unitToDelete.id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        alert(error.error || "Erreur lors de la suppression");
-        return;
+    startUnitTransition(async () => {
+      const result = await deleteLegalUnit(unitToDelete.id);
+      if (result.error) {
+        alert(result.error);
+      } else {
+        router.refresh();
       }
-
-      // Refresh the page to update the list
-      router.refresh();
-    } catch (error) {
-      console.error("Error deleting legal unit:", error);
-      alert("Erreur lors de la suppression");
-    } finally {
       setDeletingUnitId(null);
       setUnitToDelete(null);
-    }
+    });
   };
 
   const openRevertModal = (pub) => {
@@ -122,29 +106,21 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     setShowRevertModal(true);
   };
 
-  const handleRevertToDraft = async () => {
+  const handleRevertToDraft = () => {
     if (!pubToRevert) return;
     setRevertingId(pubToRevert.id);
     setShowRevertModal(false);
-    try {
-      const res = await fetch(`/api/publications/${pubToRevert.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "draft" }),
-      });
-      if (!res.ok) {
-        const error = await res.json();
-        alert(error.error || "Erreur lors de l'annulation");
-        return;
+
+    startPubTransition(async () => {
+      const result = await updatePublicationStatus(pubToRevert.id, "draft");
+      if (result.error) {
+        alert(result.error);
+      } else {
+        router.refresh();
       }
-      router.refresh();
-    } catch (error) {
-      console.error("Error reverting publication:", error);
-      alert("Erreur lors de l'annulation");
-    } finally {
       setRevertingId(null);
       setPubToRevert(null);
-    }
+    });
   };
 
   const openViewModal = (pub) => {
@@ -159,30 +135,18 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     return unitPublications.every((pub) => pub.status === "draft");
   };
 
-  const handleAdd = async (legalunit) => {
+  const handleAdd = (legalunit) => {
     setLoading(true);
-    try {
-      const res = await fetch("/api/legal-units", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(legalunit),
-      });
-
-      if (res.ok) {
-        router.refresh();
-        // Wait a bit for the refresh to complete before hiding loading state
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setShowAddModal(false);
+    startUnitTransition(async () => {
+      const result = await addLegalUnit(legalunit);
+      if (result.error) {
+        alert(result.error);
       } else {
-        const error = await res.json();
-        alert(error.error || "Erreur lors de l'ajout de l'entreprise");
+        router.refresh();
+        setShowAddModal(false);
       }
-    } catch (error) {
-      console.error("Error adding legal unit:", error);
-      alert("Erreur lors de l'ajout de l'entreprise");
-    } finally {
       setLoading(false);
-    }
+    });
   };
 
   const getStatusBadge = (status) => {

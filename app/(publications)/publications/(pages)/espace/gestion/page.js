@@ -1,8 +1,7 @@
 import CompanyPublicationsTable from "@/(publications)/publications/_components/CompanyPublicationsTable";
 import PublicationsPageHeader from "@/(publications)/publications/_components/PublicationsPageHeader";
-import { getPublications } from "@/services/server/publicationService";
-import { getLegalUnits } from "@/services/server/legalUnitService";
-import { getPublicationStatusByLegalUnit } from "@/services/server/publicationService";
+import { getPublications, getPublicationStatusByLegalUnit } from "@/actions/publications";
+import { getLegalUnits } from "@/actions/legalUnits";
 
 export default async function GestionPage() {
   // Récupérer les publications
