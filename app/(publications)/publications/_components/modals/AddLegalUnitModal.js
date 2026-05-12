@@ -1,20 +1,25 @@
 "use client";
 import { Modal, Form, Button, InputGroup, Spinner, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { Building, Search, CheckCircle, AlertTriangle, X } from "lucide-react";
+import { Building, Search, CheckCircle, AlertTriangle, X, ShieldAlert } from "lucide-react";
 
 export default function AddLegalUnitModal({ show, onHide, onAdd }) {
   const [form, setForm] = useState({ denomination: "", siren: "" });
   const [searching, setSearching] = useState(false);
   const [found, setFound] = useState(false);
   const [error, setError] = useState("");
+  const [isInactive, setIsInactive] = useState(false);
+  const [attachedToOther, setAttachedToOther] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
-  // Reset form when modal is closed
   useEffect(() => {
     if (!show) {
       setForm({ denomination: "", siren: "" });
       setFound(false);
       setError("");
+      setIsInactive(false);
+      setAttachedToOther(false);
+      setConfirmed(false);
     }
   }, [show]);
 
@@ -22,8 +27,12 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
     const fetchLegalUnit = async () => {
       setError("");
       setFound(false);
+      setIsInactive(false);
+      setAttachedToOther(false);
+      setConfirmed(false);
       setSearching(true);
       setForm((f) => ({ ...f, denomination: "" }));
+
       try {
         const res = await fetch(`https://api.lasocietenouvelle.org/legalunit/${form.siren}`);
         if (!res.ok) throw new Error();
@@ -36,6 +45,18 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
         const legalUnit = data.legalUnits[0];
         setForm((f) => ({ ...f, denomination: legalUnit.denomination }));
         setFound(true);
+
+        // Check if the company is inactive
+        if (legalUnit.etatAdministratifUniteLegale && legalUnit.etatAdministratifUniteLegale !== "A") {
+          setIsInactive(true);
+        }
+
+        // Check attachment to another user
+        const checkRes = await fetch(`/api/legal-units/check?siren=${form.siren}`);
+        if (checkRes.ok) {
+          const checkData = await checkRes.json();
+          setAttachedToOther(checkData.attachedToOtherUser);
+        }
       } catch {
         setError("Aucune entreprise trouvée pour ce SIREN.");
       } finally {
@@ -49,6 +70,9 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
       setForm((f) => ({ ...f, denomination: "" }));
       setFound(false);
       setError("");
+      setIsInactive(false);
+      setAttachedToOther(false);
+      setConfirmed(false);
     }
   }, [form.siren]);
 
@@ -72,9 +96,12 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
     setForm({ denomination: "", siren: "" });
   };
 
+  const requiresConfirmation = attachedToOther || isInactive;
+  const canSubmit = found && !searching && !error && (!requiresConfirmation || confirmed);
+
   return (
     <Modal show={show} onHide={onHide} centered className="add-legal-unit-modal">
-      <Modal.Header closeButton >
+      <Modal.Header closeButton>
         <Modal.Title className="d-flex align-items-center gap-2">
           <Building size={24} className="text-primary" />
           Ajouter une entreprise
@@ -84,9 +111,9 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
         <Form onSubmit={handleSubmit}>
           {/* SIREN Field */}
           <Form.Group className="mb-4" controlId="siren">
-            <Form.Label >Numéro SIREN</Form.Label>
+            <Form.Label>Numéro SIREN</Form.Label>
             <InputGroup className="mb-2">
-              <InputGroup.Text >
+              <InputGroup.Text>
                 <Search size={18} className="text-muted" />
               </InputGroup.Text>
               <Form.Control
@@ -101,14 +128,13 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
                 autoComplete="off"
               />
             </InputGroup>
-
           </Form.Group>
 
           {/* Denomination Field */}
           <Form.Group className="mb-3" controlId="denomination">
-            <Form.Label >Dénomination</Form.Label>
+            <Form.Label>Dénomination</Form.Label>
             <InputGroup>
-              <InputGroup.Text >
+              <InputGroup.Text>
                 <Building size={18} className="text-muted" />
               </InputGroup.Text>
               <Form.Control
@@ -121,12 +147,12 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
                 autoComplete="off"
               />
               {searching && (
-                <InputGroup.Text >
+                <InputGroup.Text>
                   <Spinner animation="border" size="sm" />
                 </InputGroup.Text>
               )}
               {found && !searching && (
-                <InputGroup.Text >
+                <InputGroup.Text>
                   <CheckCircle size={18} className="text-success" />
                 </InputGroup.Text>
               )}
@@ -141,23 +167,64 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
             </Alert>
           )}
 
+          {/* Inactive company warning */}
+          {isInactive && (
+            <Alert variant="warning" className="mb-3 d-flex align-items-start gap-2">
+              <ShieldAlert size={18} className="flex-shrink-0 mt-1" />
+              <div>
+                <strong>Entreprise inactive ou dissoute.</strong> Cette unité légale n'est plus active
+                selon le répertoire INSEE. Publier des données pour une entreprise dissoute peut
+                engager votre responsabilité juridique.
+              </div>
+            </Alert>
+          )}
+
+          {/* Attachment warning */}
+          {attachedToOther && (
+            <Alert variant="warning" className="mb-3 d-flex align-items-start gap-2">
+              <AlertTriangle size={18} className="flex-shrink-0 mt-1" />
+              <div>
+                <p className="small">
+                  <b>Ce SIREN est déjà rattaché à un autre compte utilisateur.</b> Si vous
+                  n'êtes pas mandaté pour déclarer au nom de cette entreprise, vous pourriez engager
+                  votre responsabilité juridique.{" "}
+                  Si vous pensez qu'il s'agit d'une erreur et que vous devriez être le seul à pouvoir
+                  déclarer pour cette entreprise,{" "}
+                  <a href="/contact" target="_blank" rel="noopener noreferrer" className="text-primary">
+                    contactez-nous
+                  </a>.
+                </p>
+              </div>
+            </Alert>
+          )}
+
+
+          {/* Confirmation checkbox */}
+          {requiresConfirmation && found && (
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                id="confirm-attachment"
+                label="Je confirme être autorisé à publier pour cette entreprise."
+                checked={confirmed}
+                onChange={(e) => setConfirmed(e.target.checked)}
+              />
+            </Form.Group>
+          )}
+
           {/* Action Buttons */}
           <div className="d-flex justify-content-end gap-2 pt-2">
-            <Button
-              variant="link"
-              onClick={onHide}
-              size="sm"
-            >
-              <X size={16} className="me-1" style={{ display: 'inline' }} />
+            <Button variant="link" onClick={onHide} size="sm">
+              <X size={16} className="me-1" style={{ display: "inline" }} />
               Annuler
             </Button>
             <Button
               variant="primary"
               type="submit"
               size="sm"
-              disabled={searching || !!error}
+              disabled={!canSubmit}
             >
-              <CheckCircle size={16} className="me-1" style={{ display: 'inline' }} />
+              <CheckCircle size={16} className="me-1" style={{ display: "inline" }} />
               Ajouter l'entreprise
             </Button>
           </div>
