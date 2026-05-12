@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { ChevronDown, Edit2, FileText, Building2, Check, Plus, ExternalLink, AlertCircle, Trash2, Paperclip, Eye, RotateCcw } from "lucide-react";
+import { ChevronDown, Edit2, FileText, Building2, Check, Plus, ExternalLink, AlertCircle, Trash2, Paperclip, Eye, RotateCcw, MessageSquare } from "lucide-react";
 import AddLegalUnitModal from "./modals/AddLegalUnitModal";
 import { REPORT_TYPES } from "./forms/ReportForm";
 import indicators from "../_lib/indicators.json";
@@ -25,6 +25,8 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
   const [showRevertModal, setShowRevertModal] = useState(false);
   const [pubToRevert, setPubToRevert] = useState(null);
   const [revertingId, setRevertingId] = useState(null);
+  const [showRejectCommentModal, setShowRejectCommentModal] = useState(false);
+  const [rejectCommentToView, setRejectCommentToView] = useState(null);
 
   // Grouper les publications par entreprise
   const publicationsByUnit = publications.reduce((acc, pub) => {
@@ -426,7 +428,21 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
                             {getReportBadge(pub)}
                           </div>
                         </td>
-                        <td>{getStatusBadge(pub.status)}</td>
+                        <td>
+                          <div className="d-flex align-items-center gap-2">
+                            {getStatusBadge(pub.status)}
+                            {pub.status === 'rejected' && pub.rejection_comment && (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setRejectCommentToView(pub.rejection_comment); setShowRejectCommentModal(true); }}
+                                className="btn btn-link p-0 text-danger"
+                                title="Voir le motif de rejet"
+                                style={{ lineHeight: 1 }}
+                              >
+                                <MessageSquare size={14} />
+                              </button>
+                            )}
+                          </div>
+                        </td>
                         <td className="text-end">
                             {pub.status === 'draft' && (
                               <div className="d-flex gap-2 justify-content-end align-items-center">
@@ -472,6 +488,16 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
                                   <span>{revertingId === pub.id ? "..." : "Annuler"}</span>
                                 </button>
                               </div>
+                            )}
+                            {pub.status === 'rejected' && (
+                              <Link
+                                href={`/publications/espace/publier/${pub.id}`}
+                                className="small text-primary"
+                                title="Modifier et resoumettre"
+                              >
+                                <Edit2 size={10} className="me-1" />
+                                <span>Modifier</span>
+                              </Link>
                             )}
                             {pub.status === 'published' && (
                               <Link
@@ -590,6 +616,24 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
 
       {/* Add Legal Unit Modal */}
       <AddLegalUnitModal show={showAddModal} onHide={() => setShowAddModal(false)} onAdd={handleAdd} />
+
+      {/* Rejection Comment Modal */}
+      <Modal show={showRejectCommentModal} onHide={() => setShowRejectCommentModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title className="d-flex align-items-center gap-2">
+            <MessageSquare size={20} className="text-danger" />
+            <span>Motif de rejet</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="mb-0">{rejectCommentToView}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={() => setShowRejectCommentModal(false)}>
+            Fermer
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* Revert to Draft Confirmation Modal */}
       <Modal show={showRevertModal} onHide={() => setShowRevertModal(false)} centered>

@@ -8,7 +8,7 @@ export default async function EditPublicationPage({ params }) {
 
   const publication = await getPublicationById(id);
 
-  if (!publication || publication.status !== "draft") {
+  if (!publication && publication.status !== "published") {
     return (
       <div>
         <PublicationsPageHeader

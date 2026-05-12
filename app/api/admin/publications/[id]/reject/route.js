@@ -21,14 +21,23 @@ export async function POST(request, { params }) {
 
   const { id } = await params;
 
+  let comment = null;
+  try {
+    const body = await request.json();
+    comment = body?.comment || null;
+  } catch {
+    // comment is optional
+  }
+
   try {
     const result = await pool.query(
       `UPDATE publications.publications
-       SET status = 'rejected', 
+       SET status = 'rejected',
+           rejection_comment = $2,
            updated_at = NOW()
        WHERE id = $1 AND status = 'pending'
        RETURNING id, status`,
-      [id]
+      [id, comment]
     );
 
     if (result.rows.length === 0) {

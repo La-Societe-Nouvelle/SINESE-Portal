@@ -20,6 +20,7 @@ export async function getPublications() {
     p.publication_date,
     p.status,
     p.data,
+    p.rejection_comment,
     -- Compter les rapports associés
     (SELECT COUNT(*) FROM publications.reports r WHERE r.publication_id = p.id) as report_count,
     -- Récupérer le type du premier rapport associé (si présent)
