@@ -1,49 +1,30 @@
-import { withAuth } from "next-auth/middleware";
+import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
-export const proxy = withAuth(
-  function middleware(req) {
-    // If user is not authenticated and trying to access protected routes
-    if (!req.nextauth.token && req.nextUrl.pathname.startsWith("/publications/espace")) {
-      const redirectUrl = new URL("/publications/connexion", req.url);
-      return NextResponse.redirect(redirectUrl);
-    }
+export async function proxy(request) {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-    // If user is authenticated and trying to access auth pages, redirect to dashboard
-    if (
-      req.nextauth.token &&
-      (req.nextUrl.pathname === "/publications/connexion" ||
-        req.nextUrl.pathname === "/publications/inscription")
-    ) {
-      const redirectUrl = new URL("/publications/espace", req.url);
-      return NextResponse.redirect(redirectUrl);
-    }
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Allow public routes
-        const publicRoutes = [
-          "/publications/connexion",
-          "/publications/inscription",
-          "/publications",
-        ];
-
-        if (publicRoutes.includes(req.nextUrl.pathname)) {
-          return true;
-        }
-
-        // Require authentication for /publications/espace routes
-        if (req.nextUrl.pathname.startsWith("/publications/espace")) {
-          return !!token;
-        }
-
-        return true;
-      },
-    },
+  // Utilisateur non authentifié → redirige vers connexion
+  if (!token && request.nextUrl.pathname.startsWith("/publications/espace")) {
+    return NextResponse.redirect(new URL("/publications/connexion", request.url));
   }
-);
+
+  // Utilisateur déjà connecté → redirige vers l'espace
+  if (
+    token &&
+    (request.nextUrl.pathname === "/publications/connexion" ||
+      request.nextUrl.pathname === "/publications/inscription")
+  ) {
+    return NextResponse.redirect(new URL("/publications/espace", request.url));
+  }
+}
 
 export const config = {
-  matcher: ["/publications/:path*", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/publications/:path*",
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+  ],
 };
