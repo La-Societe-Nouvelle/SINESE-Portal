@@ -1,7 +1,7 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
-export const middleware = withAuth(
+export const proxy = withAuth(
   function middleware(req) {
     // If user is not authenticated and trying to access protected routes
     if (!req.nextauth.token && req.nextUrl.pathname.startsWith("/publications/espace")) {
