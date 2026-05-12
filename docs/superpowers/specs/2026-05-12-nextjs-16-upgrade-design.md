@@ -23,10 +23,41 @@ Next.js 16 utilise Turbopack par défaut pour `next build`. La présence d'une c
 "build": "next build --webpack"
 ```
 
-### 2. Renommage `middleware` → `proxy` (exception à appliquer)
-Le codemod renomme `middleware.js` → `proxy.js`, mais le runtime `edge` n'est pas supporté dans `proxy`. Le fichier `middleware.js` utilise `next-auth/middleware` qui tourne sur edge.
+### 2. Renommage `middleware` → `proxy` + refactorisation next-auth
+Le codemod renomme `middleware.js` → `proxy.js`. Le runtime `edge` n'est pas supporté dans `proxy`, donc `withAuth` de `next-auth/middleware` (edge) doit être remplacé.
 
-**Solution :** Garder `middleware.js` tel quel. Après le codemod, **annuler** le renommage s'il a été appliqué.
+**Solution :** Laisser le codemod renommer le fichier, puis refactoriser `proxy.js` pour utiliser `getToken` de `next-auth/jwt` (compatible Node.js) à la place de `withAuth`.
+
+Le projet utilise la stratégie JWT (`session: { strategy: "jwt" }`), ce qui rend `getToken` directement utilisable dans le proxy.
+
+Avant (middleware.js — edge) :
+```js
+import { withAuth } from "next-auth/middleware";
+export const middleware = withAuth(function middleware(req) { ... }, { callbacks: { authorized } });
+```
+
+Après (proxy.js — nodejs) :
+```js
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+
+export async function proxy(request) {
+  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+  if (!token && request.nextUrl.pathname.startsWith("/publications/espace")) {
+    return NextResponse.redirect(new URL("/publications/connexion", request.url));
+  }
+
+  if (token && (request.nextUrl.pathname === "/publications/connexion" ||
+                request.nextUrl.pathname === "/publications/inscription")) {
+    return NextResponse.redirect(new URL("/publications/espace", request.url));
+  }
+}
+
+export const config = {
+  matcher: ["/publications/:path*", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};
+```
 
 ### 3. Async `params` / `searchParams` (déjà migré)
 Deux pages utilisent déjà `await params` / `await searchParams` :
@@ -65,12 +96,12 @@ Le codemod va :
 - Supprimer le préfixe `unstable_` des APIs stabilisées (non utilisées ici)
 - Tenter de renommer `middleware.js` → `proxy.js` (à **annuler**)
 
-### Étape 2 — Annuler le renommage middleware
-Si le codemod a renommé `middleware.js` en `proxy.js`, annuler avec git :
-```bash
-git checkout middleware.js
-git rm proxy.js  # si créé
-```
+### Étape 2 — Refactoriser `proxy.js`
+Après le codemod, réécrire `proxy.js` pour remplacer `withAuth` (edge) par `getToken` (nodejs) :
+- Importer `getToken` depuis `next-auth/jwt` au lieu de `withAuth` depuis `next-auth/middleware`
+- Réécrire la logique de redirection avec `getToken` (voir code cible dans la section breaking changes)
+- Renommer l'export `middleware` en `proxy`
+- Supprimer l'ancienne `middleware.js` si le codemod ne l'a pas fait
 
 ### Étape 3 — Modifier `package.json`
 Ajouter `--webpack` au script `build` pour contourner le conflit Turbopack/webpack.
@@ -87,7 +118,7 @@ Corriger toute erreur résiduelle.
 ## Ce qui ne change PAS
 
 - La config webpack dans `next.config.js` reste inchangée (suppression de warnings Sass)
-- `middleware.js` / `next-auth` reste inchangé
+- `getServerSession` dans les routes API reste inchangé
 - Aucune migration de composants ni de logique métier
 
 ---
