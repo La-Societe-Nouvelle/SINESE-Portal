@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { FileText, Download, FileCheck, FileCode, FileSpreadsheet } from "lucide-react";
 import { REPORT_TYPES } from "@/(publications)/publications/_components/forms/ReportForm";
@@ -14,8 +15,10 @@ export default function PublishedReportSection({ publishedReport }) {
   }
 
   const { documents } = publishedReport;
+  const [loadingId, setLoadingId] = useState(null);
 
   const handleOvhDownload = async (doc, displayName) => {
+    setLoadingId(doc.id);
     try {
       const res = await fetch(`/api/portail/download/${doc.id}`);
       if (!res.ok) throw new Error("Échec du téléchargement");
@@ -28,6 +31,8 @@ export default function PublishedReportSection({ publishedReport }) {
       setTimeout(() => URL.revokeObjectURL(url), 10_000);
     } catch (err) {
       console.error("Erreur téléchargement OVH:", err);
+    } finally {
+      setLoadingId(null);
     }
   };
 
@@ -142,12 +147,17 @@ export default function PublishedReportSection({ publishedReport }) {
                 {doc.storageType === 'ovh' ? (
                   <button
                     onClick={() => handleOvhDownload(doc, displayName)}
+                    disabled={loadingId === doc.id}
                     className="btn btn-sm btn-primary d-inline-flex align-items-center gap-2 ms-3"
                     style={{ whiteSpace: 'nowrap' }}
                     title={`Télécharger ${displayName}`}
                   >
-                    <Download size={16} />
-                    <span className="d-none d-sm-inline">Télécharger</span>
+                    {loadingId === doc.id
+                      ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                      : <Download size={16} />}
+                    <span className="d-none d-sm-inline">
+                      {loadingId === doc.id ? "Chargement…" : "Télécharger"}
+                    </span>
                   </button>
                 ) : (
                   <a
