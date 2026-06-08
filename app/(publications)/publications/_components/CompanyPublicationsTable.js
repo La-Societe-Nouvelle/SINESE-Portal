@@ -67,14 +67,20 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     setShowDeleteModal(false);
 
     startPubTransition(async () => {
-      const result = await deletePublication(publicationToDelete.id);
-      if (result.error) {
-        alert(result.error);
-      } else {
-        router.refresh();
+      try {
+        const result = await deletePublication(publicationToDelete.id);
+        if (result.error) {
+          alert(result.error);
+        } else {
+          router.refresh();
+        }
+      } catch (e) {
+        console.error("Erreur lors de la suppression :", e);
+        alert("Une erreur inattendue s'est produite.");
+      } finally {
+        setDeletingId(null);
+        setPublicationToDelete(null);
       }
-      setDeletingId(null);
-      setPublicationToDelete(null);
     });
   };
 
@@ -112,14 +118,20 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     setShowRevertModal(false);
 
     startPubTransition(async () => {
-      const result = await updatePublicationStatus(pubToRevert.id, "draft");
-      if (result.error) {
-        alert(result.error);
-      } else {
-        router.refresh();
+      try {
+        const result = await updatePublicationStatus(pubToRevert.id, "draft");
+        if (result.error) {
+          alert(result.error);
+        } else {
+          router.refresh();
+        }
+      } catch (e) {
+        console.error("Erreur lors du retour au brouillon :", e);
+        alert("Une erreur inattendue s'est produite.");
+      } finally {
+        setRevertingId(null);
+        setPubToRevert(null);
       }
-      setRevertingId(null);
-      setPubToRevert(null);
     });
   };
 

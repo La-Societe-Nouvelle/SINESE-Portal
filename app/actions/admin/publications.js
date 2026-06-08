@@ -140,7 +140,7 @@ export async function approvePublication(id) {
 
     if (reportResult.rows.length > 0) {
       const report = reportResult.rows[0];
-      const footprintStorageType = report.storage_type === "external" ? "ovh" : report.storage_type;
+      const footprintStorageType = report.storage_type;
       await client.query(
         `INSERT INTO footprints.reports
           (siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date, created_at, updated_at)
@@ -218,31 +218,20 @@ export async function adminUpdatePublicationStatus(id, status) {
 
       if (reportRes.rows.length > 0) {
         const report = reportRes.rows[0];
-        const footprintStorageType = report.storage_type === "external" ? "ovh" : report.storage_type;
+        const footprintStorageType = report.storage_type;
 
-        const existing = await client.query(
-          `SELECT id FROM footprints.reports WHERE siren = $1 AND year = $2 AND type = $3 LIMIT 1`,
-          [report.siren, report.year, report.type]
+        await client.query(
+          `INSERT INTO footprints.reports
+            (siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date, created_at, updated_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
+           ON CONFLICT (siren, year, type) DO UPDATE SET
+             mime_type = EXCLUDED.mime_type, file_origin = EXCLUDED.file_origin,
+             file_url = EXCLUDED.file_url, storage_type = EXCLUDED.storage_type,
+             file_name = EXCLUDED.file_name, file_size = EXCLUDED.file_size,
+             upload_date = EXCLUDED.upload_date, updated_at = NOW()`,
+          [report.siren, report.type, report.year, report.mime_type, report.file_origin,
+           report.file_url, footprintStorageType, report.file_name, report.file_size, report.upload_date]
         );
-
-        if (existing.rows.length > 0) {
-          await client.query(
-            `UPDATE footprints.reports
-             SET mime_type = $1, file_origin = $2, file_url = $3, storage_type = $4,
-                 file_name = $5, file_size = $6, upload_date = $7, updated_at = NOW()
-             WHERE id = $8`,
-            [report.mime_type, report.file_origin, report.file_url, footprintStorageType,
-             report.file_name, report.file_size, report.upload_date, existing.rows[0].id]
-          );
-        } else {
-          await client.query(
-            `INSERT INTO footprints.reports
-              (siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())`,
-            [report.siren, report.type, report.year, report.mime_type, report.file_origin,
-             report.file_url, footprintStorageType, report.file_name, report.file_size, report.upload_date]
-          );
-        }
       }
     }
 
@@ -265,7 +254,7 @@ export async function createAdminPublication({ siren, year, reportType, reportUr
     return { error: "SIREN, année, type de rapport et URL sont requis." };
   }
 
-  const footprintStorageType = storageType === "ovh" ? "ovh" : "ovh";
+  const footprintStorageType = storageType === "external" ? "external" : "ovh";
   const fileOrigin = storageType === "external" ? "external" : null;
 
   try {

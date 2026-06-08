@@ -33,6 +33,7 @@ export default function usePublicationSubmit() {
 
         if (result.error) throw new Error(result.error);
 
+        let reportSaveOk = true;
         if (reportType && uploadMode === "url" && externalUrl.trim()) {
           const reportResult = await addReport({
             reportId: reportId || undefined,
@@ -41,11 +42,18 @@ export default function usePublicationSubmit() {
             fileUrl: externalUrl.trim(),
             storageType: "external",
           });
-          if (!reportResult.error) setReportId(reportResult.reportId);
+          if (reportResult.error) {
+            reportSaveOk = false;
+            console.error("Erreur lors de la sauvegarde du rapport :", reportResult.error);
+          } else {
+            setReportId(reportResult.reportId);
+          }
         }
 
-        setDraftSavedNotification(true);
-        setTimeout(() => setDraftSavedNotification(false), 3000);
+        if (reportSaveOk) {
+          setDraftSavedNotification(true);
+          setTimeout(() => setDraftSavedNotification(false), 3000);
+        }
       } catch (e) {
         console.error("Erreur lors de l'enregistrement du brouillon :", e);
       }
