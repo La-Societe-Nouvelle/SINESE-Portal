@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import pool from "@/config/db";
 
 const rateLimitMap = new Map();
@@ -15,41 +16,40 @@ function isRateLimited(ip) {
   return entry.count > LIMIT;
 }
 
-function getS3Client() {
-  return new S3Client({
-    region: process.env.OS_REGION_NAME || "gra",
-    endpoint: process.env.OS_AUTH_URL || "https://s3.gra.cloud.ovh.net",
-    credentials: {
-      accessKeyId: process.env.OS_USERNAME,
-      secretAccessKey: process.env.OS_PASSWORD,
-    },
-    forcePathStyle: true,
-    disableBodySigning: true,
-  });
-}
+const s3Client = new S3Client({
+  region: process.env.OS_REGION_NAME || "gra",
+  endpoint: process.env.OS_AUTH_URL || "https://s3.gra.cloud.ovh.net",
+  credentials: {
+    accessKeyId: process.env.OS_USERNAME,
+    secretAccessKey: process.env.OS_PASSWORD,
+  },
+  forcePathStyle: true,
+  disableBodySigning: true,
+});
 
-/**
- * Extrait la object key S3 depuis une URL complète OVH.
- * Ex: https://bucket.s3.gra.cloud.ovh.net/path/to/file.pdf → path/to/file.pdf
- */
+const ALLOWED_TYPES = new Set([
+  "application/pdf",
+  "application/zip",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-excel",
+  "text/csv",
+  "application/xml",
+  "text/xml",
+  "application/octet-stream",
+]);
+
 function extractS3Key(fileUrl, bucketName) {
   try {
     const url = new URL(fileUrl);
-    // Format path-style: endpoint/bucket/key
     if (url.pathname.startsWith(`/${bucketName}/`)) {
       return url.pathname.slice(`/${bucketName}/`.length);
     }
-    // Format virtual-hosted: bucket.endpoint/key
     return url.pathname.replace(/^\//, "");
   } catch {
     return null;
   }
 }
 
-/**
- * Génère une URL pré-signée S3 valable 60 secondes et redirige vers elle.
- * Fonctionne pour les fichiers privés comme publics.
- */
 export async function GET(req, { params }) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
   if (isRateLimited(ip)) {
@@ -57,7 +57,6 @@ export async function GET(req, { params }) {
   }
 
   const { reportId } = await params;
-
   if (!reportId) {
     return NextResponse.json({ error: "reportId manquant" }, { status: 400 });
   }
@@ -71,7 +70,8 @@ export async function GET(req, { params }) {
       [reportId]
     );
     report = result.rows[0];
-  } catch {
+  } catch (err) {
+    console.error("Erreur DB téléchargement rapport:", err);
     return NextResponse.json({ error: "Erreur base de données" }, { status: 500 });
   }
 
@@ -95,33 +95,23 @@ export async function GET(req, { params }) {
   }
 
   try {
-    const client = getS3Client();
-    const command = new GetObjectCommand({ Bucket: bucketName, Key: key });
-    const s3Response = await client.send(command);
-
-    const ALLOWED_TYPES = new Set([
-      "application/pdf",
-      "application/zip",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "application/vnd.ms-excel",
-      "text/csv",
-      "application/xml",
-      "text/xml",
-      "application/octet-stream",
-    ]);
-    const rawType = report.mime_type || s3Response.ContentType || "";
-    const contentType = ALLOWED_TYPES.has(rawType) ? rawType : "application/octet-stream";
-
-    const safeFileName = (report.file_name || "rapport").replace(/[\r\n"\\]/g, "_");
+    const rawName = key.split("/").pop() || "rapport";
+    const safeFileName = rawName.replace(/[\r\n"\\]/g, "_");
     const encodedFileName = encodeURIComponent(safeFileName);
+    const contentType = ALLOWED_TYPES.has(report.mime_type) ? report.mime_type : "application/octet-stream";
 
-    return new NextResponse(s3Response.Body.transformToWebStream(), {
-      headers: {
-        "Content-Type": contentType,
-        "Content-Disposition": `attachment; filename="${safeFileName}"; filename*=UTF-8''${encodedFileName}`,
-      },
+    const command = new GetObjectCommand({
+      Bucket: bucketName,
+      Key: key,
+      ResponseContentDisposition: `attachment; filename="${safeFileName}"; filename*=UTF-8''${encodedFileName}`,
+      ResponseContentType: contentType,
     });
-  } catch {
-    return NextResponse.json({ error: "Impossible de récupérer le fichier OVH" }, { status: 502 });
+
+    const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 });
+
+    return NextResponse.json({ url: signedUrl });
+  } catch (err) {
+    console.error("Erreur génération URL pré-signée OVH:", err);
+    return NextResponse.json({ error: "Impossible de générer le lien de téléchargement" }, { status: 502 });
   }
 }

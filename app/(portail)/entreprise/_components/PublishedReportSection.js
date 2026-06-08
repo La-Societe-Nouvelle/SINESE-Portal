@@ -17,18 +17,19 @@ export default function PublishedReportSection({ publishedReport }) {
   const { documents } = publishedReport;
   const [loadingId, setLoadingId] = useState(null);
 
-  const handleOvhDownload = async (doc, displayName) => {
+  const handleOvhDownload = async (doc) => {
     setLoadingId(doc.id);
     try {
       const res = await fetch(`/api/portail/download/${doc.id}`);
       if (!res.ok) throw new Error("Échec du téléchargement");
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      const { url } = await res.json();
+
       const a = document.createElement("a");
       a.href = url;
-      a.download = doc.fileName || displayName;
+      a.style.display = "none";
+      document.body.appendChild(a);
       a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      document.body.removeChild(a);
     } catch (err) {
       console.error("Erreur téléchargement OVH:", err);
     } finally {
@@ -146,7 +147,7 @@ export default function PublishedReportSection({ publishedReport }) {
                 </div>
                 {doc.storageType === 'ovh' ? (
                   <button
-                    onClick={() => handleOvhDownload(doc, displayName)}
+                    onClick={() => handleOvhDownload(doc)}
                     disabled={loadingId === doc.id}
                     className="btn btn-sm btn-primary d-inline-flex align-items-center gap-2 ms-3"
                     style={{ whiteSpace: 'nowrap' }}
