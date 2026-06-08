@@ -32,7 +32,7 @@ export async function GET(_req, { params }) {
       siren: report.siren,
       type: report.type,
       year: report.year,
-      url: report.url,
+      url: report.storage_type === "ovh" ? null : report.url,
       fileOrigin: report.file_origin,
       fileName: report.file_name,
       fileSize: report.file_size,
