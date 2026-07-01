@@ -2,8 +2,12 @@
 
 import { Button } from "react-bootstrap";
 import { Search, Building } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
 
-export function NoResultsState({ onNewSearch }) {
+export function NoResultsState() {
+  const router   = useRouter();
+  const pathname = usePathname();
+
   return (
     <div className="text-center py-5">
       <div className="mb-4">
@@ -13,7 +17,7 @@ export function NoResultsState({ onNewSearch }) {
       <p className="text-muted mb-4">
         Essayez de modifier vos critères de recherche ou utilisez des termes plus généraux.
       </p>
-      <Button variant="outline-primary" onClick={onNewSearch}>
+      <Button variant="outline-primary" onClick={() => router.push(pathname)}>
         Nouvelle recherche
       </Button>
     </div>

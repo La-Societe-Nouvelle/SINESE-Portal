@@ -22,6 +22,7 @@ export const IndicatorChartContainer = ({
   indic,
   legalUnitData,
   divisionData,
+  legalUnitHistory = {},
 }) => {
   // --------------------------------------------------
   // Metadonnées
@@ -157,10 +158,11 @@ export const IndicatorChartContainer = ({
               </div>
             </div>
           </Modal.Header>
-          <Modal.Body className="px-4 py-3">
+          <Modal.Body className="px-4 py-3" >
             <InformationDetailsModal
               indic={indic}
               footprint={legalUnitData}
+              history={legalUnitHistory[indic] || []}
             />
           </Modal.Body>
         </Modal>

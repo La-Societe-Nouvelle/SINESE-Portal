@@ -12,7 +12,7 @@ export async function sendContactMessage({ name, email, subject, message }) {
     return { error: "Adresse email invalide." };
   }
 
-  const transporter = nodemailer.createTransporter({
+  const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || "localhost",
     port: process.env.SMTP_PORT || 587,
     secure: process.env.SMTP_SECURE === "true",

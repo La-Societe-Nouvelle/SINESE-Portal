@@ -1,70 +1,92 @@
 import { NextResponse } from 'next/server';
-// import { listObjects, formatObjectsForDatasets } from '@/_libs/ovh-client';
+import { listObjects, formatObjectsForDatasets } from '@/_libs/ovh-client';
+import { promises as fs } from 'fs';
+import path from 'path';
 
-/**
- * API pour récupérer la liste dynamique des datasets
- * URL: /api/datasets
- * Note: Accès OVH temporairement désactivé - utilise les données de fallback
- */
+const CACHE_FILE = path.join(process.cwd(), 'data', 'datasets-cache.json');
+const CACHE_TTL_HOURS = 6;
+
+async function readCache() {
+  try {
+    const raw = await fs.readFile(CACHE_FILE, 'utf8');
+    const cache = JSON.parse(raw);
+    const ageMs = Date.now() - new Date(cache.lastUpdate).getTime();
+    if (ageMs < CACHE_TTL_HOURS * 60 * 60 * 1000) {
+      return cache;
+    }
+    return null; // cache expiré
+  } catch {
+    return null; // fichier absent ou corrompu
+  }
+}
+
+async function writeCache(datasets) {
+  try {
+    await fs.mkdir(path.dirname(CACHE_FILE), { recursive: true });
+    await fs.writeFile(CACHE_FILE, JSON.stringify({
+      datasets,
+      lastUpdate: new Date().toISOString(),
+      version: '1.0'
+    }, null, 2));
+  } catch (error) {
+    console.error('Erreur sauvegarde cache datasets:', error);
+  }
+}
+
+async function fetchFromOvh() {
+  const objects = await listObjects('open-data/', 1000);
+  if (objects.length === 0) return null;
+  return formatObjectsForDatasets(objects);
+}
+
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const category = searchParams.get('category'); // complete, branches, metadata
-  const limit = parseInt(searchParams.get('limit') || '100');
-  const prefix = searchParams.get('prefix') || '';
-  
-  try {
-    // TEMPORAIRE: Commenté pour hébergement local
-    // Récupérer les objets depuis OVH - seulement dans le dossier open-data
-    // const openDataPrefix = prefix ? `open-data/${prefix}` : 'open-data/';
-    // const objects = await listObjects(openDataPrefix, limit);
-    
-    // if (objects.length === 0) {
-    //   // Fallback vers les données statiques si OVH n'est pas disponible
-    //   return NextResponse.json({
-    //     success: true,
-    //     source: 'fallback',
-    //     datasets: getFallbackDatasets(),
-    //     totalFiles: 0,
-    //     lastSync: null
-    //   });
-    // }
-    
-    // // Convertir les objets en format datasets
-    // let datasets = formatObjectsForDatasets(objects);
-    
-    // // Filtrer par catégorie si spécifiée
-    // if (category) {
-    //   datasets = datasets.filter(d => d.category === category);
-    // }
-    
-    // return NextResponse.json({
-    //   success: true,
-    //   source: 'ovh',
-    //   datasets,
-    //   totalFiles: objects.length,
-    //   lastSync: new Date().toISOString()
-    // });
+  const category = searchParams.get('category');
 
-    // TEMPORAIRE: Utilise directement les données de fallback
-    let datasets = getFallbackDatasets();
-    
-    // Filtrer par catégorie si spécifiée
-    if (category) {
-      datasets = datasets.filter(d => d.category === category);
+  try {
+    // 1. Essayer le cache local
+    const cache = await readCache();
+    if (cache) {
+      let datasets = cache.datasets;
+      if (category) datasets = datasets.filter(d => d.category === category);
+      return NextResponse.json({
+        success: true,
+        source: 'cache',
+        datasets,
+        totalFiles: cache.datasets.length,
+        lastSync: cache.lastUpdate
+      });
     }
-    
+
+    // 2. Cache absent ou expiré → appeler OVH
+    const datasets = await fetchFromOvh();
+    if (!datasets) {
+      return NextResponse.json({
+        success: true,
+        source: 'fallback',
+        datasets: getFallbackDatasets(),
+        totalFiles: 0,
+        lastSync: null
+      });
+    }
+
+    await writeCache(datasets);
+
+    let filtered = datasets;
+    if (category) filtered = datasets.filter(d => d.category === category);
+
     return NextResponse.json({
       success: true,
-      source: 'local',
-      datasets,
+      source: 'ovh',
+      datasets: filtered,
       totalFiles: datasets.length,
       lastSync: new Date().toISOString()
     });
-    
+
   } catch (error) {
     console.error('Erreur récupération datasets:', error);
-    
-    // En cas d'erreur, retourner les données de fallback
+
+    // 3. En cas d'erreur OVH → fallback statique
     return NextResponse.json({
       success: false,
       source: 'fallback',
@@ -75,9 +97,45 @@ export async function GET(request) {
   }
 }
 
-/**
- * Données de fallback si OVH n'est pas accessible
- */
+export async function POST(request) {
+  const { getServerSession } = await import("next-auth");
+  const { authOptions } = await import("../auth/[...nextauth]/route");
+
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
+  }
+  if (session.user.role !== "admin") {
+    return NextResponse.json({ error: "Droits administrateur requis." }, { status: 403 });
+  }
+
+  try {
+    const { force } = await request.json();
+    if (!force) {
+      return NextResponse.json({ error: 'Paramètre force requis' }, { status: 400 });
+    }
+
+    const datasets = await fetchFromOvh();
+    if (!datasets) {
+      return NextResponse.json({ error: 'Aucun fichier trouvé sur OVH' }, { status: 404 });
+    }
+
+    await writeCache(datasets);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Cache mis à jour depuis OVH',
+      datasets,
+      totalFiles: datasets.length,
+      lastSync: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Erreur synchronisation:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
 function getFallbackDatasets() {
   return [
     {
@@ -108,89 +166,4 @@ function getFallbackDatasets() {
       files: []
     }
   ];
-}
-
-/**
- * Endpoint POST pour forcer la synchronisation (réservé aux admins)
- */
-export async function POST(request) {
-  const { getServerSession } = await import("next-auth");
-  const { authOptions } = await import("../auth/[...nextauth]/route");
-
-  // Vérifier l'authentification
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Non autorisé. Veuillez vous connecter." }, { status: 401 });
-  }
-
-  // Vérifier le rôle admin
-  if (session.user.role !== "admin") {
-    return NextResponse.json({ error: "Accès refusé. Droits administrateur requis." }, { status: 403 });
-  }
-
-  try {
-    const { force } = await request.json();
-    
-    if (!force) {
-      return NextResponse.json(
-        { error: 'Paramètre force requis' }, 
-        { status: 400 }
-      );
-    }
-    
-    // TEMPORAIRE: Commenté pour hébergement local
-    // Forcer la récupération des données OVH - seulement dans le dossier open-data
-    // const objects = await listObjects('open-data/', 1000);
-    // const datasets = formatObjectsForDatasets(objects);
-    
-    // Optionnel : sauvegarder en cache local
-    // await saveDatasetsCache(datasets);
-    
-    // TEMPORAIRE: Retourne les données de fallback
-    const datasets = getFallbackDatasets();
-    await saveDatasetsCache(datasets);
-    
-    return NextResponse.json({
-      success: true,
-      message: 'Synchronisation locale réussie (OVH désactivé)',
-      datasets,
-      totalFiles: datasets.length,
-      lastSync: new Date().toISOString()
-    });
-    
-  } catch (error) {
-    console.error('Erreur synchronisation:', error);
-    
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: 500 });
-  }
-}
-
-/**
- * Sauvegarde optionnelle en cache local
- */
-async function saveDatasetsCache(datasets) {
-  try {
-    const fs = require('fs').promises;
-    const path = require('path');
-    
-    const cacheFile = path.join(process.cwd(), 'data', 'datasets-cache.json');
-    
-    // Créer le répertoire si nécessaire
-    await fs.mkdir(path.dirname(cacheFile), { recursive: true });
-    
-    const cacheData = {
-      datasets,
-      lastUpdate: new Date().toISOString(),
-      version: '1.0'
-    };
-    
-    await fs.writeFile(cacheFile, JSON.stringify(cacheData, null, 2));
-    
-  } catch (error) {
-    console.error('Erreur sauvegarde cache datasets:', error);
-    // Ne pas faire échouer l'API si le cache ne fonctionne pas
-  }
 }

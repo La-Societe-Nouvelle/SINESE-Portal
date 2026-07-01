@@ -35,19 +35,10 @@ export default function DatasetsPage() {
 
 
   const handleDownload = (format, dataset) => {
-    // Le nom du fichier sera: nom-du-dataset.format
     const fileName = `${dataset}.${format.toLowerCase()}`;
-    
-    // Téléchargement direct depuis le dossier open-data
-    const downloadUrl = `/open-data/${fileName}`;
-    
-    // Créer un lien temporaire pour déclencher le téléchargement
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const ovhPublicUrl = process.env.NEXT_PUBLIC_OVH_PUBLIC_URL || 'https://sinese-storage.s3.eu-west-par.io.cloud.ovh.net';
+    const downloadUrl = `${ovhPublicUrl}/open-data/${fileName}`;
+    window.open(downloadUrl, '_blank');
   };
 
 

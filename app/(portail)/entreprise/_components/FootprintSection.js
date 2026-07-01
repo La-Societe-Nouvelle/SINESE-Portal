@@ -10,7 +10,8 @@ export default function FootprintSection({
   footprint,
   divisionFootprint,
   historicalDivisionFootprint,
-  additionnalData
+  additionnalData,
+  legalUnitHistory = {}
 }) {
   // Organisation des indicateurs ESE par catégorie
   const eseCategories = [
@@ -43,7 +44,7 @@ export default function FootprintSection({
       <Card className="mb-5">
         <Card.Header className="py-3 border-bottom">
           <h3 className="mb-1">
-            Empreinte Sociétale et Environnementale
+            Empreinte Sociétale de l'entreprise
           </h3>
         </Card.Header>
 
@@ -86,6 +87,7 @@ export default function FootprintSection({
                       legalUnitData={allData}
                       divisionData={divisionFootprint}
                       historicalDivisionFootprint={historicalDivisionFootprint}
+                      legalUnitHistory={legalUnitHistory}
                     />
                   ))
                 }

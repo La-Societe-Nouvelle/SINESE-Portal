@@ -162,7 +162,7 @@ export default function CompanyCard({ company }) {
                   style={{ borderRadius: '0.5rem', minWidth: '200px' }}
                 >
                   <Calculator size={16} className="me-2" />
-                  Estimer l'empreinte
+                  Estimation de l'empreinte
                 </Button>
               )}
             </div>

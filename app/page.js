@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import { searchLegalUnits } from "@/actions/search";
 import {
   Search,
   SlidersHorizontal,
@@ -22,7 +23,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const timeoutRef = useRef();
-  const abortControllerRef = useRef();
+  const requestIdRef = useRef(0);
   const cacheRef = useRef(new Map());
 
   const fetchSuggestions = async (q) => {
@@ -40,47 +41,25 @@ export default function HomePage() {
       }
     }
 
-    // Annuler la requête précédente
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-
-    // Créer un nouveau AbortController
-    abortControllerRef.current = new AbortController();
+    // Identifie cette requête pour ignorer les réponses obsolètes
+    const requestId = ++requestIdRef.current;
     setLoading(true);
 
     try {
-      let stringQuery = q
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toUpperCase();
+      const data = await searchLegalUnits(q, { empreintePubliee: false }, 1);
 
-      // Ajouter des paramètres pour limiter les résultats et optimiser la requête
-      const res = await fetch(`/api/legalunit/${stringQuery}?limit=10&empreintePubliee=false`, {
-        signal: abortControllerRef.current.signal,
-        timeout: 5000 // 5 secondes de timeout
-      });
+      // Une requete plus recente a ete lancee entre-temps, on ignore ce resultat
+      if (requestId !== requestIdRef.current) return;
 
-      if (!res.ok) {
-        // Si 502, c'est probablement l'API externe qui est down
-        if (res.status === 502) {
-          console.warn('API externe indisponible temporairement');
-          setSuggestions([]);
-          return;
-        }
-        throw new Error(`HTTP ${res.status}`);
-      }
+      const results = (data.legalUnits || []).slice(0, 10);
 
-      const data = await res.json();
-      const results = data.legalUnits || [];
-
-      // Mettre en cache le résultat
+      // Mettre en cache le resultat
       cacheRef.current.set(cacheKey, {
         data: results,
         timestamp: Date.now()
       });
 
-      // Nettoyer le cache si trop d'entrées (max 50)
+      // Nettoyer le cache si trop d'entrees (max 50)
       if (cacheRef.current.size > 50) {
         const oldestKey = cacheRef.current.keys().next().value;
         cacheRef.current.delete(oldestKey);
@@ -88,23 +67,21 @@ export default function HomePage() {
 
       setSuggestions(results);
     } catch (error) {
-      if (error.name === 'AbortError') {
-        // Requête annulée, ne rien faire
-        return;
-      }
+      if (requestId !== requestIdRef.current) return;
 
-      // Log plus détaillé pour le debug
+      // Log plus detaille pour le debug
       console.error('Erreur lors de la recherche des suggestions:', {
         query: q,
         error: error.message,
         timestamp: new Date().toISOString()
       });
 
-      // Afficher un état vide au lieu d'une erreur pour l'UX
+      // Afficher un etat vide au lieu d'une erreur pour l'UX
       setSuggestions([]);
     } finally {
-      setLoading(false);
-      abortControllerRef.current = null;
+      if (requestId === requestIdRef.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -126,10 +103,8 @@ export default function HomePage() {
       setSuggestions([]);
       setShowSuggestions(false);
       setLoading(false);
-      // Annuler toute requête en cours
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+      // Invalider toute requête en cours
+      requestIdRef.current++;
     }
   };
 

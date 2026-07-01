@@ -3,17 +3,30 @@
 import React, { useState } from 'react';
 import { Form, Button, Offcanvas } from 'react-bootstrap';
 import Select from 'react-select';
-import { SlidersHorizontal, Factory, Globe, BarChart3, RotateCcw, Info } from 'lucide-react';
+import { SlidersHorizontal, Factory, Globe, BarChart3, RotateCcw } from 'lucide-react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
-export default function MacroSidebar({
-  metadata,
-  selectedValues,
-  onSelectChange,
-  onReset,
-  isLoading = false,
-  className = ""
-}) {
+export default function MacroSidebar({ metadata, className = "" }) {
+  const router       = useRouter();
+  const pathname     = usePathname();
+  const searchParams = useSearchParams();
   const [showMobile, setShowMobile] = useState(false);
+
+  const selectedValues = {
+    industry:  searchParams.get('industry')  || 'TOTAL',
+    country:   searchParams.get('country')   || 'FRA',
+    aggregate: searchParams.get('aggregate') || 'PRD',
+  };
+
+  const handleChange = (key, value) => {
+    const params = new URLSearchParams(searchParams);
+    params.set(key, value);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const handleReset = () => {
+    router.replace(pathname, { scroll: false });
+  };
 
   const filters = [
     {
@@ -88,25 +101,9 @@ export default function MacroSidebar({
     })
   };
 
-  // Transformation des données pour react-select
   const getOptionsForFilter = (filterKey) => {
     if (!metadata[filterKey]) return [];
-    
-    return metadata[filterKey].map(({ code, label }) => ({
-      value: code,
-      label: label
-    }));
-  };
-
-  // Gestionnaire de changement pour react-select
-  const handleSelectChange = (selectedOption, filterKey) => {
-    const event = {
-      target: {
-        name: filterKey,
-        value: selectedOption ? selectedOption.value : ''
-      }
-    };
-    onSelectChange(event);
+    return metadata[filterKey].map(({ code, label }) => ({ value: code, label }));
   };
 
   const SidebarContent = () => (
@@ -135,17 +132,13 @@ export default function MacroSidebar({
               
               <Select
                 instanceId={`macro-filter-${filter.key}`}
-                value={getOptionsForFilter(filter.key).find(option => 
-                  option.value === selectedValues[filter.key]
-                ) || null}
-                onChange={(selectedOption) => handleSelectChange(selectedOption, filter.key)}
+                value={getOptionsForFilter(filter.key).find(o => o.value === selectedValues[filter.key]) || null}
+                onChange={(option) => option && handleChange(filter.key, option.value)}
                 options={getOptionsForFilter(filter.key)}
-                isDisabled={isLoading || !metadata[filter.key]}
                 isSearchable={filter.searchable}
                 isClearable={false}
-                placeholder={!metadata[filter.key] ? "Chargement..." : `Sélectionner ${filter.label.toLowerCase()}`}
+                placeholder={`Sélectionner ${filter.label.toLowerCase()}`}
                 noOptionsMessage={() => "Aucune option trouvée"}
-                loadingMessage={() => "Chargement..."}
                 styles={selectStyles}
                 className="react-select-container"
                 classNamePrefix="react-select"
@@ -160,8 +153,7 @@ export default function MacroSidebar({
         <Button
           variant="link"
           size="sm"
-          onClick={onReset}
-          disabled={isLoading}
+          onClick={handleReset}
           className="reset-button"
         >
           <RotateCcw size={14} className="reset-icon" />

@@ -1,5 +1,5 @@
 import { authOptions } from "@/api/auth/[...nextauth]/route";
-import { getCompaniesCount, getDraftPublicationsCount, getLastPublication } from "@/services/userDashboardService";
+import { getCompaniesCount, getDraftPublicationsCount, getLastPublication } from "@/actions/publications";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import PublicationsPageHeader from "@/(publications)/publications/_components/PublicationsPageHeader";
