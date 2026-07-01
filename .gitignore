@@ -35,6 +35,8 @@ yarn-error.log*
 #Local
 /docs/
 /scripts/
+/data/exports/
+/data/datasets-cache.json
 
 #Editors
 /nbproject/
