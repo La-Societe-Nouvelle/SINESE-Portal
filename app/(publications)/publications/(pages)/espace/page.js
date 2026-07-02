@@ -1,14 +1,13 @@
-import { authOptions } from "@/api/auth/[...nextauth]/route";
+import { getSession } from "@/_libs/auth";
 import { getCompaniesCount, getDraftPublicationsCount, getLastPublication } from "@/actions/publications";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import PublicationsPageHeader from "@/(publications)/publications/_components/PublicationsPageHeader";
 import { FileText, Building2, PenLine, FilePlus, ClipboardList, Calculator, ExternalLink } from "lucide-react";
 
 export default async function EspacePage() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) {
-    redirect("/connexion");
+    redirect("/publications/connexion");
   }
 
   const [lastPub, companiesCount, draftCount] = await Promise.all([

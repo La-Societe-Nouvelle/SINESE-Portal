@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button, Alert, Card, Spinner, InputGroup } f
 import { useState, useTransition } from "react";
 import { useSession } from "next-auth/react";
 import { updateUserProfile, updateUserPassword } from "@/actions/user";
+import { isError, getErrorMessage } from "@/_libs/errors";
 import PublicationsPageHeader from "@/(publications)/publications/_components/PublicationsPageHeader";
 import { Check, CircleCheck, CircleX, Eye, EyeOff, LockIcon, User } from "lucide-react";
 
@@ -37,8 +38,8 @@ export default function ProfilClient({ initialProfile }) {
     setProfileSuccess("");
     startProfileTransition(async () => {
       const result = await updateUserProfile({ firstName, lastName, profile });
-      if (result.error) {
-        setProfileError(result.error);
+      if (isError(result)) {
+        setProfileError(getErrorMessage(result));
         return;
       }
       setProfileSuccess("Profil mis à jour avec succès.");
@@ -62,8 +63,8 @@ export default function ProfilClient({ initialProfile }) {
 
     startPasswordTransition(async () => {
       const result = await updateUserPassword({ currentPassword, newPassword });
-      if (result.error) {
-        setPasswordError(result.error);
+      if (isError(result)) {
+        setPasswordError(getErrorMessage(result));
         return;
       }
       setPasswordSuccess("Mot de passe mis à jour avec succès.");

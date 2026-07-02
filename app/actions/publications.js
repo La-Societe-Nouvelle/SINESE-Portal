@@ -117,7 +117,7 @@ export async function addPublication({ legalUnit, declarationData, documents = [
      VALUES ($1, $2, $3, $4, $5, $6)
      ON CONFLICT (legal_unit_id, year)
      DO UPDATE SET
-       data = data || EXCLUDED.data,
+       data = EXCLUDED.data,
        status = EXCLUDED.status,
        period_start = EXCLUDED.period_start,
        period_end = EXCLUDED.period_end,

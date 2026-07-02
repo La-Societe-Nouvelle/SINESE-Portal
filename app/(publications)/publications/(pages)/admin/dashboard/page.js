@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { getPendingPublications, getPublicationsStats, getAdminPublication, approvePublication, rejectPublication } from "@/actions/admin/publications";
+import { isError, getErrorMessage } from "@/_libs/errors";
 import { Container, Card, Table, Badge, Spinner, Alert, Button, Row, Col, Modal, Form } from "react-bootstrap";
 import { ClipboardList, Building2, Calendar, User, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3, CheckCircle, XCircle, Link2, FilePlus, X, Check } from "lucide-react";
 import Link from "next/link";
@@ -44,11 +45,11 @@ export default function AdminDashboard() {
     setError(null);
     try {
       const pendingData = await getPendingPublications();
-      if (pendingData.error) throw new Error(pendingData.error);
+      if (isError(pendingData)) throw new Error(getErrorMessage(pendingData));
       setPublications(pendingData.publications);
 
       const statsData = await getPublicationsStats();
-      if (!statsData.error) setStats(statsData);
+      if (!isError(statsData)) setStats(statsData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -84,7 +85,7 @@ export default function AdminDashboard() {
     setShowDetailsModal(true);
     try {
       const data = await getAdminPublication(publicationId);
-      if (data.error) throw new Error(data.error);
+      if (isError(data)) throw new Error(getErrorMessage(data));
       setSelectedPublication(data.publication);
     } catch (err) {
       console.error(err);
@@ -103,7 +104,7 @@ export default function AdminDashboard() {
   const handleApprove = async (publicationId) => {
     try {
       const result = await approvePublication(publicationId);
-      if (result.error) throw new Error(result.error);
+      if (isError(result)) throw new Error(getErrorMessage(result));
       await fetchPendingPublications();
       setShowDetailsModal(false);
       setSelectedPublication(null);
@@ -122,7 +123,7 @@ export default function AdminDashboard() {
     if (!rejectTargetId) return;
     try {
       const result = await rejectPublication(rejectTargetId, rejectComment || null);
-      if (result.error) throw new Error(result.error);
+      if (isError(result)) throw new Error(getErrorMessage(result));
       setShowRejectModal(false);
       setRejectTargetId(null);
       setRejectComment("");
@@ -164,7 +165,7 @@ export default function AdminDashboard() {
         <div className="d-flex gap-2">
           <Link href="/publications/admin/publier" className="btn btn-primary">
             <FilePlus size={16} className="me-2" style={{ display: 'inline' }} />
-            Nouvelle publication
+            Publier un rapport
           </Link>
           <Button variant="outline-primary" onClick={fetchPendingPublications} disabled={loading}>
             <RefreshCw size={16} className="me-2" style={{ display: 'inline' }} />
@@ -653,7 +654,7 @@ export default function AdminDashboard() {
               >
                 <X size={16} className="me-1" style={{ display: "inline" }} />
                 Rejeter
-              </Button> 
+              </Button>
               <Button
                 variant="success"
                 className="text-white"

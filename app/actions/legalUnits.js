@@ -81,45 +81,59 @@ export async function deleteLegalUnit(id) {
 
   const userId = session.user.id;
 
-  const checkRes = await pool.query(
-    `SELECT lu.id FROM publications.legal_units lu
-     JOIN publications.user_legal_unit ulu ON ulu.legal_unit_id = lu.id
-     WHERE lu.id = $1 AND ulu.user_id = $2`,
-    [id, userId]
-  );
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
 
-  if (checkRes.rows.length === 0) {
-    return { error: "Entreprise non trouvée ou accès refusé." };
-  }
+    const checkRes = await client.query(
+      `SELECT lu.id FROM publications.legal_units lu
+       JOIN publications.user_legal_unit ulu ON ulu.legal_unit_id = lu.id
+       WHERE lu.id = $1 AND ulu.user_id = $2`,
+      [id, userId]
+    );
 
-  const publicationsRes = await pool.query(
-    `SELECT id, status FROM publications.publications WHERE legal_unit_id = $1`,
-    [id]
-  );
+    if (checkRes.rows.length === 0) {
+      await client.query("ROLLBACK");
+      return { error: "Entreprise non trouvée ou accès refusé." };
+    }
 
-  const hasNonDraft = publicationsRes.rows.some(
-    (pub) => pub.status === "pending" || pub.status === "published"
-  );
-
-  if (hasNonDraft) {
-    return { error: "Impossible de supprimer une entreprise ayant des publications en attente ou publiées." };
-  }
-
-  const draftIds = publicationsRes.rows.filter((p) => p.status === "draft").map((p) => p.id);
-  if (draftIds.length > 0) {
-    await pool.query(
-      `DELETE FROM publications.publications WHERE legal_unit_id = $1 AND status = 'draft'`,
+    const publicationsRes = await client.query(
+      `SELECT id, status FROM publications.publications WHERE legal_unit_id = $1`,
       [id]
     );
+
+    const hasNonDraft = publicationsRes.rows.some(
+      (pub) => pub.status === "pending" || pub.status === "published"
+    );
+
+    if (hasNonDraft) {
+      await client.query("ROLLBACK");
+      return { error: "Impossible de supprimer une entreprise ayant des publications en attente ou publiées." };
+    }
+
+    const draftIds = publicationsRes.rows.filter((p) => p.status === "draft").map((p) => p.id);
+    if (draftIds.length > 0) {
+      await client.query(
+        `DELETE FROM publications.publications WHERE legal_unit_id = $1 AND status = 'draft'`,
+        [id]
+      );
+    }
+
+    await client.query(
+      `DELETE FROM publications.user_legal_unit WHERE legal_unit_id = $1 AND user_id = $2`,
+      [id, userId]
+    );
+    await client.query(`DELETE FROM publications.legal_units WHERE id = $1`, [id]);
+
+    await client.query("COMMIT");
+    return { success: true, deletedDrafts: draftIds.length };
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Erreur lors de la suppression de l'entreprise :", error);
+    return { error: "Erreur lors de la suppression de l'entreprise." };
+  } finally {
+    client.release();
   }
-
-  await pool.query(
-    `DELETE FROM publications.user_legal_unit WHERE legal_unit_id = $1 AND user_id = $2`,
-    [id, userId]
-  );
-  await pool.query(`DELETE FROM publications.legal_units WHERE id = $1`, [id]);
-
-  return { success: true, deletedDrafts: draftIds.length };
 }
 
 export async function checkLegalUnitAttachment(siren) {

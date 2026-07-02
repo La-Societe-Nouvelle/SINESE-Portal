@@ -90,9 +90,13 @@ export default function MacroFilterBar({ metadata, className = "" }) {
     };
   }, [industryOpen, countryOpen, aggregateOpen, closeAllPanels]);
 
-  // Mettre à jour un filtre et changer l'URL
+  // Mettre à jour un filtre et changer l'URL. Part de l'URL réelle du
+  // navigateur (mise à jour de façon synchrone par router.replace) plutôt
+  // que du hook `searchParams`, dont la valeur peut rester obsolète le temps
+  // d'un re-render — sinon deux clics rapprochés sur deux filtres différents
+  // peuvent s'écraser l'un l'autre.
   const updateFilter = (key, value) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(window.location.search);
     params.set(key, value);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     closeAllPanels();
