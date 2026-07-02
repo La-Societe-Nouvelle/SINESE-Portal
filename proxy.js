@@ -1,25 +1,37 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
+// Routes publiques qui ne nécessitent pas d'authentification
+const PUBLIC_ROUTES = [
+  "/publications/connexion",
+  "/publications/inscription",
+  "/publications",
+];
+
 export async function proxy(request) {
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  // Utilisateur non authentifié → redirige vers connexion
-  if (!token && request.nextUrl.pathname.startsWith("/publications/espace")) {
+  const pathname = request.nextUrl.pathname;
+
+  // Utilisateur non authentifié → redirige vers connexion pour les routes protégées
+  if (!token && pathname.startsWith("/publications/espace")) {
     return NextResponse.redirect(new URL("/publications/connexion", request.url));
   }
 
-  // Utilisateur déjà connecté → redirige vers l'espace
+  // Utilisateur déjà connecté → redirige vers l'espace pour les pages d'auth
   if (
     token &&
-    (request.nextUrl.pathname === "/publications/connexion" ||
-      request.nextUrl.pathname === "/publications/inscription")
+    (pathname === "/publications/connexion" ||
+      pathname === "/publications/inscription")
   ) {
     return NextResponse.redirect(new URL("/publications/espace", request.url));
   }
+
+  // Autoriser le passage pour toutes les autres routes
+  return NextResponse.next();
 }
 
 export const config = {
