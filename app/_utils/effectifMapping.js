@@ -37,37 +37,6 @@ export function getEffectifLabel(code) {
 }
 
 /**
- * Version courte pour l'affichage compact
- * @param {string} code - Code INSEE de la tranche d'trancheEffectifs
- * @returns {string} Libellé court
- */
-export function getEffectifShortLabel(code) {
-  const fullLabel = getEffectifLabel(code);
-  
-  // Raccourcir certains libellés pour l'affichage compact
-  const shortMappings = {
-    "Non renseigné": "N/R",
-    "0 salarié": "0 sal.",
-    "1 à 2 salariés": "1-2 sal.",
-    "3 à 5 salariés": "3-5 sal.",
-    "6 à 9 salariés": "6-9 sal.",
-    "10 à 19 salariés": "10-19 sal.",
-    "20 à 49 salariés": "20-49 sal.",
-    "50 à 99 salariés": "50-99 sal.",
-    "100 à 199 salariés": "100-199 sal.",
-    "200 à 249 salariés": "200-249 sal.",
-    "250 à 499 salariés": "250-499 sal.",
-    "500 à 999 salariés": "500-999 sal.",
-    "1 000 à 1 999 salariés": "1K-2K sal.",
-    "2 000 à 4 999 salariés": "2K-5K sal.",
-    "5 000 à 9 999 salariés": "5K-10K sal.",
-    "10 000 salariés et plus": "10K+ sal."
-  };
-  
-  return shortMappings[fullLabel] || fullLabel;
-}
-
-/**
  * Obtient une catégorie de taille pour styling/couleurs
  * @param {string} code - Code INSEE de la tranche d'trancheEffectifs
  * @returns {string} Catégorie: 'micro', 'petite', 'moyenne', 'grande', 'tres-grande'
@@ -124,11 +93,3 @@ export function getEffectifBadgeColor(code) {
   
   return colorMapping[category];
 }
-
-/**
- * Export des options pour les dropdowns (pour cohérence avec les composants existants)
- */
-export const EFFECTIF_OPTIONS = Object.entries(EFFECTIF_MAPPING).map(([value, label]) => ({
-  value,
-  label
-}));

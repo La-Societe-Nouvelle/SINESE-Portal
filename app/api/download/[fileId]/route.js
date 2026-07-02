@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-// import { getOvhDirectUrl, getFileInfo } from '@/_libs/ovh-storage';
 import { readFile, access } from 'fs/promises';
 import path from 'path';
 

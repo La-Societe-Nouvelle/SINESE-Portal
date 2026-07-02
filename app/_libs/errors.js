@@ -191,9 +191,11 @@ export const ErrorStatusCodes = {
  * @returns {object} Objet d'erreur standardisé
  */
 export function createError(code, options = {}) {
-  const message = typeof ErrorMessages[code] === 'function'
-    ? ErrorMessages[code](...Object.values(options))
-    : ErrorMessages[code] || 'Une erreur est survenue.';
+  const message = options.message
+    || (typeof ErrorMessages[code] === 'function'
+      ? ErrorMessages[code](...Object.values(options))
+      : ErrorMessages[code])
+    || 'Une erreur est survenue.';
   
   const status = ErrorStatusCodes[code] || 500;
   
@@ -213,28 +215,6 @@ export function createError(code, options = {}) {
   if (options.identifier) error.error.identifier = options.identifier;
   
   return error;
-}
-
-/**
- * Crée une erreur de validation
- * @param {string} message - Message personnalisé
- * @param {object} details - Détails de la validation
- * @returns {object} Objet d'erreur de validation
- */
-export function createValidationError(message = null, details = null) {
-  return createError(ErrorCodes.VALIDATION_ERROR, {
-    details,
-    message: message || ErrorMessages[ErrorCodes.VALIDATION_ERROR],
-  });
-}
-
-/**
- * Crée une erreur de champ requis manquant
- * @param {string} field - Nom du champ manquant
- * @returns {object} Objet d'erreur
- */
-export function createMissingFieldError(field) {
-  return createError(ErrorCodes.MISSING_REQUIRED_FIELD, { field });
 }
 
 /**
@@ -326,8 +306,6 @@ export default {
   ErrorMessages,
   ErrorStatusCodes,
   createError,
-  createValidationError,
-  createMissingFieldError,
   createUnauthorizedError,
   createForbiddenError,
   createNotFoundError,
