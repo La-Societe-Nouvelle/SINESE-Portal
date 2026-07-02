@@ -16,7 +16,6 @@ export default function AdminPublishModal({ show, onHide, onSuccess }) {
   const [year, setYear] = useState(String(CURRENT_YEAR - 1));
   const [reportType, setReportType] = useState("");
   const [reportUrl, setReportUrl] = useState("");
-  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -28,7 +27,6 @@ export default function AdminPublishModal({ show, onHide, onSuccess }) {
       setYear(String(CURRENT_YEAR - 1));
       setReportType("");
       setReportUrl("");
-      setNotes("");
       setError("");
     }
   }, [show]);
@@ -159,17 +157,6 @@ export default function AdminPublishModal({ show, onHide, onSuccess }) {
               />
             </Form.Group>
           )}
-
-          {/* Notes */}
-          <Form.Group className="mb-3">
-            <Form.Label>Informations complémentaires <span className="text-muted">(optionnel)</span></Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={2}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </Form.Group>
 
           {error && (
             <Alert variant="danger" className="d-flex align-items-center gap-2">

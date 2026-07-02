@@ -1,32 +1,36 @@
 "use server";
 
 import pool from "@/config/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/api/auth/[...nextauth]/route";
-
-async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session) return { error: "Non autorisé." };
-  if (session.user.role !== "admin") return { error: "Accès réservé aux administrateurs." };
-  return { session };
-}
+import { requireAdmin } from "@/_libs/auth";
+import {
+  ErrorCodes,
+  createError,
+  createNotFoundError
+} from "@/_libs/errors";
 
 export async function getPendingPublications() {
   const auth = await requireAdmin();
   if (auth.error) return auth;
 
-  const { rows } = await pool.query(
-    `SELECT p.id, p.year, p.status, p.created_at, p.updated_at,
-            lu.id as legal_unit_id, lu.denomination, lu.siren,
-            u.id as user_id, u.email as user_email
-     FROM publications.publications p
-     JOIN publications.legal_units lu ON lu.id = p.legal_unit_id
-     JOIN publications.user_legal_unit ulu ON ulu.legal_unit_id = lu.id
-     JOIN publications.users u ON u.id = ulu.user_id
-     WHERE p.status = 'pending'
-     ORDER BY p.created_at DESC`
-  );
-  return { publications: rows };
+  try {
+    const { rows } = await pool.query(
+      `SELECT p.id, p.year, p.status, p.created_at, p.updated_at,
+              lu.id as legal_unit_id, lu.denomination, lu.siren,
+              u.id as user_id, u.email as user_email
+       FROM publications.publications p
+       JOIN publications.legal_units lu ON lu.id = p.legal_unit_id
+       JOIN publications.user_legal_unit ulu ON ulu.legal_unit_id = lu.id
+       JOIN publications.users u ON u.id = ulu.user_id
+       WHERE p.status = 'pending'
+       ORDER BY p.created_at DESC`
+    );
+    return { publications: rows };
+  } catch (error) {
+    console.error("Error fetching pending publications:", error);
+    return createError(ErrorCodes.DATABASE_ERROR, {
+      details: error.message,
+    });
+  }
 }
 
 export async function getPublicationsStats() {
@@ -76,28 +80,37 @@ export async function getAdminPublication(id) {
   const auth = await requireAdmin();
   if (auth.error) return auth;
 
-  const { rows } = await pool.query(
-    `SELECT p.id, p.year, p.status, p.created_at, p.updated_at,
-            p.period_start, p.period_end, p.data, p.publication_date,
-            lu.id as legal_unit_id, lu.denomination, lu.siren,
-            (SELECT u.email FROM publications.users u
-             JOIN publications.user_legal_unit ulu2 ON ulu2.user_id = u.id
-             WHERE ulu2.legal_unit_id = lu.id LIMIT 1) as user_email
-     FROM publications.publications p
-     JOIN publications.legal_units lu ON lu.id = p.legal_unit_id
-     WHERE p.id = $1`,
-    [id]
-  );
+  try {
+    const { rows } = await pool.query(
+      `SELECT p.id, p.year, p.status, p.created_at, p.updated_at,
+              p.period_start, p.period_end, p.data, p.publication_date,
+              lu.id as legal_unit_id, lu.denomination, lu.siren,
+              (SELECT u.email FROM publications.users u
+               JOIN publications.user_legal_unit ulu2 ON ulu2.user_id = u.id
+               WHERE ulu2.legal_unit_id = lu.id LIMIT 1) as user_email
+       FROM publications.publications p
+       JOIN publications.legal_units lu ON lu.id = p.legal_unit_id
+       WHERE p.id = $1`,
+      [id]
+    );
 
-  if (rows.length === 0) return { error: "Publication introuvable." };
+    if (rows.length === 0) {
+      return createNotFoundError("Publication", id);
+    }
 
-  const reportRes = await pool.query(
-    `SELECT id, siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date
-     FROM publications.reports WHERE publication_id = $1 ORDER BY upload_date DESC LIMIT 1`,
-    [id]
-  );
+    const reportRes = await pool.query(
+      `SELECT id, siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date
+       FROM publications.reports WHERE publication_id = $1 ORDER BY upload_date DESC LIMIT 1`,
+      [id]
+    );
 
-  return { publication: { ...rows[0], report: reportRes.rows[0] || null } };
+    return { publication: { ...rows[0], report: reportRes.rows[0] || null } };
+  } catch (error) {
+    console.error("Error fetching admin publication:", error);
+    return createError(ErrorCodes.DATABASE_ERROR, {
+      details: error.message,
+    });
+  }
 }
 
 export async function approvePublication(id) {
@@ -140,7 +153,8 @@ export async function approvePublication(id) {
 
     if (reportResult.rows.length > 0) {
       const report = reportResult.rows[0];
-      const footprintStorageType = report.storage_type;
+      // footprints.reports storage_type enum only accepts 'ovh' or 'local'
+      const footprintStorageType = report.storage_type === "external" ? "ovh" : report.storage_type;
       await client.query(
         `INSERT INTO footprints.reports
           (siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date, created_at, updated_at)
@@ -170,79 +184,26 @@ export async function rejectPublication(id, comment = null) {
   const auth = await requireAdmin();
   if (auth.error) return auth;
 
-  const result = await pool.query(
-    `UPDATE publications.publications
-     SET status = 'rejected', rejection_comment = $2, updated_at = NOW()
-     WHERE id = $1 AND status = 'pending'
-     RETURNING id, status`,
-    [id, comment]
-  );
-
-  if (result.rows.length === 0) {
-    return { error: "Publication introuvable ou déjà traitée." };
-  }
-  return { success: true, publication: result.rows[0] };
-}
-
-export async function adminUpdatePublicationStatus(id, status) {
-  const auth = await requireAdmin();
-  if (auth.error) return auth;
-
-  if (!["published", "rejected"].includes(status)) {
-    return { error: "Statut invalide. Valeurs acceptées : published, rejected." };
-  }
-
-  const client = await pool.connect();
   try {
-    await client.query("BEGIN");
-
-    const pubRes = await client.query(
+    const result = await pool.query(
       `UPDATE publications.publications
-       SET status = $1::varchar, updated_at = NOW(),
-           publication_date = CASE WHEN $1::varchar = 'published' THEN NOW() ELSE publication_date END
-       WHERE id = $2 RETURNING id`,
-      [status, id]
+       SET status = 'rejected', rejection_comment = $2, updated_at = NOW()
+       WHERE id = $1 AND status = 'pending'
+       RETURNING id, status`,
+      [id, comment]
     );
 
-    if (pubRes.rows.length === 0) {
-      await client.query("ROLLBACK");
-      return { error: "Publication introuvable." };
+    if (result.rows.length === 0) {
+      return createError(ErrorCodes.PUBLICATION_ALREADY_PROCESSED, {
+        message: "Publication introuvable ou déjà traitée.",
+      });
     }
-
-    if (status === "published") {
-      const reportRes = await client.query(
-        `SELECT id, siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date
-         FROM publications.reports WHERE publication_id = $1 ORDER BY upload_date DESC LIMIT 1`,
-        [id]
-      );
-
-      if (reportRes.rows.length > 0) {
-        const report = reportRes.rows[0];
-        const footprintStorageType = report.storage_type;
-
-        await client.query(
-          `INSERT INTO footprints.reports
-            (siren, type, year, mime_type, file_origin, file_url, storage_type, file_name, file_size, upload_date, created_at, updated_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
-           ON CONFLICT (siren, year, type) DO UPDATE SET
-             mime_type = EXCLUDED.mime_type, file_origin = EXCLUDED.file_origin,
-             file_url = EXCLUDED.file_url, storage_type = EXCLUDED.storage_type,
-             file_name = EXCLUDED.file_name, file_size = EXCLUDED.file_size,
-             upload_date = EXCLUDED.upload_date, updated_at = NOW()`,
-          [report.siren, report.type, report.year, report.mime_type, report.file_origin,
-           report.file_url, footprintStorageType, report.file_name, report.file_size, report.upload_date]
-        );
-      }
-    }
-
-    await client.query("COMMIT");
-    return { success: true, publication: { id, status } };
+    return { success: true, publication: result.rows[0] };
   } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("Error updating publication status:", error);
-    return { error: "Erreur lors de la mise à jour du statut." };
-  } finally {
-    client.release();
+    console.error("Error rejecting publication:", error);
+    return createError(ErrorCodes.DATABASE_ERROR, {
+      details: error.message,
+    });
   }
 }
 

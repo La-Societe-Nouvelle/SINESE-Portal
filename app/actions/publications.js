@@ -1,11 +1,10 @@
 "use server";
 
 import pool from "@/config/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/api/auth/[...nextauth]/route";
+import { getSession } from "@/_libs/auth";
 
 export async function getPublications() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return [];
 
   const { rows } = await pool.query(
@@ -35,7 +34,7 @@ export async function getPublications() {
 }
 
 export async function getPublicationById(id) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return undefined;
 
   const { rows } = await pool.query(
@@ -83,7 +82,7 @@ export async function getPublicationById(id) {
 }
 
 export async function getPublicationStatusByLegalUnit(legalUnitId) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { published: 0, draft: 0, pending: 0 };
 
   const { rows } = await pool.query(
@@ -107,7 +106,7 @@ export async function getPublicationStatusByLegalUnit(legalUnitId) {
 }
 
 export async function addPublication({ legalUnit, declarationData, documents = [], year, status, periodStart, periodEnd }) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
 
   if (!year) return { error: "L'année est requise." };
@@ -131,7 +130,7 @@ export async function addPublication({ legalUnit, declarationData, documents = [
 }
 
 export async function updatePublicationStatus(id, status) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
 
   if (status !== "draft") return { error: "Seul le retour au brouillon est autorisé." };
@@ -153,7 +152,7 @@ export async function updatePublicationStatus(id, status) {
 }
 
 export async function deletePublication(id) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
 
   const checkRes = await pool.query(
@@ -173,7 +172,7 @@ export async function deletePublication(id) {
 }
 
 export async function getLastPublication() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return null;
 
   const res = await pool.query(
@@ -190,7 +189,7 @@ export async function getLastPublication() {
 }
 
 export async function getCompaniesCount() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return 0;
 
   const res = await pool.query(
@@ -201,7 +200,7 @@ export async function getCompaniesCount() {
 }
 
 export async function getDraftPublicationsCount() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return 0;
 
   const res = await pool.query(
@@ -216,7 +215,7 @@ export async function getDraftPublicationsCount() {
 }
 
 export async function addReport({ reportId, publicationId, type, fileUrl, fileName, fileSize, mimeType, storageType }) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
 
   if (!publicationId) return { error: "L'identifiant de publication est requis." };

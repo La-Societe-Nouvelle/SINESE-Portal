@@ -1,15 +1,7 @@
 "use server";
 
 import pool from "@/config/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/api/auth/[...nextauth]/route";
-
-async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session) return { error: "Non autorisé." };
-  if (session.user.role !== "admin") return { error: "Accès réservé aux administrateurs." };
-  return { session };
-}
+import { requireAdmin } from "@/_libs/auth";
 
 export async function getPendingReports() {
   const auth = await requireAdmin();

@@ -1,15 +1,20 @@
 "use server";
 
 import pool from "@/config/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/api/auth/[...nextauth]/route";
+import { getSession } from "@/_libs/auth";
 
 export async function getLegalUnits() {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return [];
 
   const { rows } = await pool.query(
-    `SELECT lu.id, lu.denomination, lu.siren, lu.data
+    `SELECT lu.id, lu.denomination, lu.siren, lu.data,
+            COALESCE(
+              (SELECT json_agg(json_build_object('year', p.year, 'status', p.status) ORDER BY p.year DESC)
+               FROM publications.publications p
+               WHERE p.legal_unit_id = lu.id),
+              '[]'
+            ) AS "publishedYears"
      FROM publications.legal_units lu
      JOIN publications.user_legal_unit ulu ON ulu.legal_unit_id = lu.id
      WHERE ulu.user_id = $1
@@ -20,7 +25,7 @@ export async function getLegalUnits() {
 }
 
 export async function getLegalUnitById(legalUnitId) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return null;
 
   const { rows } = await pool.query(
@@ -34,7 +39,7 @@ export async function getLegalUnitById(legalUnitId) {
 }
 
 export async function addLegalUnit({ siren, denomination }) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
 
   if (!siren || !denomination) {
@@ -71,7 +76,7 @@ export async function addLegalUnit({ siren, denomination }) {
 }
 
 export async function deleteLegalUnit(id) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
 
   const userId = session.user.id;
@@ -118,7 +123,7 @@ export async function deleteLegalUnit(id) {
 }
 
 export async function checkLegalUnitAttachment(siren) {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) return { error: "Non autorisé." };
 
   if (!siren) return { error: "SIREN requis." };

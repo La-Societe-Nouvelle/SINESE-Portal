@@ -5,11 +5,20 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { promises as fs } from "fs";
 import path from "path";
+import { 
+  ErrorCodes, 
+  createError, 
+  createNotFoundError, 
+  createInternalError 
+} from "@/_libs/errors";
 
 const OPEN_DATA_PREFIX = "sinese/open-data/";
 
 const CACHE_FILE = path.join(process.cwd(), "data", "datasets-cache.json");
 const CACHE_TTL_HOURS = 6;
+
+// Durées d'expiration (en secondes)
+const SIGNED_URL_EXPIRATION_SECONDS = 600; // 10 minutes
 
 async function readCache() {
   try {
@@ -77,11 +86,14 @@ function getFallbackDatasets() {
   ];
 }
 
-// Génère une URL de téléchargement pré-signée (60s), comme pour les rapports de publication.
+// Génère une URL de téléchargement pré-signée (10 min), comme pour les rapports de publication.
 // Le bucket n'est pas public: un lien direct sur sinese/open-data/... renvoie "access denied".
 export async function getDatasetDownloadUrl(key) {
   if (!key || !key.startsWith(OPEN_DATA_PREFIX)) {
-    return { error: "Chemin de fichier invalide." };
+    return createError(ErrorCodes.INVALID_INPUT, {
+      message: "Chemin de fichier invalide.",
+      field: "key",
+    });
   }
 
   const fileName = key.split("/").pop();
@@ -94,11 +106,13 @@ export async function getDatasetDownloadUrl(key) {
       Key: key,
       ResponseContentDisposition: `attachment; filename="${safeFileName}"`,
     });
-    const url = await getSignedUrl(client, command, { expiresIn: 60 });
+    const url = await getSignedUrl(client, command, { expiresIn: SIGNED_URL_EXPIRATION_SECONDS });
     return { url };
   } catch (error) {
     console.error("Erreur génération URL pré-signée dataset:", error);
-    return { error: "Impossible de générer le lien de téléchargement." };
+    return createError(ErrorCodes.SIGNED_URL_GENERATION_FAILED, {
+      details: error.message,
+    });
   }
 }
 
@@ -121,12 +135,14 @@ export async function getDatasets(category = null) {
     // 2. Cache absent ou expiré → appeler OVH
     const datasets = await fetchFromOvh();
     if (!datasets) {
+      console.warn("OVH: Aucun dataset trouvé, utilisation du fallback");
       return {
-        success: false,
+        success: true,
         source: "fallback",
         datasets: getFallbackDatasets(),
-        totalFiles: 0,
-        lastSync: null
+        totalFiles: getFallbackDatasets().length,
+        lastSync: null,
+        warning: "Utilisation des données de fallback"
       };
     }
 
@@ -145,12 +161,14 @@ export async function getDatasets(category = null) {
   } catch (error) {
     console.error("Erreur récupération datasets:", error);
 
-    // 3. En cas d'erreur OVH → fallback statique
+    // 3. En cas d'erreur OVH → fallback statique avec erreur standardisée
     return {
       success: false,
       source: "fallback",
       datasets: getFallbackDatasets(),
-      error: error.message,
+      error: createError(ErrorCodes.OVH_CONNECTION_FAILED, {
+        details: error.message,
+      }).error,
       lastSync: null
     };
   }
