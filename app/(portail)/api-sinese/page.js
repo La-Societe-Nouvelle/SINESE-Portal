@@ -33,13 +33,13 @@ export default function ApiPage() {
     {
       id: "footprint",
       method: "GET",
-      path: "/legalunitfootprint/{siren}",
+      path: "/v2/legalunits/{siren}/footprint",
       description: "Récupère l'empreinte sociétale complète d'une entreprise",
       parameters: [
         { name: "siren", type: "string", required: true, description: "Numéro SIREN de l'entreprise (9 chiffres)" }
       ],
       example: {
-        request: "https://api.lasocietenouvelle.org/legalunitfootprint/889182770",
+        request: "https://api.sinese.fr/v2/legalunits/889182770/footprint",
         response: {
           "header": {"code": 200, "message": "OK"},
           "legalUnit": {
@@ -72,15 +72,15 @@ export default function ApiPage() {
     {
       id: "division",
       method: "GET",
-      path: "/defaultfootprint/",
-      description: "Récupère les données sectorielles par défaut",
+      path: "/v2/footprints/default",
+      description: "Récupère les données sectorielles par défaut selon la zone économique et l'activité principale",
       parameters: [
         { name: "code", type: "string", required: true, description: "Code division A88 (2 chiffres)" },
         { name: "aggregate", type: "string", required: false, description: "Type d'agrégation (défaut: PRD)" },
         { name: "area", type: "string", required: false, description: "Zone géographique (défaut: FRA)" }
       ],
       example: {
-        request: "https://api.lasocietenouvelle.org/defaultfootprint/?code=70&aggregate=PRD&area=FRA",
+        request: "https://api.sinese.fr/v2/footprints/default?code=70&aggregate=PRD&area=FRA",
         response: {
           "header": {"code": 200, "message": "OK"},
           "footprint": {
@@ -114,15 +114,16 @@ export default function ApiPage() {
     {
       id: "macro",
       method: "GET",
-      path: "/macrodata/macro_fpt_a88",
-      description: "Récupère les données macroéconomiques historiques par division",
+      path: "/v2/macrodata/{dataset}",
+      description: "Récupère les données macroéconomiques historiques par division (les métadonnées du jeu de données sont disponibles sur /v2/macrodata/{dataset}/metadata)",
       parameters: [
-        { name: "division", type: "string", required: true, description: "Code division A88" },
+        { name: "dataset", type: "string", required: true, description: "Identifiant du jeu de données (ex : macro_fpt_a88)" },
+        { name: "division", type: "string", required: false, description: "Code division A88" },
         { name: "aggregate", type: "string", required: false, description: "Type d'agrégation" },
         { name: "area", type: "string", required: false, description: "Zone géographique" }
       ],
       example: {
-        request: "https://api.lasocietenouvelle.org/macrodata/macro_fpt_a88?division=70&aggregate=PRD&area=FRA",
+        request: "https://api.sinese.fr/v2/macrodata/macro_fpt_a88?division=70&aggregate=PRD&area=FRA",
         response: {
           "header": {"code": 200, "message": "OK"},
           "data": [
@@ -150,6 +151,24 @@ export default function ApiPage() {
               "area": "FRA"
             }
           }
+        }
+      }
+    },
+    {
+      id: "codelists",
+      method: "GET",
+      path: "/v2/codelists/{table}",
+      description: "Accède aux tables de référence : divisions NAF, branches économiques, zones géographiques (la liste des tables disponibles est sur /v2/codelists)",
+      parameters: [
+        { name: "table", type: "string", required: true, description: "Nom de la table de référence (ex : naf_divisions, branches, areas)" }
+      ],
+      example: {
+        request: "https://api.sinese.fr/v2/codelists/naf_divisions",
+        response: {
+          "header": {"code": 200, "message": "OK"},
+          "data": [
+            { "code": "70", "label": "Activités des sièges sociaux, conseil de gestion" }
+          ]
         }
       }
     }
@@ -225,11 +244,12 @@ export default function ApiPage() {
                       <Alert variant="info" className="mb-4">
                         <div>
                           <Info size={20} className="me-2 text-primary" />
-                          <strong>API publique et gratuite</strong>
+                          <strong>API v2 — authentification par token</strong>
                           <p className="mb-0 mt-2">
-                            L'API SINESE est accessible librement sans authentification.
-                            Les données sont à jour en temps réel et couvrent l'ensemble
-                            des entreprises françaises actives.
+                            L'API SINESE v2 nécessite un jeton d'authentification (Bearer token)
+                            à transmettre dans l'en-tête <code>Authorization</code>. Les données
+                            sont à jour en temps réel et couvrent l'ensemble des entreprises
+                            françaises actives.
                           </p>
                         </div>
                       </Alert>
@@ -267,7 +287,7 @@ export default function ApiPage() {
                               <Globe size={24} className="text-primary me-3" />
                               <div>
                                 <h6 className="mb-1">URL de base</h6>
-                                <code className="small">api.lasocietenouvelle.org</code>
+                                <code className="small">api.sinese.fr/v2</code>
                               </div>
                             </Card.Body>
                           </Card>
@@ -300,14 +320,14 @@ export default function ApiPage() {
                       <h6>Obtenir l'empreinte d'une entreprise :</h6>
                       <div className="bg-light p-3 rounded mb-3">
                         <code className="small">
-                          GET /legalunitfootprint/889182770
+                          GET /v2/legalunits/889182770/footprint
                         </code>
                       </div>
                       <Button variant="outline-primary" size="sm" className="w-100"
-                      href="https://api.lasocietenouvelle.org/legalunitfootprint/889182770" target="_blank" rel="noopener noreferrer"
+                      href="https://api.sinese.fr/docs" target="_blank" rel="noopener noreferrer"
                       >
                         <ExternalLink size={14} className="me-1" />
-                        Essayer maintenant
+                        Voir la documentation
                       </Button>
                     </Card.Body>
                   </Card>
@@ -481,7 +501,7 @@ export default function ApiPage() {
                 <p className="small">
                   Accédez à la documentation technique détaillée avec tous les schémas de données.
                 </p>
-                <Button variant="outline-primary" size="sm" href="https://lasocietenouvelle.readme.io/" target="_blank">
+                <Button variant="outline-primary" size="sm" href="https://api.sinese.fr/docs" target="_blank">
                   Voir la documentation <ArrowRight size={14} className="ms-1" />
                 </Button>
               </Card.Body>
