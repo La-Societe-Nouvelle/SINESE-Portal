@@ -14,19 +14,33 @@ export const LineChart = ({ data, color = "#3b4d8f", unit }) => {
 		);
 	}
 
-	// Génération des labels (années 2010-2024)
-	const labels = Array.from({ length: 15 }, (_, i) => 2010 + i);
+	// Fenêtre glissante des 10 dernières années (année civile en cours incluse),
+	// commune à tous les indicateurs pour une lecture comparable d'une carte à l'autre.
+	const currentYear = new Date().getFullYear();
+	const fullYears = Array.from({ length: 10 }, (_, i) => currentYear - 9 + i);
 
 	// Mappage des valeurs avec gestion des données manquantes
-	const values = labels.map((year) => {
+	const fullValues = fullYears.map((year) => {
 		const item = data.find((d) => parseInt(d.year) === year && d.flag !== 'f');
 		return item?.value ?? null;
 	});
+
+	// On masque la queue d'années sans aucune donnée (ex: 2024-2026 pas encore
+	// chargées) plutôt que de laisser un axe vide en fin de graphique. Les
+	// éventuels trous au milieu de la série restent affichés (spanGaps s'en charge).
+	const lastKnownIndex = fullValues.reduce((last, v, i) => (v !== null && !isNaN(v) ? i : last), -1);
+	const labels = lastKnownIndex >= 0 ? fullYears.slice(0, lastKnownIndex + 1) : fullYears;
+	const values = lastKnownIndex >= 0 ? fullValues.slice(0, lastKnownIndex + 1) : fullValues;
 
 	// Filtrage des valeurs pour les calculs min/max (ignorer les null)
 	const validValues = values.filter(v => v !== null && !isNaN(v));
 	const valueMax = validValues.length > 0 ? Math.round(Math.max(...validValues) * 1.1) : 1.0;
 	const valueMin = validValues.length > 0 ? Math.round(Math.min(...validValues) * 0.9) : 0.0;
+
+	// Un seul point visible en permanence : la dernière valeur connue
+	// (à la manière des graphiques INSEE/Eurostat, qui n'affichent pas
+	// un point par année pour ne pas surcharger la lecture de la courbe)
+	const lastValidIndex = values.reduce((last, v, i) => (v !== null && !isNaN(v) ? i : last), -1);
 
 	const chartData = {
 		labels: labels,
@@ -35,13 +49,13 @@ export const LineChart = ({ data, color = "#3b4d8f", unit }) => {
 			data: values,
 			fill: {
 				target: 'origin',
-				above: `${color}10`,
+				above: `${color}0d`,
 			},
 			borderColor: color,
-			backgroundColor: `${color}20`,
-			borderWidth: 2.5,
-			pointRadius: 4,
-			pointHoverRadius: 6,
+			backgroundColor: `${color}0d`,
+			borderWidth: 2,
+			pointRadius: (ctx) => (ctx.dataIndex === lastValidIndex ? 3 : 0),
+			pointHoverRadius: 5,
 			pointBackgroundColor: color,
 			pointBorderColor: '#ffffff',
 			pointBorderWidth: 2,
@@ -60,29 +74,35 @@ export const LineChart = ({ data, color = "#3b4d8f", unit }) => {
 		scales: {
 			x: {
 				grid: {
-					color: '#f1f3f4',
-					borderColor: '#e9ecef',
+					display: false,
+				},
+				border: {
+					color: '#e9ecef',
 				},
 				ticks: {
-					color: '#6c757d',
+					color: '#adb5bd',
 					font: {
-						size: 11,
+						size: 10,
 						weight: '500',
 					},
 					maxRotation: 0,
+					maxTicksLimit: 6,
 				},
 			},
 			y: {
 				min: valueMin < 0 ? valueMin : 0,
-				max: unit.includes("%") ? 100 : valueMax,
+				max: valueMax,
 				grid: {
-					color: '#f1f3f4',
-					borderColor: '#e9ecef',
+					color: '#f4f5f7',
+				},
+				border: {
+					display: false,
 				},
 				ticks: {
-					color: '#6c757d',
+					color: '#adb5bd',
+					maxTicksLimit: 4,
 					font: {
-						size: 11,
+						size: 10,
 						weight: '500',
 					},
 					callback: function(value) {
@@ -142,7 +162,7 @@ export const LineChart = ({ data, color = "#3b4d8f", unit }) => {
 	};
 
 	return (
-		<div style={{ height: '100%', minHeight: '300px' }}>
+		<div style={{ height: '100%' }}>
 			<Line data={chartData} options={options} />
 		</div>
 	);

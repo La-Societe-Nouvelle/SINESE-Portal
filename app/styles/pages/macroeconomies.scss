@@ -1,20 +1,16 @@
-// Styles pour la page Macroéconomies
-.open-data-portal {
+// ============================================
+// MACRO ECONOMIE - Styles alignes sur /recherche
+// ============================================
 
-  // Layout sidebar + contenu principal
-  .main-content {
-    padding-left: 0;
+// Conteneur principal de la page
+.open-data-portal,
+.macroeconomies-page {
 
-    @media (min-width: 992px) {
-      padding-left: 1rem;
-    }
-  }
-
-  // États de chargement centralisés
+  // Etats de chargement
   .loading-container {
     text-align: center;
     padding: 3rem 0;
-
+    
     .loading-icon {
       width: 80px;
       height: 80px;
@@ -26,19 +22,18 @@
       justify-content: center;
       margin-bottom: 1rem;
     }
-
+    
     .loading-title {
       color: $neutral;
       margin-bottom: 0.5rem;
     }
-
   }
 
-  // État vide
+  // Etat vide
   .empty-state {
     text-align: center;
     padding: 3rem 0;
-
+    
     .empty-icon {
       width: 80px;
       height: 80px;
@@ -50,314 +45,173 @@
       justify-content: center;
       margin-bottom: 1rem;
     }
-
+    
     .empty-title {
       color: $neutral;
       margin-bottom: 0.5rem;
     }
-
+    
     .empty-description {
       color: $neutral;
       margin-bottom: 1.5rem;
     }
-
+    
     .empty-help {
       color: $neutral;
       font-size: 0.875rem;
     }
   }
 
-  // Footer informatif avec nouvelles classes
-  .info-footer-container {
-    margin-top: 3rem;
-    padding-top: 1rem;
-
-    .info-card {
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      background: linear-gradient(135deg, rgba($primary, 0.03) 0%, rgba($tertiary, 0.02) 100%);
-      border: 1px solid #e9ecf3;
-
-      .info-item {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 1rem;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        .info-icon {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 0.75rem;
-          flex-shrink: 0;
-
-          &.primary {
-            background-color: rgba($primary, 0.2);
-            color: $primary;
-          }
-
-          &.secondary {
-            background-color: rgba($secondary, 0.2);
-            color: $secondary;
-          }
-        }
-
-        .info-content {
-          h6 {
-            color: $primary;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-          }
-
-          p {
-            color: $neutral;
-            font-size: 0.875rem;
-            margin-bottom: 0;
-          }
-        }
-      }
-    }
-  }
-
-  // Sidebar de filtres
-  .sidebar-container {
-    max-height: $sidebar-max-height;
-    overflow-y: auto;
-    @include custom-scrollbar(4px, #f1f1f1, rgba($primary, 0.3));
-  }
-
-  .sidebar-filters {
-    .sidebar-header {
-      background: linear-gradient(135deg, rgba($primary, 0.02) 0%, rgba($tertiary, 0.01) 100%);
-    }
-
-    .form-select-sidebar {
-      border: 1px solid rgba($primary, 0.15);
-      transition: all 0.2s ease;
-      background-color: #fafbfc;
-
-      &:focus {
-        border-color: $secondary;
-        box-shadow: 0 0 0 0.15rem rgba($secondary, 0.15);
-        background-color: #fff;
-      }
-
-      &:disabled {
-        background-color: #f8f9fa;
-        opacity: 0.7;
-      }
-
-      &:hover:not(:disabled) {
-        border-color: rgba($primary, 0.25);
-        background-color: #fff;
-      }
-    }
-  }
-
-  // Sidebar mobile
-  .macro-sidebar-mobile {
- 
-
-    .sidebar-filters {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-
-      .sidebar-header {
-        flex-shrink: 0;
-      }
-
-      .sidebar-body {
-        flex: 1;
-        overflow-y: auto;
-      }
-
-      .sidebar-footer {
-        flex-shrink: 0;
-      }
-    }
-  }
-
-  // Cartes d'indicateurs - Styles externalisés
+  // Cartes d'indicateurs
   .indicator-card {
     border: 1px solid #e9ecf3 !important;
     border-radius: 1rem !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
     box-shadow: 0 2px 12px rgba($primary, 0.08) !important;
-
+    
     &:hover {
       transform: translateY(-2px) !important;
       box-shadow: 0 8px 25px rgba($primary, 0.15) !important;
     }
-
-    // Style pour les valeurs par défaut (flag 'd')
+    
     &.indicator-card-default {
       opacity: 0.5 !important;
-      filter: grayscale(0.2) !important; // Léger effet de désaturation
+      filter: grayscale(0.2) !important;
       
       &:hover {
-        opacity: 0.8 !important; // Légèrement plus visible au hover
-        transform: translateY(-1px) !important; // Hover moins prononcé
-        box-shadow: 0 4px 18px rgba($primary, 0.1) !important; // Ombre plus subtile
+        opacity: 0.8 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 18px rgba($primary, 0.1) !important;
       }
     }
-
+    
     .card-body {
-      padding: 1.25rem !important; // Padding légèrement réduit pour laisser plus d'espace au graphique
+      padding: 1.1rem !important;
     }
-
 
     .indicator-header {
-      height: 45px; 
-      margin: 0.5rem 0 0.75rem 0;  
+      height: 38px;
+      margin: 0.25rem 0 0.5rem 0;
     }
-
+    
     .indicator-title {
       color: $primary !important;
       font-weight: 600 !important;
       font-size: 0.95rem !important;
       margin-bottom: 0;
     }
-
+    
     .indicator-unit {
       color: $neutral !important;
       font-size: 0.75rem !important;
       margin-bottom: 0 !important;
     }
-
-    // Container de graphique
+    
     .chart-container {
       position: relative;
-      margin: 1rem 0;
+      margin: 0.5rem 0;
       width: 100%;
-      height: 280px; // Hauteur fixe plus importante pour de meilleurs graphiques
-      min-height: 280px;
-
+      height: 200px;
+      min-height: 200px;
+      
       .chart-loading {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100%;
         color: #6c757d;
-
+        
         .loading-content {
           text-align: center;
-
+          
           .spinner-border-sm {
             margin-bottom: 0.5rem;
           }
-
+          
           .loading-text {
             font-size: 0.875rem;
           }
         }
       }
-
+      
       .chart-empty {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100%;
         color: #6c757d;
-
+        
         .empty-content {
           text-align: center;
-
+          
           .empty-icon {
             opacity: 0.5;
             margin-bottom: 0.5rem;
           }
-
+          
           .empty-text {
             font-size: 0.875rem;
           }
         }
       }
-
+      
       .chart-wrapper {
         height: 100%;
         
         canvas {
-          height: 100% !important; // Force l'utilisation de toute la hauteur
-          max-height: none !important; // Retire les limitations de hauteur
+          height: 100% !important;
+          max-height: none !important;
         }
       }
-
-      // Animation des graphiques au survol (conservée)
+      
       canvas {
         transition: transform 0.2s ease;
       }
-
+      
       &:hover canvas {
         transform: scale(1.02);
       }
     }
   }
 
-  // Sections d'indicateurs - Styles externalisés
+  // Sections d'indicateurs
   .indicator-section {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 
-    // En-tête de section
     .section-header {
-      margin-bottom: 1.5rem;
-
+      margin-bottom: 1rem;
+      
       .section-title {
         font-weight: 700 !important;
         font-size: 1.5rem !important;
         margin-bottom: 0.25rem !important;
-
-        // Classes de couleur dynamiques
-        &.primary {
-          color: $primary !important;
-        }
-
-        &.secondary {
-          color: $secondary !important;
-        }
-
-        &.tertiary {
-          color: $tertiary !important;
-        }
-
-        &.success {
-          color: #28a745 !important;
-        }
-
-        &.info {
-          color: #17a2b8 !important;
-        }
-
-        &.warning {
-          color: #ffc107 !important;
-        }
+        
+        &.primary { color: $primary !important; }
+        &.secondary { color: $secondary !important; }
+        &.tertiary { color: $tertiary !important; }
+        &.success { color: #28a745 !important; }
+        &.info { color: #17a2b8 !important; }
+        &.warning { color: #ffc107 !important; }
       }
-
+      
       .section-description {
         color: $neutral !important;
         margin-bottom: 0 !important;
       }
     }
-
-    // Grille d'indicateurs avec animation
+    
     .indicators-grid {
       .row {
-        --bs-gutter-x: 1.5rem;
-        --bs-gutter-y: 1.5rem;
-
-        >.col-lg-4,
-        >.col-md-6 {
+        --bs-gutter-x: 1.25rem;
+        --bs-gutter-y: 1.25rem;
+        
+        > .col-lg-4,
+        > .col-md-6 {
           animation: slideInUp 0.6s ease forwards;
           opacity: 0;
           transform: translateY(30px);
-
+          
           @for $i from 1 through 6 {
             &:nth-child(#{$i}) {
               animation-delay: #{$i * 0.1}s;
@@ -368,114 +222,351 @@
     }
   }
 
-  // Informations de sélection - Styles externalisés
-  .selection-info {
-    margin-bottom: 1.5rem;
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-    background-color: #f8f9fc;
-    border-left: 4px solid $secondary;
-
-    .selection-content {
-      display: flex;
-      align-items: center;
-
-      .selection-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background-color: rgba($secondary, 0.2);
-        color: $secondary;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 0.75rem;
-      }
-
-      .selection-details {
-        .selection-label {
-          font-size: 0.875rem;
-          color: $neutral;
-          margin-bottom: 0.25rem;
-          font-weight: 600;
-        }
-
-        .selection-values {
-          color: $primary;
-          font-weight: 500;
-          font-size: 0.9rem;
-        }
-      }
-    }
-  }
-
-  // État de chargement global
-  .loading-state {
-    .spinner-border {
-      color: $primary;
-      width: 3rem;
-      height: 3rem;
-      border-width: 0.3em;
-    }
-  }
-
-  // Messages d'information et d'erreur
+  // Alertes
   .alert {
     border: none;
     border-radius: 0.75rem;
-
+    
     &.alert-danger {
       background: linear-gradient(135deg, rgba($secondary, 0.1) 0%, rgba($secondary, 0.05) 100%);
       color: $secondary-darker-10;
     }
   }
 
-  // Styles pour les modals d'indicateurs
-  .indicator-details-modal {
-    .modal-content {
-      border: none;
-      border-radius: 1rem;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .modal-header {
-      background: linear-gradient(135deg, rgba($primary, 0.02) 0%, rgba($tertiary, 0.01) 100%);
-      border-radius: 1rem 1rem 0 0;
-
-      .modal-title {
-        font-weight: 600;
-        font-size: 1.25rem;
-      }
-
-      .indicator-modal-icon {
+  // Footer informatif
+  .info-footer-container {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    
+    .info-card {
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(135deg, rgba($primary, 0.03) 0%, rgba($tertiary, 0.02) 100%);
+      border: 1px solid #e9ecf3;
+      
+      .info-item {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 50px;
-        height: 50px;
-        background: rgba($primary, 0.1);
-        border-radius: 0.75rem;
-      }
-
-    }
-
-    .modal-body {
-      background: #fff;
-
-      .indicator-details-content {
-        .info-item {
-          .fw-semibold {
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+        
+        .info-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 0.75rem;
+          flex-shrink: 0;
+          
+          &.primary {
+            background-color: rgba($primary, 0.2);
             color: $primary;
           }
+          
+          &.secondary {
+            background-color: rgba($secondary, 0.2);
+            color: $secondary;
+          }
         }
+        
+        .info-content {
+          h6 {
+            color: $primary;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+          }
+          
+          p {
+            color: $neutral;
+            font-size: 0.875rem;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
 
+// Header personnalise avec fond bleu (comme Recherche)
+.macro-header {
+  @include card-elevation(1);
+  
+  .page-icon {
+    width: 44px;
+    height: 44px;
+    background-color: rgba($light, 0.1);
+    color: $white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    color: $white;
+    margin-bottom: 0.25rem;
+  }
+  
+  p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 0;
+  }
+}
+
+// ============================================
+// BARRE DE FILTRES — carte blanche cliquable
+// (les boutons affichent directement la valeur sélectionnée,
+// à la place de l'ancien résumé "Vous consultez" en texte seul)
+// ============================================
+
+.macro-filter-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background-color: $white;
+  border: 1px solid #e9ecf3;
+  box-shadow: 0 2px 12px rgba($primary, 0.06);
+
+  .macro-filter-bar-intro {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+
+    .intro-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba($primary, 0.1);
+      color: $primary;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .intro-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: $neutral;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+  }
+
+  .filter-pills-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+
+  .filter-pills-spacer {
+    flex: 1;
+  }
+
+  .filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: $white;
+    color: #1f2937;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      border-color: $primary;
+    }
+
+    &.is-active {
+      background: $primary-dark;
+      border-color: $primary-dark;
+      color: $white;
+
+      .filter-pill-chevron {
+        opacity: 0.85;
       }
     }
   }
 
+  .filter-pill-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: $primary-dark;
+    color: $white;
+    font-size: 0.7rem;
+    font-weight: 700;
+
+    .filter-pill.is-active & {
+      background: $white;
+      color: $primary-dark;
+    }
+  }
+
+  .filter-pill-chevron {
+    opacity: 0.6;
+  }
+
+  .filter-pill-reset {
+    border: none;
+    background-color: $light-secondary;
+    color: $secondary;
+    font-weight: 600;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    svg {
+      opacity: 0.8;
+    }
+  }
+
+  // Mobile: Bouton trigger
+  .mobile-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+
+    .trigger-icon {
+      opacity: 0.8;
+    }
+  }
+
+  // Mobile: Offcanvas
+  .macro-sidebar-mobile {
+    .offcanvas-header {
+      background: $primary;
+      color: $white;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      h5 {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+      
+      button {
+        color: $white;
+        opacity: 0.8;
+        padding: 0.5rem;
+        line-height: 1;
+        
+        &:hover {
+          opacity: 1;
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+    
+    .offcanvas-body {
+      padding: 0;
+      
+      .sidebar-filters {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        .sidebar-body {
+          flex: 1;
+          overflow-y: auto;
+          padding: 1.5rem;
+        }
+        
+        .filter-label {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: #374151;
+          margin-bottom: 0.4rem;
+          
+          .filter-icon {
+            opacity: 0.7;
+          }
+        }
+        
+        .filter-group + .filter-group {
+          margin-top: 1.5rem;
+          padding-top: 1.5rem;
+          border-top: 1px solid #e5e7eb;
+        }
+        
+        .sidebar-footer {
+          padding: 1.5rem;
+          border-top: 1px solid #e5e7eb;
+          background: #f8f9fa;
+          
+          .reset-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            
+            .reset-icon {
+              opacity: 0.7;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-// Animations
+// ============================================
+// PANNEAUX DE SELECTION (Secteur / Pays / Agregat)
+// ============================================
+
+.macro-sidebar-selector,
+.macro-selector-mobile {
+  .form-check-sm {
+    .form-check-input {
+      width: 0.8em;
+      height: 0.8em;
+      margin-top: 0.2em;
+    }
+
+    .form-check-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: $text-muted;
+      cursor: pointer;
+    }
+  }
+}
+
+// ============================================
+// ANIMATIONS
+// ============================================
+
 @keyframes slideInUp {
   to {
     opacity: 1;
@@ -487,29 +578,24 @@
   0% {
     background-position: -200px 0;
   }
-
+  
   100% {
     background-position: calc(200px + 100%) 0;
   }
 }
 
-// Responsive design
-@media (max-width: 768px) {
-  .open-data-portal {
-    .indicator-card {
-      .chart-container {
-        height: 240px; // Hauteur mobile augmentée
-        min-height: 240px;
-      }
-    }
+// ============================================
+// RESPONSIVE
+// ============================================
 
-
+@media (max-width: 991px) {
+  .macro-filter-bar {
+    margin-bottom: 1.5rem;
+    padding: 0.85rem 1rem;
   }
 }
 
-// Amélioration de l'accessibilité
 @media (prefers-reduced-motion: reduce) {
-
   .indicator-card,
   .chart-container canvas,
   .indicator-section .col-lg-4,
