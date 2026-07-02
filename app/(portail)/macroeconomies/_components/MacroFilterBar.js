@@ -105,16 +105,10 @@ export default function MacroFilterBar({ metadata, className = "" }) {
   };
 
   // Vérifier si des filtres sont actifs
-  const hasActiveFilters = Object.values(selectedValues).some(
-    (val, key) => val !== { industry: 'TOTAL', country: 'FRA', aggregate: 'PRD' }[key]
+  const DEFAULT_VALUES = { industry: 'TOTAL', country: 'FRA', aggregate: 'PRD' };
+  const hasActiveFilters = Object.entries(selectedValues).some(
+    ([key, val]) => val !== DEFAULT_VALUES[key]
   );
-
-  // Compteur de filtres actifs
-  const activeFilterCount = [
-    selectedValues.industry !== 'TOTAL' ? 1 : 0,
-    selectedValues.country !== 'FRA' ? 1 : 0,
-    selectedValues.aggregate !== 'PRD' ? 1 : 0,
-  ].reduce((sum, val) => sum + val, 0);
 
   // Contenu de la barre de filtres (desktop)
   const FilterBarContent = () => (

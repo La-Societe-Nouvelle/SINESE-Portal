@@ -49,7 +49,6 @@ async function writeCache(datasets) {
 
 async function fetchFromOvh() {
   const objects = await listObjects("sinese/open-data/", 1000);
-  console.log("OVH: Récupération des datasets depuis OVH, nombre d'objets:", objects.length);
   if (objects.length === 0) return null;
   return formatObjectsForDatasets(objects);
 }

@@ -1,13 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
-// Routes publiques qui ne nécessitent pas d'authentification
-const PUBLIC_ROUTES = [
-  "/publications/connexion",
-  "/publications/inscription",
-  "/publications",
-];
-
 export async function proxy(request) {
   const token = await getToken({
     req: request,

@@ -46,16 +46,11 @@ export default function SearchHeader({ initialQuery }) {
 
     debounceRef.current = setTimeout(async () => {
       const requestId = ++requestIdRef.current;
-      const startedAt = performance.now();
       const results = await suggestLegalUnits(query);
-      const elapsed = Math.round(performance.now() - startedAt);
-      console.log(`[SearchHeader] suggest("${query}") -> ${results.length} results in ${elapsed}ms (server action round-trip)`);
       if (requestId === requestIdRef.current) {
         setSuggestions(results);
         setShowSuggestions(true);
         setActiveIndex(-1);
-      } else {
-        console.log(`[SearchHeader] discarded stale response for "${query}"`);
       }
     }, DEBOUNCE_MS);
 
