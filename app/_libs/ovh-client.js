@@ -10,7 +10,7 @@ let s3Client = null;
 /**
  * Crée le client S3 de manière lazy avec validation
  */
-function getS3Client() {
+export function getS3Client() {
   if (!s3Client) {
     // Validation des credentials
     if (!process.env.OS_USERNAME || !process.env.OS_PASSWORD) {

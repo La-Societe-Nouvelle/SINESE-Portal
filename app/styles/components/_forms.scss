@@ -255,8 +255,8 @@ textarea.form-control {
 }
 
 .form-check-input {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   margin-top: 0.15rem;
   border: 2px solid #d1d5db;
   border-radius: 0.35rem;
@@ -286,6 +286,12 @@ textarea.form-control {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
+  }
+
+  // Checked + focus: stronger ring than plain focus, so a just-checked box
+  // reads clearly as checked instead of looking like an empty focused box.
+  &:checked:focus {
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.35);
   }
 
   // Disabled state

@@ -15,6 +15,7 @@ export default function FileRow({ title, format, name, size, fileKey, lastUpdate
   const [expanded, setExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState("metadonnees");
   const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState(null);
 
   const sizeLabel = formatBytes(size) || fallbackSize;
   const updatedLabel = lastUpdate
@@ -24,10 +25,12 @@ export default function FileRow({ title, format, name, size, fileKey, lastUpdate
   const handleDownload = async () => {
     const key = fileKey || `sinese/open-data/${name}`;
     setDownloading(true);
+    setDownloadError(null);
     try {
       const result = await getDatasetDownloadUrl(key);
       if (result.error) {
         console.error("Erreur téléchargement dataset:", result.error);
+        setDownloadError("Téléchargement indisponible pour ce fichier.");
         return;
       }
       const a = document.createElement("a");
@@ -72,6 +75,9 @@ export default function FileRow({ title, format, name, size, fileKey, lastUpdate
         </div>
       </div>
 
+      {downloadError && (
+        <div className="file-row__error text-danger small mt-1">{downloadError}</div>
+      )}
 
       {expanded && (
         <>

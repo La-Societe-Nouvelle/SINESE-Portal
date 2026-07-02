@@ -1,14 +1,15 @@
 import { Suspense } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { searchLegalUnits } from "@/actions/search";
 import { parseFiltersFromParams, hasAnyFilter } from "./_utils/searchParams";
 
 import SearchHeader from "./_components/SearchHeader";
-import SearchSidebar from "./_components/SearchSidebar";
+import SearchFilterBar from "./_components/SearchFilterBar";
 import SearchControls from "./_components/SearchControls";
 import SearchResults from "./_components/SearchResults";
 import { SearchResultsSkeleton } from "./_components/LoadingSkeleton";
 import { NoResultsState, InitialState } from "./_components/EmptyStates";
+import { SearchTransitionProvider, ResultsPendingOverlay } from "./_components/SearchTransitionContext";
 
 async function SearchResultsSection({ query, filters, page }) {
   const hasSearch = query.length > 2 || hasAnyFilter(filters);
@@ -39,31 +40,34 @@ async function SearchResultsSection({ query, filters, page }) {
 export default async function RecherchePage({ searchParams }) {
   const params = await searchParams;
   const query   = params.s || "";
-  const page    = Math.max(1, parseInt(params.p || "1", 10));
+  const parsedPage = parseInt(params.p, 10);
+  const page    = Number.isInteger(parsedPage) ? Math.max(1, parsedPage) : 1;
   const filters = parseFiltersFromParams(params);
 
-  // Changing the key forces Suspense to re-suspend and show the skeleton on every new search
-  const suspenseKey = JSON.stringify(params);
+  // Only re-suspend (show full skeleton) when the search text changes.
+  // Filter and page changes go through a transition instead, keeping old results visible.
+  const suspenseKey = query;
 
   return (
     <div className="search-page">
-      <SearchHeader initialQuery={query} />
+      <SearchTransitionProvider>
+        <div className="search-header bg-primary text-white py-4">
+          <Container fluid>
+            <SearchHeader initialQuery={query} />
+            <SearchFilterBar className="mt-4" />
+          </Container>
+        </div>
 
-      <Container fluid className="py-4">
-        <Row>
-          <Col lg={3}>
-            <SearchSidebar />
-          </Col>
-
-          <Col lg={9}>
-            <div className="main-content">
+        <Container className="py-4">
+          <div className="main-content">
+            <ResultsPendingOverlay>
               <Suspense key={suspenseKey} fallback={<SearchResultsSkeleton count={20} />}>
                 <SearchResultsSection query={query} filters={filters} page={page} />
               </Suspense>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+            </ResultsPendingOverlay>
+          </div>
+        </Container>
+      </SearchTransitionProvider>
     </div>
   );
 }

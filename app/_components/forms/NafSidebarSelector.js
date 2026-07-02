@@ -6,7 +6,7 @@ import { Search, ChevronDown, ChevronRight,  X } from "lucide-react";
 import nafData from "@/_libs/naf_rev_2_by_divisions.json";
 
 export default function NafSidebarSelector({
-  selectedCodes = [],
+  selectedSecteurs = [],
   onChange = () => { },
   isOpen = false,
   onToggle = () => { },
@@ -64,31 +64,31 @@ export default function NafSidebarSelector({
   // Gérer la sélection d'une section complète
   const handleSectionToggle = (sectionName, sectionCodes) => {
     const sectionCodeValues = sectionCodes.map(c => c.code);
-    const allSelected = sectionCodeValues.every(code => selectedCodes.includes(code));
+    const allSelected = sectionCodeValues.every(code => selectedSecteurs.includes(code));
 
     if (allSelected) {
       // Désélectionner tous les codes de cette section
-      onChange(selectedCodes.filter(code => !sectionCodeValues.includes(code)));
+      onChange(selectedSecteurs.filter(code => !sectionCodeValues.includes(code)));
     } else {
       // Sélectionner tous les codes de cette section
-      const newSelected = [...new Set([...selectedCodes, ...sectionCodeValues])];
+      const newSelected = [...new Set([...selectedSecteurs, ...sectionCodeValues])];
       onChange(newSelected);
     }
   };
 
   // Gérer la sélection d'un code individuel
   const handleCodeToggle = (code) => {
-    if (selectedCodes.includes(code)) {
-      onChange(selectedCodes.filter(c => c !== code));
+    if (selectedSecteurs.includes(code)) {
+      onChange(selectedSecteurs.filter(c => c !== code));
     } else {
-      onChange([...selectedCodes, code]);
+      onChange([...selectedSecteurs, code]);
     }
   };
 
   // Vérifier si une section est partiellement sélectionnée
   const getSectionState = (sectionCodes) => {
     const sectionCodeValues = sectionCodes.map(c => c.code);
-    const selectedInSection = sectionCodeValues.filter(code => selectedCodes.includes(code));
+    const selectedInSection = sectionCodeValues.filter(code => selectedSecteurs.includes(code));
 
     if (selectedInSection.length === 0) return "none";
     if (selectedInSection.length === sectionCodeValues.length) return "all";
@@ -133,9 +133,9 @@ export default function NafSidebarSelector({
         {/* Compteur et actions */}
         <div className="d-flex justify-content-between align-items-center mt-3">
           <small className="text-muted">
-            {selectedCodes.length} activité{selectedCodes.length > 1 ? 's' : ''} sélectionnée{selectedCodes.length > 1 ? 's' : ''}
+            {selectedSecteurs.length} activité{selectedSecteurs.length > 1 ? 's' : ''} sélectionnée{selectedSecteurs.length > 1 ? 's' : ''}
           </small>
-          {selectedCodes.length > 0 && (
+          {selectedSecteurs.length > 0 && (
             <Button variant="secondary" size="sm" onClick={clearAll} >
               Tout effacer
             </Button>
@@ -174,16 +174,20 @@ export default function NafSidebarSelector({
 
                   />
 
-                  <div className="flex-grow-1">
+                  <div
+                    className="flex-grow-1"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => toggleSection(section.name)}
+                    role="button"
+                  >
                     <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>
                       {section.displayName}
                     </div>
-
                   </div>
 
                   {sectionState !== "none" && (
                     <Badge bg={sectionState === "all" ? "primary" : "secondary"} className="ms-2" style={{ fontSize: '0.65rem' }}>
-                      {section.codes.filter(c => selectedCodes.includes(c.code)).length}
+                      {section.codes.filter(c => selectedSecteurs.includes(c.code)).length}
                     </Badge>
                   )}
                 </div>
@@ -197,7 +201,7 @@ export default function NafSidebarSelector({
                       <Form.Check
                         type="checkbox"
                         id={`naf-${item.code}`}
-                        checked={selectedCodes.includes(item.code)}
+                        checked={selectedSecteurs.includes(item.code)}
                         onChange={() => handleCodeToggle(item.code)}
                         label={
                           <span >

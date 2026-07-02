@@ -172,7 +172,12 @@ export default function EffectifSidebarSelector({
                     {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
                   </Button>
 
-                  <div className="flex-grow-1">
+                  <div
+                    className="flex-grow-1"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => toggleCategory(category.name)}
+                    role="button"
+                  >
                     <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>
                       {category.name}
                     </div>
@@ -190,19 +195,11 @@ export default function EffectifSidebarSelector({
                   {category.effectifs.map((effectif) => (
                     <div key={effectif.code} className="px-5 py-1">
                       <Form.Check
-                        type="radio"
+                        type="checkbox"
                         id={`effectif-${effectif.code}`}
-                        name="effectif-selection"
                         checked={selectedEffectif === effectif.code}
                         onChange={() => handleEffectifToggle(effectif.code)}
-                        label={
-                          <div className="d-flex align-items-center">
-                            <span className="me-2">{effectif.label}</span>
-                            <Badge bg={effectif.badgeColor} style={{ fontSize: '0.6rem' }}>
-                              {effectif.code}
-                            </Badge>
-                          </div>
-                        }
+                        label={<span>{effectif.label}</span>}
                         className="mb-0"
                       />
                     </div>

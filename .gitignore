@@ -43,3 +43,7 @@ yarn-error.log*
 .projectile
 .vscode/settings.json
 .idea/
+
+# Claude brainstorming visual companion
+/.superpowers/
+CLAUDE.md

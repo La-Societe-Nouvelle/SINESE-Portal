@@ -157,7 +157,7 @@ export async function getPublishedReports(siren) {
       siren: r.siren,
       type: r.type,
       year: r.year,
-      url: r.url,
+      url: r.storage_type === "ovh" ? null : r.url,
       fileOrigin: r.file_origin,
       fileName: r.file_name,
       fileSize: r.file_size,

@@ -5,11 +5,13 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import CompanyCard from "./CompanyCard";
 import SearchResultsDivider from "@/_components/SearchResultsDivider";
 import { separateByDataAvailability } from "@/_utils/utils";
+import { useSearchTransition } from "./SearchTransitionContext";
 
 export default function SearchResults({ results, total, currentPage, perPage }) {
   const router       = useRouter();
   const pathname     = usePathname();
   const searchParams = useSearchParams();
+  const { startTransition } = useSearchTransition();
 
   const { withData, withoutData } = separateByDataAvailability(results);
   const totalPages = Math.ceil(total / perPage);
@@ -18,7 +20,9 @@ export default function SearchResults({ results, total, currentPage, perPage }) 
     const params = new URLSearchParams(searchParams);
     if (newPage > 1) params.set("p", String(newPage));
     else params.delete("p");
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    startTransition(() => {
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    });
     setTimeout(() => { document.documentElement.scrollTop = 0; }, 100);
   };
 

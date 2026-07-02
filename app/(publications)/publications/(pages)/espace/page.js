@@ -11,11 +11,10 @@ export default async function EspacePage() {
     redirect("/connexion");
   }
 
-  const userId = session.user.id;
   const [lastPub, companiesCount, draftCount] = await Promise.all([
-    getLastPublication(userId),
-    getCompaniesCount(userId),
-    getDraftPublicationsCount(userId),
+    getLastPublication(),
+    getCompaniesCount(),
+    getDraftPublicationsCount(),
   ]);
 
   return (

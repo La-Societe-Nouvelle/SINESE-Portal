@@ -13,7 +13,8 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
 
   const conditions = [
     "ul.etatadministratifunitelegale = 'A'",
-    "ul.statutdiffusionunitelegale = 'O'"
+    "ul.statutdiffusionunitelegale = 'O'",
+    "ul.siren NOT LIKE '000000%'" // demo/test sirens
   ];
   const params = [];
 
@@ -36,8 +37,8 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     }
   }
 
-  if (filters.sectors?.length > 0) {
-    params.push(filters.sectors);
+  if (filters.secteurs?.length > 0) {
+    params.push(filters.secteurs);
     conditions.push(`ul.activiteprincipaleunitelegale = ANY($${params.length})`);
   }
 
@@ -61,6 +62,7 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
 
   if (filters.departements?.length > 0) {
     params.push(filters.departements);
+    // DOM/TOM department codes are 3 digits (97x/98x), mainland France is 2.
     conditions.push(`(
       CASE
         WHEN LEFT(e.codecommuneetablissement, 2) IN ('97', '98')
@@ -72,7 +74,7 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
 
   if (filters.empreintePubliee === true) {
     conditions.push(
-      `EXISTS (SELECT 1 FROM footprints.uniteslegales f WHERE f.siren = ul.siren AND f.flag != 'd')`
+      `EXISTS (SELECT 1 FROM footprints.uniteslegales f WHERE f.siren = ul.siren)`
     );
   }
 
@@ -87,6 +89,12 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     conditions.push(`e.activiteprincipaleregistremetiersetablissement IS NOT NULL`);
   }
 
+  if (filters.rapportPublie === true) {
+    conditions.push(
+      `EXISTS (SELECT 1 FROM footprints.reports r WHERE r.siren = ul.siren)`
+    );
+  }
+
   const whereClause = conditions.join(' AND ');
 
   const etablissementsJoin = `
@@ -95,6 +103,9 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
       AND e.etablissementsiege = 'true'
       AND e.etatadministratifetablissement = 'A'
   `;
+  // Only join etablissements when the department filter needs it — avoids paying
+  // that join for every candidate row before pagination otherwise.
+  const conditionalEtablissementsJoin = filters.departements?.length > 0 ? etablissementsJoin : '';
 
   // COUNT capped at 1001 — avoids full scan, matches "> 1000" display in UI
   const countSql = `
@@ -102,37 +113,88 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     FROM (
       SELECT 1
       FROM sirene.uniteslegales ul
-      ${etablissementsJoin}
+      ${conditionalEtablissementsJoin}
       WHERE ${whereClause}
       LIMIT 1001
     ) sub
   `;
 
-  // Pattern: filter + paginate first (LIMIT/OFFSET applied early),
-  // then footprint_summary only scans the 20 matching sirens.
-  // ESE_PANEL inlined as SQL literal to avoid type-inference issues across two queries.
+  // Rank companies by ESE panel status — published, then estimated, then the rest —
+  // via 3 independently-paginated tiers instead of sorting the whole filtered set,
+  // which would force a full materialize+sort before LIMIT/OFFSET could apply.
+  const tierPublishedFrom = `
+    FROM (SELECT DISTINCT siren FROM footprints.uniteslegales WHERE flag = 'p' AND indic = ANY(${ESE_PANEL_SQL})) fp
+    JOIN sirene.uniteslegales ul ON ul.siren = fp.siren
+    ${conditionalEtablissementsJoin}
+    WHERE ${whereClause}
+  `;
+  const tierEstimatedFrom = `
+    FROM (SELECT DISTINCT siren FROM footprints.uniteslegales WHERE flag = 'e' AND indic = ANY(${ESE_PANEL_SQL})) fp
+    JOIN sirene.uniteslegales ul ON ul.siren = fp.siren
+    ${conditionalEtablissementsJoin}
+    WHERE ${whereClause}
+      AND NOT EXISTS (SELECT 1 FROM footprints.uniteslegales f WHERE f.siren = ul.siren AND f.flag = 'p' AND f.indic = ANY(${ESE_PANEL_SQL}))
+  `;
+  const tierNoneFrom = `
+    FROM sirene.uniteslegales ul
+    ${conditionalEtablissementsJoin}
+    WHERE ${whereClause}
+      AND NOT EXISTS (SELECT 1 FROM footprints.uniteslegales f WHERE f.siren = ul.siren AND f.flag != 'd' AND f.indic = ANY(${ESE_PANEL_SQL}))
+  `;
+
+  // Bounded count — just enough to know if this tier covers the rest of the page.
+  const tierCappedCount = async (fromSql, limit) => {
+    const sql = `SELECT COUNT(*) AS n FROM (SELECT ul.siren ${fromSql} LIMIT ${limit}) sub`;
+    return parseInt((await pool.query(sql, params)).rows[0].n);
+  };
+
+  const sirenQueries = [];
+  let cursorOffset = offset;
+  let cursorLimit = PER_PAGE;
+
+  for (const tierFrom of [tierPublishedFrom, tierEstimatedFrom, tierNoneFrom]) {
+    if (cursorLimit <= 0) break;
+
+    // The last tier doesn't need its own capped count — whatever's left just
+    // gets the remaining offset/limit directly, same as before with 2 tiers.
+    const isLastTier = tierFrom === tierNoneFrom;
+    const tierCount = isLastTier ? Infinity : await tierCappedCount(tierFrom, cursorOffset + cursorLimit);
+
+    const tierRows = Math.max(0, Math.min(cursorLimit, tierCount - cursorOffset));
+    if (tierRows > 0) {
+      sirenQueries.push(pool.query(
+        `SELECT ul.siren ${tierFrom} ORDER BY ul.denominationunitelegale ASC NULLS LAST LIMIT ${tierRows} OFFSET ${cursorOffset}`,
+        params
+      ));
+    }
+
+    cursorOffset = Math.max(0, cursorOffset - tierCount);
+    cursorLimit -= tierRows;
+  }
+
+  const sirenResults = await Promise.all(sirenQueries);
+  const sirens = sirenResults.flatMap(r => r.rows);
+
+  if (sirens.length === 0) {
+    return { legalUnits: [], total: parseInt((await pool.query(countSql, params)).rows[0].total), page, perPage: PER_PAGE };
+  }
+
+  // Tier order was already decided above — this just enriches those sirens.
+  const sirenList = sirens.map(s => s.siren);
   const dataSql = `
-    WITH filtered_sirens AS (
-      SELECT ul.siren
-      FROM sirene.uniteslegales ul
-      ${etablissementsJoin}
-      WHERE ${whereClause}
-      ORDER BY ul.denominationunitelegale ASC NULLS LAST
-      LIMIT ${PER_PAGE} OFFSET ${offset}
-    ),
-    footprint_summary AS (
+    WITH footprint_summary AS (
       SELECT
         f.siren,
         COUNT(DISTINCT f.indic) FILTER (WHERE f.flag != 'd')                    AS total_indicators,
         array_agg(DISTINCT f.indic) FILTER (
-          WHERE f.flag IN ('p', 'r') AND f.indic = ANY(${ESE_PANEL_SQL})
+          WHERE f.flag = 'p' AND f.indic = ANY(${ESE_PANEL_SQL})
         )                                                                         AS ese_published,
         array_agg(DISTINCT f.indic) FILTER (
-          WHERE f.flag IN ('p', 'r') AND NOT (f.indic = ANY(${ESE_PANEL_SQL}))
+          WHERE f.flag = 'p' AND NOT (f.indic = ANY(${ESE_PANEL_SQL}))
         )                                                                         AS external_published,
         array_agg(DISTINCT f.indic) FILTER (WHERE f.flag = 'e')                 AS estimated
       FROM footprints.uniteslegales f
-      WHERE f.siren IN (SELECT siren FROM filtered_sirens)
+      WHERE f.siren = ANY($1)
       GROUP BY f.siren
     )
     SELECT
@@ -154,23 +216,26 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
       COALESCE(fs.ese_published, ARRAY[]::text[])         AS "ese_published",
       COALESCE(fs.external_published, ARRAY[]::text[])    AS "external_published",
       COALESCE(fs.estimated, ARRAY[]::text[])             AS "estimated"
-    FROM filtered_sirens b
-    JOIN sirene.uniteslegales ul ON ul.siren = b.siren
+    FROM sirene.uniteslegales ul
     ${etablissementsJoin}
     LEFT JOIN footprint_summary fs ON fs.siren = ul.siren
     LEFT JOIN sirene.activiteprincipale_nafrev2 naf
       ON naf.code = ul.activiteprincipaleunitelegale
     LEFT JOIN sirene.categoriejuridique cj
       ON cj.code = ul.categoriejuridiqueunitelegale
-    ORDER BY ul.denominationunitelegale ASC NULLS LAST
+    WHERE ul.siren = ANY($1)
   `;
 
   const [countResult, dataResult] = await Promise.all([
     pool.query(countSql, params),
-    pool.query(dataSql, params),
+    pool.query(dataSql, [sirenList]),
   ]);
 
-  const legalUnits = dataResult.rows.map(row => ({
+  // Restore the tier order decided above — ANY($1) doesn't guarantee order.
+  const rowBySiren = new Map(dataResult.rows.map(row => [row.siren, row]));
+  const orderedRows = sirenList.map(siren => rowBySiren.get(siren)).filter(Boolean);
+
+  const legalUnits = orderedRows.map(row => ({
     siren: row.siren,
     denomination: row.denomination,
     activitePrincipaleCode: row.activitePrincipaleCode,
@@ -195,4 +260,112 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     page,
     perPage: PER_PAGE,
   };
+}
+
+const SUGGEST_LIMIT = 8;
+const SUGGEST_MIN_CHARS = 3;
+
+const SUGGEST_SELECT = `
+  ul.siren,
+  COALESCE(
+    NULLIF(TRIM(ul.denominationunitelegale), ''),
+    NULLIF(TRIM(CONCAT(ul.prenom1unitelegale, ' ', ul.nomusageunitelegale)), ''),
+    NULLIF(TRIM(ul.prenom1unitelegale), '')
+  )                                 AS denomination,
+  naf.libelle                       AS "activitePrincipaleLibelle",
+  e.codepostaletablissement         AS "codePostal"
+`;
+
+const SUGGEST_FROM = `
+  FROM sirene.uniteslegales ul
+  LEFT JOIN sirene.etablissements e
+    ON e.siren = ul.siren
+    AND e.etablissementsiege = 'true'
+    AND e.etatadministratifetablissement = 'A'
+  LEFT JOIN sirene.activiteprincipale_nafrev2 naf
+    ON naf.code = ul.activiteprincipaleunitelegale
+`;
+
+const SUGGEST_BASE_WHERE = `
+  ul.etatadministratifunitelegale = 'A'
+  AND ul.statutdiffusionunitelegale = 'O'
+  AND ul.siren NOT LIKE '000000%'
+`;
+
+function mapSuggestRow(row) {
+  return {
+    siren: row.siren,
+    denomination: row.denomination,
+    activitePrincipaleLibelle: row.activitePrincipaleLibelle,
+    codePostal: row.codePostal,
+  };
+}
+
+// Lightweight lookup for the search-as-you-type dropdown — no footprint join, minimal columns.
+export async function suggestLegalUnits(query = "") {
+  const raw = query.trim();
+  if (raw.length < SUGGEST_MIN_CHARS) return [];
+
+  const q = raw.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+
+  if (/^\d{3,9}$/.test(q)) {
+    const sql = `
+      SELECT ${SUGGEST_SELECT}
+      ${SUGGEST_FROM}
+      WHERE ${SUGGEST_BASE_WHERE} AND ul.siren LIKE $1
+      ORDER BY ul.siren ASC
+      LIMIT ${SUGGEST_LIMIT}
+    `;
+    const result = await pool.query(sql, [`${q}%`]);
+    return result.rows.map(mapSuggestRow);
+  }
+
+  // Mirrors the production API: ul.ts @@ plainto_tsquery($1), plus a priority
+  // boost for names that start with the query so prefix matches surface first.
+  const matchPriorityOrder = `
+    CASE WHEN ul.denominationunitelegale LIKE $1 || '%' THEN 0 ELSE 1 END,
+    ul.denominationunitelegale ASC NULLS LAST
+  `;
+
+  const plainSql = `
+    SELECT ${SUGGEST_SELECT}
+    ${SUGGEST_FROM}
+    WHERE ${SUGGEST_BASE_WHERE}
+      AND ul.ts @@ plainto_tsquery($1)
+    ORDER BY ${matchPriorityOrder}
+    LIMIT ${SUGGEST_LIMIT}
+  `;
+  const plainResult = await pool.query(plainSql, [q]);
+
+  if (plainResult.rows.length >= SUGGEST_LIMIT) {
+    return plainResult.rows.map(mapSuggestRow);
+  }
+
+  // Fallback only, since it's more expensive (can match tens of thousands of
+  // rows for a short prefix): prefix (:*) match on the last word, for when it's
+  // still mid-typed and plainto_tsquery found nothing/not enough.
+  const words = q.match(/[A-Z0-9]+/g) || [];
+  if (words.length === 0) {
+    return plainResult.rows.map(mapSuggestRow);
+  }
+  const prefixTsQuery = words.map((w, i) => (i === words.length - 1 ? `${w}:*` : w)).join(' & ');
+  const excludeSirens = plainResult.rows.map(r => r.siren);
+
+  const prefixSql = `
+    SELECT ${SUGGEST_SELECT}
+    ${SUGGEST_FROM}
+    WHERE ${SUGGEST_BASE_WHERE}
+      AND NOT (ul.siren = ANY($2))
+      AND ul.ts @@ to_tsquery($3)
+    ORDER BY ${matchPriorityOrder}
+    LIMIT $4
+  `;
+  const prefixResult = await pool.query(prefixSql, [
+    q,
+    excludeSirens,
+    prefixTsQuery,
+    SUGGEST_LIMIT - plainResult.rows.length,
+  ]);
+
+  return [...plainResult.rows, ...prefixResult.rows].map(mapSuggestRow);
 }

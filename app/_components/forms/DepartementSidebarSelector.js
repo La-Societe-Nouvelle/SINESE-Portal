@@ -19,7 +19,7 @@ export default function DepartementSidebarSelector({
   const processedData = useMemo(() => {
     // Grouper par région
     const regionGroups = {};
-    
+
     departementsData.forEach(dept => {
       if (!regionGroups[dept.region_name]) {
         regionGroups[dept.region_name] = [];
@@ -43,7 +43,7 @@ export default function DepartementSidebarSelector({
 
     // Trier les régions alphabétiquement
     regions.sort((a, b) => a.name.localeCompare(b.name));
-    
+
     // Trier les départements par code dans chaque région
     regions.forEach(region => {
       region.departements.sort((a, b) => String(a.code).localeCompare(String(b.code)));
@@ -127,7 +127,7 @@ export default function DepartementSidebarSelector({
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h6 className="mb-0 fw-bold d-flex align-items-center">
             <MapPin size={18} className="me-2" />
-            Départements
+            Localisation
           </h6>
           <Button variant="link" size="sm" onClick={onToggle} className="p-1">
             <X size={18} />
@@ -190,7 +190,12 @@ export default function DepartementSidebarSelector({
                     className="me-2"
                   />
 
-                  <div className="flex-grow-1">
+                  <div
+                    className="flex-grow-1"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => toggleRegion(region.name)}
+                    role="button"
+                  >
                     <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>
                       {region.name}
                     </div>

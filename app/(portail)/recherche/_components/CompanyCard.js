@@ -7,8 +7,8 @@ import { hasPublishedOrEstimatedData } from "@/_utils/utils";
 
 export default function CompanyCard({ company }) {
   return (
-    <Card className="company-card mb-4  hover-shadow">
-      <Card.Body className="p-4">
+    <Card className="company-card mb-3 hover-shadow">
+      <Card.Body className="p-3">
         <Row className="align-items-start">
           <Col md={8}>
             <div className="company-info">

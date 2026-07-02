@@ -1,7 +1,7 @@
 "use server";
 
-import { listObjects, formatObjectsForDatasets } from "@/_libs/ovh-client";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { listObjects, formatObjectsForDatasets, getS3Client } from "@/_libs/ovh-client";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { promises as fs } from "fs";
 import path from "path";
@@ -84,21 +84,11 @@ export async function getDatasetDownloadUrl(key) {
     return { error: "Chemin de fichier invalide." };
   }
 
-  const client = new S3Client({
-    region: process.env.OS_REGION_NAME || "gra",
-    endpoint: process.env.OS_AUTH_URL || "https://s3.gra.cloud.ovh.net",
-    credentials: {
-      accessKeyId: process.env.OS_USERNAME,
-      secretAccessKey: process.env.OS_PASSWORD,
-    },
-    forcePathStyle: true,
-    disableBodySigning: true,
-  });
-
   const fileName = key.split("/").pop();
   const safeFileName = fileName.replace(/[\r\n"\\]/g, "_");
 
   try {
+    const client = getS3Client();
     const command = new GetObjectCommand({
       Bucket: process.env.OVH_BUCKET_NAME,
       Key: key,
@@ -132,7 +122,7 @@ export async function getDatasets(category = null) {
     const datasets = await fetchFromOvh();
     if (!datasets) {
       return {
-        success: true,
+        success: false,
         source: "fallback",
         datasets: getFallbackDatasets(),
         totalFiles: 0,

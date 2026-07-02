@@ -17,12 +17,12 @@ export default function SearchControls({
   return (
     <div className="d-flex justify-content-between align-items-center mb-2">
       <div>
-        <h5 className="mb-0 text-primary">
+        <p className="mb-0 text-primary fw-semibold" style={{ fontSize: '0.8rem' }}>
           Résultats Trouvés :{" "}
-          <span className="d-block badge bg-light text-primary small fw-normal">
+          <span className="d-block text-primary small fw-normal">
             {resultsCount >= 1000 ? '+ de 1000' : resultsCount} entreprise{resultsCount > 1 ? 's' : ''} correspondante{resultsCount > 1 ? 's' : ''} 
           </span>
-        </h5>
+        </p>
       </div>
 
     </div>
