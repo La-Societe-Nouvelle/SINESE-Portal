@@ -2,7 +2,7 @@
 import { Modal, Form, Button, InputGroup, Spinner, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Building, Search, CheckCircle, AlertTriangle, X, ShieldAlert } from "lucide-react";
-import { checkLegalUnitAttachment } from "@/actions/legalUnits";
+import { checkLegalUnitAttachment, lookupLegalUnitBySiren } from "@/actions/legalUnits";
 
 export default function AddLegalUnitModal({ show, onHide, onAdd }) {
   const [form, setForm] = useState({ denomination: "", siren: "" });
@@ -35,10 +35,8 @@ export default function AddLegalUnitModal({ show, onHide, onAdd }) {
       setForm((f) => ({ ...f, denomination: "" }));
 
       try {
-        const res = await fetch(`https://api.lasocietenouvelle.org/legalunit/${form.siren}`);
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        if (!data.legalUnits || data.legalUnits.length === 0) {
+        const data = await lookupLegalUnitBySiren(form.siren);
+        if (data.error || !data.legalUnits || data.legalUnits.length === 0) {
           setError("Aucune entreprise trouvée pour ce SIREN.");
           setSearching(false);
           return;

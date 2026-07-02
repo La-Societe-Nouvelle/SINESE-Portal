@@ -7,6 +7,7 @@ import { Building, Search, CheckCircle, AlertTriangle, ArrowLeft, Upload, Link2 
 import Link from "next/link";
 import { REPORT_TYPES } from "../../../_components/forms/ReportForm";
 import { createAdminPublication } from "@/actions/admin/publications";
+import { lookupLegalUnitBySiren } from "@/actions/legalUnits";
 import DocumentUploadForm, { uploadDocumentsToOVH } from "../../../_components/forms/DocumentUploadForm";
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -49,10 +50,8 @@ export default function AdminPublierPage() {
       setDenomination("");
       setSirenError("");
       try {
-        const res = await fetch(`https://api.lasocietenouvelle.org/legalunit/${siren}`);
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        if (!data.legalUnits?.length) { setSirenError("Aucune entreprise trouvée pour ce SIREN."); return; }
+        const data = await lookupLegalUnitBySiren(siren);
+        if (data.error || !data.legalUnits?.length) { setSirenError("Aucune entreprise trouvée pour ce SIREN."); return; }
         setDenomination(data.legalUnits[0].denomination);
         setFound(true);
       } catch {

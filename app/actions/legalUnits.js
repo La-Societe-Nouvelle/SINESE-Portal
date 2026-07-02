@@ -38,6 +38,33 @@ export async function getLegalUnitById(legalUnitId) {
   return rows[0] || null;
 }
 
+// Recherche une unité légale par SIREN dans le référentiel SIRENE local
+export async function lookupLegalUnitBySiren(siren) {
+  if (!/^\d{9}$/.test(siren)) {
+    return { error: "SIREN invalide." };
+  }
+
+  const { rows } = await pool.query(
+    `SELECT
+      ul.siren,
+      COALESCE(
+        NULLIF(TRIM(ul.denominationunitelegale), ''),
+        NULLIF(TRIM(CONCAT(ul.prenom1unitelegale, ' ', ul.nomusageunitelegale)), ''),
+        NULLIF(TRIM(ul.prenom1unitelegale), '')
+      )                                       AS denomination,
+      ul.etatadministratifunitelegale         AS "etatAdministratifUniteLegale"
+     FROM sirene.uniteslegales ul
+     WHERE ul.siren = $1`,
+    [siren]
+  );
+
+  if (rows.length === 0) {
+    return { error: "Aucune entreprise trouvée pour ce SIREN." };
+  }
+
+  return { legalUnits: rows };
+}
+
 export async function addLegalUnit({ siren, denomination }) {
   const session = await getSession();
   if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
@@ -46,18 +73,17 @@ export async function addLegalUnit({ siren, denomination }) {
     return { error: "SIREN et dénomination sont requis." };
   }
 
-  const apiRes = await fetch(`https://api.lasocietenouvelle.org/legalUnitfootprint/${siren}`);
-  if (!apiRes.ok) {
+  const lookup = await lookupLegalUnitBySiren(siren);
+  if (lookup.error) {
     return { error: "Entreprise non trouvée dans le répertoire SINESE." };
   }
-  const apiData = await apiRes.json();
 
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
     const res = await client.query(
       "INSERT INTO publications.legal_units (siren, denomination, data) VALUES ($1, $2, $3) RETURNING id",
-      [siren, denomination, apiData.legalUnit]
+      [siren, denomination, lookup.legalUnits[0]]
     );
     const legalUnitId = res.rows[0].id;
     await client.query(
