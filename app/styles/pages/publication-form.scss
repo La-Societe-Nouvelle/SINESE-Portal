@@ -1,0 +1,1128 @@
+// ============================================================================
+// PUBLICATION FORM - Multi-step form styling (Modern & Clean)
+// ============================================================================
+
+
+// Progress Sidebar - Navigation verticale épurée
+.progress-sidebar {
+  .list-group {
+
+
+    .list-group-item {
+      padding: 0.875rem 1rem;
+      color: $gray-500;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      margin-bottom: 0.25rem;
+      border-radius: 0.375rem;
+
+      &:hover {
+       background-color: darken($light, 5%);
+      }
+
+      &.active {
+        background-color: $primary-dark;
+        color: $light;
+      }
+
+
+      // Sub-items indentation
+      &.ps-4 {
+        margin-left: 0.5rem;
+        font-size: 0.85rem;
+        color: $gray-400;
+
+        &:hover {
+                  color: $light;
+
+        }
+
+        &.active {
+             color: $light;
+
+        }
+      }
+
+
+    }
+  }
+
+  // Progress Bar - Modern look
+  .progress {
+    height: 3px;
+    background-color: $gray-200;
+    border-radius: 2px;
+    overflow: hidden;
+
+    .progress-bar {
+      background: linear-gradient(90deg, $primary-dark 0%, lighten($primary-dark, 15%) 100%);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 8px rgba($primary-dark, 0.3);
+    }
+  }
+}
+
+// Form Card Wrapper
+.publication-form-card {
+  border: none;
+  border-radius: 0.875rem;
+  box-shadow: 0 1px 3px rgba($primary, 0.04);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba($primary, 0.08);
+  }
+
+  .card-body {
+    padding: 2.5rem;
+  }
+
+  .main-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $primary;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+  }
+}
+
+// Form Section Header
+.form-section-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid $bg-subtle-blue;
+
+  .text-muted {
+    color: $gray-500;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+
+// ============================================================================
+// ACCORDION - Indicators Form (scoped to publication form)
+// ============================================================================
+
+.publication-form-card .indicators-accordion {
+  --bs-accordion-bg: transparent;
+  --bs-accordion-border-color: $gray-200;
+
+  .indicator-category-group {
+    margin: 1rem 0 0.75rem;
+  }
+
+  .indicator-category-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0.9rem;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    border-left: 4px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: $gray-100;
+    }
+
+    .indicator-category-title {
+      font-weight: 600;
+      color: $gray-800;
+      font-size:1rem;
+      text-align: left;
+    }
+
+    .indicator-category-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .indicator-category-count {
+      color: $gray-500;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .category-chevron {
+      transition: transform 0.2s ease;
+
+      &.collapsed {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  .indicator-category-body {
+    border-left: 4px solid #dee2e6;
+    padding-left: 0.6rem;
+    margin-top: 0.5rem;
+
+    &.collapsed {
+      display: none;
+    }
+  }
+
+  .indicator-item {
+    border: 1px solid $gray-200;
+    border-radius: 0.5rem;
+    background: white;
+    transition: all 0.2s ease;
+    margin-bottom: 0.875rem;
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba($primary, 0.06);
+      border-color: $gray-300;
+    }
+
+    .indicator-header {
+      padding: 0;
+      background: transparent;
+
+      .accordion-button {
+        padding: 1rem;
+        background: transparent;
+        border: none;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        color: $gray-700;
+        border-radius: 0.5rem;
+
+        &:not(.collapsed) {
+          background-color: $gray-50;
+          color: $primary;
+          box-shadow: none;
+        }
+
+        &::after {
+          transition: transform 0.3s ease;
+        }
+
+        &:focus {
+          box-shadow: none;
+          outline: 2px solid lighten($primary-dark, 10%);
+          outline-offset: -2px;
+        }
+      }
+    }
+
+    .accordion-body {
+      padding: 1.5rem;
+      background: #fafbfc;
+      border-top: 1px solid $gray-200;
+    }
+  }
+}
+
+// Indicator Header Structure
+.indicator-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.indicator-label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 250px;
+
+  .indicator-label {
+    font-weight: 600;
+    color: $gray-700;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .indicator-unit {
+    color: $gray-400;
+    font-size: 0.85rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+}
+
+.indicator-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.indicator-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  border: 1px solid transparent;
+
+  &.success {
+    background: rgba(22, 163, 74, 0.1);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.2);
+  }
+
+  &.warning {
+    background: rgba(245, 158, 11, 0.12);
+    color: #b45309;
+    border-color: rgba(245, 158, 11, 0.25);
+  }
+
+  &.muted {
+    background: $gray-100;
+    color: $gray-500;
+    border-color: $gray-200;
+  }
+}
+
+.indicator-doc-quick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: $gray-500;
+  background: $gray-50;
+  border: 1px solid $gray-200;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: $primary-dark;
+    background: #eef2ff;
+    border-color: lighten($primary, 25%);
+  }
+}
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+
+  &.success {
+    color: $success;
+    opacity: 0.85;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &.error {
+    color: $secondary;
+    opacity: 0.85;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// Indicator Form Styling
+.indicator-form {
+  .indicator-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .indicator-form-label {
+    font-weight: 500;
+    color: $gray-600;
+    font-size: 0.85rem;
+    margin-bottom: 0;
+    text-transform: none;
+    letter-spacing: 0.2px;
+  }
+
+  .form-control {
+    border: 1px solid $gray-200;
+    border-radius: 0.6rem;
+    font-size: 0.95rem;
+    background: #fbfcfe;
+    color: $gray-900;
+    transition: all 0.2s ease;
+    padding: 0.5rem 0.75rem;
+    min-height: 40px;
+
+    &:focus {
+      border-color: lighten($primary, 15%);
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba($primary-dark, 0.08);
+    }
+
+    &::placeholder {
+      color: $gray-400;
+    }
+  }
+
+  .input-group-text.indicator-unit-badge {
+    background: $gray-50;
+    border: 1px solid $gray-200;
+    color: $gray-500;
+    font-weight: 600;
+    border-radius: 0.6rem;
+    padding: 0.45rem 0.65rem;
+  }
+
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+    font-family: $font-family-sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: lighten($primary, 15%);
+      box-shadow: 0 0 0 2px rgba($primary-dark, 0.08);
+    }
+
+    &::placeholder {
+      color: $gray-400;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Documentation Link
+.indicator-doc-link {
+  a {
+    color: $primary-dark;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    svg {
+      opacity: 0.7;
+      transition: all 0.2s ease;
+    }
+
+    &:hover {
+      color: $secondary;
+      gap: 0.75rem;
+
+      svg {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// RECAP TABLE - Modern styling
+// ============================================================================
+
+.recap-section {
+  margin-bottom: 2rem;
+
+  // Summary info
+  .recap-info {
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    border : 1px solid $primary-dark;
+    border-left: 4px solid lighten($primary-dark, 10%);
+
+    p {
+      margin-bottom: 0.5rem;
+      color: $gray-700;
+      font-size: 0.95rem;
+
+      b {
+        color: $primary;
+        font-weight: 600;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // Table modern styling
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    thead {
+      background: linear-gradient(135deg, lighten($primary, 45%) 0%, lighten($primary, 40%) 100%);
+      border-bottom: 2px solid $gray-300;
+
+      th {
+        padding: 1rem;
+        color: $primary;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $bg-subtle-blue;
+        transition: all 0.15s ease;
+
+        &:hover {
+          background-color: $gray-50;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        td {
+          padding: 0.875rem 1rem;
+          color: $gray-700;
+          font-size: 0.9rem;
+
+          .text-muted {
+            color: $gray-400;
+          }
+        }
+      }
+    }
+  }
+}
+
+// ============================================================================
+// CONFIRMATION CHECK (scoped to publication form)
+// ============================================================================
+
+.confirmation-box {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 2px dashed $gray-300;
+  background-color: #fefce8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: darken($gray-300, 10%);
+    background-color: #fef9c3;
+  }
+
+  &.confirmed {
+    border-style: solid;
+    border-color: #16a34a;
+    background-color: #f0fdf4;
+
+    &:hover {
+      background-color: #dcfce7;
+    }
+  }
+
+  .form-check {
+    margin-bottom: 0;
+    padding-left: 2rem;
+  }
+
+  .form-check-input {
+    border-radius: 0.3rem;
+    border: 2px solid $gray-300;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.3rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:focus {
+      border-color: lighten($primary-dark, 10%);
+      box-shadow: 0 0 0 3px rgba($primary-dark, 0.1);
+    }
+
+    &:checked {
+      background-color: #16a34a;
+      border-color: #16a34a;
+    }
+  }
+
+  .form-check-label {
+    color: $gray-700;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+  }
+}
+
+// ============================================================================
+// BUTTONS - Form Actions
+// ============================================================================
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $bg-subtle-blue;
+
+  .btn {
+    padding: 0.75rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    i {
+      font-size: 1.1rem;
+    }
+
+    // Primary button
+    &.btn-primary {
+      background-color: $primary-dark;
+      border-color: $primary-dark;
+      color: white;
+
+      &:hover:not(:disabled) {
+        background-color: $primary;
+        border-color: $primary;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($primary-dark, 0.25);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    // Secondary button
+    &.btn-light {
+      background-color: $gray-100;
+      border-color: $gray-300;
+      color: $gray-700;
+
+      &:hover:not(:disabled) {
+        background-color: $gray-200;
+        border-color: $gray-400;
+      }
+    }
+
+    &.btn-secondary {
+      background-color: $secondary;
+      border-color: $secondary;
+      color: white;
+
+      &:hover:not(:disabled) {
+        background-color: darken($secondary, 10%);
+        border-color: darken($secondary, 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($secondary, 0.25);
+      }
+    }
+
+    // Spinner in button
+    .spinner-border {
+      width: 1rem;
+      height: 1rem;
+      border-width: 0.2em;
+    }
+  }
+}
+
+// ============================================================================
+// ALERTS (scoped to publication form)
+// ============================================================================
+// 3 DESIGN OPTIONS - Choose one and delete the others
+
+// OPTION 1 - MINIMAL (no border, clean and modern)
+// Using SCSS variables for consistency with design system
+.publication-page .alert {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  i, svg {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    font-size: 1.1rem;
+  }
+
+  // Danger/Error - based on $secondary
+  &.alert-danger {
+    background-color: lighten($secondary, 35%);
+    color: darken($secondary, 20%);
+    border-left: 4px solid $secondary;
+
+    strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  // Warning - based on $tertiary
+  &.alert-warning {
+    background-color: lighten($tertiary, 40%);
+    color: darken($tertiary, 15%);
+    border-left: 4px solid $tertiary;
+  }
+
+  // Info - based on $primary
+  &.alert-info {
+    color: $primary-dark;
+    border-left: 4px solid $primary-dark;
+  }
+
+  // Success - based on $success
+  &.alert-success {
+    background-color: lighten($success, 40%);
+    color: darken($success, 15%);
+    border-left: 4px solid $success;
+  }
+}
+
+// ============================================================================
+// AXE 1 - INDICATORS: Completion summary, filter & search
+// ============================================================================
+
+.indicators-summary {
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, lighten($primary, 45%) 0%, lighten($primary, 42%) 100%);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+
+  .indicators-summary-stats {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    .indicators-summary-count {
+      font-size: 0.9rem;
+      color: $primary-dark;
+
+      strong {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .indicators-progress-bar {
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 3px;
+  }
+}
+
+.indicators-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  background: #ffffff;
+  padding: 0.875rem 1.125rem;
+  border-radius: 0.5rem;
+  border: 1px solid $gray-200;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  .indicators-toolbar-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .indicators-filter-group {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    .indicators-filter-btn {
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+
+      &:hover:not(.btn-primary) {
+        background-color: $gray-100;
+        transform: translateY(-1px);
+      }
+
+      &.btn-primary {
+        box-shadow: 0 2px 4px rgba($primary-light, 0.2);
+      }
+
+      .badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-weight: 600;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+
+  .indicators-search {
+    position: relative;
+    flex: 0 1 300px;
+
+    .indicators-search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $gray-400;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .indicators-search-input {
+      width: 100%;
+      padding: 0.5rem 1rem 0.5rem 2.75rem;
+      border: 1px solid $gray-300;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      background-color: $gray-50;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-dark;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba($primary-light, 0.1);
+        transform: translateY(-1px);
+      }
+
+      &:hover {
+        border-color: #b8bdc4;
+      }
+
+      &::placeholder {
+        color: $gray-400;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+.indicators-empty-filter {
+  text-align: center;
+  padding: 2rem;
+  background: $gray-50;
+  border: 2px dashed $gray-200;
+  border-radius: 0.5rem;
+}
+
+// ============================================================================
+// AXE 2 - FEEDBACK: Auto-save toast, success modal animation
+// ============================================================================
+
+.draft-saved-toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: darken($success, 5%);
+  color: white;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.3s ease, fadeOutRight 0.3s ease 2.5s forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.success-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  .success-icon-animated {
+    animation: successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
+@keyframes successPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// ============================================================================
+// AXE 3 - MOBILE RESPONSIVE
+// ============================================================================
+
+// Mobile sidebar toggle
+.progress-sidebar-mobile {
+  display: none;
+}
+
+.progress-sidebar-desktop {
+  display: block;
+}
+
+@media (max-width: 767.98px) {
+  .progress-sidebar-mobile {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .progress-sidebar-desktop {
+    display: none;
+  }
+
+  .progress-sidebar-mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: $primary-dark;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    .sidebar-mobile-chevron {
+      transition: transform 0.3s ease;
+
+      &.expanded {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .progress-sidebar-mobile-menu {
+    background: white;
+    border: 1px solid $gray-200;
+    border-radius: 0 0 0.5rem 0.5rem;
+    overflow: hidden;
+    animation: slideDown 0.2s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      max-height: 300px;
+    }
+  }
+
+  .progress-sidebar-mobile-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    font-size: 0.875rem;
+    color: $gray-700;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid $bg-subtle-blue;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover:not(.disabled) {
+      background: $gray-50;
+    }
+
+    &.active {
+      background: lighten($primary, 45%);
+      color: $primary-dark;
+      font-weight: 600;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  // Fixed action buttons on mobile
+  .form-actions.form-actions-sticky {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1040;
+    background: white;
+    padding: 0.75rem 1rem;
+    margin-top: 0;
+    border-top: 1px solid $gray-200;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 0;
+  }
+
+  // Add padding at bottom to account for fixed actions
+  .publication-form-card .card-body {
+    padding-bottom: 5rem;
+  }
+
+  // Publication form card padding reduction
+  .publication-form-card .card-body {
+    padding: 1.25rem;
+  }
+
+  // Indicators toolbar stacking on mobile
+  .indicators-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.75rem;
+
+    .indicators-toolbar-filters {
+      width: 100%;
+    }
+
+    .indicators-filter-group {
+      width: 100%;
+      display: flex;
+
+      .indicators-filter-btn {
+        flex: 1;
+        font-size: 0.75rem;
+        padding: 0.45rem 0.5rem;
+        justify-content: center;
+
+        .badge {
+          font-size: 0.65rem;
+        }
+      }
+    }
+
+    .indicators-search {
+      flex: 1 1 100%;
+
+      .indicators-search-input {
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  // Indicator header wrapping on mobile
+  .indicator-label-wrapper {
+    min-width: auto !important;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+// ============================================================================
+// AXE 4 - OPTIONAL BADGES
+// ============================================================================
+
+.optional-badge {
+  font-size: 0.7rem !important;
+  font-weight: 500 !important;
+  padding: 0.25rem 0.5rem !important;
+  border: 1px solid $gray-300 !important;
+  vertical-align: middle;
+}
+
+.optional-badge-sm {
+  font-size: 0.65rem !important;
+  font-weight: 500 !important;
+  padding: 0.15rem 0.4rem !important;
+  border: 1px solid $gray-300 !important;
+}
+
+.publication-options-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.875rem 1rem;
+  background: lighten($primary, 45%);
+  border-radius: 0.5rem;
+  border-left: 3px solid $primary-dark;
+  color: $primary-dark;
+  font-size: 0.875rem;
+  line-height: 1.5;
+
+  strong {
+    font-weight: 600;
+  }
+}

@@ -3,26 +3,26 @@
 
 // Style for disabled options in year select
 select option:disabled {
-  color: #9ca3af !important;
+  color: $gray-400 !important;
   font-style: italic;
 }
 
 .year-selector-card {
-  border: 2px solid #e5e7eb;
+  border: 2px solid $gray-200;
   border-radius: 0.75rem;
   padding: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: #ffffff;
+  background-color: $white;
 
   &:hover:not(.active) {
     border-color: lighten( $primary, 40%);
-    background-color: #fafbfc;
+    background-color: $bg-very-light;
   }
 
   &.active {
     border-color: lighten( $primary, 20%);
-    background-color: rgba(30, 64, 175, 0.05);
+    background-color: rgba($primary-dark, 0.05);
   }
 }
 
@@ -46,20 +46,20 @@ select option:disabled {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
-  background-color: #f3f4f6;
+  background-color: $gray-100;
 
   .year-selector-card.active & {
-    background-color: #1e40af;
+    background-color: $primary-dark;
 
     svg {
-      color: #ffffff;
+      color: $white;
     }
   }
 
   svg {
     width: 1.25rem;
     height: 1.25rem;
-    color: #9ca3af;
+    color: $gray-400;
     transition: color 0.2s ease;
   }
 }
@@ -68,14 +68,14 @@ select option:disabled {
   h6 {
     margin-bottom: 0.25rem;
     font-weight: 600;
-    color: #1f2937;
+    color: $gray-800;
     font-size: 1rem;
   }
 
   p {
     margin-bottom: 0;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: $gray-500;
   }
 }
 
@@ -83,7 +83,7 @@ select option:disabled {
   width: 2rem;
   height: 2rem;
   border-radius: 0.375rem;
-  background-color: #e5e7eb;
+  background-color: $gray-200;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,10 +91,10 @@ select option:disabled {
   flex-shrink: 0;
 
   .year-selector-card.active & {
-    background-color: #1e40af;
+    background-color: $primary-dark;
 
     svg {
-      color: #ffffff;
+      color: $white;
     }
   }
 
@@ -108,15 +108,15 @@ select option:disabled {
 
 .year-selector-period-section {
   padding: 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid $gray-300;
   border-radius: 0.375rem;
-  background-color: #f9fafb;
+  background-color: $gray-50;
 
   h5 {
     margin-bottom: 0.75rem;
     font-size: 1rem;
     font-weight: 600;
-    color: #1f2937;
+    color: $gray-800;
   }
 
   .period-inputs {
@@ -129,7 +129,7 @@ select option:disabled {
     }
 
     .period-separator {
-      color: #9ca3af;
+      color: $gray-400;
       font-weight: 500;
       padding-bottom: 0.5rem;
     }

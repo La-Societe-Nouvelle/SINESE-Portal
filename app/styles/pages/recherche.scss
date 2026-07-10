@@ -93,85 +93,9 @@
     position: relative;
   }
 
+  // Base .filter-pill* partagée avec /macroeconomies : voir components/_filter-pills.scss
   .filter-pills-bar {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.625rem;
     padding: 0.75rem 0;
-  }
-
-  .filter-pills-spacer {
-    flex: 1;
-  }
-
-  .filter-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid #d1d5db;
-    background: $white;
-    color: #1f2937;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: $transition-smooth;
-    white-space: nowrap;
-
-    &:hover {
-      border-color: $primary;
-    }
-
-    // Solid fill (not a tint) so it stays legible whether the pill sits on
-    // the white pills row or directly on the blue header band.
-    &.is-active {
-      background: $primary-dark;
-      border-color: $primary-dark;
-      color: $white;
-      font-weight: 600;
-
-      .filter-pill-chevron {
-        opacity: 0.85;
-      }
-    }
-  }
-
-  .filter-pill-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.1rem;
-    height: 1.1rem;
-    padding: 0 0.3rem;
-    border-radius: 999px;
-    background: $primary-dark;
-    color: $white;
-    font-size: 0.7rem;
-    font-weight: 700;
-
-    // Keep the badge visible against the now-solid dark blue active pill.
-    .filter-pill.is-active & {
-      background: $white;
-      color: $primary-dark;
-    }
-  }
-
-  .filter-pill-chevron {
-    opacity: 0.6;
-  }
-
-  .filter-pill-reset {
-    border: none;
-    background: none;
-    background-color:$light-secondary;
-    color: $secondary;
-    font-weight: 600;
-
-    &:hover {
-      opacity: 0.8;
-    }
   }
 
   .filter-pill-dropdown-wrapper {
@@ -192,23 +116,10 @@
 
   // Filter panel content — shared by the "Plus de filtres" dropdown and the
   // mobile offcanvas filter list.
+  // .filter-label / .filter-group : style partagé, voir components/macro-sidebar.scss
   .sidebar-filters, .filter-pill-dropdown {
     .badge {
       @include badge-style($light-secondary, $white, small);
-    }
-
-    .filter-group + .filter-group {
-      margin-top: 1rem;
-    }
-
-    .filter-label {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 0.4rem;
     }
 
     // Filtres bonus (cases à cocher)
