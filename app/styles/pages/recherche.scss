@@ -3,13 +3,6 @@
   min-height: 100vh;
   background-color: $light;
 
-  // Applied while a filter/pagination transition is pending — keeps old
-  // results visible instead of flashing the full skeleton.
-  .search-results-pending {
-    opacity: 0.5;
-    pointer-events: none;
-    transition: opacity 0.15s ease;
-  }
 
   // Header avec mixins standardisés
   .search-header {

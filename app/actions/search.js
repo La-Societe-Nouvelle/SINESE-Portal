@@ -60,15 +60,23 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     conditions.push(`ul.societemissionunitelegale = 'N'`);
   }
 
+  // Correlated EXISTS against ul.siren — lets the planner use
+  // idx_etablissements_siren_siege_actif per candidate row instead of
+  // materializing every siren in the department up front. The previous
+  // pre-resolved-array approach scanned/deduped the whole department before
+  // the main query even started, which took minutes for dense departments
+  // (e.g. Paris/75, ~875k matching establishment rows).
   if (filters.departements?.length > 0) {
-    params.push(filters.departements);
-    // DOM/TOM department codes are 3 digits (97x/98x), mainland France is 2.
-    conditions.push(`(
-      CASE
-        WHEN LEFT(e.codecommuneetablissement, 2) IN ('97', '98')
-        THEN LEFT(e.codecommuneetablissement, 3) = ANY($${params.length})
-        ELSE LEFT(e.codecommuneetablissement, 2) = ANY($${params.length})
-      END
+    const deptConditions = filters.departements.map((dept) => {
+      params.push(`${dept}%`);
+      return `e2.codecommuneetablissement LIKE $${params.length}`;
+    });
+    conditions.push(`EXISTS (
+      SELECT 1 FROM sirene.etablissements e2
+      WHERE e2.siren = ul.siren
+        AND e2.etablissementsiege = 'true'
+        AND e2.etatadministratifetablissement = 'A'
+        AND (${deptConditions.join(' OR ')})
     )`);
   }
 
@@ -103,9 +111,10 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
       AND e.etablissementsiege = 'true'
       AND e.etatadministratifetablissement = 'A'
   `;
-  // Only join etablissements when the department filter needs it — avoids paying
-  // that join for every candidate row before pagination otherwise.
-  const conditionalEtablissementsJoin = filters.departements?.length > 0 ? etablissementsJoin : '';
+  // Only join etablissements when a filter needs the `e` alias directly —
+  // avoids paying that join for every candidate row before pagination otherwise.
+  // (Departments now go through their own subquery above, not this join.)
+  const conditionalEtablissementsJoin = filters.activitePrincipaleArtisanale === true ? etablissementsJoin : '';
 
   // COUNT capped at 1001 — avoids full scan, matches "> 1000" display in UI
   const countSql = `
