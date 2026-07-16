@@ -122,9 +122,14 @@ export async function addPublication({ legalUnit, declarationData, documents = [
        period_start = EXCLUDED.period_start,
        period_end = EXCLUDED.period_end,
        updated_at = NOW()
+     WHERE publications.publications.status = 'draft'
      RETURNING id, created_at`,
     [legalUnit.id, year, JSON.stringify(declarationData), status, periodStart || null, periodEnd || null]
   );
+
+  if (result.rows.length === 0) {
+    return { error: "Une publication existe déjà pour cette année et ne peut plus être modifiée depuis cet écran." };
+  }
 
   return { success: true, publicationId: result.rows[0].id };
 }

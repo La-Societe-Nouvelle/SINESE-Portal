@@ -83,10 +83,10 @@ export const ErrorMessages = {
   // Validation
   [ErrorCodes.VALIDATION_ERROR]: 'Les données fournies sont invalides.',
   [ErrorCodes.INVALID_INPUT]: 'Entrée invalide.',
-  [ErrorCodes.MISSING_REQUIRED_FIELD]: (field) => `Le champ ${field} est requis.`,
-  [ErrorCodes.INVALID_FORMAT]: (expected) => `Format invalide. Attendu: ${expected}.`,
-  [ErrorCodes.INVALID_FILE_TYPE]: (allowed) => `Type de fichier invalide. Types autorisés: ${allowed}.`,
-  [ErrorCodes.FILE_TOO_LARGE]: (maxSize) => `Le fichier est trop volumineux. Taille maximale: ${maxSize}.`,
+  [ErrorCodes.MISSING_REQUIRED_FIELD]: ({ field }) => `Le champ ${field} est requis.`,
+  [ErrorCodes.INVALID_FORMAT]: ({ expected }) => `Format invalide. Attendu: ${expected}.`,
+  [ErrorCodes.INVALID_FILE_TYPE]: ({ allowed }) => `Type de fichier invalide. Types autorisés: ${allowed}.`,
+  [ErrorCodes.FILE_TOO_LARGE]: ({ maxSize }) => `Le fichier est trop volumineux. Taille maximale: ${maxSize}.`,
   
   // Authentification
   [ErrorCodes.UNAUTHORIZED]: 'Non autorisé. Veuillez vous connecter.',
@@ -100,7 +100,7 @@ export const ErrorMessages = {
   
   // Ressources non trouvées
   [ErrorCodes.NOT_FOUND]: 'Ressource introuvable.',
-  [ErrorCodes.RESOURCE_NOT_FOUND]: (resourceType, identifier) => 
+  [ErrorCodes.RESOURCE_NOT_FOUND]: ({ resourceType, identifier }) =>
     `${resourceType} introuvable: ${identifier}.`,
   [ErrorCodes.USER_NOT_FOUND]: 'Utilisateur introuvable.',
   [ErrorCodes.PUBLICATION_NOT_FOUND]: 'Publication introuvable.',
@@ -109,13 +109,13 @@ export const ErrorMessages = {
   
   // Conflits
   [ErrorCodes.CONFLICT]: 'Conflit avec les données existantes.',
-  [ErrorCodes.ALREADY_EXISTS]: (resourceType) => `Un(e) ${resourceType} existe déjà.`,
+  [ErrorCodes.ALREADY_EXISTS]: ({ resourceType }) => `Un(e) ${resourceType} existe déjà.`,
   [ErrorCodes.DUPLICATE_ENTRY]: 'Une entrée similaire existe déjà.',
   
   // Erreurs internes
   [ErrorCodes.INTERNAL_ERROR]: 'Une erreur interne est survenue.',
   [ErrorCodes.DATABASE_ERROR]: 'Erreur de base de données.',
-  [ErrorCodes.API_ERROR]: (apiName) => `Erreur lors de l\'appel à ${apiName}.`,
+  [ErrorCodes.API_ERROR]: ({ apiName }) => `Erreur lors de l\'appel à ${apiName}.`,
   [ErrorCodes.STORAGE_ERROR]: 'Erreur de stockage.',
   [ErrorCodes.SIGNED_URL_GENERATION_FAILED]: 'Impossible de générer le lien de téléchargement.',
   
@@ -193,7 +193,7 @@ export const ErrorStatusCodes = {
 export function createError(code, options = {}) {
   const message = options.message
     || (typeof ErrorMessages[code] === 'function'
-      ? ErrorMessages[code](...Object.values(options))
+      ? ErrorMessages[code](options)
       : ErrorMessages[code])
     || 'Une erreur est survenue.';
   

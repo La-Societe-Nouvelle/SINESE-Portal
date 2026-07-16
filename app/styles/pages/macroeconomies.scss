@@ -14,7 +14,7 @@
     .loading-icon {
       width: 80px;
       height: 80px;
-      background-color: #f8f9fc;
+      background-color: $bg-icon-circle;
       color: $primary;
       border-radius: 50%;
       display: inline-flex;
@@ -37,8 +37,8 @@
     .empty-icon {
       width: 80px;
       height: 80px;
-      background-color: #f8f9fc;
-      color: #6c757d;
+      background-color: $bg-icon-circle;
+      color: $text-icon-muted;
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
@@ -64,7 +64,7 @@
 
   // Cartes d'indicateurs
   .indicator-card {
-    border: 1px solid #e9ecf3 !important;
+    border: 1px solid $border-card !important;
     border-radius: 1rem !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
@@ -120,7 +120,7 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        color: #6c757d;
+        color: $text-icon-muted;
         
         .loading-content {
           text-align: center;
@@ -140,7 +140,7 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        color: #6c757d;
+        color: $text-icon-muted;
         
         .empty-content {
           text-align: center;
@@ -190,8 +190,8 @@
         &.primary { color: $primary !important; }
         &.secondary { color: $secondary !important; }
         &.tertiary { color: $tertiary !important; }
-        &.success { color: #28a745 !important; }
-        &.info { color: #17a2b8 !important; }
+        &.success { color: $success-green !important; }
+        &.info { color: $info-blue !important; }
         &.warning { color: #ffc107 !important; }
       }
       
@@ -242,7 +242,7 @@
       padding: 1.5rem;
       border-radius: 0.75rem;
       background: linear-gradient(135deg, rgba($primary, 0.03) 0%, rgba($tertiary, 0.02) 100%);
-      border: 1px solid #e9ecf3;
+      border: 1px solid $border-card;
       
       .info-item {
         display: flex;
@@ -337,7 +337,7 @@
   padding: 1rem 1.25rem;
   border-radius: 1rem;
   background-color: $white;
-  border: 1px solid #e9ecf3;
+  border: 1px solid $border-card;
   box-shadow: 0 2px 12px rgba($primary, 0.06);
 
   .macro-filter-bar-intro {
@@ -368,83 +368,11 @@
     }
   }
 
-  .filter-pills-bar {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.625rem;
-  }
-
-  .filter-pills-spacer {
-    flex: 1;
-  }
-
+  // Base .filter-pill* partagée avec /recherche : voir components/_filter-pills.scss
+  // Le poids de police (600 vs 500) est ici volontairement plus marqué que
+  // la valeur par défaut du composant pour matcher le fond blanc de cette carte.
   .filter-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid #d1d5db;
-    background: $white;
-    color: #1f2937;
-    font-size: 0.85rem;
     font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-
-    &:hover {
-      border-color: $primary;
-    }
-
-    &.is-active {
-      background: $primary-dark;
-      border-color: $primary-dark;
-      color: $white;
-
-      .filter-pill-chevron {
-        opacity: 0.85;
-      }
-    }
-  }
-
-  .filter-pill-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.1rem;
-    height: 1.1rem;
-    padding: 0 0.3rem;
-    border-radius: 999px;
-    background: $primary-dark;
-    color: $white;
-    font-size: 0.7rem;
-    font-weight: 700;
-
-    .filter-pill.is-active & {
-      background: $white;
-      color: $primary-dark;
-    }
-  }
-
-  .filter-pill-chevron {
-    opacity: 0.6;
-  }
-
-  .filter-pill-reset {
-    border: none;
-    background-color: $light-secondary;
-    color: $secondary;
-    font-weight: 600;
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    svg {
-      opacity: 0.8;
-    }
   }
 
   // Mobile: Bouton trigger
@@ -487,54 +415,28 @@
     
     .offcanvas-body {
       padding: 0;
-      
+
+      // .filter-label / .filter-group / .sidebar-footer .reset-button :
+      // style partagé, voir components/macro-sidebar.scss
       .sidebar-filters {
         height: 100%;
         display: flex;
         flex-direction: column;
-        
+
         .sidebar-body {
           flex: 1;
           overflow-y: auto;
           padding: 1.5rem;
         }
-        
-        .filter-label {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          font-size: 0.8rem;
-          font-weight: 600;
-          color: #374151;
-          margin-bottom: 0.4rem;
-          
-          .filter-icon {
-            opacity: 0.7;
-          }
-        }
-        
+
         .filter-group + .filter-group {
-          margin-top: 1.5rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid #e5e7eb;
+          padding-top: 1rem;
+          border-top: 1px solid $gray-200;
         }
-        
+
         .sidebar-footer {
-          padding: 1.5rem;
-          border-top: 1px solid #e5e7eb;
-          background: #f8f9fa;
-          
-          .reset-button {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            
-            .reset-icon {
-              opacity: 0.7;
-            }
-          }
+          border-top: 1px solid $gray-200;
+          background: $bg-light-gray;
         }
       }
     }

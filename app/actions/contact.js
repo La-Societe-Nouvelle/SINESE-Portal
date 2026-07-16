@@ -2,6 +2,15 @@
 
 import nodemailer from "nodemailer";
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function sendContactMessage({ name, email, subject, message }) {
   if (!name || !email || !subject || !message) {
     return { error: "Tous les champs sont obligatoires." };
@@ -11,6 +20,11 @@ export async function sendContactMessage({ name, email, subject, message }) {
   if (!emailRegex.test(email)) {
     return { error: "Adresse email invalide." };
   }
+
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeSubject = escapeHtml(subject);
+  const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || "localhost",
@@ -24,10 +38,10 @@ export async function sendContactMessage({ name, email, subject, message }) {
   const contactEmail = process.env.CONTACT_EMAIL || "contact@lasocietenouvelle.org";
 
   const mailToTeam = {
-    from: process.env.SMTP_FROM || `"${name}" <${email}>`,
+    from: process.env.SMTP_FROM || `"${safeName}" <${email}>`,
     to: contactEmail,
     replyTo: email,
-    subject: `[Contact SINESE] ${subject}`,
+    subject: `[Contact SINESE] ${safeSubject}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #3b4d8f 0%, #6c7fdd 100%); padding: 20px; text-align: center;">
@@ -36,15 +50,15 @@ export async function sendContactMessage({ name, email, subject, message }) {
         <div style="padding: 30px; background-color: #f8f9fc; border-left: 4px solid #3b4d8f;">
           <h2 style="color: #3b4d8f; margin-top: 0;">Informations du contact</h2>
           <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;"><strong>Nom :</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;">${name}</td></tr>
-            <tr><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;"><strong>Email :</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;">${email}</td></tr>
-            <tr><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;"><strong>Sujet :</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;">${subject}</td></tr>
+            <tr><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;"><strong>Nom :</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;">${safeName}</td></tr>
+            <tr><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;"><strong>Email :</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;">${safeEmail}</td></tr>
+            <tr><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;"><strong>Sujet :</strong></td><td style="padding: 10px 0; border-bottom: 1px solid #e9ecf3;">${safeSubject}</td></tr>
           </table>
         </div>
         <div style="padding: 30px; background-color: white;">
           <h3 style="color: #3b4d8f;">Message :</h3>
           <div style="background-color: #f8f9fc; padding: 20px; border-radius: 8px; border-left: 4px solid #e74c5a;">
-            ${message.replace(/\n/g, "<br>")}
+            ${safeMessage}
           </div>
         </div>
         <div style="padding: 20px; text-align: center; color: #6c757d; border-top: 1px solid #e9ecf3;">
@@ -64,11 +78,11 @@ export async function sendContactMessage({ name, email, subject, message }) {
           <h1 style="color: white; margin: 0;">Message bien reçu !</h1>
         </div>
         <div style="padding: 30px; background-color: white;">
-          <p style="font-size: 16px;">Bonjour <strong>${name}</strong>,</p>
-          <p>Nous accusons bonne réception de votre message concernant "<strong>${subject}</strong>".</p>
+          <p style="font-size: 16px;">Bonjour <strong>${safeName}</strong>,</p>
+          <p>Nous accusons bonne réception de votre message concernant "<strong>${safeSubject}</strong>".</p>
           <div style="background-color: #f8f9fc; padding: 20px; border-radius: 8px; border-left: 4px solid #3b4d8f; margin: 20px 0;">
             <h4 style="color: #3b4d8f; margin-top: 0;">Votre message :</h4>
-            <p style="font-style: italic;">${message.replace(/\n/g, "<br>")}</p>
+            <p style="font-style: italic;">${safeMessage}</p>
           </div>
           <p>Notre équipe va examiner votre demande et vous répondra dans les plus brefs délais.</p>
           <p>Merci de nous avoir contactés !</p>

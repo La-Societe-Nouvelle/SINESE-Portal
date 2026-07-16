@@ -105,11 +105,11 @@ export default function NafSidebarSelector({
   if (!isOpen) return null;
 
   return (
-    <div className={`naf-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg ${className}`}
+    <div className={`naf-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg d-flex flex-column ${className}`}
       style={{ width: '400px', zIndex: 1050 }}>
 
       {/* Header */}
-      <div className="p-3 border-bottom bg-light">
+      <div className="p-3 border-bottom bg-light flex-shrink-0">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h6 className="mb-0 fw-bold">Activité</h6>
           <Button variant="link" size="sm" onClick={onToggle} className="p-1">
@@ -144,7 +144,7 @@ export default function NafSidebarSelector({
       </div>
 
       {/* Contenu scrollable */}
-      <div className="flex-grow-1 overflow-auto" style={{ height: 'calc(100vh - 140px)' }}>
+      <div className="flex-grow-1 overflow-auto" style={{ minHeight: 0 }}>
         {processedData.map((section) => {
           const sectionState = getSectionState(section.codes);
           const isExpanded = expandedSections.has(section.name);

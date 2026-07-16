@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useTransition } from "react";
+import { SearchResultsSkeleton } from "./LoadingSkeleton";
 
 const SearchTransitionContext = createContext(null);
 
@@ -25,13 +26,12 @@ export function useSearchTransition() {
   return ctx;
 }
 
-// Dims its children while a filter/pagination transition is pending —
-// used only around the results column, not the sidebar.
+// Replaces its children with a skeleton while a filter/pagination transition
+// is pending — used only around the results column, not the sidebar.
 export function ResultsPendingOverlay({ children }) {
   const { isPending } = useSearchTransition();
-  return (
-    <div className={isPending ? "search-results-pending" : undefined}>
-      {children}
-    </div>
-  );
+  if (isPending) {
+    return <SearchResultsSkeleton count={5} />;
+  }
+  return <>{children}</>;
 }

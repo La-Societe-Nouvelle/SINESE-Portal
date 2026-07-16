@@ -40,7 +40,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
 
       strong {
-        color: #fa595f;
+        color: $accent-highlight;
         font-weight: 700;
       }
     }
@@ -133,7 +133,7 @@
 
   // Suggestions de recherche
   .search-suggestions {
-    border-top: 1px solid #f0f2f5;
+    border-top: 1px solid $border-divider-light;
     background: white;
     border-radius: 0 0 12px 12px;
     overflow: hidden;
@@ -148,12 +148,12 @@
     .suggestion-item {
       display: block;
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid #f8f9fc;
+      border-bottom: 1px solid $bg-icon-circle;
       cursor: pointer;
       @extend .transition-all;
 
       &:hover {
-        background: #f8f9fc;
+        background: $bg-icon-circle;
       }
 
       &:last-child {
@@ -172,7 +172,7 @@
         }
 
         .company-details {
-          color: #64748b;
+          color: $neutral;
           font-size: 0.825rem;
           line-height: 1.2;
         }
@@ -181,8 +181,8 @@
 
     .suggestions-footer {
       padding: 0.75rem 1rem;
-      background: #f8f9fc;
-      border-top: 1px solid #f0f2f5;
+      background: $bg-icon-circle;
+      border-top: 1px solid $border-divider-light;
       text-align: left;
 
       .btn-link {
@@ -196,12 +196,12 @@
   }
 
   .advanced-search {
-    border-top: 1px solid #f0f2f5;
+    border-top: 1px solid $border-divider-light;
     padding: 0.75rem;
     text-align: center;
 
     a {
-      color: #64748b;
+      color: $neutral;
       text-decoration: none;
       font-size: 0.9rem;
       display: inline-flex;
@@ -218,7 +218,7 @@
       }
 
       &:hover {
-        color: #fa595f;
+        color: $accent-highlight;
       }
     }
   }
@@ -605,8 +605,8 @@
 }
 
 .suggestions-loading {
-  border-top: 1px solid #f0f2f5;
-  background: #fafbfc;
+  border-top: 1px solid $border-divider-light;
+  background: $bg-very-light;
 }
 
 // Search input loading state (no disabled states)

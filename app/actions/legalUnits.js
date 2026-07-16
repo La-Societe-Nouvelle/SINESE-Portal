@@ -78,6 +78,10 @@ export async function addLegalUnit({ siren, denomination }) {
     return { error: "Entreprise non trouvée dans le répertoire SINESE." };
   }
 
+  if (lookup.legalUnits[0].etatAdministratifUniteLegale !== "A") {
+    return { error: "Cette entreprise est radiée ou fermée et ne peut pas être ajoutée." };
+  }
+
   const client = await pool.connect();
   try {
     await client.query("BEGIN");

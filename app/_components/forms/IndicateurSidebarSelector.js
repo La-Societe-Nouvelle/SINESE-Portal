@@ -105,11 +105,11 @@ export default function IndicateurSidebarSelector({
   if (!isOpen) return null;
 
   return (
-    <div className={`indicateur-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg ${className}`}
+    <div className={`indicateur-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg d-flex flex-column ${className}`}
       style={{ width: '400px', zIndex: 1050 }}>
 
       {/* Header */}
-      <div className="p-3 border-bottom bg-light">
+      <div className="p-3 border-bottom bg-light flex-shrink-0">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h6 className="mb-0 fw-bold d-flex align-items-center">
             <CheckCircle size={18} className="me-2" />
@@ -176,7 +176,7 @@ export default function IndicateurSidebarSelector({
       </div>
 
       {/* Contenu scrollable */}
-      <div className="flex-grow-1 overflow-auto" style={{ height: 'calc(100vh - 240px)' }}>
+      <div className="flex-grow-1 overflow-auto" style={{ minHeight: 0 }}>
         {processedData.map((category) => {
           const categoryState = getCategoryState(category.indicateurs);
 
