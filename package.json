@@ -10,6 +10,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.879.0",
     "@aws-sdk/s3-request-presigner": "^3.1052.0",
+    "archiver": "^7.0.1",
     "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.6",
     "chart.js": "^4.4.0",

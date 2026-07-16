@@ -1,5 +1,5 @@
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Button } from "react-bootstrap";
-import { Upload, Search, TrendingUp, DatabaseIcon, Code } from "lucide-react";
+import { Upload, Search, TrendingUp, DatabaseIcon, Code, FileText } from "lucide-react";
 
 export default function PortalNavbar() {
   return (
@@ -22,7 +22,10 @@ export default function PortalNavbar() {
               <Search size={16} className="me-2" />
               <span>Entreprises</span>
             </NavLink>
-
+            <NavLink href="/rapports" className="nav-item-custom">
+              <FileText size={16} className="me-2" />
+              <span>Rapports de durabilité</span>
+            </NavLink>
             <NavLink href="/macroeconomies" className="nav-item-custom">
               <TrendingUp size={16} className="me-2" />
               <span>Macroéconomie</span>
@@ -31,6 +34,7 @@ export default function PortalNavbar() {
               <DatabaseIcon size={16} className="me-2" />
               <span>Open Data</span>
             </NavLink>
+
             <NavLink href="/api-sinese" className="nav-item-custom">
               <Code size={16} className="me-2" />
               <span>API</span>
