@@ -41,7 +41,7 @@ export async function sendContactMessage({ name, email, subject, message }) {
     from: process.env.SMTP_FROM || `"${safeName}" <${email}>`,
     to: contactEmail,
     replyTo: email,
-    subject: `[Contact SINESE] ${subject}`,
+    subject: `[Contact SINESE] ${safeSubject}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #3b4d8f 0%, #6c7fdd 100%); padding: 20px; text-align: center;">
