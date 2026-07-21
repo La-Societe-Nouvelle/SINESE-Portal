@@ -41,9 +41,9 @@ Le portail SINESE (Système d'Information National sur l'Empreinte Sociétale de
 ### 🌐 [Site web officiel](https://lasocietenouvelle.org)
 Découvrez notre mission, nos services et nos engagements pour une économie plus responsable.
 
-### 📊 [API SINESE](https://api.lasocietenouvelle.org)
+### 📊 [API SINESE](https://api.sinese.fr)
 API publique pour accéder aux données d'empreinte sociétale des entreprises françaises.
-- Endpoint : `/legalUnitfootprint/{siren}`
+- Endpoint : `/v2/legalunits/{siren}/footprint`
 
 ### 📏 [Metriz](https://partners.metriz.lasocietenouvelle.org)
 Application de mesure de l'empreinte sociétale pour les entreprises et experts-comptables.
