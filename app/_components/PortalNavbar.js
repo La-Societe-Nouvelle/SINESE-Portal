@@ -1,6 +1,8 @@
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Button } from "react-bootstrap";
 import { Upload, Search, TrendingUp, DatabaseIcon, Code } from "lucide-react";
 
+const PUBLICATION_UNAVAILABLE = true;
+
 export default function PortalNavbar() {
   return (
     <Navbar expand="lg" className="header-nav" variant="light">
@@ -38,7 +40,12 @@ export default function PortalNavbar() {
           </Nav>
 
           <Nav className="ms-auto">
-            <Button href="/publications/connexion" variant="secondary">
+            <Button
+              href={PUBLICATION_UNAVAILABLE ? undefined : "/publications/connexion"}
+              variant="secondary"
+              disabled={PUBLICATION_UNAVAILABLE}
+              title={PUBLICATION_UNAVAILABLE ? "Service temporairement indisponible" : undefined}
+            >
               <Upload size={16} className="me-2" />
               Publier sur SINESE.fr
             </Button>
