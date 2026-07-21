@@ -1,7 +1,7 @@
 import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Button } from "react-bootstrap";
 import { Upload, Search, TrendingUp, DatabaseIcon, Code } from "lucide-react";
 
-const PUBLICATION_UNAVAILABLE = true;
+const PUBLICATION_UNAVAILABLE = false;
 
 export default function PortalNavbar() {
   return (
