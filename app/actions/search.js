@@ -127,6 +127,7 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
       LIMIT 1001
     ) sub
   `;
+  const countPromise = pool.query(countSql, params);
 
   // Rank companies by ESE panel status — published, then estimated, then the rest —
   // via 3 independently-paginated tiers instead of sorting the whole filtered set,
@@ -185,7 +186,7 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
   const sirens = sirenResults.flatMap(r => r.rows);
 
   if (sirens.length === 0) {
-    return { legalUnits: [], total: parseInt((await pool.query(countSql, params)).rows[0].total), page, perPage: PER_PAGE };
+    return { legalUnits: [], total: parseInt((await countPromise).rows[0].total), page, perPage: PER_PAGE };
   }
 
   // Tier order was already decided above — this just enriches those sirens.
@@ -236,7 +237,7 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
   `;
 
   const [countResult, dataResult] = await Promise.all([
-    pool.query(countSql, params),
+    countPromise,
     pool.query(dataSql, [sirenList]),
   ]);
 
