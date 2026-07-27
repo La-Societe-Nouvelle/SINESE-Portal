@@ -2,8 +2,8 @@
 
 import pool from '@/config/db';
 
-// Inlined as SQL literal — avoids passing it as $1 which breaks the countSql
-// that doesn't reference it (PostgreSQL can't infer the type of unused params)
+// Inlined as a literal, not $1 — Postgres can't infer the type of a param
+// unused by countSql (which doesn't reference this array).
 const ESE_PANEL_SQL = `ARRAY['ECO','ART','SOC','IDR','GEQ','KNW','GHG','NRG','WAT','MAT','WAS','HAZ']::text[]`;
 
 const PER_PAGE = 20;
@@ -60,12 +60,10 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     conditions.push(`ul.societemissionunitelegale = 'N'`);
   }
 
-  // Correlated EXISTS against ul.siren — lets the planner use
-  // idx_etablissements_siren_siege_actif per candidate row instead of
-  // materializing every siren in the department up front. The previous
-  // pre-resolved-array approach scanned/deduped the whole department before
-  // the main query even started, which took minutes for dense departments
-  // (e.g. Paris/75, ~875k matching establishment rows).
+  // Correlated EXISTS (not a pre-resolved siren array) so the planner probes
+  // idx_etablissements_siren_siege_actif per row instead of scanning/deduping
+  // the whole department upfront — that took minutes for dense ones (Paris/75,
+  // ~875k establishment rows).
   if (filters.departements?.length > 0) {
     const deptConditions = filters.departements.map((dept) => {
       params.push(`${dept}%`);
@@ -165,8 +163,8 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
   for (const tierFrom of [tierPublishedFrom, tierEstimatedFrom, tierNoneFrom]) {
     if (cursorLimit <= 0) break;
 
-    // The last tier doesn't need its own capped count — whatever's left just
-    // gets the remaining offset/limit directly, same as before with 2 tiers.
+    // Last tier gets whatever's left directly — no capped count needed
+    // since there's nothing after it to reserve room for.
     const isLastTier = tierFrom === tierNoneFrom;
     const tierCount = isLastTier ? Infinity : await tierCappedCount(tierFrom, cursorOffset + cursorLimit);
 
@@ -311,7 +309,7 @@ function mapSuggestRow(row) {
   };
 }
 
-// Lightweight lookup for the search-as-you-type dropdown — no footprint join, minimal columns.
+// Runs on every keystroke, so kept cheap — no footprint join.
 export async function suggestLegalUnits(query = "") {
   const raw = query.trim();
   if (raw.length < SUGGEST_MIN_CHARS) return [];
