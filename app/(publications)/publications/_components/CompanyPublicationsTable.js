@@ -10,6 +10,7 @@ import { REPORT_TYPES } from "./forms/ReportForm";
 import indicators from "../_lib/indicators.json";
 import { deleteLegalUnit, addLegalUnit } from "@/actions/legalUnits";
 import { deletePublication, updatePublicationStatus } from "@/actions/publications";
+import { getErrorMessage } from "@/_libs/errors";
 
 export default function CompanyPublicationsTable({ legalunits = [], publications = [] }) {
   const router = useRouter();
@@ -70,7 +71,7 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
       try {
         const result = await deletePublication(publicationToDelete.id);
         if (result.error) {
-          alert(result.error);
+          alert(getErrorMessage(result));
         } else {
           router.refresh();
         }
@@ -98,7 +99,7 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     startUnitTransition(async () => {
       const result = await deleteLegalUnit(unitToDelete.id);
       if (result.error) {
-        alert(result.error);
+        alert(getErrorMessage(result));
       } else {
         router.refresh();
       }
@@ -121,7 +122,7 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
       try {
         const result = await updatePublicationStatus(pubToRevert.id, "draft");
         if (result.error) {
-          alert(result.error);
+          alert(getErrorMessage(result));
         } else {
           router.refresh();
         }
@@ -152,7 +153,7 @@ export default function CompanyPublicationsTable({ legalunits = [], publications
     startUnitTransition(async () => {
       const result = await addLegalUnit(legalunit);
       if (result.error) {
-        alert(result.error);
+        alert(getErrorMessage(result));
       } else {
         router.refresh();
         setShowAddModal(false);

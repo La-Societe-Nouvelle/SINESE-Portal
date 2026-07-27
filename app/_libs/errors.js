@@ -296,6 +296,7 @@ export function isError(result) {
 export function getErrorMessage(error) {
   if (!error) return 'Une erreur est survenue.';
   if (typeof error === 'string') return error;
+  if (error.error && typeof error.error === 'string') return error.error;
   if (error.error && error.error.message) return error.error.message;
   if (error.message) return error.message;
   return 'Une erreur est survenue.';

@@ -1,11 +1,12 @@
 "use server";
 
 import pool from "@/config/db";
-import { getSession } from "@/_libs/auth";
+import { requireAuth } from "@/_libs/auth";
 
 export async function getLegalUnits() {
-  const session = await getSession();
-  if (!session) return [];
+  const auth = await requireAuth();
+  if (auth.error) return [];
+  const { session } = auth;
 
   const { rows } = await pool.query(
     `SELECT lu.id, lu.denomination, lu.siren, lu.data,
@@ -25,8 +26,9 @@ export async function getLegalUnits() {
 }
 
 export async function getLegalUnitById(legalUnitId) {
-  const session = await getSession();
-  if (!session) return null;
+  const auth = await requireAuth();
+  if (auth.error) return null;
+  const { session } = auth;
 
   const { rows } = await pool.query(
     `SELECT lu.id, lu.denomination, lu.siren, lu.data
@@ -66,8 +68,9 @@ export async function lookupLegalUnitBySiren(siren) {
 }
 
 export async function addLegalUnit({ siren, denomination }) {
-  const session = await getSession();
-  if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
+  const auth = await requireAuth();
+  if (auth.error) return auth;
+  const { session } = auth;
 
   if (!siren || !denomination) {
     return { error: "SIREN et dénomination sont requis." };
@@ -106,8 +109,9 @@ export async function addLegalUnit({ siren, denomination }) {
 }
 
 export async function deleteLegalUnit(id) {
-  const session = await getSession();
-  if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
+  const auth = await requireAuth();
+  if (auth.error) return auth;
+  const { session } = auth;
 
   const userId = session.user.id;
 
@@ -167,8 +171,9 @@ export async function deleteLegalUnit(id) {
 }
 
 export async function checkLegalUnitAttachment(siren) {
-  const session = await getSession();
-  if (!session) return { error: "Non autorisé." };
+  const auth = await requireAuth();
+  if (auth.error) return auth;
+  const { session } = auth;
 
   if (!siren) return { error: "SIREN requis." };
 

@@ -3,6 +3,7 @@ import { addPublication, addReport } from "@/actions/publications";
 import { uploadDocumentsToOVH } from "../_components/forms/DocumentUploadForm";
 import { usePublicationFormContext } from "../_context/PublicationFormContext";
 import { validateStep } from "../_utils/validation";
+import { getErrorMessage } from "@/_libs/errors";
 
 export default function usePublicationSubmit() {
   const ctx = usePublicationFormContext();
@@ -31,7 +32,7 @@ export default function usePublicationSubmit() {
           status: "draft",
         });
 
-        if (result.error) throw new Error(result.error);
+        if (result.error) throw new Error(getErrorMessage(result));
 
         let reportSaveOk = true;
         if (reportType && uploadMode === "url" && externalUrl.trim()) {
@@ -44,7 +45,7 @@ export default function usePublicationSubmit() {
           });
           if (reportResult.error) {
             reportSaveOk = false;
-            console.error("Erreur lors de la sauvegarde du rapport :", reportResult.error);
+            console.error("Erreur lors de la sauvegarde du rapport :", getErrorMessage(reportResult));
           } else {
             setReportId(reportResult.reportId);
           }
@@ -103,7 +104,7 @@ export default function usePublicationSubmit() {
         status: "pending",
       });
 
-      if (publicationResult.error) throw new Error(publicationResult.error);
+      if (publicationResult.error) throw new Error(getErrorMessage(publicationResult));
       const publicationId = publicationResult.publicationId;
 
       // ÉTAPE 2: Si rapport, le soumettre avec publication_id
@@ -132,7 +133,7 @@ export default function usePublicationSubmit() {
           mimeType,
           storageType,
         });
-        if (reportResult.error) throw new Error(reportResult.error);
+        if (reportResult.error) throw new Error(getErrorMessage(reportResult));
       }
 
       setSuccess(true);

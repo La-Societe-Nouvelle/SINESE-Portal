@@ -11,6 +11,10 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function sanitizeHeaderValue(value) {
+  return String(value).replace(/[\r\n]+/g, " ").trim();
+}
+
 export async function sendContactMessage({ name, email, subject, message }) {
   if (!name || !email || !subject || !message) {
     return { error: "Tous les champs sont obligatoires." };
@@ -21,9 +25,9 @@ export async function sendContactMessage({ name, email, subject, message }) {
     return { error: "Adresse email invalide." };
   }
 
-  const safeName = escapeHtml(name);
+  const safeName = escapeHtml(sanitizeHeaderValue(name));
   const safeEmail = escapeHtml(email);
-  const safeSubject = escapeHtml(subject);
+  const safeSubject = escapeHtml(sanitizeHeaderValue(subject));
   const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
 
   const transporter = nodemailer.createTransport({

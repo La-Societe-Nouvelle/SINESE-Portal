@@ -1,11 +1,12 @@
 "use server";
 
 import pool from "@/config/db";
-import { getSession } from "@/_libs/auth";
+import { requireAuth } from "@/_libs/auth";
 
 export async function getPublications() {
-  const session = await getSession();
-  if (!session) return [];
+  const auth = await requireAuth();
+  if (auth.error) return [];
+  const { session } = auth;
 
   const { rows } = await pool.query(
     `SELECT
@@ -34,8 +35,9 @@ export async function getPublications() {
 }
 
 export async function getPublicationById(id) {
-  const session = await getSession();
-  if (!session) return undefined;
+  const auth = await requireAuth();
+  if (auth.error) return undefined;
+  const { session } = auth;
 
   const { rows } = await pool.query(
     `SELECT p.*, lu.denomination, lu.siren
@@ -82,8 +84,9 @@ export async function getPublicationById(id) {
 }
 
 export async function getPublicationStatusByLegalUnit(legalUnitId) {
-  const session = await getSession();
-  if (!session) return { published: 0, draft: 0, pending: 0 };
+  const auth = await requireAuth();
+  if (auth.error) return { published: 0, draft: 0, pending: 0 };
+  const { session } = auth;
 
   const { rows } = await pool.query(
     `SELECT
@@ -106,8 +109,9 @@ export async function getPublicationStatusByLegalUnit(legalUnitId) {
 }
 
 export async function addPublication({ legalUnit, declarationData, documents = [], year, status, periodStart, periodEnd }) {
-  const session = await getSession();
-  if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
+  const auth = await requireAuth();
+  if (auth.error) return auth;
+  const { session } = auth;
 
   if (!year) return { error: "L'année est requise." };
   if (!legalUnit?.id) return { error: "Aucune unité légale sélectionnée." };
@@ -135,8 +139,9 @@ export async function addPublication({ legalUnit, declarationData, documents = [
 }
 
 export async function updatePublicationStatus(id, status) {
-  const session = await getSession();
-  if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
+  const auth = await requireAuth();
+  if (auth.error) return auth;
+  const { session } = auth;
 
   if (status !== "draft") return { error: "Seul le retour au brouillon est autorisé." };
 
@@ -157,8 +162,9 @@ export async function updatePublicationStatus(id, status) {
 }
 
 export async function deletePublication(id) {
-  const session = await getSession();
-  if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
+  const auth = await requireAuth();
+  if (auth.error) return auth;
+  const { session } = auth;
 
   const checkRes = await pool.query(
     `SELECT p.id, p.status
@@ -177,8 +183,9 @@ export async function deletePublication(id) {
 }
 
 export async function getLastPublication() {
-  const session = await getSession();
-  if (!session) return null;
+  const auth = await requireAuth();
+  if (auth.error) return null;
+  const { session } = auth;
 
   const res = await pool.query(
     `SELECT p.year, lu.denomination AS company_name
@@ -194,8 +201,9 @@ export async function getLastPublication() {
 }
 
 export async function getCompaniesCount() {
-  const session = await getSession();
-  if (!session) return 0;
+  const auth = await requireAuth();
+  if (auth.error) return 0;
+  const { session } = auth;
 
   const res = await pool.query(
     `SELECT COUNT(*) FROM publications.user_legal_unit WHERE user_id = $1`,
@@ -205,8 +213,9 @@ export async function getCompaniesCount() {
 }
 
 export async function getDraftPublicationsCount() {
-  const session = await getSession();
-  if (!session) return 0;
+  const auth = await requireAuth();
+  if (auth.error) return 0;
+  const { session } = auth;
 
   const res = await pool.query(
     `SELECT COUNT(*)
@@ -220,8 +229,9 @@ export async function getDraftPublicationsCount() {
 }
 
 export async function addReport({ reportId, publicationId, type, fileUrl, fileName, fileSize, mimeType, storageType }) {
-  const session = await getSession();
-  if (!session) return { error: "Non autorisé. Veuillez vous connecter." };
+  const auth = await requireAuth();
+  if (auth.error) return auth;
+  const { session } = auth;
 
   if (!publicationId) return { error: "L'identifiant de publication est requis." };
   if (!type) return { error: "Le type de rapport est requis." };

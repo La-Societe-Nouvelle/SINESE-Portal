@@ -1,12 +1,18 @@
 import { NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
+import { requireAdmin } from '@/_libs/auth';
 
 /**
  * API pour récupérer les statistiques de téléchargement
  * URL: /api/stats/downloads
  */
 export async function GET(request) {
+  const auth = await requireAdmin();
+  if (auth.error) {
+    return NextResponse.json(auth, { status: auth.error.status });
+  }
+
   const { searchParams } = new URL(request.url);
   const period = searchParams.get('period') || '30d'; // 7d, 30d, 90d, 1y
   const fileId = searchParams.get('fileId'); // Filtrer par fichier spécifique

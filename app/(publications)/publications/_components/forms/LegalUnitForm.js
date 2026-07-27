@@ -6,6 +6,7 @@ import AddLegalUnitModal from "../modals/AddLegalUnitModal";
 import YearSelector from "./YearSelector";
 import { getLegalUnits, addLegalUnit } from "@/actions/legalUnits";
 import { usePublicationFormContext } from "../../_context/PublicationFormContext";
+import { getErrorMessage } from "@/_libs/errors";
 
 export default function LegalUnitForm({ hidePeriod = false }) {
   const {
@@ -67,7 +68,7 @@ export default function LegalUnitForm({ hidePeriod = false }) {
     setError("");
     const result = await addLegalUnit({ siren: legalunit.siren, denomination: legalunit.denomination });
     if (result.error) {
-      setError(result.error);
+      setError(getErrorMessage(result));
     } else {
       setLegalUnits((prev) => [...prev, result]);
       setSelectedLegalUnit({ id: result.id, siren: result.siren, denomination: result.denomination });

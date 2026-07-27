@@ -14,6 +14,16 @@ export async function proxy(request) {
     return NextResponse.redirect(new URL("/publications/connexion", request.url));
   }
 
+  // Protection de l'espace admin par rôle
+  if (pathname.startsWith("/admin")) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/publications/connexion", request.url));
+    }
+    if (token.role !== "admin") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
   // Utilisateur déjà connecté → redirige vers l'espace pour les pages d'auth
   if (
     token &&
