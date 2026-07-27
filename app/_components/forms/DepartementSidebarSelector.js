@@ -25,7 +25,7 @@ export default function DepartementSidebarSelector({
         regionGroups[dept.region_name] = [];
       }
       regionGroups[dept.region_name].push({
-        code: dept.num_dep,
+        code: String(dept.num_dep),
         name: dept.dep_name,
         displayName: `${dept.num_dep} - ${dept.dep_name}`
       });
