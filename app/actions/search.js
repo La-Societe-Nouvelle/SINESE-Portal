@@ -126,6 +126,8 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     ) sub
   `;
   const countPromise = pool.query(countSql, params);
+  // Marks the rejection as handled up front so a later, unrelated throw in this
+  countPromise.catch(() => {});
 
   // Rank companies by ESE panel status — published, then estimated, then the rest —
   // via 3 independently-paginated tiers instead of sorting the whole filtered set,
