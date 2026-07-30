@@ -129,6 +129,24 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
   // Marks the rejection as handled up front so a later, unrelated throw in this
   countPromise.catch(() => {});
 
+  // Le count est décoratif (l'UI affiche "+ de 1000" dès 1000) : il ne doit
+  // ni retarder la réponse quand il est lent (combos de filtres larges, plan
+  // dégénéré mesuré à 45s sur départements seuls), ni faire échouer la
+  // recherche quand statement_timeout le tue. Budget une fois les résultats
+  // prêts, puis fallback.
+  const COUNT_BUDGET_MS = 2500;
+  const COUNT_FALLBACK = 1001; // rend "+ de 1000" côté SearchControls
+  const awaitCountOr = async (fallback) => {
+    let timer;
+    const budget = new Promise((resolve) => { timer = setTimeout(() => resolve(null), COUNT_BUDGET_MS); });
+    const total = await Promise.race([
+      countPromise.then((r) => parseInt(r.rows[0].total)).catch(() => null),
+      budget,
+    ]);
+    clearTimeout(timer);
+    return total ?? fallback;
+  };
+
   // Rank companies by ESE panel status — published, then estimated, then the rest —
   // via 3 independently-paginated tiers instead of sorting the whole filtered set,
   // which would force a full materialize+sort before LIMIT/OFFSET could apply.
@@ -186,7 +204,9 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
   const sirens = sirenResults.flatMap(r => r.rows);
 
   if (sirens.length === 0) {
-    return { legalUnits: [], total: parseInt((await countPromise).rows[0].total), page, perPage: PER_PAGE };
+    // Aucun résultat trouvé par les tiers : si le count échoue/traîne aussi,
+    // 0 est le fallback cohérent avec ce qu'on affiche.
+    return { legalUnits: [], total: await awaitCountOr(0), page, perPage: PER_PAGE };
   }
 
   // Tier order was already decided above — this just enriches those sirens.
@@ -236,10 +256,8 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
     WHERE ul.siren = ANY($1)
   `;
 
-  const [countResult, dataResult] = await Promise.all([
-    countPromise,
-    pool.query(dataSql, [sirenList]),
-  ]);
+  const dataResult = await pool.query(dataSql, [sirenList]);
+  const total = await awaitCountOr(COUNT_FALLBACK);
 
   // Restore the tier order decided above — ANY($1) doesn't guarantee order.
   const rowBySiren = new Map(dataResult.rows.map(row => [row.siren, row]));
@@ -266,116 +284,8 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
 
   return {
     legalUnits,
-    total: parseInt(countResult.rows[0].total),
+    total,
     page,
     perPage: PER_PAGE,
   };
-}
-
-const SUGGEST_LIMIT = 8;
-const SUGGEST_MIN_CHARS = 3;
-
-const SUGGEST_SELECT = `
-  ul.siren,
-  COALESCE(
-    NULLIF(TRIM(ul.denominationunitelegale), ''),
-    NULLIF(TRIM(CONCAT(ul.prenom1unitelegale, ' ', ul.nomusageunitelegale)), ''),
-    NULLIF(TRIM(ul.prenom1unitelegale), '')
-  )                                 AS denomination,
-  naf.libelle                       AS "activitePrincipaleLibelle",
-  e.codepostaletablissement         AS "codePostal"
-`;
-
-const SUGGEST_FROM = `
-  FROM sirene.uniteslegales ul
-  LEFT JOIN sirene.etablissements e
-    ON e.siren = ul.siren
-    AND e.etablissementsiege = 'true'
-    AND e.etatadministratifetablissement = 'A'
-  LEFT JOIN sirene.activiteprincipale_nafrev2 naf
-    ON naf.code = ul.activiteprincipaleunitelegale
-`;
-
-const SUGGEST_BASE_WHERE = `
-  ul.etatadministratifunitelegale = 'A'
-  AND ul.statutdiffusionunitelegale = 'O'
-  AND ul.siren NOT LIKE '000000%'
-`;
-
-function mapSuggestRow(row) {
-  return {
-    siren: row.siren,
-    denomination: row.denomination,
-    activitePrincipaleLibelle: row.activitePrincipaleLibelle,
-    codePostal: row.codePostal,
-  };
-}
-
-// Runs on every keystroke, so kept cheap — no footprint join.
-export async function suggestLegalUnits(query = "") {
-  const raw = query.trim();
-  if (raw.length < SUGGEST_MIN_CHARS) return [];
-
-  const q = raw.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
-
-  if (/^\d{3,9}$/.test(q)) {
-    const sql = `
-      SELECT ${SUGGEST_SELECT}
-      ${SUGGEST_FROM}
-      WHERE ${SUGGEST_BASE_WHERE} AND ul.siren LIKE $1
-      ORDER BY ul.siren ASC
-      LIMIT ${SUGGEST_LIMIT}
-    `;
-    const result = await pool.query(sql, [`${q}%`]);
-    return result.rows.map(mapSuggestRow);
-  }
-
-  // Mirrors the production API: ul.ts @@ plainto_tsquery($1), plus a priority
-  // boost for names that start with the query so prefix matches surface first.
-  const matchPriorityOrder = `
-    CASE WHEN ul.denominationunitelegale LIKE $1 || '%' THEN 0 ELSE 1 END,
-    ul.denominationunitelegale ASC NULLS LAST
-  `;
-
-  const plainSql = `
-    SELECT ${SUGGEST_SELECT}
-    ${SUGGEST_FROM}
-    WHERE ${SUGGEST_BASE_WHERE}
-      AND ul.ts @@ plainto_tsquery($1)
-    ORDER BY ${matchPriorityOrder}
-    LIMIT ${SUGGEST_LIMIT}
-  `;
-  const plainResult = await pool.query(plainSql, [q]);
-
-  if (plainResult.rows.length >= SUGGEST_LIMIT) {
-    return plainResult.rows.map(mapSuggestRow);
-  }
-
-  // Fallback only, since it's more expensive (can match tens of thousands of
-  // rows for a short prefix): prefix (:*) match on the last word, for when it's
-  // still mid-typed and plainto_tsquery found nothing/not enough.
-  const words = q.match(/[A-Z0-9]+/g) || [];
-  if (words.length === 0) {
-    return plainResult.rows.map(mapSuggestRow);
-  }
-  const prefixTsQuery = words.map((w, i) => (i === words.length - 1 ? `${w}:*` : w)).join(' & ');
-  const excludeSirens = plainResult.rows.map(r => r.siren);
-
-  const prefixSql = `
-    SELECT ${SUGGEST_SELECT}
-    ${SUGGEST_FROM}
-    WHERE ${SUGGEST_BASE_WHERE}
-      AND NOT (ul.siren = ANY($2))
-      AND ul.ts @@ to_tsquery($3)
-    ORDER BY ${matchPriorityOrder}
-    LIMIT $4
-  `;
-  const prefixResult = await pool.query(prefixSql, [
-    q,
-    excludeSirens,
-    prefixTsQuery,
-    SUGGEST_LIMIT - plainResult.rows.length,
-  ]);
-
-  return [...plainResult.rows, ...prefixResult.rows].map(mapSuggestRow);
 }

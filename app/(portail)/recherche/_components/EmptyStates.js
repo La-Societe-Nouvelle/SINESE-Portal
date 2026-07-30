@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "react-bootstrap";
-import { Search, Building } from "lucide-react";
+import { Search, Building, AlertTriangle } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 export function NoResultsState() {
@@ -19,6 +19,23 @@ export function NoResultsState() {
       </p>
       <Button variant="outline-primary" onClick={() => router.push(pathname)}>
         Nouvelle recherche
+      </Button>
+    </div>
+  );
+}
+
+export function SearchErrorState() {
+  return (
+    <div className="text-center py-5" role="alert">
+      <div className="mb-4">
+        <AlertTriangle className="text-warning" size={48} />
+      </div>
+      <h4>La recherche a rencontré un problème</h4>
+      <p className="text-muted mb-4">
+        Le service met plus de temps que prévu à répondre. Réessayez dans quelques instants.
+      </p>
+      <Button variant="outline-primary" onClick={() => window.location.reload()}>
+        Réessayer
       </Button>
     </div>
   );

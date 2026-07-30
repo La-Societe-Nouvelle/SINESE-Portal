@@ -3,28 +3,27 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Search, Building2 } from "lucide-react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { suggestLegalUnits } from "@/actions/search";
+import { useRouter } from "next/navigation";
+import { useSearch } from "./SearchContext";
 
 const DEBOUNCE_MS = 600;
 const MIN_CHARS = 3;
 
-export default function SearchHeader({ initialQuery }) {
-  const [query, setQuery] = useState(initialQuery);
+export default function SearchHeader() {
+  const { query: activeQuery, submitQuery } = useSearch();
+  const [query, setQuery] = useState(activeQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const router      = useRouter();
-  const pathname    = usePathname();
-  const searchParams = useSearchParams();
   const containerRef = useRef(null);
   const debounceRef  = useRef(null);
-  const requestIdRef = useRef(0);
 
-  // Keep input in sync when URL changes externally (e.g. reset from sidebar)
+  // Keep input in sync when the active search changes externally
+  // (e.g. reset from the filter bar, back/forward navigation)
   useEffect(() => {
-    setQuery(searchParams.get("s") || "");
-  }, [searchParams]);
+    setQuery(activeQuery);
+  }, [activeQuery]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,6 +35,11 @@ export default function SearchHeader({ initialQuery }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // fetch vers un route handler GET, pas une Server Action : les Server
+  // Actions passent par la file d'actions du routeur client, où une
+  // navigation (clic de filtre) peut interrompre l'action en vol et laisser
+  // React suspendu sur une Promise jamais résolue. Le GET est hors de cette
+  // file, et abort() annule réellement les requêtes obsolètes.
   useEffect(() => {
     clearTimeout(debounceRef.current);
 
@@ -44,17 +48,27 @@ export default function SearchHeader({ initialQuery }) {
       return;
     }
 
+    const controller = new AbortController();
     debounceRef.current = setTimeout(async () => {
-      const requestId = ++requestIdRef.current;
-      const results = await suggestLegalUnits(query);
-      if (requestId === requestIdRef.current) {
+      try {
+        const res = await fetch(`/api/portail/suggest?q=${encodeURIComponent(query)}`, {
+          signal: controller.signal,
+        });
+        if (!res.ok) return;
+        const results = await res.json();
         setSuggestions(results);
         setShowSuggestions(true);
         setActiveIndex(-1);
+      } catch {
+        // Requête annulée (frappe suivante) ou réseau — les suggestions
+        // sont un confort, on ne casse rien.
       }
     }, DEBOUNCE_MS);
 
-    return () => clearTimeout(debounceRef.current);
+    return () => {
+      clearTimeout(debounceRef.current);
+      controller.abort();
+    };
   }, [query]);
 
   const goToCompany = useCallback((siren) => {
@@ -65,11 +79,7 @@ export default function SearchHeader({ initialQuery }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowSuggestions(false);
-    const params = new URLSearchParams(searchParams);
-    if (query.trim()) params.set("s", query.trim());
-    else params.delete("s");
-    params.delete("p");
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    submitQuery(query.trim());
   };
 
   const handleKeyDown = (e) => {

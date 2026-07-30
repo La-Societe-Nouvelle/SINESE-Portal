@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useOptimistic, useCallback } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Button, Badge, Form, Offcanvas } from "react-bootstrap";
 import { SlidersHorizontal, MapPin, Users, Building2, CheckCircle, RotateCcw, Info, ChevronDown } from "lucide-react";
 import NafTrigger from "@/_components/forms/NafTrigger";
@@ -10,8 +9,7 @@ import DepartementSidebarSelector from "@/_components/forms/DepartementSidebarSe
 import EffectifSidebarSelector from "@/_components/forms/EffectifSidebarSelector";
 import IndicateurSidebarSelector from "@/_components/forms/IndicateurSidebarSelector";
 import { EFFECTIF_MAPPING } from "@/_utils/effectifMapping";
-import { parseFiltersFromParams, filtersToSearchParams } from "../_utils/searchParams";
-import { useSearchTransition } from "./SearchTransitionContext";
+import { useSearch } from "./SearchContext";
 
 const FilterPill = ({ icon, label, count, active, onClick, ariaLabel, ariaExpanded }) => (
   <button
@@ -31,19 +29,10 @@ const FilterPill = ({ icon, label, count, active, onClick, ariaLabel, ariaExpand
 );
 
 export default function SearchFilterBar({ className = "" }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { startTransition } = useSearchTransition();
-
-  // Derived from URL — always in sync with current route
-  const query = searchParams.get("s") || "";
-  const filters = parseFiltersFromParams(searchParams);
-
-  // Reflects the click immediately (pill appears active right away) instead of
-  // waiting for the URL/RSC round-trip to commit — resets to `filters` once
-  // the transition settles.
-  const [optimisticFilters, setOptimisticFilters] = useOptimistic(filters);
+  // État client synchrone (SearchContext) : le clic se reflète immédiatement,
+  // sans useOptimistic ni transition — le fetch part en arrière-plan, debouncé
+  // et annulable, sans navigation App Router.
+  const { query, filters, updateFilter, resetFilters } = useSearch();
 
   // Pure UI state — not reflected in URL
   const [showMobile, setShowMobile] = useState(false);
@@ -90,33 +79,16 @@ export default function SearchFilterBar({ className = "" }) {
     };
   }, [nafOpen, departementOpen, effectifOpen, indicateurOpen, moreFiltersOpen, closeAllPanels]);
 
-  // Updates a single filter key and pushes new URL (page reset to 1)
-  const updateFilter = (key, value) => {
-    const updated = { ...optimisticFilters, [key]: value };
-    const params = filtersToSearchParams(updated, searchParams);
-    startTransition(() => {
-      setOptimisticFilters(updated);
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-    });
-  };
-
-  const resetFilters = () => {
-    startTransition(() => {
-      setOptimisticFilters(parseFiltersFromParams(new URLSearchParams()));
-      router.replace(pathname, { scroll: false });
-    });
-  };
-
-  const hasActiveFilters = query || Object.values(optimisticFilters).some(f =>
+  const hasActiveFilters = query || Object.values(filters).some(f =>
     Array.isArray(f) ? f.length > 0 : !!f
   );
 
   // Count of active filters tucked inside the "Plus de filtres" panel, shown
   // on the pill so a collapsed selection is still visible at a glance.
   const moreFiltersActiveCount = [
-    !!optimisticFilters.trancheEffectifs,
-    optimisticFilters.economieSocialeSolidaire,
-    !!optimisticFilters.societeMission,
+    !!filters.trancheEffectifs,
+    filters.economieSocialeSolidaire,
+    !!filters.societeMission,
   ].filter(Boolean).length;
 
   const FilterBarContent = () => (
@@ -124,50 +96,50 @@ export default function SearchFilterBar({ className = "" }) {
       <FilterPill
         icon={<Building2 size={14} />}
         label="Secteur d'activité"
-        count={optimisticFilters.secteurs.length}
-        active={optimisticFilters.secteurs.length > 0}
+        count={filters.secteurs.length}
+        active={filters.secteurs.length > 0}
         onClick={() => { 
           closeAllPanels(); 
           setNafOpen(true);
         }}
         ariaExpanded={nafOpen}
-        ariaLabel={`Filtrer par secteur d'activité${optimisticFilters.secteurs.length > 0 ? ', ' + optimisticFilters.secteurs.length + ' secteur(s) sélectionné(s)' : ''}`}
+        ariaLabel={`Filtrer par secteur d'activité${filters.secteurs.length > 0 ? ', ' + filters.secteurs.length + ' secteur(s) sélectionné(s)' : ''}`}
       />
       <FilterPill
         icon={<MapPin size={14} />}
         label="Localisation"
-        count={optimisticFilters.departements.length}
-        active={optimisticFilters.departements.length > 0}
+        count={filters.departements.length}
+        active={filters.departements.length > 0}
         onClick={() => { 
           closeAllPanels(); 
           setDepartementOpen(true);
         }}
         ariaExpanded={departementOpen}
-        ariaLabel={`Filtrer par localisation${optimisticFilters.departements.length > 0 ? ', ' + optimisticFilters.departements.length + ' département(s) sélectionné(s)' : ''}`}
+        ariaLabel={`Filtrer par localisation${filters.departements.length > 0 ? ', ' + filters.departements.length + ' département(s) sélectionné(s)' : ''}`}
       />
       <FilterPill
         icon={<CheckCircle size={14} />}
         label="Publications"
-        count={optimisticFilters.donneesPubliees.length + (optimisticFilters.rapportPublie ? 1 : 0)}
-        active={optimisticFilters.donneesPubliees.length > 0 || optimisticFilters.rapportPublie}
+        count={filters.donneesPubliees.length + (filters.rapportPublie ? 1 : 0)}
+        active={filters.donneesPubliees.length > 0 || filters.rapportPublie}
         onClick={() => { 
           closeAllPanels(); 
           setIndicateurOpen(true);
         }}
         ariaExpanded={indicateurOpen}
-        ariaLabel={`Filtrer par publications${(optimisticFilters.donneesPubliees.length + (optimisticFilters.rapportPublie ? 1 : 0)) > 0 ? ', ' + (optimisticFilters.donneesPubliees.length + (optimisticFilters.rapportPublie ? 1 : 0)) + ' publication(s) sélectionnée(s)' : ''}`}
+        ariaLabel={`Filtrer par publications${(filters.donneesPubliees.length + (filters.rapportPublie ? 1 : 0)) > 0 ? ', ' + (filters.donneesPubliees.length + (filters.rapportPublie ? 1 : 0)) + ' publication(s) sélectionnée(s)' : ''}`}
       />
       <FilterPill
         icon={<Users size={14} />}
         label="Effectif"
-        count={optimisticFilters.trancheEffectifs ? 1 : 0}
-        active={!!optimisticFilters.trancheEffectifs}
+        count={filters.trancheEffectifs ? 1 : 0}
+        active={!!filters.trancheEffectifs}
         onClick={() => { 
           closeAllPanels(); 
           setEffectifOpen(true);
         }}
         ariaExpanded={effectifOpen}
-        ariaLabel={`Filtrer par effectif${optimisticFilters.trancheEffectifs ? ', ' + (EFFECTIF_MAPPING[optimisticFilters.trancheEffectifs] || optimisticFilters.trancheEffectifs) + ' sélectionné' : ''}`}
+        ariaLabel={`Filtrer par effectif${filters.trancheEffectifs ? ', ' + (EFFECTIF_MAPPING[filters.trancheEffectifs] || filters.trancheEffectifs) + ' sélectionné' : ''}`}
       />
 
       <div className="filter-pill-dropdown-wrapper">
@@ -194,7 +166,7 @@ export default function SearchFilterBar({ className = "" }) {
                   type="checkbox"
                   id="filter-ess-sidebar"
                   label="Économie Sociale et Solidaire (ESS)"
-                  checked={optimisticFilters.economieSocialeSolidaire}
+                  checked={filters.economieSocialeSolidaire}
                   onChange={(e) => updateFilter("economieSocialeSolidaire", e.target.checked)}
                   className="mb-2 filter-checkbox"
                   aria-describedby="ess-filter-desc"
@@ -203,7 +175,7 @@ export default function SearchFilterBar({ className = "" }) {
                   type="checkbox"
                   id="filter-mission-sidebar"
                   label="Société à mission"
-                  checked={!!optimisticFilters.societeMission}
+                  checked={!!filters.societeMission}
                   onChange={(e) => updateFilter("societeMission", e.target.checked ? true : null)}
                   className="mb-2 filter-checkbox"
                   aria-describedby="mission-filter-desc"
@@ -241,9 +213,9 @@ export default function SearchFilterBar({ className = "" }) {
           </Form.Label>
           <NafTrigger 
             id="mobile-naf-trigger"
-            selectedCodes={optimisticFilters.secteurs} 
+            selectedCodes={filters.secteurs} 
             onToggle={() => { closeAllPanels(); setNafOpen(true); }}
-            aria-label={`Secteur d'activité${optimisticFilters.secteurs.length > 0 ? ', ' + optimisticFilters.secteurs.length + ' sélectionné(s)' : ''}`}
+            aria-label={`Secteur d'activité${filters.secteurs.length > 0 ? ', ' + filters.secteurs.length + ' sélectionné(s)' : ''}`}
           />
         </div>
         <div className="filter-group">
@@ -253,14 +225,14 @@ export default function SearchFilterBar({ className = "" }) {
           </Form.Label>
           <button 
             id="mobile-departement-trigger"
-            className={`btn-trigger ${optimisticFilters.departements.length ? 'has-selection' : ''}`} 
+            className={`btn-trigger ${filters.departements.length ? 'has-selection' : ''}`} 
             onClick={() => { closeAllPanels(); setDepartementOpen(true); }}
-            aria-label={`Départements${optimisticFilters.departements.length > 0 ? ', ' + optimisticFilters.departements.length + ' sélectionné(s)' : ''}`}
+            aria-label={`Départements${filters.departements.length > 0 ? ', ' + filters.departements.length + ' sélectionné(s)' : ''}`}
             aria-expanded={departementOpen}
             aria-haspopup="true"
           >
-            <span className={optimisticFilters.departements.length ? '' : 'placeholder-text'}>
-              {optimisticFilters.departements.length > 0 ? `${optimisticFilters.departements.length} département(s) sélectionné(s)` : "Sélectionner des départements..."}
+            <span className={filters.departements.length ? '' : 'placeholder-text'}>
+              {filters.departements.length > 0 ? `${filters.departements.length} département(s) sélectionné(s)` : "Sélectionner des départements..."}
             </span>
           </button>
         </div>
@@ -271,15 +243,15 @@ export default function SearchFilterBar({ className = "" }) {
           </Form.Label>
           <button 
             id="mobile-publication-trigger"
-            className={`btn-trigger ${(optimisticFilters.donneesPubliees.length || optimisticFilters.rapportPublie) ? 'has-selection' : ''}`} 
+            className={`btn-trigger ${(filters.donneesPubliees.length || filters.rapportPublie) ? 'has-selection' : ''}`} 
             onClick={() => { closeAllPanels(); setIndicateurOpen(true); }}
-            aria-label={`Publications${(optimisticFilters.donneesPubliees.length + (optimisticFilters.rapportPublie ? 1 : 0)) > 0 ? ', ' + (optimisticFilters.donneesPubliees.length + (optimisticFilters.rapportPublie ? 1 : 0)) + ' sélectionnée(s)' : ''}`}
+            aria-label={`Publications${(filters.donneesPubliees.length + (filters.rapportPublie ? 1 : 0)) > 0 ? ', ' + (filters.donneesPubliees.length + (filters.rapportPublie ? 1 : 0)) + ' sélectionnée(s)' : ''}`}
             aria-expanded={indicateurOpen}
             aria-haspopup="true"
           >
-            <span className={(optimisticFilters.donneesPubliees.length || optimisticFilters.rapportPublie) ? '' : 'placeholder-text'}>
-              {optimisticFilters.donneesPubliees.length > 0 || optimisticFilters.rapportPublie
-                ? `${optimisticFilters.donneesPubliees.length + (optimisticFilters.rapportPublie ? 1 : 0)} sélection(s)`
+            <span className={(filters.donneesPubliees.length || filters.rapportPublie) ? '' : 'placeholder-text'}>
+              {filters.donneesPubliees.length > 0 || filters.rapportPublie
+                ? `${filters.donneesPubliees.length + (filters.rapportPublie ? 1 : 0)} sélection(s)`
                 : "Rapport, indicateurs..."}
             </span>
           </button>
@@ -291,14 +263,14 @@ export default function SearchFilterBar({ className = "" }) {
           </Form.Label>
           <button 
             id="mobile-effectif-trigger"
-            className={`btn-trigger ${optimisticFilters.trancheEffectifs ? 'has-selection' : ''}`} 
+            className={`btn-trigger ${filters.trancheEffectifs ? 'has-selection' : ''}`} 
             onClick={() => { closeAllPanels(); setEffectifOpen(true); }}
-            aria-label={`Effectif${optimisticFilters.trancheEffectifs ? ', ' + (EFFECTIF_MAPPING[optimisticFilters.trancheEffectifs] || optimisticFilters.trancheEffectifs) + ' sélectionné' : ''}`}
+            aria-label={`Effectif${filters.trancheEffectifs ? ', ' + (EFFECTIF_MAPPING[filters.trancheEffectifs] || filters.trancheEffectifs) + ' sélectionné' : ''}`}
             aria-expanded={effectifOpen}
             aria-haspopup="true"
           >
-            <span className={optimisticFilters.trancheEffectifs ? '' : 'placeholder-text'}>
-              {optimisticFilters.trancheEffectifs ? (EFFECTIF_MAPPING[optimisticFilters.trancheEffectifs] || optimisticFilters.trancheEffectifs) : "Sélectionner une tranche d'effectif..."}
+            <span className={filters.trancheEffectifs ? '' : 'placeholder-text'}>
+              {filters.trancheEffectifs ? (EFFECTIF_MAPPING[filters.trancheEffectifs] || filters.trancheEffectifs) : "Sélectionner une tranche d'effectif..."}
             </span>
           </button>
         </div>
@@ -312,7 +284,7 @@ export default function SearchFilterBar({ className = "" }) {
               type="checkbox" 
               id="filter-ess-mobile" 
               label="Économie Sociale et Solidaire (ESS)"
-              checked={optimisticFilters.economieSocialeSolidaire}
+              checked={filters.economieSocialeSolidaire}
               onChange={(e) => updateFilter("economieSocialeSolidaire", e.target.checked)}
               className="mb-2 filter-checkbox"
               aria-describedby="filter-ess-desc"
@@ -321,7 +293,7 @@ export default function SearchFilterBar({ className = "" }) {
               type="checkbox" 
               id="filter-mission-mobile" 
               label="Société à mission"
-              checked={!!optimisticFilters.societeMission}
+              checked={!!filters.societeMission}
               onChange={(e) => updateFilter("societeMission", e.target.checked ? true : null)}
               className="mb-2 filter-checkbox"
               aria-describedby="filter-mission-desc"
@@ -412,27 +384,27 @@ export default function SearchFilterBar({ className = "" }) {
 
       {/* Sub-panels (shared by desktop pills and mobile list) */}
       <NafSidebarSelector
-        selectedSecteurs={optimisticFilters.secteurs}
+        selectedSecteurs={filters.secteurs}
         onChange={(codes) => updateFilter("secteurs", codes)}
         isOpen={nafOpen}
         onToggle={closeAllPanels}
       />
       <DepartementSidebarSelector
-        selectedDepartements={optimisticFilters.departements}
+        selectedDepartements={filters.departements}
         onChange={(depts) => updateFilter("departements", depts)}
         isOpen={departementOpen}
         onToggle={closeAllPanels}
       />
       <EffectifSidebarSelector
-        selectedEffectif={optimisticFilters.trancheEffectifs}
+        selectedEffectif={filters.trancheEffectifs}
         onChange={(tranche) => updateFilter("trancheEffectifs", tranche)}
         isOpen={effectifOpen}
         onToggle={closeAllPanels}
       />
       <IndicateurSidebarSelector
-        selectedIndicateurs={optimisticFilters.donneesPubliees}
+        selectedIndicateurs={filters.donneesPubliees}
         onChange={(indics) => updateFilter("donneesPubliees", indics)}
-        hasPublishedReport={optimisticFilters.rapportPublie}
+        hasPublishedReport={filters.rapportPublie}
         onToggleHasPublishedReport={(checked) => updateFilter("rapportPublie", checked)}
         isOpen={indicateurOpen}
         onToggle={closeAllPanels}

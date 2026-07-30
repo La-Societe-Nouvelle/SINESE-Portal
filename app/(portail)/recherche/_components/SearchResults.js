@@ -1,28 +1,19 @@
 "use client";
 
 import { Pagination } from "react-bootstrap";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import CompanyCard from "./CompanyCard";
 import SearchResultsDivider from "@/_components/SearchResultsDivider";
 import { separateByDataAvailability } from "@/_utils/utils";
-import { useSearchTransition } from "./SearchTransitionContext";
+import { useSearch } from "./SearchContext";
 
 export default function SearchResults({ results, total, currentPage, perPage }) {
-  const router       = useRouter();
-  const pathname     = usePathname();
-  const searchParams = useSearchParams();
-  const { startTransition } = useSearchTransition();
+  const { goToPage } = useSearch();
 
   const { withData, withoutData } = separateByDataAvailability(results);
   const totalPages = Math.ceil(total / perPage);
 
   const handlePageChange = (newPage) => {
-    const params = new URLSearchParams(searchParams);
-    if (newPage > 1) params.set("p", String(newPage));
-    else params.delete("p");
-    startTransition(() => {
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-    });
+    goToPage(newPage);
     setTimeout(() => { document.documentElement.scrollTop = 0; }, 100);
   };
 
