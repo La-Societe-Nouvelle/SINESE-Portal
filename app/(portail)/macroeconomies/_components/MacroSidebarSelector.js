@@ -18,6 +18,8 @@ export default function MacroSidebarSelector({
   ariaLabel,
   searchable = true,
   searchPlaceholder = "Rechercher...",
+  multiSelect = false,
+  maxSelect = 1,
 }) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -35,30 +37,55 @@ export default function MacroSidebarSelector({
     return orderedItems.filter((item) => `${item.code} ${item.label}`.toLowerCase().includes(q));
   }, [orderedItems, searchQuery, searchable]);
 
+  const selectedCodes = multiSelect ? (Array.isArray(selected) ? selected : [selected]) : [selected];
+
   const handleSelect = (code) => {
-    onSelect(code);
-    if (!isMobile) onClose();
+    if (!multiSelect) {
+      onSelect(code);
+      if (!isMobile) onClose();
+      return;
+    }
+
+    const isSelected = selectedCodes.includes(code);
+    if (isSelected) {
+      // On garde toujours au moins un élément sélectionné
+      if (selectedCodes.length === 1) return;
+      onSelect(selectedCodes.filter((c) => c !== code));
+    } else {
+      if (selectedCodes.length >= maxSelect) return;
+      onSelect([...selectedCodes, code]);
+    }
   };
 
   const List = (
     <div className="macro-sidebar-selector-list flex-grow-1 overflow-auto" style={{ height: isMobile ? "auto" : "calc(100vh - 180px)" }}>
-      {filteredItems.map((item) => (
-        <div key={item.code} className="px-3 py-1">
-          <Form.Check
-            type="checkbox"
-            id={`macro-${title}-${item.code}`}
-            checked={selected === item.code}
-            onChange={() => handleSelect(item.code)}
-            label={
-              <span>
-                {getDisplayLabel(item.code, item.label)}
-                {item.code === defaultCode && <span className="text-muted"> (par défaut)</span>}
-              </span>
-            }
-            className="mb-0 form-check-sm"
-          />
+      {multiSelect && (
+        <div className="px-3 py-2 text-muted small">
+          {selectedCodes.length}/{maxSelect} sélectionné(s)
         </div>
-      ))}
+      )}
+      {filteredItems.map((item) => {
+        const isChecked = selectedCodes.includes(item.code);
+        const isDisabled = multiSelect && !isChecked && selectedCodes.length >= maxSelect;
+        return (
+          <div key={item.code} className="px-3 py-1">
+            <Form.Check
+              type="checkbox"
+              id={`macro-${title}-${item.code}`}
+              checked={isChecked}
+              disabled={isDisabled}
+              onChange={() => handleSelect(item.code)}
+              label={
+                <span>
+                  {getDisplayLabel(item.code, item.label)}
+                  {item.code === defaultCode && <span className="text-muted"> (par défaut)</span>}
+                </span>
+              }
+              className="mb-0 form-check-sm"
+            />
+          </div>
+        );
+      })}
 
       {filteredItems.length === 0 && (
         <div className="text-center py-5 text-muted">

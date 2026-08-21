@@ -11,6 +11,7 @@ export const indicatorSections = [
         code: 'ECO',
         title: 'Contribution à l\'économie nationale',
         unit: 'en %',
+        capAt100: true,
         icon: (
           <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -21,6 +22,7 @@ export const indicatorSections = [
         code: 'ART',
         title: 'Contribution aux métiers d\'art et aux savoir-faire',
         unit: 'en %',
+        capAt100: true,
         icon: (
           <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -31,6 +33,7 @@ export const indicatorSections = [
         code: 'SOC',
         title: 'Contribution aux acteurs d\'intérêt social',
         unit: 'en %',
+        capAt100: true,
         icon: (
           <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-6h3v7c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-7h2l-3-3z"/>
@@ -49,6 +52,7 @@ export const indicatorSections = [
         code: 'GEQ',
         title: 'Écart de rémunération femmes/hommes',
         unit: 'en % du taux horaire moyen',
+        capAt100: true,
         icon: (
           <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM9.5 8c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8zm6.5 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
@@ -69,6 +73,7 @@ export const indicatorSections = [
         code: 'KNW',
         title: 'Contribution à l\'évolution des compétences et des connaissances',
         unit: 'en %',
+        capAt100: true,
         icon: (
           <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6L17 9l-5 2.82L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9z"/>

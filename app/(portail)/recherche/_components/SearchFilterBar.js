@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Button, Badge, Form, Offcanvas } from "react-bootstrap";
-import { SlidersHorizontal, MapPin, Users, Building2, CheckCircle, RotateCcw, Info, ChevronDown } from "lucide-react";
+import { SlidersHorizontal, MapPin, Users, Building2, CheckCircle, RotateCcw, Info } from "lucide-react";
 import NafTrigger from "@/_components/forms/NafTrigger";
 import NafSidebarSelector from "@/_components/forms/NafSidebarSelector";
 import DepartementSidebarSelector from "@/_components/forms/DepartementSidebarSelector";
@@ -10,23 +10,7 @@ import EffectifSidebarSelector from "@/_components/forms/EffectifSidebarSelector
 import IndicateurSidebarSelector from "@/_components/forms/IndicateurSidebarSelector";
 import { EFFECTIF_MAPPING } from "@/_utils/effectifMapping";
 import { useSearch } from "./SearchContext";
-
-const FilterPill = ({ icon, label, count, active, onClick, ariaLabel, ariaExpanded }) => (
-  <button
-    type="button"
-    className={`filter-pill ${active ? 'is-active' : ''}`}
-    onClick={onClick}
-    aria-label={ariaLabel || `${label}${count > 0 ? `, ${count} filtre(s) actif(s)` : ''}`}
-    aria-expanded={ariaExpanded}
-    aria-haspopup="true"
-    title={active ? `Modifier ${label}` : label}
-  >
-    {icon}
-    <span>{label}</span>
-    {count > 0 && <span className="filter-pill-count" aria-label={`${count} filtre(s)`}>{count}</span>}
-    <ChevronDown size={14} className="filter-pill-chevron" aria-hidden="true" />
-  </button>
-);
+import FilterPill from "@/_components/FilterPill";
 
 export default function SearchFilterBar({ className = "" }) {
   // État client synchrone (SearchContext) : le clic se reflète immédiatement,

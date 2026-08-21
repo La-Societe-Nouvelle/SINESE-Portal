@@ -22,19 +22,20 @@ export async function getMacroMetadata() {
 }
 
 export async function getMacroData(industry = 'TOTAL', country = 'FRA', aggregate = 'PRD') {
+  const countries = Array.isArray(country) ? country : [country];
   try {
     const result = await pool.query(
-      `SELECT indic, year, value, flag, currency
+      `SELECT indic, year, value, flag, currency, country
        FROM macrodata.macro_fpt
-       WHERE industry = $1 AND country = $2 AND aggregate = $3
-       ORDER BY indic, year`,
-      [industry, country, aggregate]
+       WHERE industry = $1 AND country = ANY($2) AND aggregate = $3
+       ORDER BY indic, country, year`,
+      [industry, countries, aggregate]
     );
     return result.rows;
   } catch (error) {
     console.error('[macrodata] getMacroData error:', error);
     return createDatabaseError(error,
-      'SELECT indic, year, value, flag, currency FROM macrodata.macro_fpt WHERE industry = $1 AND country = $2 AND aggregate = $3'
+      'SELECT indic, year, value, flag, currency, country FROM macrodata.macro_fpt WHERE industry = $1 AND country = ANY($2) AND aggregate = $3'
     );
   }
 }

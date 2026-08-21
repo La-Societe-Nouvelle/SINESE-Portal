@@ -4,14 +4,17 @@ import { LineChart } from '@/_components/charts/LineChart';
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-export default function IndicatorCard({ 
-  title, 
-  unit, 
-  data, 
+export default function IndicatorCard({
+  title,
+  unit,
+  data,
+  series,
   icon,
   color = '#3b4d8f',
-  isLoading = false 
+  isLoading = false,
+  capAt100 = false
 }) {
+  const hasData = series ? series.some((s) => s.data && s.data.length > 0) : data && data.length > 0;
   return (
     <Card className="h-100 indicator-card"
     >
@@ -37,9 +40,9 @@ export default function IndicatorCard({
                 <div className="loading-text">Chargement...</div>
               </div>
             </div>
-          ) : data && data.length > 0 ? (
+          ) : hasData ? (
             <div className="chart-wrapper">
-              <LineChart data={data} color={color} unit={unit} />
+              <LineChart series={series} data={data} color={color} unit={unit} capAt100={capAt100} />
             </div>
           ) : (
             <div className="chart-empty">

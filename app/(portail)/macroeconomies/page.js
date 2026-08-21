@@ -8,8 +8,8 @@ import { indicatorSections } from "./_config/indicators";
 import IndicatorSection from "./_components/IndicatorSection";
 import MacroFilterBar from "./_components/MacroFilterBar";
 
-async function MacroContent({ industry, country, aggregate }) {
-  const dataResult = await getMacroData(industry, country, aggregate);
+async function MacroContent({ industry, countries, countryMetadata, aggregate }) {
+  const dataResult = await getMacroData(industry, countries, aggregate);
 
   if (isError(dataResult)) {
     return (
@@ -28,6 +28,8 @@ async function MacroContent({ industry, country, aggregate }) {
           description={section.description}
           indicators={section.indicators}
           data={dataResult}
+          countries={countries}
+          countryMetadata={countryMetadata}
           isLoading={false}
           sectionColor={section.color}
         />
@@ -36,9 +38,13 @@ async function MacroContent({ industry, country, aggregate }) {
   );
 }
 
+const MAX_COMPARED_COUNTRIES = 3;
+
 export default async function MacroeconomiesPage({ searchParams }) {
   const params = await searchParams;
   const { industry = 'TOTAL', country = 'FRA', aggregate = 'PRD' } = params || {};
+  const countryParam = Array.isArray(country) ? country.join(',') : country;
+  const countries = countryParam.split(',').map((c) => c.trim()).filter(Boolean).slice(0, MAX_COMPARED_COUNTRIES);
 
   const metadataResult = await getMacroMetadata();
 
@@ -60,7 +66,7 @@ export default async function MacroeconomiesPage({ searchParams }) {
     );
   }
 
-  const suspenseKey = `${industry}-${country}-${aggregate}`;
+  const suspenseKey = `${industry}-${countries.join('_')}-${aggregate}`;
 
   return (
     <div className="macroeconomies-page">
@@ -92,7 +98,7 @@ export default async function MacroeconomiesPage({ searchParams }) {
               <h5 className="loading-title">Chargement en cours...</h5>
             </div>
           }>
-            <MacroContent industry={industry} country={country} aggregate={aggregate} />
+            <MacroContent industry={industry} countries={countries} countryMetadata={metadataResult.country} aggregate={aggregate} />
           </Suspense>
         </div>
       </Container>

@@ -9,7 +9,7 @@ export default function CountrySelector({ metadata, selected, onSelect, isOpen =
     <MacroSidebarSelector
       icon={<Globe size={18} />}
       title="Pays"
-      ariaLabel="Sélectionner un pays"
+      ariaLabel="Sélectionner jusqu'à 3 pays à comparer"
       searchPlaceholder="Rechercher un pays..."
       items={metadata || []}
       selected={selected}
@@ -18,6 +18,8 @@ export default function CountrySelector({ metadata, selected, onSelect, isOpen =
       isOpen={isOpen}
       onClose={onClose}
       isMobile={isMobile}
+      multiSelect
+      maxSelect={3}
     />
   );
 }

@@ -2,29 +2,13 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Button, Offcanvas, Form } from 'react-bootstrap';
-import { SlidersHorizontal, Factory, Globe, BarChart3, RotateCcw, ChevronDown, LineChart } from 'lucide-react';
+import { SlidersHorizontal, Factory, Globe, BarChart3, RotateCcw, LineChart } from 'lucide-react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import IndustrySelector from './IndustrySelector';
 import CountrySelector from './CountrySelector';
 import AggregateSelector from './AggregateSelector';
+import FilterPill from '@/_components/FilterPill';
 import { getDisplayLabel } from '../_utils/labels';
-
-const FilterPill = ({ icon, label, count, active, onClick, ariaLabel, ariaExpanded }) => (
-  <button
-    type="button"
-    className={`filter-pill ${active ? 'is-active' : ''}`}
-    onClick={onClick}
-    aria-label={ariaLabel || `${label}${count > 0 ? `, ${count} filtre(s) actif(s)` : ''}`}
-    aria-expanded={ariaExpanded}
-    aria-haspopup="true"
-    title={active ? `Modifier ${label}` : label}
-  >
-    {icon}
-    <span>{label}</span>
-    {count > 0 && <span className="filter-pill-count" aria-label={`${count} filtre(s)`}>{count}</span>}
-    <ChevronDown size={14} className="filter-pill-chevron" aria-hidden="true" />
-  </button>
-);
 
 export default function MacroFilterBar({ metadata, className = "" }) {
   const router = useRouter();
@@ -41,10 +25,18 @@ export default function MacroFilterBar({ metadata, className = "" }) {
   // Focus management pour accessibilité
   const lastActiveElement = useRef(null);
 
+  const MAX_COMPARED_COUNTRIES = 3;
+
   // Valeurs sélectionnées depuis l'URL
+  const selectedCountries = (searchParams.get('country') || 'FRA')
+    .split(',')
+    .map((c) => c.trim())
+    .filter(Boolean)
+    .slice(0, MAX_COMPARED_COUNTRIES);
+
   const selectedValues = {
     industry: searchParams.get('industry') || 'TOTAL',
-    country: searchParams.get('country') || 'FRA',
+    country: selectedCountries,
     aggregate: searchParams.get('aggregate') || 'PRD',
   };
 
@@ -54,6 +46,8 @@ export default function MacroFilterBar({ metadata, className = "" }) {
     const item = metadata[param]?.find((i) => i.code === code);
     return getDisplayLabel(code, item?.label || code);
   };
+
+  const getCountriesLabel = (codes) => codes.map((code) => getSelectedLabel('country', code)).join(', ');
 
   // Fermer tous les panels
   const closeAllPanels = useCallback(() => {
@@ -97,9 +91,9 @@ export default function MacroFilterBar({ metadata, className = "" }) {
   // peuvent s'écraser l'un l'autre.
   const updateFilter = (key, value) => {
     const params = new URLSearchParams(window.location.search);
-    params.set(key, value);
+    params.set(key, Array.isArray(value) ? value.join(',') : value);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-    closeAllPanels();
+    if (key !== 'country') closeAllPanels();
   };
 
   // Réinitialiser tous les filtres
@@ -109,9 +103,9 @@ export default function MacroFilterBar({ metadata, className = "" }) {
   };
 
   // Vérifier si des filtres sont actifs
-  const DEFAULT_VALUES = { industry: 'TOTAL', country: 'FRA', aggregate: 'PRD' };
-  const hasActiveFilters = Object.entries(selectedValues).some(
-    ([key, val]) => val !== DEFAULT_VALUES[key]
+  const DEFAULT_VALUES = { industry: 'TOTAL', country: ['FRA'], aggregate: 'PRD' };
+  const hasActiveFilters = Object.entries(selectedValues).some(([key, val]) =>
+    Array.isArray(val) ? val.join(',') !== DEFAULT_VALUES[key].join(',') : val !== DEFAULT_VALUES[key]
   );
 
   // Contenu de la barre de filtres (desktop)
@@ -119,7 +113,7 @@ export default function MacroFilterBar({ metadata, className = "" }) {
     <div className="filter-pills-bar" role="toolbar" aria-label="Barre de filtres macroéconomie">
       <FilterPill
         icon={<Globe size={14} />}
-        label={getSelectedLabel('country', selectedValues.country)}
+        label={getCountriesLabel(selectedValues.country)}
         active={countryOpen}
         onClick={() => {
           closeAllPanels();
@@ -127,7 +121,7 @@ export default function MacroFilterBar({ metadata, className = "" }) {
           lastActiveElement.current = document.activeElement;
         }}
         ariaExpanded={countryOpen}
-        ariaLabel={`Filtrer par pays, actuellement ${getSelectedLabel('country', selectedValues.country)}`}
+        ariaLabel={`Filtrer par pays (jusqu'à 3), actuellement ${getCountriesLabel(selectedValues.country)}`}
       />
       <FilterPill
         icon={<Factory size={14} />}
