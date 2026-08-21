@@ -2,14 +2,14 @@
 
 import { LineChart } from '@/_components/charts/LineChart';
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Image } from 'react-bootstrap';
 
 export default function IndicatorCard({
+  code,
   title,
   unit,
   data,
   series,
-  icon,
   color = '#3b4d8f',
   isLoading = false,
   capAt100 = false
@@ -19,11 +19,21 @@ export default function IndicatorCard({
     <Card className="h-100 indicator-card"
     >
       <Card.Body className="p-4">
-        {/* Header avec titre et unité */}
+        {/* Header avec picto, titre et unité */}
         <div className="indicator-header">
-          <h5 className="indicator-title">
-            {title}
-          </h5>
+          <div className="d-flex align-items-center mb-2">
+            <div className="indicator-icon me-2">
+              <Image
+                width="28"
+                height="28"
+                src={`/ESE/picto/ese-${code.toLowerCase()}-color.svg`}
+                alt={code}
+              />
+            </div>
+            <h5 className="indicator-title mb-0">
+              {title}
+            </h5>
+          </div>
           <p className="indicator-unit">{unit}</p>
         </div>
 

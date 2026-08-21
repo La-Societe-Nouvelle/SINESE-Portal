@@ -1,6 +1,19 @@
 import Chart from 'chart.js/auto';
 import { Line } from "react-chartjs-2";
 
+// Ajoute une transparence à une couleur, qu'elle soit au format hex (#rrggbb)
+// ou rgba(...)/rgb(...) — les couleurs d'indicateur (indics.json) sont en rgba.
+const withAlpha = (c, alpha) => {
+	if (c.startsWith('rgba')) {
+		return c.replace(/[\d.]+\)$/, `${alpha})`);
+	}
+	if (c.startsWith('rgb(')) {
+		return c.replace('rgb(', 'rgba(').replace(')', `, ${alpha})`);
+	}
+	const hexAlpha = Math.round(alpha * 255).toString(16).padStart(2, '0');
+	return `${c}${hexAlpha}`;
+};
+
 // `series`: [{ code, label, color, data }] — un pays = une série.
 export const LineChart = ({ series, data, color = "#3b4d8f", unit, capAt100 = false }) => {
 
@@ -66,10 +79,10 @@ export const LineChart = ({ series, data, color = "#3b4d8f", unit, capAt100 = fa
 				data: values,
 				fill: showLegend ? false : {
 					target: 'origin',
-					above: `${seriesColor}0d`,
+					above: withAlpha(seriesColor, 0.05),
 				},
 				borderColor: seriesColor,
-				backgroundColor: `${seriesColor}0d`,
+				backgroundColor: withAlpha(seriesColor, 0.05),
 				borderWidth: 2,
 				pointRadius: (ctx) => (ctx.dataIndex === lastValidIndex ? 3 : 0),
 				pointHoverRadius: 5,
