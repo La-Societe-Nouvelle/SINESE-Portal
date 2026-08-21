@@ -3,7 +3,7 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { ChevronUp, ChevronDown, ChevronsUpDown, Download, ExternalLink, FileText, FileCode } from "lucide-react";
 import { REPORT_FORMAT_LABELS } from "@/_libs/report-format";
-import { REPORT_TYPES } from "@/(publications)/publications/_components/forms/ReportForm";
+import { REPORT_TYPES } from "@/_libs/report-types";
 import { reportFiltersToSearchParams, parseReportFiltersFromParams } from "../_utils/reportParams";
 
 const FORMAT_ICONS = { pdf: FileText, xbrl: FileCode, autre: FileText };

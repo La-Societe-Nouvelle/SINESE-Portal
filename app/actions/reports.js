@@ -46,8 +46,10 @@ export async function listPublishedReports(filters = {}, sort = 'denomination', 
     const formatConditions = filters.formats.map((format) => {
       if (format === 'pdf') return `(r.mime_type = 'application/pdf' OR (r.mime_type IS NULL AND r.file_name ILIKE '%.pdf'))`;
       if (format === 'xbrl') return `(r.mime_type IN ('application/xml', 'text/xml') OR (r.mime_type IS NULL AND (r.file_name ILIKE '%.xbrl' OR r.file_name ILIKE '%.xml')))`;
-      return `r.mime_type NOT IN ('application/pdf', 'application/xml', 'text/xml')
-        AND (r.mime_type IS NOT NULL OR r.file_name IS NULL OR r.file_name !~* '\\.(pdf|xbrl|xml)$')`;
+      return `(
+        (r.mime_type IS NOT NULL AND r.mime_type NOT IN ('application/pdf', 'application/xml', 'text/xml'))
+        OR (r.mime_type IS NULL AND (r.file_name IS NULL OR r.file_name !~* '\\.(pdf|xbrl|xml)$'))
+      )`;
     });
     conditions.push(`(${formatConditions.join(' OR ')})`);
   }
@@ -121,24 +123,4 @@ export async function getReportFilterOptions() {
     `SELECT DISTINCT year FROM footprints.reports ORDER BY year DESC`
   );
   return { years: result.rows.map((r) => r.year) };
-}
-
-// Headline numbers for the /rapports hero — cheap aggregate query, no joins needed
-// beyond what's already indexed on footprints.reports.
-export async function getReportStats() {
-  const result = await pool.query(
-    `SELECT
-       COUNT(*) AS total,
-       COUNT(DISTINCT type) AS type_count,
-       MIN(year) AS min_year,
-       MAX(year) AS max_year
-     FROM footprints.reports`
-  );
-  const row = result.rows[0];
-  return {
-    total: parseInt(row.total, 10),
-    typeCount: parseInt(row.type_count, 10),
-    minYear: row.min_year,
-    maxYear: row.max_year,
-  };
 }

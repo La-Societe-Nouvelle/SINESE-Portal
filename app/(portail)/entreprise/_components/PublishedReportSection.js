@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { Download, FileCheck } from "lucide-react";
-import { REPORT_TYPES } from "@/(publications)/publications/_components/forms/ReportForm";
+import { REPORT_TYPES } from "@/_libs/report-types";
 import { getReportFormatColor, getReportFormatIcon } from "@/_libs/report-format";
 
 /**

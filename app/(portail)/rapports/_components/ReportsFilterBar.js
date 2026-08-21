@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { CalendarDays, Building2, FileType2, FileStack, RotateCcw, ChevronDown, SlidersHorizontal } from "lucide-react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { REPORT_TYPES } from "@/(publications)/publications/_components/forms/ReportForm";
+import { REPORT_TYPES } from "@/_libs/report-types";
 import { REPORT_FORMAT_LABELS } from "@/_libs/report-format";
 import DivisionSidebarSelector from "./DivisionSidebarSelector";
 import { parseReportFiltersFromParams, parseReportSort, reportFiltersToSearchParams, hasAnyReportFilter } from "../_utils/reportParams";
