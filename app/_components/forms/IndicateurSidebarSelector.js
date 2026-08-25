@@ -137,7 +137,7 @@ export default function IndicateurSidebarSelector({
             onClick={() => onToggleHasPublishedReport(!hasPublishedReport)}
             role="button"
           >
-            Rapport de durabilité publié
+            Rapport publié
           </div>
         </div>
 

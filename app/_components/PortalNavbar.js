@@ -24,7 +24,7 @@ export default function PortalNavbar() {
             </NavLink>
             <NavLink href="/rapports" className="nav-item-custom">
               <FileText size={16} className="me-2" />
-              <span>Rapports de durabilité</span>
+              <span>Rapports</span>
             </NavLink>
             <NavLink href="/macroeconomies" className="nav-item-custom">
               <TrendingUp size={16} className="me-2" />
