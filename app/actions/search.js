@@ -226,6 +226,9 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
       FROM footprints.uniteslegales f
       WHERE f.siren = ANY($1)
       GROUP BY f.siren
+    ),
+    report_summary AS (
+      SELECT DISTINCT siren FROM footprints.reports WHERE siren = ANY($1)
     )
     SELECT
       ul.siren,
@@ -245,10 +248,12 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
       COALESCE(fs.total_indicators, 0)                    AS "totalIndicators",
       COALESCE(fs.ese_published, ARRAY[]::text[])         AS "ese_published",
       COALESCE(fs.external_published, ARRAY[]::text[])    AS "external_published",
-      COALESCE(fs.estimated, ARRAY[]::text[])             AS "estimated"
+      COALESCE(fs.estimated, ARRAY[]::text[])             AS "estimated",
+      (rs.siren IS NOT NULL)                              AS "hasPublishedReport"
     FROM sirene.uniteslegales ul
     ${etablissementsJoin}
     LEFT JOIN footprint_summary fs ON fs.siren = ul.siren
+    LEFT JOIN report_summary rs ON rs.siren = ul.siren
     LEFT JOIN sirene.activiteprincipale_nafrev2 naf
       ON naf.code = ul.activiteprincipaleunitelegale
     LEFT JOIN sirene.categoriejuridique cj
@@ -279,7 +284,8 @@ export async function searchLegalUnits(query = "", filters = {}, page = 1) {
       ese: row.ese_published || [],
       external: row.external_published || []
     },
-    estimatedIndicators: row.estimated || []
+    estimatedIndicators: row.estimated || [],
+    hasPublishedReport: row.hasPublishedReport
   }));
 
   return {

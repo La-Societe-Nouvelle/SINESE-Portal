@@ -27,8 +27,8 @@ export const hasPublishedOrEstimatedData = (legalUnit) => {
   
   // Vérifier s'il y a des indicateurs estimés
   const hasEstimated = legalUnit.estimatedIndicators?.length > 0;
-  
-  return hasPublished || hasEstimated;
+
+  return hasPublished || hasEstimated || !!legalUnit.hasPublishedReport;
 };
 
 /**

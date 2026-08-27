@@ -16,7 +16,7 @@ export default function NavbarSwitcher() {
   return (
     <>
       <PortalNavbar />
-      <PartnershipBanner />
+      {/* <PartnershipBanner /> */}
     </>
 
   )

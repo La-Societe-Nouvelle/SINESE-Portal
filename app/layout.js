@@ -2,7 +2,6 @@ import "./styles/main.scss";
 import NavbarSwitcher from "./_components/NavbarSwitcher";
 import BackToTop from "./_components/BackToTop";
 import Footer from "./_components/footer";
-import PartnershipBanner from "./_components/PartnershipBanner";
 
 export const metadata = {
   metadataBase: new URL("https://sinese.fr"),
