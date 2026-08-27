@@ -32,11 +32,19 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# vercel
-.vercel
+#Local
+/docs/
+/scripts/
+/data/exports/
+/data/datasets-cache.json
 
 #Editors
 /nbproject/
 .projectile
 .vscode/settings.json
 .idea/
+
+# Claude brainstorming visual companion
+/.superpowers/
+CLAUDE.md
+.worktrees/

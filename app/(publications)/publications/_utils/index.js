@@ -121,47 +121,6 @@ export function validateExtraIndic(declarationData) {
   return null;
 }
 
-//
-
-export function getStatusVariant(status) {
-  switch (status) {
-    case "published":
-      return "success"; // vert
-    case "pending":
-      return "info"; // bleu clair
-    case "draft":
-      return "light"; // gris
-    case "rejected":
-      return "danger"; // rouge
-    case "unpublish_requested":
-      return "warning"; // orange
-    case "unpublished":
-      return "dark"; // gris foncé
-    default:
-      return "light";
-  }
-}
-
-export function getStatusLabel(status) {
-  switch (status) {
-    case "published":
-      return "Publiée";
-    case "pending":
-      return "En cours de traitement";
-    case "draft":
-      return "Brouillon";
-    case "rejected":
-      return "Rejetée";
-    case "unpublish_requested":
-      return "Demande de retrait";
-    case "unpublished":
-      return "Retirée";
-    default:
-      return status;
-  }
-}
-
-
 export function formatDate(dateString) {
   if (!dateString) return "";
   const date = new Date(dateString);

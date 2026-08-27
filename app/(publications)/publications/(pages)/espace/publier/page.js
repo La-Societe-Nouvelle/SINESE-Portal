@@ -1,6 +1,6 @@
 import PublicationForm from "@/(publications)/publications/_components/forms/PublicationForm";
 import PublicationsPageHeader from "@/(publications)/publications/_components/PublicationsPageHeader";
-import { getLegalUnitById } from "@/services/server/legalUnitService";
+import { getLegalUnitById } from "@/actions/legalUnits";
 
 async function PublicationFormWrapper({ searchParams }) {
   const params = await searchParams;

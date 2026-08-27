@@ -174,7 +174,7 @@
     "odds": ["12","14","15"],
     "chartType": "bar-chart",
     "color": {
-      "main": "rgba(129,77,13,1",
+      "main": "rgba(129,77,13,1)",
       "branch": "rgba(70,110,137,1)",
       "target": "rgba(70,110,137,0.6)"
     }

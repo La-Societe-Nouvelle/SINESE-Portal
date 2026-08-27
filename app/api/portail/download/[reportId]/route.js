@@ -1,31 +1,10 @@
 import { NextResponse } from "next/server";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import pool from "@/config/db";
-
-const rateLimitMap = new Map();
-const LIMIT = 20;
-const WINDOW_MS = 60_000;
-
-function isRateLimited(ip) {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip) || { count: 0, start: now };
-  if (now - entry.start > WINDOW_MS) { entry.count = 0; entry.start = now; }
-  entry.count++;
-  rateLimitMap.set(ip, entry);
-  return entry.count > LIMIT;
-}
-
-const s3Client = new S3Client({
-  region: process.env.OS_REGION_NAME || "gra",
-  endpoint: process.env.OS_AUTH_URL || "https://s3.gra.cloud.ovh.net",
-  credentials: {
-    accessKeyId: process.env.OS_USERNAME,
-    secretAccessKey: process.env.OS_PASSWORD,
-  },
-  forcePathStyle: true,
-  disableBodySigning: true,
-});
+import { getS3Client } from "@/_libs/ovh-client";
+import { isRateLimited } from "@/_libs/rate-limit";
+import { extractS3Key } from "@/_libs/s3-key";
 
 const ALLOWED_TYPES = new Set([
   "application/pdf",
@@ -37,18 +16,6 @@ const ALLOWED_TYPES = new Set([
   "text/xml",
   "application/octet-stream",
 ]);
-
-function extractS3Key(fileUrl, bucketName) {
-  try {
-    const url = new URL(fileUrl);
-    if (url.pathname.startsWith(`/${bucketName}/`)) {
-      return url.pathname.slice(`/${bucketName}/`.length);
-    }
-    return url.pathname.replace(/^\//, "");
-  } catch {
-    return null;
-  }
-}
 
 export async function GET(req, { params }) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
@@ -107,7 +74,7 @@ export async function GET(req, { params }) {
       ResponseContentType: contentType,
     });
 
-    const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 });
+    const signedUrl = await getSignedUrl(getS3Client(), command, { expiresIn: 60 });
 
     return NextResponse.json({ url: signedUrl });
   } catch (err) {

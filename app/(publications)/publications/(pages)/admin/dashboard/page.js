@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Container, Card, Table, Badge, Spinner, Alert, Button, Row, Col, Modal } from "react-bootstrap";
-import { ClipboardList, Building2, Calendar, User, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3, CheckCircle, XCircle, Link2 } from "lucide-react";
+import { getPendingPublications, getPublicationsStats, getAdminPublication, approvePublication, rejectPublication } from "@/actions/admin/publications";
+import { isError, getErrorMessage } from "@/_libs/errors";
+import { Container, Card, Table, Badge, Spinner, Alert, Button, Row, Col, Modal, Form } from "react-bootstrap";
+import { ClipboardList, Building2, Calendar, User, RefreshCw, FileText, Users, TrendingUp, Eye, Download, BarChart3, CheckCircle, XCircle, Link2, FilePlus, X, Check } from "lucide-react";
 import Link from "next/link";
 import indicators from "../../../_lib/indicators.json";
 
@@ -18,6 +20,9 @@ export default function AdminDashboard() {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedPublication, setSelectedPublication] = useState(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectTargetId, setRejectTargetId] = useState(null);
+  const [rejectComment, setRejectComment] = useState("");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -38,23 +43,13 @@ export default function AdminDashboard() {
   const fetchPendingPublications = async () => {
     setLoading(true);
     setError(null);
-
     try {
-      // Fetch pending publications
-      const pendingRes = await fetch("/api/admin/pending-publications");
-      if (!pendingRes.ok) {
-        const errorData = await pendingRes.json();
-        throw new Error(errorData.error || "Erreur lors du chargement");
-      }
-      const pendingData = await pendingRes.json();
+      const pendingData = await getPendingPublications();
+      if (isError(pendingData)) throw new Error(getErrorMessage(pendingData));
       setPublications(pendingData.publications);
 
-      // Fetch statistics
-      const statsRes = await fetch("/api/admin/publications-stats");
-      if (statsRes.ok) {
-        const statsData = await statsRes.json();
-        setStats(statsData);
-      }
+      const statsData = await getPublicationsStats();
+      if (!isError(statsData)) setStats(statsData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -88,13 +83,9 @@ export default function AdminDashboard() {
   const openPublicationDetails = async (publicationId) => {
     setLoadingDetails(true);
     setShowDetailsModal(true);
-
     try {
-      const res = await fetch(`/api/admin/publications/${publicationId}`);
-      if (!res.ok) {
-        throw new Error("Erreur lors du chargement des détails");
-      }
-      const data = await res.json();
+      const data = await getAdminPublication(publicationId);
+      if (isError(data)) throw new Error(getErrorMessage(data));
       setSelectedPublication(data.publication);
     } catch (err) {
       console.error(err);
@@ -110,22 +101,32 @@ export default function AdminDashboard() {
     setSelectedPublication(null);
   };
 
-  const handlePublicationAction = async (publicationId, action) => {
+  const handleApprove = async (publicationId) => {
     try {
-      const endpoint = action === "published" 
-        ? `/api/admin/publications/${publicationId}/approve`
-        : `/api/admin/publications/${publicationId}/reject`;
-        
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Erreur lors de la mise à jour de la publication");
-      }
-      
+      const result = await approvePublication(publicationId);
+      if (isError(result)) throw new Error(getErrorMessage(result));
+      await fetchPendingPublications();
+      setShowDetailsModal(false);
+      setSelectedPublication(null);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const openRejectModal = (publicationId) => {
+    setRejectTargetId(publicationId);
+    setRejectComment("");
+    setShowRejectModal(true);
+  };
+
+  const handleReject = async () => {
+    if (!rejectTargetId) return;
+    try {
+      const result = await rejectPublication(rejectTargetId, rejectComment || null);
+      if (isError(result)) throw new Error(getErrorMessage(result));
+      setShowRejectModal(false);
+      setRejectTargetId(null);
+      setRejectComment("");
       await fetchPendingPublications();
       setShowDetailsModal(false);
       setSelectedPublication(null);
@@ -161,10 +162,16 @@ export default function AdminDashboard() {
           </h1>
           <p className="text-muted mb-0">Gestion des demandes de publication</p>
         </div>
-        <Button variant="outline-primary" onClick={fetchPendingPublications} disabled={loading}>
-          <RefreshCw size={16} className="me-2" style={{ display: 'inline' }} />
-          Actualiser
-        </Button>
+        <div className="d-flex gap-2">
+          <Link href="/publications/admin/publier" className="btn btn-primary">
+            <FilePlus size={16} className="me-2" style={{ display: 'inline' }} />
+            Publier un rapport
+          </Link>
+          <Button variant="outline-primary" onClick={fetchPendingPublications} disabled={loading}>
+            <RefreshCw size={16} className="me-2" style={{ display: 'inline' }} />
+            Actualiser
+          </Button>
+        </div>
       </div>
 
       {error && (
@@ -347,7 +354,7 @@ export default function AdminDashboard() {
                         <Button
                           variant="outline-success"
                           size="sm"
-                          onClick={() => handlePublicationAction(pub.id, "published")}
+                          onClick={() => handleApprove(pub.id)}
                           title="Approuver"
                         >
                           <CheckCircle size={14} style={{ display: "inline" }} />
@@ -355,7 +362,7 @@ export default function AdminDashboard() {
                         <Button
                           variant="outline-danger"
                           size="sm"
-                          onClick={() => handlePublicationAction(pub.id, "rejected")}
+                          onClick={() => openRejectModal(pub.id)}
                           title="Rejeter"
                         >
                           <XCircle size={14} style={{ display: "inline" }} />
@@ -532,6 +539,18 @@ export default function AdminDashboard() {
                 </Card>
               )}
 
+              {/* Informations complémentaires */}
+              {selectedPublication.data?._notes && (
+                <Card className="mb-3">
+                  <Card.Header className="bg-light">
+                    <h6 className="mb-0">Informations complémentaires</h6>
+                  </Card.Header>
+                  <Card.Body>
+                    <p className="mb-0 small" style={{ whiteSpace: "pre-wrap" }}>{selectedPublication.data._notes}</p>
+                  </Card.Body>
+                </Card>
+              )}
+
               {/* Indicators - Empreinte sociétale */}
               {selectedPublication.data && Object.keys(selectedPublication.data).length > 0 && (
                 <>
@@ -579,40 +598,40 @@ export default function AdminDashboard() {
                       selectedPublication.data[key].value !== undefined &&
                       selectedPublication.data[key].value !== ""
                   ) && (
-                    <Card>
-                      <Card.Header className="bg-light">
-                        <h6 className="mb-0 d-flex align-items-center">
-                          <TrendingUp size={18} className="me-2" />
-                          Indicateurs supplémentaires
-                        </h6>
-                      </Card.Header>
-                      <Card.Body className="p-0">
-                        <Table className="mb-0 table-sm">
-                          <thead>
-                            <tr>
-                              <th style={{ width: "45%" }}>Indicateur</th>
-                              <th style={{ width: "25%" }}>Valeur</th>
-                              <th style={{ width: "30%" }}>Commentaire</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Object.entries(indicators).map(([key, meta]) => {
-                              if (meta.category !== "Indicateurs supplémentaires") return null;
-                              const indicator = selectedPublication.data?.[key];
-                              if (!indicator || indicator.value === undefined || indicator.value === "") return null;
-                              return (
-                                <tr key={key}>
-                                  <td className="small">{meta.libelle}</td>
-                                  <td className="fw-bold small">{indicator.value}</td>
-                                  <td className="small text-muted">{indicator.comment || "-"}</td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </Table>
-                      </Card.Body>
-                    </Card>
-                  )}
+                      <Card>
+                        <Card.Header className="bg-light">
+                          <h6 className="mb-0 d-flex align-items-center">
+                            <TrendingUp size={18} className="me-2" />
+                            Indicateurs supplémentaires
+                          </h6>
+                        </Card.Header>
+                        <Card.Body className="p-0">
+                          <Table className="mb-0 table-sm">
+                            <thead>
+                              <tr>
+                                <th style={{ width: "45%" }}>Indicateur</th>
+                                <th style={{ width: "25%" }}>Valeur</th>
+                                <th style={{ width: "30%" }}>Commentaire</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {Object.entries(indicators).map(([key, meta]) => {
+                                if (meta.category !== "Indicateurs supplémentaires") return null;
+                                const indicator = selectedPublication.data?.[key];
+                                if (!indicator || indicator.value === undefined || indicator.value === "") return null;
+                                return (
+                                  <tr key={key}>
+                                    <td className="small">{meta.libelle}</td>
+                                    <td className="fw-bold small">{indicator.value}</td>
+                                    <td className="small text-muted">{indicator.comment || "-"}</td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </Table>
+                        </Card.Body>
+                      </Card>
+                    )}
                 </>
               )}
             </div>
@@ -620,25 +639,64 @@ export default function AdminDashboard() {
             <Alert variant="warning">Aucune donnée disponible</Alert>
           )}
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className="d-flex justify-content-between">
+          <Button variant="light" onClick={closeDetailsModal}>
+            Fermer
+          </Button>
+
           {selectedPublication?.status === "pending" && (
-            <div className="me-auto d-flex gap-2">
-              <Button
-                variant="success"
-                onClick={() => handlePublicationAction(selectedPublication.id, "published")}
-              >
-                Approuver
-              </Button>
+            <div>
+
               <Button
                 variant="danger"
-                onClick={() => handlePublicationAction(selectedPublication.id, "rejected")}
+                className=" me-4"
+                onClick={() => openRejectModal(selectedPublication.id)}
               >
+                <X size={16} className="me-1" style={{ display: "inline" }} />
                 Rejeter
               </Button>
+              <Button
+                variant="success"
+                className="text-white"
+                onClick={() => handleApprove(selectedPublication.id)}
+              >
+                <Check size={16} className="me-1" style={{ display: "inline" }} />
+                Approuver
+              </Button>
+
             </div>
           )}
-          <Button variant="primary" onClick={closeDetailsModal}>
-            Fermer
+
+        </Modal.Footer>
+      </Modal>
+      {/* Reject Modal */}
+      <Modal show={showRejectModal} onHide={() => setShowRejectModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title className="d-flex align-items-center gap-2">
+            <XCircle size={20} className="text-danger" />
+            Rejeter la publication
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="mb-3">Vous pouvez ajouter un commentaire pour expliquer le motif du rejet. Ce message sera visible par l'utilisateur.</p>
+          <Form.Group>
+            <Form.Label>Commentaire (optionnel)</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Ex : Les indicateurs renseignés sont incomplets..."
+              value={rejectComment}
+              onChange={(e) => setRejectComment(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={() => setShowRejectModal(false)}>
+            Annuler
+          </Button>
+          <Button variant="danger" onClick={handleReject}>
+            <XCircle size={16} className="me-1" style={{ display: "inline" }} />
+            Confirmer le rejet
           </Button>
         </Modal.Footer>
       </Modal>

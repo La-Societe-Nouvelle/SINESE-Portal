@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { Card } from "react-bootstrap";
-import { FileText, Download, FileCheck, FileCode, FileSpreadsheet } from "lucide-react";
-import { REPORT_TYPES } from "@/(publications)/publications/_components/forms/ReportForm";
+import { Download, FileCheck } from "lucide-react";
+import { REPORT_TYPES } from "@/_libs/report-types";
+import { getReportFormatColor, getReportFormatIcon } from "@/_libs/report-format";
 
 /**
  * Section pour afficher les rapports de durabilité publiés (CSRD/VSME/RSE)
@@ -35,16 +36,6 @@ export default function PublishedReportSection({ publishedReport }) {
     } finally {
       setLoadingId(null);
     }
-  };
-
-
-
-  const getFileTypeColor = (filename) => {
-    const ext = filename?.split('.').pop()?.toLowerCase();
-    if (ext === 'pdf') return 'danger';
-    if (ext === 'xbrl' || ext === 'xml') return 'success';
-    if (ext === 'xlsx' || ext === 'xls') return 'primary';
-    return 'secondary';
   };
 
   const getReportTypeLabel = (type) => {
@@ -86,14 +77,6 @@ export default function PublishedReportSection({ publishedReport }) {
     return capitalizeFirst(stripExtension(name));
   };
 
-  const getFileIcon = (filename) => {
-    const ext = filename?.split('.').pop()?.toLowerCase();
-    if (ext === 'pdf') return FileText;
-    if (ext === 'xbrl' || ext === 'xml') return FileCode;
-    if (ext === 'xlsx' || ext === 'xls') return FileSpreadsheet;
-    return FileText;
-  };
-
   return (
     <Card className="mb-4 shadow-sm border-0">
       <Card.Header className=" border-bottom">
@@ -110,7 +93,7 @@ export default function PublishedReportSection({ publishedReport }) {
           {documents.map((doc, index) => {
             const displayName = getDisplayName(doc);
             const iconSource = doc.fileName || doc.name || doc.url || displayName;
-            const IconComponent = getFileIcon(iconSource);
+            const IconComponent = getReportFormatIcon(iconSource);
             return (
               <div
                 key={index}
@@ -132,10 +115,10 @@ export default function PublishedReportSection({ publishedReport }) {
                     style={{
                       width: '40px',
                       height: '40px',
-                      backgroundColor: `var(--bs-${getFileTypeColor(displayName)}-subtle)`
+                      backgroundColor: `var(--bs-${getReportFormatColor(displayName)}-subtle)`
                     }}
                   >
-                    <IconComponent size={20} className={`text-${getFileTypeColor(displayName)}`} />
+                    <IconComponent size={20} className={`text-${getReportFormatColor(displayName)}`} />
                   </div>
                   <div className="flex-grow-1">
                     <div className="fw-semibold text-dark">{displayName}</div>

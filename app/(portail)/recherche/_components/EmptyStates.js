@@ -1,9 +1,13 @@
 "use client";
 
 import { Button } from "react-bootstrap";
-import { Search, Building } from "lucide-react";
+import { Search, Building, AlertTriangle } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
 
-export function NoResultsState({ onNewSearch }) {
+export function NoResultsState() {
+  const router   = useRouter();
+  const pathname = usePathname();
+
   return (
     <div className="text-center py-5">
       <div className="mb-4">
@@ -13,8 +17,25 @@ export function NoResultsState({ onNewSearch }) {
       <p className="text-muted mb-4">
         Essayez de modifier vos critères de recherche ou utilisez des termes plus généraux.
       </p>
-      <Button variant="outline-primary" onClick={onNewSearch}>
+      <Button variant="outline-primary" onClick={() => router.push(pathname)}>
         Nouvelle recherche
+      </Button>
+    </div>
+  );
+}
+
+export function SearchErrorState() {
+  return (
+    <div className="text-center py-5" role="alert">
+      <div className="mb-4">
+        <AlertTriangle className="text-warning" size={48} />
+      </div>
+      <h4>La recherche a rencontré un problème</h4>
+      <p className="text-muted mb-4">
+        Le service met plus de temps que prévu à répondre. Réessayez dans quelques instants.
+      </p>
+      <Button variant="outline-primary" onClick={() => window.location.reload()}>
+        Réessayer
       </Button>
     </div>
   );

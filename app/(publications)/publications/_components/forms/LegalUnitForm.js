@@ -4,8 +4,9 @@ import { Plus,  AlertTriangle, ExternalLink } from "lucide-react";
 import Select from "react-select";
 import AddLegalUnitModal from "../modals/AddLegalUnitModal";
 import YearSelector from "./YearSelector";
-import { addLegalUnit } from "@/services/legalUnitService";
+import { getLegalUnits, addLegalUnit } from "@/actions/legalUnits";
 import { usePublicationFormContext } from "../../_context/PublicationFormContext";
+import { getErrorMessage } from "@/_libs/errors";
 
 export default function LegalUnitForm({ hidePeriod = false }) {
   const {
@@ -24,23 +25,18 @@ export default function LegalUnitForm({ hidePeriod = false }) {
   const [publishedYears, setPublishedYears] = useState([]);
 
   useEffect(() => {
-    async function fetchLegalUnits() {
+    async function loadLegalUnits() {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch("/api/legal-units");
-        if (res.ok) {
-          const data = await res.json();
-          setLegalUnits(data);
-        } else {
-          setError("Erreur lors de la récupération des entreprises.");
-        }
+        const data = await getLegalUnits();
+        setLegalUnits(data);
       } catch {
         setError("Une erreur est survenue.");
       }
       setLoading(false);
     }
-    fetchLegalUnits();
+    loadLegalUnits();
   }, []);
 
   // Ensure selected legal unit is in the list (important for edit mode)
@@ -70,20 +66,13 @@ export default function LegalUnitForm({ hidePeriod = false }) {
   const handleAdd = async (legalunit) => {
     setLoading(true);
     setError("");
-    try {
-      const newLegalUnit = await addLegalUnit({ siren: legalunit.siren, denomination: legalunit.denomination });
-      setLegalUnits((prev) => [
-        ...prev,
-        newLegalUnit,
-      ]);
-      setSelectedLegalUnit({
-        id: newLegalUnit.id,
-        siren: newLegalUnit.siren,
-        denomination: newLegalUnit.denomination,
-      });
+    const result = await addLegalUnit({ siren: legalunit.siren, denomination: legalunit.denomination });
+    if (result.error) {
+      setError(getErrorMessage(result));
+    } else {
+      setLegalUnits((prev) => [...prev, result]);
+      setSelectedLegalUnit({ id: result.id, siren: result.siren, denomination: result.denomination });
       setShowAddModal(false);
-    } catch (err) {
-      setError(err.message || "Erreur lors de l'ajout de l'entreprise.");
     }
     setLoading(false);
   };

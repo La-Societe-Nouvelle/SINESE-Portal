@@ -2,25 +2,38 @@
 
 import { LineChart } from '@/_components/charts/LineChart';
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Image } from 'react-bootstrap';
 
-export default function IndicatorCard({ 
-  title, 
-  unit, 
-  data, 
-  icon,
+export default function IndicatorCard({
+  code,
+  title,
+  unit,
+  data,
+  series,
   color = '#3b4d8f',
-  isLoading = false 
+  isLoading = false,
+  capAt100 = false
 }) {
+  const hasData = series ? series.some((s) => s.data && s.data.length > 0) : data && data.length > 0;
   return (
     <Card className="h-100 indicator-card"
     >
       <Card.Body className="p-4">
-        {/* Header avec titre et unité */}
+        {/* Header avec picto, titre et unité */}
         <div className="indicator-header">
-          <h5 className="indicator-title">
-            {title}
-          </h5>
+          <div className="d-flex align-items-center mb-2">
+            <div className="indicator-icon me-2">
+              <Image
+                width="28"
+                height="28"
+                src={`/ESE/picto/ese-${code.toLowerCase()}-color.svg`}
+                alt={code}
+              />
+            </div>
+            <h5 className="indicator-title mb-0">
+              {title}
+            </h5>
+          </div>
           <p className="indicator-unit">{unit}</p>
         </div>
 
@@ -37,9 +50,9 @@ export default function IndicatorCard({
                 <div className="loading-text">Chargement...</div>
               </div>
             </div>
-          ) : data && data.length > 0 ? (
+          ) : hasData ? (
             <div className="chart-wrapper">
-              <LineChart data={data} color={color} unit={unit} />
+              <LineChart series={series} data={data} color={color} unit={unit} capAt100={capAt100} />
             </div>
           ) : (
             <div className="chart-empty">

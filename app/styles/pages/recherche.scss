@@ -3,10 +3,23 @@
   min-height: 100vh;
   background-color: $light;
 
+
   // Header avec mixins standardisés
   .search-header {
     @include card-elevation(1);
     top: 0;
+
+    // Mobile "Filtres de recherche" trigger sits on the blue band here too
+    .mobile-trigger {
+      color: $white;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+
+      &:hover, &:focus {
+        color: $primary-dark;
+        background: $white;
+      }
+    }
 
     .input-group {
       max-width: 500px;
@@ -22,11 +35,89 @@
         font-weight: 600;
       }
     }
+
+    .search-suggestions {
+      position: absolute;
+      top: calc(100% + 0.375rem);
+      left: 0;
+      right: 0;
+      background: $white;
+      border-radius: 0.5rem;
+      overflow-y: auto;
+      max-height: 300px;
+      z-index: 20;
+    }
+
+    .search-suggestion-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.4rem 0.85rem;
+      border: none;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.875rem;
+
+      &:hover, &:focus, &.is-active {
+        background-color: $light;
+      }
+
+      + .search-suggestion-item {
+        border-top: 1px solid #f1f3f5;
+      }
+    }
+
+    .search-suggestion-text {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      overflow: hidden;
+
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .search-suggestion-name {
+        flex-shrink: 0;
+        max-width: 55%;
+      }
+    }
   }
 
-  // Sidebar filters
-  .sidebar-filters {
+  // Horizontal filter bar (desktop)
+  .search-filter-bar {
+    position: relative;
+  }
 
+  // Base .filter-pill* partagée avec /macroeconomies : voir components/_filter-pills.scss
+  .filter-pills-bar {
+    padding: 0.75rem 0;
+  }
+
+  .filter-pill-dropdown-wrapper {
+    position: relative;
+  }
+
+  .filter-pill-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    z-index: 1040;
+    width: 320px;
+    background: $white;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    padding: 1rem;
+  }
+
+  // Filter panel content — shared by the "Plus de filtres" dropdown and the
+  // mobile offcanvas filter list.
+  // .filter-label / .filter-group : style partagé, voir components/macro-sidebar.scss
+  .sidebar-filters, .filter-pill-dropdown {
     .badge {
       @include badge-style($light-secondary, $white, small);
     }
@@ -64,10 +155,6 @@
       opacity: 0.5;
     }
   }
-
-
-
-
   // Loading and empty states
   .spinner-border {
     color: $select-primary;
@@ -139,9 +226,10 @@
   margin: 1rem 0;
 }
 
-.naf-sidebar-selector, .departement-sidebar-selector, .effectif-sidebar-selector  {
+.naf-sidebar-selector, .departement-sidebar-selector, .effectif-sidebar-selector, .indicateur-sidebar-selector  {
   .form-check-label {
     font-size: 0.7rem;
+    font-weight: 500;
     color: $text-muted;
   }
 }

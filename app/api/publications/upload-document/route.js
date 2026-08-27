@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSession } from "@/_libs/auth";
+import OVH_CONFIG, { getS3Client } from "@/_libs/ovh-client";
 
 /**
  * API pour uploader des rapports liés à une publication
@@ -9,7 +9,7 @@ import { authOptions } from "../../auth/[...nextauth]/route";
  */
 export async function POST(request) {
   // Vérifier l'authentification
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Non autorisé. Veuillez vous connecter." }, { status: 401 });
   }
@@ -26,25 +26,6 @@ export async function POST(request) {
       );
     }
 
-    // Vérifier les variables d'environnement
-    if (!process.env.OS_USERNAME || !process.env.OS_PASSWORD) {
-      console.error("❌ Credentials OVH manquants");
-      return NextResponse.json(
-        { error: "Configuration OVH manquante" },
-        { status: 500 }
-      );
-    }
-
-    // Initialiser le client S3 OVH
-    const s3Client = new S3Client({
-      region: process.env.OS_REGION_NAME || "gra",
-      endpoint: process.env.OS_AUTH_URL || "https://s3.gra.cloud.ovh.net",
-      credentials: {
-        accessKeyId: process.env.OS_USERNAME,
-        secretAccessKey: process.env.OS_PASSWORD,
-      },
-    });
-
     // Convertir le fichier en buffer
     const buffer = Buffer.from(await file.arrayBuffer());
 
@@ -55,7 +36,7 @@ export async function POST(request) {
 
     // Uploader vers OVH S3
     const command = new PutObjectCommand({
-      Bucket: process.env.OVH_BUCKET_NAME || "sinese-storage",
+      Bucket: OVH_CONFIG.bucketName,
       Key: key,
       Body: buffer,
       ContentType: file.type,
@@ -67,10 +48,10 @@ export async function POST(request) {
       },
     });
 
-    await s3Client.send(command);
+    await getS3Client().send(command);
 
     // Générer l'URL publique du fichier
-    const baseUrl = (process.env.OVH_PUBLIC_URL || `https://${process.env.OVH_BUCKET_NAME}.s3.${process.env.OS_REGION_NAME}.cloud.ovh.net`).replace(/\/$/, '');
+    const baseUrl = OVH_CONFIG.publicUrl.replace(/\/$/, '');
     const publicUrl = `${baseUrl}/${key}`;
 
     console.log(`✅ Document uploadé: ${key}`);

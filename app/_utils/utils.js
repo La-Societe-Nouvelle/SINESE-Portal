@@ -1,8 +1,3 @@
-export function cutString(str, nbChar) {
-  if (str.length <= nbChar) return str;
-  return str.substring(0, nbChar) + "...";
-}
-
 // FLAG
 
 export const getFlagLabel = (flag) => {
@@ -32,21 +27,8 @@ export const hasPublishedOrEstimatedData = (legalUnit) => {
   
   // Vérifier s'il y a des indicateurs estimés
   const hasEstimated = legalUnit.estimatedIndicators?.length > 0;
-  
-  return hasPublished || hasEstimated;
-};
 
-/**
- * Trie un tableau d'unités légales par nombre total d'indicateurs (décroissant)
- * @param {Array} legalUnits - Tableau d'unités légales
- * @returns {Array} Tableau trié par nombre total d'indicateurs
- */
-export const sortByTotalIndicators = (legalUnits) => {
-  return [...legalUnits].sort((a, b) => {
-    const aTotal = a.totalIndicators || 0;
-    const bTotal = b.totalIndicators || 0;
-    return bTotal - aTotal; // Ordre décroissant (plus d'indicateurs en premier)
-  });
+  return hasPublished || hasEstimated || !!legalUnit.hasPublishedReport;
 };
 
 /**

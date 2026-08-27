@@ -1,4 +1,4 @@
-import { getPublicationById } from "@/services/server/publicationService";
+import { getPublicationById } from "@/actions/publications";
 import Link from "next/link";
 import PublicationForm from "@/(publications)/publications/_components/forms/PublicationForm";
 import PublicationsPageHeader from "@/(publications)/publications/_components/PublicationsPageHeader";

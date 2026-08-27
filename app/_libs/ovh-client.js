@@ -10,7 +10,7 @@ let s3Client = null;
 /**
  * Crée le client S3 de manière lazy avec validation
  */
-function getS3Client() {
+export function getS3Client() {
   if (!s3Client) {
     // Validation des credentials
     if (!process.env.OS_USERNAME || !process.env.OS_PASSWORD) {
@@ -69,9 +69,9 @@ export async function listObjects(prefix = '', maxKeys = 1000) {
       .filter(obj => !obj.Key.endsWith('/')) // Exclure les dossiers
       .sort((a, b) => new Date(b.LastModified) - new Date(a.LastModified))
       .map(obj => {
-        // Nettoyer le nom en enlevant le préfixe open-data/
-        const cleanName = obj.Key.startsWith('open-data/') 
-          ? obj.Key.substring('open-data/'.length)
+        // Nettoyer le nom en enlevant le préfixe sinese/open-data/
+        const cleanName = obj.Key.startsWith('sinese/open-data/')
+          ? obj.Key.substring('sinese/open-data/'.length)
           : obj.Key;
           
         return {
@@ -154,6 +154,7 @@ function parseFileMetadata(fileName) {
   
   if (matchedDataset) {
     // Utiliser les métadonnées du fichier de configuration
+    metadata.datasetKey = datasetKey;
     metadata.category = matchedDataset.category;
     metadata.description = matchedDataset.description;
     metadata.license = matchedDataset.license;
@@ -172,10 +173,13 @@ function parseFileMetadata(fileName) {
       metadata.isComplete = true;
       
       // Extraire la date du fichier (ex: sinese-unitelegale-2025-09-01.csv)
-      const dateMatch = fileName.match(/(\d{4}-\d{2}-\d{2})/);
+      // Formatage manuel (pas de new Date()) pour éviter tout décalage de fuseau horaire.
+      const dateMatch = fileName.match(/(\d{4})-(\d{2})-(\d{2})/);
       if (dateMatch) {
-        metadata.year = parseInt(dateMatch[1].split('-')[0]);
-        metadata.displayName += ` - ${dateMatch[1]}`;
+        const [, y, m, d] = dateMatch;
+        metadata.year = parseInt(y);
+        const MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+        metadata.displayName += ` - ${parseInt(d)} ${MONTHS[parseInt(m) - 1]} ${y}`;
       }
     }
     
@@ -231,12 +235,12 @@ export function formatObjectsForDatasets(objects) {
   objects.forEach(obj => {
     let groupKey;
     
-    if (obj.isComplete) {
-      groupKey = 'sinese-complete';
-    } else if (obj.category === 'metadata') {
-      groupKey = 'indicators-metadata';
-    } else if (obj.category === 'branches') {
+    if (obj.category === 'branches') {
+      // Une même config "branches" couvre plusieurs indicateurs/années: un groupe par fichier logique.
       groupKey = `branches-${obj.indicator}-${obj.year}`;
+    } else if (obj.datasetKey) {
+      // Un format = une fiche distincte (comme sur data.gouv.fr/INSEE), pas un regroupement multi-format.
+      groupKey = obj.datasetKey;
     } else {
       groupKey = obj.name;
     }
@@ -251,7 +255,10 @@ export function formatObjectsForDatasets(objects) {
         files: [],
         category: obj.category,
         year: obj.year,
-        indicator: obj.indicator
+        indicator: obj.indicator,
+        license: obj.license,
+        frequency: obj.frequency,
+        indicators: obj.indicators
       };
     }
     
@@ -268,7 +275,6 @@ export function formatObjectsForDatasets(objects) {
   Object.values(groups).forEach(group => {
     group.formats = [...new Set(group.formats)]; // Dédupliquer
     group.totalSize = group.files.reduce((sum, file) => sum + file.size, 0);
-    group.records = estimateRecords(group);
     group.size = formatFileSize(group.totalSize);
     
     datasets.push(group);
@@ -295,26 +301,6 @@ function generateDescription(obj) {
   }
   
   return "Données d'empreinte sociétale et environnementale.";
-}
-
-/**
- * Estime le nombre d'enregistrements basé sur la taille
- */
-function estimateRecords(group) {
-  if (group.category === 'complete') {
-    // Estimation basée sur la taille : ~70 bytes par ligne CSV
-    return Math.round(group.totalSize / 70).toLocaleString('fr-FR');
-  }
-  
-  if (group.category === 'metadata') {
-    return "12"; // 12 indicateurs
-  }
-  
-  if (group.category === 'branches') {
-    return "732"; // Nombre approximatif de branches NAF
-  }
-  
-  return "N/A";
 }
 
 /**

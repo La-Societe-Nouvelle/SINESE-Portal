@@ -19,13 +19,13 @@ export default function DepartementSidebarSelector({
   const processedData = useMemo(() => {
     // Grouper par région
     const regionGroups = {};
-    
+
     departementsData.forEach(dept => {
       if (!regionGroups[dept.region_name]) {
         regionGroups[dept.region_name] = [];
       }
       regionGroups[dept.region_name].push({
-        code: dept.num_dep,
+        code: String(dept.num_dep),
         name: dept.dep_name,
         displayName: `${dept.num_dep} - ${dept.dep_name}`
       });
@@ -43,7 +43,7 @@ export default function DepartementSidebarSelector({
 
     // Trier les régions alphabétiquement
     regions.sort((a, b) => a.name.localeCompare(b.name));
-    
+
     // Trier les départements par code dans chaque région
     regions.forEach(region => {
       region.departements.sort((a, b) => String(a.code).localeCompare(String(b.code)));
@@ -119,15 +119,15 @@ export default function DepartementSidebarSelector({
   if (!isOpen) return null;
 
   return (
-    <div className={`departement-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg ${className}`}
+    <div className={`departement-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg d-flex flex-column ${className}`}
       style={{ width: '400px', zIndex: 1050 }}>
 
       {/* Header */}
-      <div className="p-3 border-bottom bg-light">
+      <div className="p-3 border-bottom bg-light flex-shrink-0">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h6 className="mb-0 fw-bold d-flex align-items-center">
             <MapPin size={18} className="me-2" />
-            Départements
+            Localisation
           </h6>
           <Button variant="link" size="sm" onClick={onToggle} className="p-1">
             <X size={18} />
@@ -161,7 +161,7 @@ export default function DepartementSidebarSelector({
       </div>
 
       {/* Contenu scrollable */}
-      <div className="flex-grow-1 overflow-auto" style={{ height: 'calc(100vh - 140px)' }}>
+      <div className="flex-grow-1 overflow-auto" style={{ minHeight: 0 }}>
         {processedData.map((region) => {
           const regionState = getRegionState(region.departements);
           const isExpanded = expandedRegions.has(region.name);
@@ -190,7 +190,12 @@ export default function DepartementSidebarSelector({
                     className="me-2"
                   />
 
-                  <div className="flex-grow-1">
+                  <div
+                    className="flex-grow-1"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => toggleRegion(region.name)}
+                    role="button"
+                  >
                     <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>
                       {region.name}
                     </div>

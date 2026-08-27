@@ -7,8 +7,8 @@ import { hasPublishedOrEstimatedData } from "@/_utils/utils";
 
 export default function CompanyCard({ company }) {
   return (
-    <Card className="company-card mb-4  hover-shadow">
-      <Card.Body className="p-4">
+    <Card className="company-card mb-3 hover-shadow">
+      <Card.Body className="p-3">
         <Row className="align-items-start">
           <Col md={8}>
             <div className="company-info">
@@ -162,7 +162,7 @@ export default function CompanyCard({ company }) {
                   style={{ borderRadius: '0.5rem', minWidth: '200px' }}
                 >
                   <Calculator size={16} className="me-2" />
-                  Estimer l'empreinte
+                  Estimation de l'empreinte
                 </Button>
               )}
             </div>

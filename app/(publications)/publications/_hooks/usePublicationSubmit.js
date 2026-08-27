@@ -1,8 +1,9 @@
 import { useEffect, useCallback } from "react";
-import { addPublication, addReport } from "@/services/publicationService";
+import { addPublication, addReport } from "@/actions/publications";
 import { uploadDocumentsToOVH } from "../_components/forms/DocumentUploadForm";
 import { usePublicationFormContext } from "../_context/PublicationFormContext";
 import { validateStep } from "../_utils/validation";
+import { getErrorMessage } from "@/_libs/errors";
 
 export default function usePublicationSubmit() {
   const ctx = usePublicationFormContext();
@@ -21,7 +22,6 @@ export default function usePublicationSubmit() {
     const year = selectedYear || (periodEnd ? new Date(periodEnd).getFullYear() : undefined);
     if (selectedLegalUnit && selectedLegalUnit.id && year) {
       try {
-        // Sauvegarder la publication
         const result = await addPublication({
           legalUnit: selectedLegalUnit,
           declarationData,
@@ -32,7 +32,9 @@ export default function usePublicationSubmit() {
           status: "draft",
         });
 
-        // Si rapport avec URL externe, sauvegarder aussi le rapport
+        if (result.error) throw new Error(getErrorMessage(result));
+
+        let reportSaveOk = true;
         if (reportType && uploadMode === "url" && externalUrl.trim()) {
           const reportResult = await addReport({
             reportId: reportId || undefined,
@@ -41,11 +43,18 @@ export default function usePublicationSubmit() {
             fileUrl: externalUrl.trim(),
             storageType: "external",
           });
-          setReportId(reportResult.reportId);
+          if (reportResult.error) {
+            reportSaveOk = false;
+            console.error("Erreur lors de la sauvegarde du rapport :", getErrorMessage(reportResult));
+          } else {
+            setReportId(reportResult.reportId);
+          }
         }
 
-        setDraftSavedNotification(true);
-        setTimeout(() => setDraftSavedNotification(false), 3000);
+        if (reportSaveOk) {
+          setDraftSavedNotification(true);
+          setTimeout(() => setDraftSavedNotification(false), 3000);
+        }
       } catch (e) {
         console.error("Erreur lors de l'enregistrement du brouillon :", e);
       }
@@ -85,8 +94,6 @@ export default function usePublicationSubmit() {
         }
       }
 
-      // ÉTAPE 1: Toujours créer/mettre à jour la publication
-      // Même si hasIndicators est false (report-only), on crée une publication avec data vide
       const publicationResult = await addPublication({
         legalUnit: selectedLegalUnit,
         declarationData: hasIndicators ? declarationData : {},
@@ -97,6 +104,7 @@ export default function usePublicationSubmit() {
         status: "pending",
       });
 
+      if (publicationResult.error) throw new Error(getErrorMessage(publicationResult));
       const publicationId = publicationResult.publicationId;
 
       // ÉTAPE 2: Si rapport, le soumettre avec publication_id
@@ -115,7 +123,7 @@ export default function usePublicationSubmit() {
           storageType = "external";
         }
 
-        await addReport({
+        const reportResult = await addReport({
           reportId: reportId || undefined,
           publicationId,
           type: reportType,
@@ -125,6 +133,7 @@ export default function usePublicationSubmit() {
           mimeType,
           storageType,
         });
+        if (reportResult.error) throw new Error(getErrorMessage(reportResult));
       }
 
       setSuccess(true);

@@ -103,11 +103,11 @@ export default function EffectifSidebarSelector({
   if (!isOpen) return null;
 
   return (
-    <div className={`effectif-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg ${className}`}
+    <div className={`effectif-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg d-flex flex-column ${className}`}
       style={{ width: '400px', zIndex: 1050 }}>
 
       {/* Header */}
-      <div className="p-3 border-bottom bg-light">
+      <div className="p-3 border-bottom bg-light flex-shrink-0">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h6 className="mb-0 fw-bold d-flex align-items-center">
             <Users size={18} className="me-2" />
@@ -154,7 +154,7 @@ export default function EffectifSidebarSelector({
       </div>
 
       {/* Contenu scrollable */}
-      <div className="flex-grow-1 overflow-auto" style={{ height: 'calc(100vh - 180px)' }}>
+      <div className="flex-grow-1 overflow-auto" style={{ minHeight: 0 }}>
         {processedData.map((category) => {
           const isExpanded = expandedCategories.has(category.name);
 
@@ -172,7 +172,12 @@ export default function EffectifSidebarSelector({
                     {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
                   </Button>
 
-                  <div className="flex-grow-1">
+                  <div
+                    className="flex-grow-1"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => toggleCategory(category.name)}
+                    role="button"
+                  >
                     <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>
                       {category.name}
                     </div>
@@ -190,19 +195,11 @@ export default function EffectifSidebarSelector({
                   {category.effectifs.map((effectif) => (
                     <div key={effectif.code} className="px-5 py-1">
                       <Form.Check
-                        type="radio"
+                        type="checkbox"
                         id={`effectif-${effectif.code}`}
-                        name="effectif-selection"
                         checked={selectedEffectif === effectif.code}
                         onChange={() => handleEffectifToggle(effectif.code)}
-                        label={
-                          <div className="d-flex align-items-center">
-                            <span className="me-2">{effectif.label}</span>
-                            <Badge bg={effectif.badgeColor} style={{ fontSize: '0.6rem' }}>
-                              {effectif.code}
-                            </Badge>
-                          </div>
-                        }
+                        label={<span>{effectif.label}</span>}
                         className="mb-0"
                       />
                     </div>

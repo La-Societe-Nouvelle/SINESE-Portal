@@ -1,9 +1,8 @@
 import indicators from "./../../_lib/indicators.json";
-import { Table, Form, Card, Row, Col, Badge } from "react-bootstrap";
-import { BarChart, BarChart2, BarChart3, ChartBar, FileBarChart2, FileText, Link2, Paperclip, PieChart } from "lucide-react";
+import { Table, Form, Card, Row, Col, Badge, FloatingLabel } from "react-bootstrap";
+import {  BarChart2, FileText, Link2, Paperclip, PieChart } from "lucide-react";
 import { usePublicationFormContext } from "../../_context/PublicationFormContext";
 import { REPORT_TYPES } from "./ReportForm";
-import { formatFileSize } from "../../_utils";
 
 export default function RecapForm() {
   const {
@@ -21,6 +20,7 @@ export default function RecapForm() {
     periodEnd,
     confirmationChecked,
     setConfirmationChecked,
+    updateDeclarationData,
   } = usePublicationFormContext();
 
   const year = selectedYear || (periodEnd ? new Date(periodEnd).getFullYear() : null);
@@ -92,38 +92,38 @@ export default function RecapForm() {
       {hasIndicators && extraIndicators.some(
         ([key]) => declarationData?.[key] && declarationData[key].value !== undefined && declarationData[key].value !== ""
       ) && (
-        <Card className="mb-3">
-          <Card.Header className="bg-light">
-            <h6 className="mb-0">
-              <PieChart size={18} className="me-2" /> 
-              Indicateurs supplémentaires</h6>
-          </Card.Header>
-          <Card.Body className="p-0">
-            <Table className="mb-0 table-sm table-striped">
-              <thead>
-                <tr>
-                  <th>Indicateur</th>
-                  <th>Valeur</th>
-                  <th>Commentaire</th>
-                </tr>
-              </thead>
-              <tbody>
-                {extraIndicators.map(([key, meta]) => {
-                  const indicator = declarationData?.[key];
-                  if (!indicator || indicator.value === undefined || indicator.value === "") return null;
-                  return (
-                    <tr key={key}>
-                      <td>{meta.libelle}</td>
-                      <td className="fw-500">{indicator.value}</td>
-                      <td>{indicator.comment || <span className="text-muted">-</span>}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Card.Body>
-        </Card>
-      )}
+          <Card className="mb-3">
+            <Card.Header className="bg-light">
+              <h6 className="mb-0">
+                <PieChart size={18} className="me-2" />
+                Indicateurs supplémentaires</h6>
+            </Card.Header>
+            <Card.Body className="p-0">
+              <Table className="mb-0 table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>Indicateur</th>
+                    <th>Valeur</th>
+                    <th>Commentaire</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {extraIndicators.map(([key, meta]) => {
+                    const indicator = declarationData?.[key];
+                    if (!indicator || indicator.value === undefined || indicator.value === "") return null;
+                    return (
+                      <tr key={key}>
+                        <td>{meta.libelle}</td>
+                        <td className="fw-500">{indicator.value}</td>
+                        <td>{indicator.comment || <span className="text-muted">-</span>}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        )}
 
       {/* Récapitulatif du rapport */}
       {hasReport && (
@@ -150,7 +150,7 @@ export default function RecapForm() {
                   reportDocuments.map((doc) => (
                     <div key={doc.id}>
                       <FileText size={14} className="me-1" style={{ display: "inline" }} />
-                      {doc.name} 
+                      {doc.name}
                     </div>
                   ))
                 ) : (
@@ -164,6 +164,22 @@ export default function RecapForm() {
           </Card.Body>
         </Card>
       )}
+
+      {/* Informations complémentaires */}
+      <div className="mb-4">
+        <FloatingLabel label="Informations complémentaires (optionnel)">
+          <Form.Control
+            as="textarea"
+            placeholder="Informations complémentaires"
+            style={{ height: "100px" }}
+            value={declarationData._notes || ""}
+            onChange={(e) => updateDeclarationData({ _notes: e.target.value })}
+          />
+        </FloatingLabel>
+        <Form.Text className="text-muted">
+          Ajoutez ici tout élément de contexte ou autre indicateur que vous souhaiteriez afficher sur le portail.
+        </Form.Text>
+      </div>
 
       {/* Confirmation sur l'honneur */}
       <div

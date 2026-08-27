@@ -1,7 +1,7 @@
 "use client";
 
-import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Dropdown } from "react-bootstrap";
-import { LogOut, Upload, Settings, User, Shield, Home } from "lucide-react";
+import { Container, Navbar, Nav, NavbarBrand, NavbarCollapse, NavLink, NavbarToggle, Dropdown, Button } from "react-bootstrap";
+import { LogOut, Upload, Settings, User, Shield, Home, ArrowLeft } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
 export default function PublicationsNavbar() {
@@ -47,9 +47,11 @@ export default function PublicationsNavbar() {
                 <span>Dashboard Admin</span>
               </NavLink>
             )}
+
           </Nav>
 
-          <Nav className="ms-auto">
+          <Nav className="ms-auto align-items-center">
+
             {session?.user && (
               <Dropdown>
                 <Dropdown.Toggle
@@ -78,6 +80,18 @@ export default function PublicationsNavbar() {
                 </Dropdown.Menu>
               </Dropdown>
             )}
+            <div className="ms-3 ps-3 border-2 border-start border-light">
+              <Button
+                variant="outline-primary"
+                size="sm"
+                href="/"
+                className="d-flex align-items-center"
+              >
+                <ArrowLeft size={14} className="me-2" />
+                <span>Retour au portail</span>
+              </Button>
+            </div>
+
           </Nav>
         </NavbarCollapse>
       </Container>

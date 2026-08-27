@@ -6,7 +6,7 @@ import { Search, ChevronDown, ChevronRight,  X } from "lucide-react";
 import nafData from "@/_libs/naf_rev_2_by_divisions.json";
 
 export default function NafSidebarSelector({
-  selectedCodes = [],
+  selectedSecteurs = [],
   onChange = () => { },
   isOpen = false,
   onToggle = () => { },
@@ -64,31 +64,31 @@ export default function NafSidebarSelector({
   // Gérer la sélection d'une section complète
   const handleSectionToggle = (sectionName, sectionCodes) => {
     const sectionCodeValues = sectionCodes.map(c => c.code);
-    const allSelected = sectionCodeValues.every(code => selectedCodes.includes(code));
+    const allSelected = sectionCodeValues.every(code => selectedSecteurs.includes(code));
 
     if (allSelected) {
       // Désélectionner tous les codes de cette section
-      onChange(selectedCodes.filter(code => !sectionCodeValues.includes(code)));
+      onChange(selectedSecteurs.filter(code => !sectionCodeValues.includes(code)));
     } else {
       // Sélectionner tous les codes de cette section
-      const newSelected = [...new Set([...selectedCodes, ...sectionCodeValues])];
+      const newSelected = [...new Set([...selectedSecteurs, ...sectionCodeValues])];
       onChange(newSelected);
     }
   };
 
   // Gérer la sélection d'un code individuel
   const handleCodeToggle = (code) => {
-    if (selectedCodes.includes(code)) {
-      onChange(selectedCodes.filter(c => c !== code));
+    if (selectedSecteurs.includes(code)) {
+      onChange(selectedSecteurs.filter(c => c !== code));
     } else {
-      onChange([...selectedCodes, code]);
+      onChange([...selectedSecteurs, code]);
     }
   };
 
   // Vérifier si une section est partiellement sélectionnée
   const getSectionState = (sectionCodes) => {
     const sectionCodeValues = sectionCodes.map(c => c.code);
-    const selectedInSection = sectionCodeValues.filter(code => selectedCodes.includes(code));
+    const selectedInSection = sectionCodeValues.filter(code => selectedSecteurs.includes(code));
 
     if (selectedInSection.length === 0) return "none";
     if (selectedInSection.length === sectionCodeValues.length) return "all";
@@ -105,11 +105,11 @@ export default function NafSidebarSelector({
   if (!isOpen) return null;
 
   return (
-    <div className={`naf-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg ${className}`}
+    <div className={`naf-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg d-flex flex-column ${className}`}
       style={{ width: '400px', zIndex: 1050 }}>
 
       {/* Header */}
-      <div className="p-3 border-bottom bg-light">
+      <div className="p-3 border-bottom bg-light flex-shrink-0">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h6 className="mb-0 fw-bold">Activité</h6>
           <Button variant="link" size="sm" onClick={onToggle} className="p-1">
@@ -133,9 +133,9 @@ export default function NafSidebarSelector({
         {/* Compteur et actions */}
         <div className="d-flex justify-content-between align-items-center mt-3">
           <small className="text-muted">
-            {selectedCodes.length} activité{selectedCodes.length > 1 ? 's' : ''} sélectionnée{selectedCodes.length > 1 ? 's' : ''}
+            {selectedSecteurs.length} activité{selectedSecteurs.length > 1 ? 's' : ''} sélectionnée{selectedSecteurs.length > 1 ? 's' : ''}
           </small>
-          {selectedCodes.length > 0 && (
+          {selectedSecteurs.length > 0 && (
             <Button variant="secondary" size="sm" onClick={clearAll} >
               Tout effacer
             </Button>
@@ -144,7 +144,7 @@ export default function NafSidebarSelector({
       </div>
 
       {/* Contenu scrollable */}
-      <div className="flex-grow-1 overflow-auto" style={{ height: 'calc(100vh - 140px)' }}>
+      <div className="flex-grow-1 overflow-auto" style={{ minHeight: 0 }}>
         {processedData.map((section) => {
           const sectionState = getSectionState(section.codes);
           const isExpanded = expandedSections.has(section.name);
@@ -174,16 +174,20 @@ export default function NafSidebarSelector({
 
                   />
 
-                  <div className="flex-grow-1">
+                  <div
+                    className="flex-grow-1"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => toggleSection(section.name)}
+                    role="button"
+                  >
                     <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>
                       {section.displayName}
                     </div>
-
                   </div>
 
                   {sectionState !== "none" && (
                     <Badge bg={sectionState === "all" ? "primary" : "secondary"} className="ms-2" style={{ fontSize: '0.65rem' }}>
-                      {section.codes.filter(c => selectedCodes.includes(c.code)).length}
+                      {section.codes.filter(c => selectedSecteurs.includes(c.code)).length}
                     </Badge>
                   )}
                 </div>
@@ -197,7 +201,7 @@ export default function NafSidebarSelector({
                       <Form.Check
                         type="checkbox"
                         id={`naf-${item.code}`}
-                        checked={selectedCodes.includes(item.code)}
+                        checked={selectedSecteurs.includes(item.code)}
                         onChange={() => handleCodeToggle(item.code)}
                         label={
                           <span >
