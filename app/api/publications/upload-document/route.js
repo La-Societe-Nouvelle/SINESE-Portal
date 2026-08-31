@@ -30,9 +30,12 @@ export async function POST(request) {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     // Générer une clé unique: sinese/publications/rapports/[siren]/[timestamp]-[filename]
+    // Les caractères non-ASCII sont écrasés: ils cassent la signature SigV4 côté
+    // OVH (les valeurs — clé S3 et en-têtes x-amz-meta-* — sont signées telles
+    // qu'envoyées sur le réseau, un octet "é" brut => SignatureDoesNotMatch 403).
     const timestamp = Date.now();
-    const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const key = `sinese/publications/rapports/${siren}/${timestamp}-${sanitizedFileName}`;
+    const asciiFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const key = `sinese/publications/rapports/${siren}/${timestamp}-${asciiFileName}`;
 
     // Uploader vers OVH S3
     const command = new PutObjectCommand({
@@ -42,7 +45,8 @@ export async function POST(request) {
       ContentType: file.type,
       ACL: "public-read", // Rendre le fichier accessible publiquement
       Metadata: {
-        "original-filename": file.name,
+        // encodeURIComponent => ASCII, tout en gardant le nom d'origine lisible
+        "original-filename": encodeURIComponent(file.name),
         "siren": siren,
         "upload-date": new Date().toISOString(),
       },
