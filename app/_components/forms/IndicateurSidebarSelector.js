@@ -1,9 +1,111 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Form, Button, Badge } from "react-bootstrap";
-import { X, CheckCircle } from "lucide-react";
+import { X, CheckCircle, ChevronDown, ChevronRight } from "lucide-react";
 import indicsData from "@/_libs/indics.json";
+
+// En-tête de groupe/catégorie : chevron (repli), checkbox tout-sélectionner,
+// libellé, badge de compte. Le contenu (liste d'indicateurs ou sous-groupes
+// imbriqués) est fourni en children.
+function GroupBlock({
+  name,
+  allCodes,
+  selectedIndicateurs,
+  isCollapsed,
+  onToggleCollapsed,
+  onToggleAll,
+  bold = false,
+  children,
+}) {
+  const selectedInGroup = allCodes.filter(code => selectedIndicateurs.includes(code));
+  const groupState = selectedInGroup.length === 0
+    ? "none"
+    : selectedInGroup.length === allCodes.length
+    ? "all"
+    : "partial";
+
+  return (
+    <div className="border-bottom">
+      <div className="px-3 py-1 border-bottom bg-light">
+        <div className="d-flex align-items-center group-header-row">
+          <button
+            type="button"
+            className="btn btn-link p-0 me-2 text-muted"
+            onClick={onToggleCollapsed}
+            aria-expanded={!isCollapsed}
+            aria-label={`${isCollapsed ? 'Développer' : 'Réduire'} ${name}`}
+          >
+            {isCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+          </button>
+
+          <Form.Check
+            type="checkbox"
+            checked={groupState === "all"}
+            ref={input => {
+              if (input) input.indeterminate = groupState === "partial";
+            }}
+            onChange={onToggleAll}
+            className="me-2"
+          />
+
+          <div className="flex-grow-1">
+            <div
+              className={`group-title ${bold ? "fw-bold group-title--bold" : "fw-semibold"}`}
+              onClick={onToggleAll}
+              role="button"
+            >
+              {name}
+            </div>
+          </div>
+
+          {groupState !== "none" && (
+            <Badge bg={groupState === "all" ? "primary" : "secondary"} className="ms-2 count-badge">
+              {selectedInGroup.length}/{allCodes.length}
+            </Badge>
+          )}
+        </div>
+      </div>
+
+      {!isCollapsed && children}
+    </div>
+  );
+}
+
+// Sous-catégorie feuille : liste d'indicateurs à cocher individuellement.
+function CategoryBlock({
+  name,
+  indicateurs,
+  selectedIndicateurs,
+  isCollapsed,
+  onToggleCollapsed,
+  onToggleCategory,
+  onToggleIndicateur,
+}) {
+  return (
+    <GroupBlock
+      name={name}
+      allCodes={indicateurs.map(i => i.code)}
+      selectedIndicateurs={selectedIndicateurs}
+      isCollapsed={isCollapsed}
+      onToggleCollapsed={onToggleCollapsed}
+      onToggleAll={onToggleCategory}
+    >
+      {indicateurs.map((indicateur) => (
+        <div key={indicateur.code} className="px-5 py-1">
+          <Form.Check
+            type="checkbox"
+            id={`indicateur-${indicateur.code}`}
+            checked={selectedIndicateurs.includes(indicateur.code)}
+            onChange={() => onToggleIndicateur(indicateur.code)}
+            label={<span>{indicateur.libelle}</span>}
+            className="mb-0 indicateur-check"
+          />
+        </div>
+      ))}
+    </GroupBlock>
+  );
+}
 
 export default function IndicateurSidebarSelector({
   selectedIndicateurs = [], // Multi selection
@@ -14,7 +116,8 @@ export default function IndicateurSidebarSelector({
   onToggle = () => { },
   className = ""
 }) {
-  // Préparer les données indicateurs groupées par thématique
+  // --- Données ---
+
   const processedData = useMemo(() => {
     const categoryGroups = {
       'Création de la valeur': [],
@@ -25,63 +128,62 @@ export default function IndicateurSidebarSelector({
     Object.entries(indicsData)
       .filter(([code, indic]) => indic.inEmpreinteSocietale === true)
       .forEach(([code, indic]) => {
-        // Classification selon les thèmes SINESE
-        let category = 'Empreinte sociale'; // Défaut
+        let category = 'Empreinte sociale';
 
-        // Création de la valeur : indicateurs économiques et de contribution
         if (code === 'ECO' || code === 'ART' || code === 'SOC') {
           category = 'Création de la valeur';
-        }
-        // Empreinte sociale : indicateurs sociaux, RH, équité
-        else if (code === 'IDR' || code === 'GEQ' || code === 'KNW' || code === 'FOR' || code === 'QVT' || code === 'GOU' || code === 'REL' || code === 'CIV' || code === 'COM') {
+        } else if (code === 'IDR' || code === 'GEQ' || code === 'KNW' || code === 'FOR' || code === 'QVT' || code === 'GOU' || code === 'REL' || code === 'CIV' || code === 'COM') {
           category = 'Empreinte sociale';
-        }
-        // Empreinte environnementale : indicateurs environnementaux
-        else if (code === 'GHG' || code === 'HAZ' || code === 'MAT' || code === 'NRG' || code === 'WAS' || code === 'WAT') {
+        } else if (code === 'GHG' || code === 'HAZ' || code === 'MAT' || code === 'NRG' || code === 'WAS' || code === 'WAT') {
           category = 'Empreinte environnementale';
         }
 
         categoryGroups[category].push({ code, libelle: indic.libelle });
       });
 
-    const categories = Object.entries(categoryGroups).map(([categoryName, indicateurs]) => ({
+    return Object.entries(categoryGroups).map(([categoryName, indicateurs]) => ({
       name: categoryName,
       indicateurs: [...indicateurs].sort((a, b) => a.code.localeCompare(b.code)),
     }));
+  }, []);
 
-    return categories;
+  // Indicateurs extra-financiers complémentaires, hors panel ESE — groupe
+  // distinct au même niveau que "Empreinte sociétale", pas une sous-catégorie.
+  const autresIndicateurs = useMemo(() => {
+    return Object.entries(indicsData)
+      .filter(([, indic]) => indic.inEmpreinteSocietale !== true)
+      .map(([code, indic]) => ({ code, libelle: indic.libelle }))
+      .sort((a, b) => a.code.localeCompare(b.code));
   }, []);
 
   const allIndicateurCodes = useMemo(() => processedData.flatMap(c => c.indicateurs.map(i => i.code)), [processedData]);
+  const autresIndicateurCodes = useMemo(() => autresIndicateurs.map(i => i.code), [autresIndicateurs]);
 
-  const empreinteSocietaleState = (() => {
-    const selectedCount = allIndicateurCodes.filter(code => selectedIndicateurs.includes(code)).length;
-    if (selectedCount === 0) return "none";
-    if (selectedCount === allIndicateurCodes.length) return "all";
-    return "partial";
-  })();
+  // --- État accordéon ---
 
-  const handleEmpreinteSocietaleToggle = () => {
-    if (empreinteSocietaleState === "all") {
-      onChange(selectedIndicateurs.filter(code => !allIndicateurCodes.includes(code)));
-    } else {
-      onChange([...new Set([...selectedIndicateurs, ...allIndicateurCodes])]);
-    }
+  // "Empreinte sociétale" et "Autres indicateurs" démarrent dépliés (groupes
+  // de premier niveau) ; les 3 sous-catégories ESE démarrent repliées pour
+  // limiter le scroll initial.
+  const [collapsedCategories, setCollapsedCategories] = useState(() =>
+    Object.fromEntries(
+      ['Création de la valeur', 'Empreinte sociale', 'Empreinte environnementale'].map(name => [name, true])
+    )
+  );
+  const toggleCategoryCollapsed = (categoryName) => {
+    setCollapsedCategories(prev => ({ ...prev, [categoryName]: !prev[categoryName] }));
   };
 
-  // Gérer la sélection d'une catégorie complète
-  const handleCategoryToggle = (categoryIndicateurs) => {
-    const categoryCodes = categoryIndicateurs.map(i => i.code);
-    const allSelected = categoryCodes.every(code => selectedIndicateurs.includes(code));
+  // --- Handlers de sélection ---
 
+  const handleCodesToggle = (codes) => {
+    const allSelected = codes.every(code => selectedIndicateurs.includes(code));
     if (allSelected) {
-      onChange(selectedIndicateurs.filter(code => !categoryCodes.includes(code)));
+      onChange(selectedIndicateurs.filter(code => !codes.includes(code)));
     } else {
-      onChange([...new Set([...selectedIndicateurs, ...categoryCodes])]);
+      onChange([...new Set([...selectedIndicateurs, ...codes])]);
     }
   };
 
-  // Gérer la sélection d'un indicateur individuel
   const handleIndicateurToggle = (indicateurCode) => {
     if (selectedIndicateurs.includes(indicateurCode)) {
       onChange(selectedIndicateurs.filter(code => code !== indicateurCode));
@@ -90,27 +192,17 @@ export default function IndicateurSidebarSelector({
     }
   };
 
-  // Vérifier si une catégorie est partiellement sélectionnée
-  const getCategoryState = (categoryIndicateurs) => {
-    const categoryCodes = categoryIndicateurs.map(i => i.code);
-    const selectedInCategory = categoryCodes.filter(code => selectedIndicateurs.includes(code));
-
-    if (selectedInCategory.length === 0) return "none";
-    if (selectedInCategory.length === categoryCodes.length) return "all";
-    return "partial";
-  };
-
   const clearAll = () => onChange([]);
+
+  // --- Rendu ---
 
   if (!isOpen) return null;
 
   return (
-    <div className={`indicateur-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg d-flex flex-column ${className}`}
-      style={{ width: '400px', zIndex: 1050 }}>
+    <div className={`indicateur-sidebar-selector position-fixed top-0 end-0 h-100 bg-white border-start shadow-lg d-flex flex-column ${className}`}>
 
-      {/* Header */}
-      <div className="p-3 border-bottom bg-light flex-shrink-0">
-        <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="p-3 pb-2 border-bottom bg-light flex-shrink-0">
+        <div className="d-flex justify-content-between align-items-center mb-2">
           <h6 className="mb-0 fw-bold d-flex align-items-center">
             <CheckCircle size={18} className="me-2" />
             Publications
@@ -120,8 +212,8 @@ export default function IndicateurSidebarSelector({
           </Button>
         </div>
 
-        <div className="text-uppercase text-muted fw-semibold mb-2" style={{ fontSize: '0.7rem', letterSpacing: '0.03em' }}>
-          Rapport
+        <div className="text-uppercase text-muted fw-semibold mb-1 section-label">
+          Document
         </div>
         <div className="d-flex align-items-center">
           <Form.Check
@@ -132,8 +224,7 @@ export default function IndicateurSidebarSelector({
             className="me-2"
           />
           <div
-            className="flex-grow-1 fw-semibold"
-            style={{ fontSize: '0.8rem', cursor: 'pointer' }}
+            className="flex-grow-1 fw-semibold group-title"
             onClick={() => onToggleHasPublishedReport(!hasPublishedReport)}
             role="button"
           >
@@ -141,11 +232,11 @@ export default function IndicateurSidebarSelector({
           </div>
         </div>
 
-        <hr className="my-3" />
+        <hr className="my-2" />
 
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          <div className="text-uppercase text-muted fw-semibold" style={{ fontSize: '0.7rem', letterSpacing: '0.03em' }}>
-            Indicateurs ESE
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="text-uppercase text-muted fw-semibold section-label">
+            Indicateurs
           </div>
           {selectedIndicateurs.length > 0 && (
             <Button variant="secondary" size="sm" onClick={clearAll}>
@@ -153,78 +244,60 @@ export default function IndicateurSidebarSelector({
             </Button>
           )}
         </div>
-
-        <div className="d-flex align-items-center">
-          <Form.Check
-            type="checkbox"
-            checked={empreinteSocietaleState === "all"}
-            ref={input => {
-              if (input) input.indeterminate = empreinteSocietaleState === "partial";
-            }}
-            onChange={handleEmpreinteSocietaleToggle}
-            className="me-2"
-          />
-          <div className="flex-grow-1 fw-semibold" style={{ fontSize: '0.8rem' }} onClick={handleEmpreinteSocietaleToggle} role="button">
-            Empreinte sociétale
-          </div>
-          {empreinteSocietaleState !== "none" && (
-            <Badge bg={empreinteSocietaleState === "all" ? "primary" : "secondary"} className="ms-2" style={{ fontSize: '0.65rem' }}>
-              {selectedIndicateurs.filter(code => allIndicateurCodes.includes(code)).length}/{allIndicateurCodes.length}
-            </Badge>
-          )}
-        </div>
       </div>
 
-      {/* Contenu scrollable */}
-      <div className="flex-grow-1 overflow-auto" style={{ minHeight: 0 }}>
-        {processedData.map((category) => {
-          const categoryState = getCategoryState(category.indicateurs);
+      <div className="flex-grow-1 overflow-auto scrollable-content">
+        <GroupBlock
+          name="Empreinte sociétale"
+          allCodes={allIndicateurCodes}
+          selectedIndicateurs={selectedIndicateurs}
+          isCollapsed={!!collapsedCategories['Empreinte sociétale']}
+          onToggleCollapsed={() => toggleCategoryCollapsed('Empreinte sociétale')}
+          onToggleAll={() => handleCodesToggle(allIndicateurCodes)}
+          bold
+        >
+          {/* Décalage à droite : marque visuellement que ces 3 groupes sont
+              des sous-catégories de "Empreinte sociétale" ci-dessus. */}
+          <div className="ps-3">
+            {processedData.map((category) => (
+              <CategoryBlock
+                key={category.name}
+                name={category.name}
+                indicateurs={category.indicateurs}
+                selectedIndicateurs={selectedIndicateurs}
+                isCollapsed={!!collapsedCategories[category.name]}
+                onToggleCollapsed={() => toggleCategoryCollapsed(category.name)}
+                onToggleCategory={() => handleCodesToggle(category.indicateurs.map(i => i.code))}
+                onToggleIndicateur={handleIndicateurToggle}
+              />
+            ))}
+          </div>
+        </GroupBlock>
 
-          return (
-            <div key={category.name} className="border-bottom">
-              {/* En-tête de catégorie */}
-              <div className="px-3 py-1 bg-light border-bottom">
-                <div className="d-flex align-items-center">
-                  <Form.Check
-                    type="checkbox"
-                    checked={categoryState === "all"}
-                    ref={input => {
-                      if (input) input.indeterminate = categoryState === "partial";
-                    }}
-                    onChange={() => handleCategoryToggle(category.indicateurs)}
-                    className="me-2"
-                  />
-
-                  <div className="flex-grow-1">
-                    <div className="fw-semibold" style={{ fontSize: '0.8rem' }} onClick={() => handleCategoryToggle(category.indicateurs)} role="button">
-                      {category.name}
-                    </div>
-                  </div>
-
-                  {categoryState !== "none" && (
-                    <Badge bg={categoryState === "all" ? "primary" : "secondary"} className="ms-2" style={{ fontSize: '0.65rem' }}>
-                      {category.indicateurs.filter(i => selectedIndicateurs.includes(i.code)).length}
-                    </Badge>
-                  )}
-                </div>
+        {autresIndicateurs.length > 0 && (
+          <GroupBlock
+            name="Autres indicateurs"
+            allCodes={autresIndicateurCodes}
+            selectedIndicateurs={selectedIndicateurs}
+            isCollapsed={!!collapsedCategories['Autres indicateurs']}
+            onToggleCollapsed={() => toggleCategoryCollapsed('Autres indicateurs')}
+            onToggleAll={() => handleCodesToggle(autresIndicateurCodes)}
+            bold
+          >
+            {autresIndicateurs.map((indicateur) => (
+              <div key={indicateur.code} className="px-5 py-1">
+                <Form.Check
+                  type="checkbox"
+                  id={`indicateur-${indicateur.code}`}
+                  checked={selectedIndicateurs.includes(indicateur.code)}
+                  onChange={() => handleIndicateurToggle(indicateur.code)}
+                  label={<span>{indicateur.libelle}</span>}
+                  className="mb-0 indicateur-check"
+                />
               </div>
-
-              {/* Liste des indicateurs */}
-              {category.indicateurs.map((indicateur) => (
-                <div key={indicateur.code} className="px-5">
-                  <Form.Check
-                    type="checkbox"
-                    id={`indicateur-${indicateur.code}`}
-                    checked={selectedIndicateurs.includes(indicateur.code)}
-                    onChange={() => handleIndicateurToggle(indicateur.code)}
-                    label={<span>{indicateur.libelle}</span>}
-                    className="mb-0"
-                  />
-                </div>
-              ))}
-            </div>
-          );
-        })}
+            ))}
+          </GroupBlock>
+        )}
       </div>
     </div>
   );
