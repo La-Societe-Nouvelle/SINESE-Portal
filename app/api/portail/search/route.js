@@ -16,7 +16,7 @@ export async function GET(request) {
   try {
     const data = await searchLegalUnits(query, filters, page);
     if (query || Object.keys(filters).length > 0) {
-      await logSearchView(query, filters);
+      logSearchView(query, filters);
     }
     return NextResponse.json(data);
   } catch (error) {
