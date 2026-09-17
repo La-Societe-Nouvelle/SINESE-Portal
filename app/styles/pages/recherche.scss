@@ -230,7 +230,44 @@
   .form-check-label {
     font-size: 0.7rem;
     font-weight: 500;
-    color: $text-muted;
+    color: $gray-600;
+  }
+}
+
+.indicateur-sidebar-selector {
+  width: 400px;
+  z-index: 1050;
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    color: $gray-600;
+  }
+
+  .group-header-row {
+    min-height: 1.6rem;
+  }
+
+  .group-title {
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: $primary;
+
+    &.group-title--bold {
+      font-size: 0.85rem;
+    }
+  }
+
+  .count-badge {
+    font-size: 0.65rem;
+  }
+
+  .indicateur-check {
+    line-height: 1.2;
+  }
+
+  .scrollable-content {
+    min-height: 0;
   }
 }
 .company-footprint {
