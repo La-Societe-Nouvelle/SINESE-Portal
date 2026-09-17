@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Container } from "react-bootstrap";
 import { getLegalUnitData, getLegalUnitHistory, getDivisionFootprint, getPublishedReports } from "@/actions/entreprise";
+import { logCompanyView } from "@/actions/stats";
 
 import PageHeader from "../_components/PageHeader";
 import FootprintSection from "../_components/FootprintSection";
@@ -15,6 +16,8 @@ export default async function EntreprisePage({ params }) {
   ]);
 
   if (!companyData) notFound();
+
+  logCompanyView(siren);
 
   const { legalUnit, footprint, additionnalData } = companyData;
 

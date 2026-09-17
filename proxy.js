@@ -1,6 +1,23 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
+const VISITOR_COOKIE = "visitor_id";
+// 13 mois = durée max recommandée par la CNIL pour un cookie de mesure d'audience.
+const VISITOR_COOKIE_MAX_AGE = 60 * 60 * 24 * 396;
+
+// Pose un identifiant anonyme par visiteur, utilisé pour dédupliquer les vues
+// dans stats.sinese_views sans stocker d'IP ni de compte.
+function ensureVisitorCookie(request, response) {
+  if (request.cookies.get(VISITOR_COOKIE)) return;
+
+  response.cookies.set(VISITOR_COOKIE, crypto.randomUUID(), {
+    maxAge: VISITOR_COOKIE_MAX_AGE,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+}
+
 export async function proxy(request) {
   const token = await getToken({
     req: request,
@@ -11,16 +28,22 @@ export async function proxy(request) {
 
   // Utilisateur non authentifié → redirige vers connexion pour les routes protégées
   if (!token && pathname.startsWith("/publications/espace")) {
-    return NextResponse.redirect(new URL("/publications/connexion", request.url));
+    const response = NextResponse.redirect(new URL("/publications/connexion", request.url));
+    ensureVisitorCookie(request, response);
+    return response;
   }
 
   // Protection de l'espace admin par rôle
   if (pathname.startsWith("/admin")) {
     if (!token) {
-      return NextResponse.redirect(new URL("/publications/connexion", request.url));
+      const response = NextResponse.redirect(new URL("/publications/connexion", request.url));
+      ensureVisitorCookie(request, response);
+      return response;
     }
     if (token.role !== "admin") {
-      return NextResponse.redirect(new URL("/", request.url));
+      const response = NextResponse.redirect(new URL("/", request.url));
+      ensureVisitorCookie(request, response);
+      return response;
     }
   }
 
@@ -30,16 +53,20 @@ export async function proxy(request) {
     (pathname === "/publications/connexion" ||
       pathname === "/publications/inscription")
   ) {
-    return NextResponse.redirect(new URL("/publications/espace", request.url));
+    const response = NextResponse.redirect(new URL("/publications/espace", request.url));
+    ensureVisitorCookie(request, response);
+    return response;
   }
 
   // Autoriser le passage pour toutes les autres routes
-  return NextResponse.next();
+  const response = NextResponse.next();
+  ensureVisitorCookie(request, response);
+  return response;
 }
 
 export const config = {
   matcher: [
     "/publications/:path*",
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api/auth|_next/static|_next/image|favicon.ico).*)",
   ],
 };

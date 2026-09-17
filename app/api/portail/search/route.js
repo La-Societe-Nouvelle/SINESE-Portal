@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { searchLegalUnits } from "@/actions/search";
+import { logSearchView } from "@/actions/stats";
 import { parseFiltersFromParams } from "@/(portail)/recherche/_utils/searchParams";
 
 // Recherche filtrée du portail. Route handler GET plutôt que rendu RSC piloté
@@ -14,6 +15,9 @@ export async function GET(request) {
 
   try {
     const data = await searchLegalUnits(query, filters, page);
+    if (query || Object.keys(filters).length > 0) {
+      await logSearchView(query, filters);
+    }
     return NextResponse.json(data);
   } catch (error) {
     // Timeout du pool ou statement_timeout (voir config/db.js).
